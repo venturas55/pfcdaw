@@ -2,6 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const exphbs = require('express-handlebars'); //Para usar plantillas
 const path = require('path'); //Para manejar directorios, basicamente unirlos 
+require('dotenv').config(); // Para hacer uso de .env
 
 
 //Inicializacion
@@ -35,8 +36,8 @@ app.use((req, res, next) => {
 
 //Rutas
 app.use(require('./routes')); //busca automaticamente index.js
-app.use(require('./routes/autenthication')); //busca automaticamente js
-app.use('aton',require('./routes/aton')); //busca automaticamente js
+app.use(require('./routes/autenthication')); 
+app.use('/aton',require('./routes/aton')); 
 
 
 //Public

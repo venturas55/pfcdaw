@@ -1,0 +1,38 @@
+<div class="container-fluid p-4 mb-5">
+  <div>
+    <input class="form-control" id="myInput" type="text" placeholder="Filtrar..">
+  </div>
+  {{#if balizas}}
+  <div class="table-responsive">
+    <table id="listado" class="listado mx-auto " data-search="true">
+      <tr>
+        <th>NIF</th>
+        <th>Puerto</th>
+        <th>Tipo</th>
+        <th>Apariencia</th>
+        <th>Periodo</th>
+      </tr>
+
+      {{#each balizas}}
+
+      <tr class="fila" onclick="location.href='/aton/plantilla/{{nif}}';">
+        <td>{{nif}}</td>
+        <td>{{puerto}}</td>
+        <td>{{tipo}} </td>
+        <td>{{apariencia}}</td>
+        <td>{{periodo}} </td>
+      </tr>
+
+      {{/each}}
+
+    </table>
+  </div>
+  {{else}}
+  <div class="col-md-4-mx-auto">
+    <div class="card card-body text-center">
+      <tr>No hay balizas guardadas <a href="/aton/add"> Crea una!</a></tr>
+    </div>
+  </div>
+  {{/if}}
+
+</div>
