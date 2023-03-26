@@ -13,7 +13,7 @@ router.get('/prueba', (req, res) => {
 router.get("/add", (req, res) => {
     res.render("aton/add");
 });
-router.post("/add", async(req, res) => {
+router.post("/add", async (req, res) => {
     const {
         nif,
         num_internacional,
@@ -63,6 +63,25 @@ router.post("/add", async(req, res) => {
         candelasCalc,
         candelasInst
     };
+    for (let clave in newBalizamiento) {
+        if (!newBalizamiento[clave]) {
+            newBalizamiento[clave] = null;
+        }
+    }
+
+    for (let clave in newBalizamientoLocalizacion) {
+        if (!newBalizamientoLocalizacion[clave]) {
+            newBalizamientoLocalizacion[clave] = null;
+        }
+    }
+
+    for (let clave in newBalizamientoLampara) {
+        if (!newBalizamientoLampara[clave]) {
+            newBalizamientoLampara[clave] = null;
+        }
+    }
+
+    //console.log(newBalizamiento);
     await db.query("INSERT INTO balizamiento set ?", [newBalizamiento]);
     await db.query("INSERT INTO localizacion set ?", [newBalizamientoLocalizacion]);
     await db.query("INSERT INTO lampara set ?", [newBalizamientoLampara]);
@@ -70,7 +89,7 @@ router.post("/add", async(req, res) => {
 });
 
 //CRUD ATON read
-router.get("/list", async(req, res) => {
+router.get("/list", async (req, res) => {
     const balizas = await db.query(
         queryListadoAton
     );
