@@ -1,15 +1,3 @@
-
-drop table  IF EXISTS documentos;
-drop table  IF EXISTS eliminados;
-drop table  IF EXISTS inventario;
-drop table  IF EXISTS lampara;
-drop table  IF EXISTS localizacion;
-drop table  IF EXISTS logs;
-drop table  IF EXISTS mantenimiento ;
-drop table  IF EXISTS observaciones ;
-drop table  IF EXISTS usuarios ;
-
-
 drop table  IF EXISTS balizamiento;
 CREATE TABLE `balizamiento` (
   `nif` varchar(8) NOT NULL,
@@ -21,6 +9,7 @@ CREATE TABLE `balizamiento` (
   `caracteristica` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3  COMMENT = 'tabla de balizas';
 
+drop table  IF EXISTS documentos;
 CREATE TABLE `documentos` (
   `id_archivo` varchar(100) NOT NULL,
   `nombre` varchar(100) DEFAULT NULL,
@@ -28,6 +17,7 @@ CREATE TABLE `documentos` (
   `created_at` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT = 'tabla de documentos';
 
+drop table  IF EXISTS eliminados;
 CREATE TABLE `eliminados` (
   `fecha` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `usuario` varchar(10) NOT NULL,
@@ -38,6 +28,7 @@ CREATE TABLE `eliminados` (
   `descripcion` varchar(250) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT = 'Tabla de elementos de inventario eliminados';
 
+drop table  IF EXISTS inventario;
 CREATE TABLE `inventario` (
   `id` mediumint(9) NOT NULL,
   `tipo` varchar(50) DEFAULT NULL,
@@ -48,6 +39,7 @@ CREATE TABLE `inventario` (
   `descripcion` varchar(250) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT = 'tabla de inventario';
 
+drop table  IF EXISTS lampara;
 CREATE TABLE `lampara` (
   `nif` varchar(8) NOT NULL,
   `altura` int(11) DEFAULT 0,
@@ -59,6 +51,7 @@ CREATE TABLE `lampara` (
   `candelasInst` float(12, 2) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT = 'tabla de detalles lampara';
 
+drop table  IF EXISTS localizacion;
 CREATE TABLE `localizacion` (
   `nif` varchar(8) NOT NULL,
   `puerto` varchar(50) DEFAULT NULL,
@@ -68,6 +61,21 @@ CREATE TABLE `localizacion` (
   `longitud` varchar(15)  DEFAULT NULL
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT = 'tabla de localizacion del balizamiento';
 
+
+drop table  IF EXISTS boyas;
+CREATE TABLE `boyas` (
+  `nif` varchar(8) NOT NULL,
+  `modelo` varchar(30) DEFAULT NULL,
+  `material` varchar(30) DEFAULT NULL, 
+  `diametro_flotador` float(4, 2)  DEFAULT 0,
+  `altura_castillete` float(4, 2)  DEFAULT 0,
+  `area` float(4, 2)  DEFAULT 0,
+  `peso` float(10, 2)  DEFAULT 0,
+  `diametro_cadena` float(10, 2)  DEFAULT 0,
+  `longitud_cadena` float(10, 2)  DEFAULT 0
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT = 'tabla de boyas';
+
+drop table  IF EXISTS logs;
 CREATE TABLE `logs` (
   `fecha` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `usuario` varchar(50) NOT NULL,
@@ -75,6 +83,7 @@ CREATE TABLE `logs` (
   `observacion` varchar(150) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT = 'tabla de logs';
 
+drop table  IF EXISTS mantenimiento ;
 CREATE TABLE `mantenimiento` (
   `id_mantenimiento` int(10) UNSIGNED NOT NULL,
   `nif` varchar(8) NOT NULL,
@@ -82,12 +91,14 @@ CREATE TABLE `mantenimiento` (
   `mantenimiento` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT = 'tabla de mantenimiento del balizamiento';
 
+drop table  IF EXISTS observaciones ;
 CREATE TABLE `observaciones` (
   `id_observacion` int(10) UNSIGNED NOT NULL,
   `nif` varchar(8) NOT NULL,
   `observaciones` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT = 'tabla de observaciones del balizamiento';
 
+drop table  IF EXISTS usuarios ;
 CREATE TABLE `usuarios` (
   `id` int(11) NOT NULL,
   `usuario` varchar(50) NOT NULL,

@@ -96,6 +96,49 @@ router.get("/list", async (req, res) => {
     res.render("aton/list", { balizas });
 
 });
+router.get("/list/:busqueda", async(req, res) => {
+    var { busqueda } = req.params;
+    var balizas;
+    if (busqueda === 'Ext') {
+        //console.log("Externas");
+        balizas = await db.query(queryListadoAton + " where b.nif=lo.nif AND lo.puerto not like '%valencia%' and lo.puerto not like '%sagunto%' and lo.puerto not like '%gandia%' order by lo.nif");
+    } else {
+        busqueda = "%" + busqueda + "%";
+        balizas = await db.query(queryListadoAton + " where b.nif=lo.nif AND lo.puerto like ? order by lo.nif", busqueda);
+        //like is case insensitive por defecto. En caso de quererlo sensitivo hay que añadir solo "like binary"
+    }
+    res.render("aton/list", { layout: 'layoutList', balizas });
+    // NO FUNCIONA CON LA BARRA DELANTE res.render('/links/list');
+});
+router.get("/list/:filtro/:valor", async(req, res) => {
+    var obj = req.params;
+    var balizas;
+    //Añadimos porcentajes para busqueda SQL que contenga 'busqueda' y lo que sea por delante y por detras
+    obj.valor = "%" + obj.valor + "%";
+
+    if (obj.filtro == "tipo" || obj.filtro == "apariencia")
+        obj.filtro = "b." + obj.filtro;
+    else
+        obj.filtro = "lo." + obj.filtro;
+
+    var sqlQuery = queryListadoAton + " where b.nif=lo.nif AND " + obj.filtro + " like ? order by lo.nif";
+    balizas = await db.query(sqlQuery, obj.valor);
+    //console.log(balizas);
+    //like is case insensitive por defecto. En caso de quererlo sensitivo hay que añadir solo "like binary"
+    res.render("aton/list", { layout: 'layoutList', balizas });
+    // NO FUNCIONA CON LA BARRA DELANTE res.render('/links/list');
+});
+router.get("/plantilla/:nif", async(req, res) => {
+    const { nif } = req.params;
+    //const baliza = await db.query('SELECT * FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif where b.nif=?', [nif]);  CON ESTA CONSULTA EL LEFT JOIN NO FUNCIONA BIEN PARA EL HIPOTETICO CASO EN EL QUE EXISTE UN ATON QUE NO ESTA EN ALGUNA DE LAS TRES TABLAS
+    const baliza = await db.query(queryListadoAton + ' where b.nif=?', [nif]);
+    //console.log(baliza[0]);
+    const observaciones = await db.query('SELECT * FROM observaciones where nif=?', [nif]);
+    const mantenimiento = await db.query('SELECT * FROM mantenimiento where nif=? order by fecha DESC', [nif]);
+    
+    res.render("aton/plantilla", { baliza: baliza[0], obs: observaciones, mant: mantenimiento });
+    // NO FUNCIONA CON LA BARRA DELANTE res.render('/links/list');
+});
 
 
 module.exports = router;
