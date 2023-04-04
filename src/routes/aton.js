@@ -140,5 +140,37 @@ router.get("/plantilla/:nif", async(req, res) => {
     // NO FUNCIONA CON LA BARRA DELANTE res.render('/links/list');
 });
 
+//CRUD ATON update
+router.get("/editCaracteristicas/:nif",(req, res) => {
+    const { nif } = req.params;
+
+    res.render("aton/editCaracteristicas", { baliza: baliza[0] });
+});
+router.get("/editLocalizacion/:nif", (req, res) => {
+    const { nif } = req.params;
+   
+    res.render("aton/editLocalizacion");
+});
+router.get("/editLampara/:nif",  (req, res) => {
+    const { nif } = req.params;
+
+
+    res.render("aton/editLampara");
+});
+router.post("/editCaracteristicas/:nif",  (req, res) => {
+    const nifviejo = req.params.nif;
+
+    res.redirect("/aton/plantilla/" + nifviejo);
+});
+router.post("/editLocalizacion/:nif",  (req, res) => {
+    const nifviejo = req.params.nif;
+    
+    res.redirect("/aton/plantilla/" + nifviejo);
+});
+router.post("/editLampara/:nif",  (req, res) => {
+    const nifviejo = req.params.nif;
+    
+});
+
 
 module.exports = router;
