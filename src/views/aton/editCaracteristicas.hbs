@@ -4,7 +4,7 @@
         <div class="col-md-4 mx-auto">
             <div class="card">
                 <div class="card-body">
-                    <form action="/balizas/editCaracteristicas/{{baliza.nif}}" method="POST">
+                    <form action="/aton/editCaracteristicas/{{baliza.nif}}" method="POST">
                         <div class="form-group"> 
                             <label for="num_internacional">NUM_INTERNACIONAL</label>
                              <input value="{{baliza.num_internacional}}" class="form-control" type="text" name="num_internacional" placeholder="num_internacional" autofocus /> </div>
@@ -16,7 +16,7 @@
                             
                         <button class="btn btn-success btn-block">Guardar</button>
                     </form>
-                    <form action="/balizas/plantilla/{{baliza.nif}}" method="GET">
+                    <form action="/aton/plantilla/{{baliza.nif}}" method="GET">
                                 <button class="btn btn-danger btn-block">Cancelar</button>
                     </form>
             </div>

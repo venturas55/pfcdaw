@@ -4,7 +4,7 @@
         <div class="col-md-12 mx-auto">
             <div class="card">
                 <div class="card-body">
-                    <form action="/balizas/observaciones/edit/{{observacion.id_observacion}}" method="POST">
+                    <form action="/aton/observaciones/edit/{{observacion.id_observacion}}" method="POST">
                         <div class="form-group">
                             <div class="form-group"><label for="caracteristica">OBSERVACION A MODIFICAR</label>
                             <input value="{{observacion.id_observacion}}" class="form-control" type="hidden" name="id_observacion"  />
@@ -14,7 +14,7 @@
                                     name="observacionNueva" placeholder="caracteristica a modificar" /> </div>
                             <button class="btn btn-success btn-block">Guardar</button>
                     </form>
-                    <form action="/balizas/plantilla/{{observacion.nif}}" method="GET">
+                    <form action="/aton/plantilla/{{observacion.nif}}" method="GET">
                             <button class="btn btn-danger btn-block">Cancelar</button>
                     </form>
                 </div>

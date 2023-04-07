@@ -96,7 +96,7 @@ router.get("/list", async (req, res) => {
     res.render("aton/list", { balizas });
 
 });
-router.get("/list/:busqueda", async(req, res) => {
+router.get("/list/:busqueda", async (req, res) => {
     var { busqueda } = req.params;
     var balizas;
     if (busqueda === 'Ext') {
@@ -110,7 +110,7 @@ router.get("/list/:busqueda", async(req, res) => {
     res.render("aton/list", { layout: 'layoutList', balizas });
     // NO FUNCIONA CON LA BARRA DELANTE res.render('/links/list');
 });
-router.get("/list/:filtro/:valor", async(req, res) => {
+router.get("/list/:filtro/:valor", async (req, res) => {
     var obj = req.params;
     var balizas;
     //Añadimos porcentajes para busqueda SQL que contenga 'busqueda' y lo que sea por delante y por detras
@@ -128,49 +128,252 @@ router.get("/list/:filtro/:valor", async(req, res) => {
     res.render("aton/list", { layout: 'layoutList', balizas });
     // NO FUNCIONA CON LA BARRA DELANTE res.render('/links/list');
 });
-router.get("/plantilla/:nif", async(req, res) => {
+router.get("/plantilla/:nif", async (req, res) => {
     const { nif } = req.params;
     //const baliza = await db.query('SELECT * FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif where b.nif=?', [nif]);  CON ESTA CONSULTA EL LEFT JOIN NO FUNCIONA BIEN PARA EL HIPOTETICO CASO EN EL QUE EXISTE UN ATON QUE NO ESTA EN ALGUNA DE LAS TRES TABLAS
     const baliza = await db.query(queryListadoAton + ' where b.nif=?', [nif]);
     //console.log(baliza[0]);
     const observaciones = await db.query('SELECT * FROM observaciones where nif=?', [nif]);
     const mantenimiento = await db.query('SELECT * FROM mantenimiento where nif=? order by fecha DESC', [nif]);
-    
+
     res.render("aton/plantilla", { baliza: baliza[0], obs: observaciones, mant: mantenimiento });
     // NO FUNCIONA CON LA BARRA DELANTE res.render('/links/list');
 });
 
 //CRUD ATON update
-router.get("/editCaracteristicas/:nif",(req, res) => {
+router.get("/editCaracteristicas/:nif", async (req, res) => {
     const { nif } = req.params;
+    var baliza = await db.query("SELECT * FROM balizamiento WHERE nif=?", [nif]);
 
-    res.render("aton/editCaracteristicas", { baliza: baliza[0] });
+    if (baliza[0] == null || baliza[0] == undefined) {
+        baliza = { nif };
+    } else {
+        baliza = baliza[0];
+    }
+    res.render("aton/editCaracteristicas", { baliza});
 });
-router.get("/editLocalizacion/:nif", (req, res) => {
+router.get("/editLocalizacion/:nif", async (req, res) => {
     const { nif } = req.params;
-   
-    res.render("aton/editLocalizacion");
+    var baliza = await db.query("SELECT * FROM localizacion WHERE nif=?", [nif]);
+    if (baliza[0] == null || baliza[0] == undefined) {
+        baliza = { nif };
+    } else {
+        baliza = baliza[0];
+    }
+    console.log(baliza);
+    res.render("aton/editLocalizacion",{ baliza });
 });
-router.get("/editLampara/:nif",  (req, res) => {
+router.get("/editLampara/:nif", async (req, res) => {
     const { nif } = req.params;
-
-
-    res.render("aton/editLampara");
+    var baliza = await db.query("SELECT * FROM lampara WHERE nif=?", [nif]);
+    if (baliza[0] == null || baliza[0] == undefined) {
+        baliza = { nif };
+    } else {
+        baliza = baliza[0];
+    }
+    res.render("aton/editLampara",{ baliza });
 });
-router.post("/editCaracteristicas/:nif",  (req, res) => {
+router.post("/editCaracteristicas/:nif", async (req, res) => {
     const nifviejo = req.params.nif;
+    var {
+        nif,
+        num_internacional,
+        tipo,
+        telecontrol,
+        apariencia,
+        periodo,
+        caracteristica,
+    } = req.body;
+    periodo = parseInt(periodo);
+    const newBaliza = {
+        nif: nifviejo,
+        num_internacional,
+        tipo,
+        telecontrol,
+        apariencia,
+        periodo,
+        caracteristica,
+    };
+    //console.log(newBaliza);
+    //console.log("req.params " + req.params.nif);
+    await db.query("UPDATE balizamiento set ? WHERE nif = ?", [
+        newBaliza,
+        nifviejo,
+    ]);
 
     res.redirect("/aton/plantilla/" + nifviejo);
 });
-router.post("/editLocalizacion/:nif",  (req, res) => {
+router.post("/editLocalizacion/:nif", async (req, res) => {
     const nifviejo = req.params.nif;
-    
+    var {
+        puerto,
+        num_local,
+        localizacion,
+        latitud,
+        longitud,
+    } = req.body;
+    const newBaliza = {
+        nif: nifviejo,
+        puerto,
+        num_local,
+        localizacion,
+        latitud,
+        longitud,
+    };
+    var baliza = await db.query("SELECT * FROM localizacion WHERE nif=?", [nifviejo]);
+    if (baliza[0] == null || baliza[0] == undefined) {
+        await db.query("INSERT into localizacion set ? ", [newBaliza]);
+    } else {
+        await db.query("UPDATE localizacion set ? WHERE nif = ?", [newBaliza, nifviejo]);
+    }
+
     res.redirect("/aton/plantilla/" + nifviejo);
 });
-router.post("/editLampara/:nif",  (req, res) => {
+router.post("/editLampara/:nif", async (req, res) => {
     const nifviejo = req.params.nif;
-    
+    var {
+        altura,
+        elevacion,
+        alcanceNom,
+        linterna,
+        candelasCalc,
+        alcanceLum,
+        candelasInst,
+    } = req.body;
+    const newBaliza = {
+        nif: nifviejo,
+        altura,
+        elevacion,
+        alcanceNom,
+        linterna,
+        candelasCalc,
+        alcanceLum,
+        candelasInst,
+    };
+
+    var baliza = await db.query("SELECT * FROM lampara WHERE nif=?", [nifviejo]);
+    if (baliza[0] == null || baliza[0] == undefined) {
+        await db.query("INSERT into lampara set ? ", [newBaliza]);
+    } else {
+        await db.query("UPDATE lampara set ? WHERE nif = ?", [newBaliza, nifviejo]);
+    }
+    res.redirect("/aton/plantilla/" + nifviejo);
+
 });
 
+//CRUD ATON delete
+router.get("/delete/:nif", async (req, res) => {
+    console.log("Borrando aton " + req.params.nif + "...");
+    const { nif } = req.params;
+
+    await db.query("DELETE FROM mantenimiento WHERE nif=?", [nif]);
+    await db.query("DELETE FROM observaciones WHERE nif=?", [nif]);
+    await db.query("DELETE FROM localizacion WHERE nif=?", [nif]);
+    await db.query("DELETE FROM lampara WHERE nif=?", [nif]);
+    await db.query("DELETE FROM balizamiento WHERE nif=?", [nif]);
+    res.redirect("/aton/list");
+});
+
+//GESTION CRUD observaciones
+router.post("/observaciones/add", async (req, res) => {
+    const {
+        nif,
+        observaciones,
+    } = req.body;
+    const observa = {
+        nif,
+        observaciones,
+    };
+    //console.log(observa);
+    await db.query("INSERT INTO observaciones set ?", [observa]);
+    res.redirect("/aton/plantilla/" + nif);
+});
+router.get("/observaciones/delete/:idObs", async (req, res) => {
+    //console.log(req.params.idObs);
+    const { idObs } = req.params;
+    const resp = await db.query("select nif from observaciones where id_observacion=?", [idObs]);
+    const nif = resp[0].nif;
+    await db.query("delete from observaciones where id_observacion=?", [idObs]);
+    res.redirect("/aton/plantilla/" + nif);
+});
+router.get("/observaciones/edit/:idObs", async (req, res) => {
+    const { idObs } = req.params;
+    //console.log("Que id es: " + idObs);
+    const observacion = await db.query("SELECT * FROM observaciones WHERE id_observacion=?", [idObs,]);
+    //console.log(baliza);
+    //console.log(baliza[0]);
+    res.render("aton/editObservaciones", { observacion: observacion[0] });
+});
+router.post("/observaciones/edit/:idObs", async (req, res) => {
+
+    var {
+        id_observacion,
+        nif,
+        observacionNueva,
+    } = req.body;
+
+    const newObservacion = {
+        id_observacion,
+        nif,
+        observaciones: observacionNueva,
+    };
+    await db.query("UPDATE observaciones set ? WHERE id_observacion = ?", [
+        newObservacion,
+        id_observacion,
+    ]);
+    res.redirect("/aton/plantilla/" + nif);
+});
+
+//GESTION CRUD mantenimiento
+router.post("/mantenimiento/add", async (req, res) => {
+    const {
+        nif,
+        fecha,
+        mantenimiento,
+    } = req.body;
+    const mant = {
+        nif,
+        fecha,
+        mantenimiento,
+    };
+    //console.log(mant);
+    await db.query("INSERT INTO mantenimiento set ?", [mant]);
+    res.redirect("/aton/plantilla/" + nif);
+});
+router.get("/mantenimiento/delete/:idMan", async (req, res) => {
+    //console.log(req.params.idMan);
+    const { idMan } = req.params;
+    const resp = await db.query("select nif from mantenimiento where id_mantenimiento=?", [idMan]);
+    const nif = resp[0].nif;
+    await db.query("delete from mantenimiento where id_mantenimiento=?", [idMan]);
+    res.redirect("/aton/plantilla/" + nif);
+});
+router.get("/mantenimiento/edit/:idMan", async (req, res) => {
+    const { idMan } = req.params;
+    //console.log("Que id es: "+idMan);
+    const mantenimient = await db.query("SELECT * FROM mantenimiento WHERE id_mantenimiento=?", [idMan,]);
+    //console.log(mantenimient[0]);
+    res.render("aton/editMantenimiento", { mant: mantenimient[0] });
+
+});
+router.post("/mantenimiento/edit/:idMan", async (req, res) => {
+    var {
+        id_mantenimiento,
+        nif,
+        fechaNueva,
+        mantenimientoNuevo
+    } = req.body;
+    const newObservacion = {
+        id_mantenimiento,
+        nif,
+        fecha: fechaNueva,
+        mantenimiento: mantenimientoNuevo,
+    };
+    await db.query("UPDATE mantenimiento set ? WHERE id_mantenimiento = ?", [
+        newObservacion,
+        id_mantenimiento,
+    ]);
+    res.redirect("/aton/plantilla/" + nif);
+});
 
 module.exports = router;

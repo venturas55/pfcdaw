@@ -17,10 +17,10 @@ pool.getConnection((err, connection) => {
         if (err.code === 'ER_ACCESS_DENIED_ERROR') {
             console.error('Puta mierda es esta de ACCESO');
         }
+    } else if (connection) {
+        connection.release(); //con esto empieza la conexion
+        console.log('DB is Connected');
     }
-
-    if (connection) connection.release(); //con esto empieza la conexion
-    console.log('DB is Connected');
     return;
 });
 
