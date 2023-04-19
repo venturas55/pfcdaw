@@ -13,3 +13,8 @@ npm i fs-extra
 npm i multer  
 
 TODO: Google Maps
+
+TODO: Simulador de destellos
+
+TODO: Gestion de Backups de BBDD
+

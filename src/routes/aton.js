@@ -377,4 +377,9 @@ router.post("/mantenimiento/edit/:idMan", async (req, res) => {
     res.redirect("/aton/plantilla/" + nif);
 });
 
+//GESTION MAPA
+router.get("/mapa", async (req, res) => {
+    res.render("mapas/mapa" , { layout: 'mapLayout'});
+});
+
 module.exports = router;
