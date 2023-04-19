@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require("../database"); //db hace referencia a la BBDD
+const funciones = require("../lib/funciones.js");
 const queryListadoAton = "SELECT b.nif,b.num_internacional,b.tipo,b.apariencia,b.periodo,b.caracteristica,lo.puerto,lo.num_local,lo.localizacion,lo.latitud,lo.longitud,la.altura,la.elevacion,la.alcanceNom,la.linterna,la.candelasCalc,la.alcanceLum,la.candelasInst FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif";
 
 
@@ -135,8 +136,8 @@ router.get("/plantilla/:nif", async (req, res) => {
     //console.log(baliza[0]);
     const observaciones = await db.query('SELECT * FROM observaciones where nif=?', [nif]);
     const mantenimiento = await db.query('SELECT * FROM mantenimiento where nif=? order by fecha DESC', [nif]);
-
-    res.render("aton/plantilla", { baliza: baliza[0], obs: observaciones, mant: mantenimiento });
+    var fotos = funciones.listadoFotos(nif);
+    res.render("aton/plantilla", { baliza: baliza[0], obs: observaciones, mant: mantenimiento ,fotos});
     // NO FUNCIONA CON LA BARRA DELANTE res.render('/links/list');
 });
 

@@ -7,5 +7,9 @@ npm i express express-handlebars express-session mysql express-mysql-session mor
 npm i  nodemon -D
 
 CRUD de AtoN
-TODO: Gestión de fotos
+TODO: Gestión de fotos con Multer
+
+npm i fs-extra
+npm i multer  
+
 TODO: Google Maps

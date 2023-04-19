@@ -1,10 +1,32 @@
 <div class="row m-5">
-        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+    <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12 ">
+        <h1 class="text-center">Fotos</h1>
+        <div class="miCarrusel">
+            {{#each fotos}}
+            <img src="/img/imagenes/{{../baliza.nif}}/{{this}}" alt="/img/imagenes/{{../baliza.nif}}/{{this}}">
+            {{/each}}
+        </div>
+        <form action="/aton/upload/{{baliza.nif}}" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="nif" value="{{baliza.nif}}">
+            <div class="input-group mb-3">
+                <div class="custom-file">
+                    <input type="file" name="imagen" class="custom-file-input" id="inputGroupFile02">
+                    <label class="custom-file-label" for="inputGroupFile02">Choose file</label>
+                </div>
+                <div class="input-group-append">
+                    <button type="submit" class="input-group-text">Upload</button>
+                </div>
+            </div>
+        </form>
+        <a href="/aton/fotos/{{baliza.nif}}" class="btn btn-primary btn-block"> GALERIA DE FOTOS</a>
+    </div>
+
+    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 ">
         <h1 class="text-center"> Caracteristicas </h1>
         <table class="table table-bordered table-dark table-hover">
             <tr>
                 <th>NIF</th>
-                <td >{{baliza.nif}}</td>
+                <td>{{baliza.nif}}</td>
             </tr>
             <tr>
                 <th># Int</th>
@@ -12,15 +34,15 @@
             </tr>
             <tr>
                 <th>Tipo</th>
-                <td >{{baliza.tipo}}</td>
+                <td>{{baliza.tipo}}</td>
             </tr>
             <tr>
                 <th>Apariencia</th>
-                <td  id="aparienciaID"> {{baliza.apariencia}}</td>
+                <td id="aparienciaID"> {{baliza.apariencia}}</td>
             </tr>
             <tr>
                 <th>Periodo</th>
-                <td >{{baliza.periodo}} s</td>
+                <td>{{baliza.periodo}} s</td>
             </tr>
             <tr>
                 <th>Caracteristica</th>
@@ -30,17 +52,17 @@
         <a class="btn btn-primary btn-xs btn-block" href="/aton/editCaracteristicas/{{baliza.nif}}"
             class="btn btn-primary btn-lg btn-block"> ACTUALIZAR CARACTERISTICAS</a>
     </div>
-    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 ">
         <!-- id="divlocalizacion" -->
-        <h1  class="text-center"> Localizacion </h1>
+        <h1 class="text-center"> Localizacion </h1>
         <table class="table table-bordered table-dark table-hover">
             <tr>
                 <th>NIF</th>
-            <td>{{baliza.nif}}</td>
+                <td>{{baliza.nif}}</td>
             </tr>
             <tr>
                 <th>Puerto</th>
-                <td >{{baliza.puerto}}</td>
+                <td>{{baliza.puerto}}</td>
             </tr>
             <tr>
                 <th># Local</th>
@@ -62,8 +84,8 @@
         <a class="btn btn-primary btn-xs btn-block" href="/aton/editLocalizacion/{{baliza.nif}}">ACTUALIZAR
             LOCALIZACION </a>
     </div>
-    <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-        <h1  class="text-center"> Lampara </h1>
+    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 ">
+        <h1 class="text-center"> Lampara </h1>
         <table class="table table-bordered table-dark table-hover">
             <tr>
                 <th>Altura(m)</th>
@@ -107,9 +129,9 @@
             {{#each obs}}
             <tr>
                 <td>{{this.observaciones}}</td>
-                <td> <a href="/aton/observaciones/edit/{{this.id_observacion}}"  class="text-primary"><i
+                <td> <a href="/aton/observaciones/edit/{{this.id_observacion}}" class="text-primary"><i
                             class="fa-solid fa-pen-to-square"></i>Edit</a>
-                    <a type="submit" href="/aton/observaciones/delete/{{this.id_observacion}}"  class="text-primary"><i
+                    <a type="submit" href="/aton/observaciones/delete/{{this.id_observacion}}" class="text-primary"><i
                             class="fa-solid fa-trash"></i>Del</a>
                 </td>
             </tr>
@@ -146,7 +168,7 @@
                     <input type="hidden" name="nif" value='{{baliza.nif}}' />
                     <input type="hidden" name="fecha" value='{{fecha}}' />
                     <input type="hidden" name="mantenimiento" value='{{mantenimiento}}' />
-                    <a href="/aton/mantenimiento/edit/{{this.id_mantenimiento}}"  class="text-primary"><i
+                    <a href="/aton/mantenimiento/edit/{{this.id_mantenimiento}}" class="text-primary"><i
                             class="fa-solid fa-pen-to-square"></i>Edit</a>
                     <a href="/aton/mantenimiento/delete/{{this.id_mantenimiento}}" class="text-primary"><i
                             class="fa-solid fa-trash"></i>Del</a>

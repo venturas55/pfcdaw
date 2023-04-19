@@ -37,6 +37,7 @@ app.use((req, res, next) => {
 //Rutas
 app.use(require('./routes')); //busca automaticamente index.js
 app.use(require('./routes/autenthication')); 
+app.use(require('./routes/fotos')); 
 app.use('/aton',require('./routes/aton')); 
 
 
