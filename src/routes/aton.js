@@ -108,7 +108,7 @@ router.get("/list/:busqueda", async (req, res) => {
         balizas = await db.query(queryListadoAton + " where b.nif=lo.nif AND lo.puerto like ? order by lo.nif", busqueda);
         //like is case insensitive por defecto. En caso de quererlo sensitivo hay que añadir solo "like binary"
     }
-    res.render("aton/list", { layout: 'layoutList', balizas });
+    res.render("aton/list", { balizas });
     // NO FUNCIONA CON LA BARRA DELANTE res.render('/links/list');
 });
 router.get("/list/:filtro/:valor", async (req, res) => {
