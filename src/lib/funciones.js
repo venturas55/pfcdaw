@@ -32,5 +32,33 @@ helpers.verifyPassword = async (password, hashedPassword) => {
     }
 }
 
+helpers.isAuthenticated = (req, res, next) => {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    return res.redirect('/signin');
+}
+
+helpers.isNotAuthenticated = (req, res, next) => {
+    if (!req.isAuthenticated()) {
+        return next();
+    }
+    return res.redirect('/profile');
+}
+
+helpers.isAdmin = (req, res, next) => {
+    if (req.user.privilegio == "admin") {
+        return next();
+    }
+    return res.redirect('/noperm');
+}
+
+helpers.isNotAdmin = (req, res, next) => {
+    if (!req.user.privilegio == "admin") {
+        return next();
+    }
+    return res.redirect('/noperm');
+}
+
 
 module.exports = helpers;

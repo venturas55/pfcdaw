@@ -1,0 +1,26 @@
+body {
+    background: #bec2be;
+    font-family: sans-serif;
+}
+
+.avatar {
+    border: 1px solid rgb(26, 53, 255);
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.avatar-s {
+    height: 48px;
+    width: 48px;
+}
+
+.avatar-m {
+    height: 96px;
+    width: 96px;
+}
+
+.avatar-l {
+    height: 128px;
+    width: 128px;
+}

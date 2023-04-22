@@ -2,6 +2,7 @@
     <div class="d-flex flex-column p-0 m-0">
         <a href="http://www.valenciaport.com" target="_blank"> <img src="/img/logo-APV.svg" alt="APV logo"></a>
         <div>
+                {{>avatar}}
             <a class="navbar-brand" href="/aton/list">BBDD SAN</a>
         </div>
 
@@ -36,6 +37,28 @@
 
             </div>
         </li>
+
+
+      {{#if user}}
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          Panel Adm
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/aton/add ">Baliza Nueva</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="/profile">Ver Perfil</a>
+          <a class="dropdown-item" href="/logout">Logout</a>
+        </div>
+      </li>
+
+      {{/if}}
+
+
+
+
 
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
