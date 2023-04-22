@@ -61,15 +61,14 @@ helpers.isNotAdmin = (req, res, next) => {
     return res.redirect('/noperm');
 }
 
-helpers.insertarLog = (usuario, accion, observacion) => {
+helpers.insertarLog = async (usuario, accion, observacion) => {
     const log = {
         usuario,
         accion,
         observacion
     }
-    console.log("Insertando log" + [log]);
-    const a = db.query("insert into logs SET ?", [log]);
-    console.log(a);
+    console.log("Insertando log: " + stringify(log));
+    const a = await db.query("insert into logs SET ?", [log]);
     return a;
 };
 
