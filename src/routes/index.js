@@ -7,5 +7,15 @@ router.get('/', (req, res) => {
     res.render('index');
 });
 
+//MOSTRAR PERFIL  -RUD  
+router.get('/profile',  (req, res) => {
+    //console.log(req.user.usuario);
+    res.render('auth/profile');
+});
+router.get('/profile/edit',  (req, res) => {
+    res.render('auth/profileEdit');
+});
+
+
 module.exports = router;
 

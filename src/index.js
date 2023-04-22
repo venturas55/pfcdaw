@@ -3,10 +3,19 @@ const morgan = require('morgan');
 const exphbs = require('express-handlebars'); //Para usar plantillas
 const path = require('path'); //Para manejar directorios, basicamente unirlos 
 require('dotenv').config(); // Para hacer uso de .env
+console.log(process.env.DB_HOST);
+const session = require('express-session'); 
+const MySQLstore = require('express-mysql-session'); // para poder guardar la sesion en la sql
+const passport = require('passport');
+const { database } = require('./config');
+
+
 
 
 //Inicializacion
 const app = express();
+require('./lib/passport'); //para que se entere de la autentificacion que se ha creado 
+
 
 //Configuracion
 app.set('port', process.env.PORT || 4000);
@@ -21,9 +30,17 @@ app.engine('.hbs', exphbs.engine({ //con esto se configura el app.engine
 app.set('view engine', '.hbs'); //Para utilizar el app.engine
 
 //Middleware
+app.use(session({
+    secret: 'mysesion',
+    resave: false,
+    saveUninitialized: false,
+    store: new MySQLstore(database)
+}))
 app.use(morgan('dev')); //Para que muestre mensajes relacionados con el desarrollo por consola
 app.use(express.urlencoded({ extended: false })); //aceptar los datos desde los formularios sin aceptar imagenes ni nada raro
 app.use(express.json()); //Para enviar y recibir jsons.
+app.use(passport.initialize()); //iniciar passport
+app.use(passport.session()); //para que sepa donde guardar y como manejar los datos
 
 
 //Variables globales (que podrán ser usadas en cualquier vista)

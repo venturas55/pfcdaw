@@ -1,6 +1,7 @@
 const mysql = require('mysql');
 const { promisify } = require('util');
 const { database } = require('./config'); //traigo el database desde el archivo
+const { stringify } = require('querystring');
 const pool = mysql.createPool(database);
 
 pool.getConnection((err, connection) => {
@@ -15,7 +16,7 @@ pool.getConnection((err, connection) => {
             console.error('database conexion fue rechazada');
         }
         if (err.code === 'ER_ACCESS_DENIED_ERROR') {
-            console.error('Puta mierda es esta de ACCESO');
+            console.error('ACCESO denegado\n'+ stringify( database));
         }
     } else if (connection) {
         connection.release(); //con esto empieza la conexion

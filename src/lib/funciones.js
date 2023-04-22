@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs');
 const path = require('path');
 const fs = require('fs');
 const helpers = {};
@@ -15,5 +16,21 @@ helpers.listadoFotos = (req, res, next) => {
     });
     return fotitos;
 }
+
+
+helpers.encryptPass = async (password) => {
+    const sal = await bcrypt.genSalt(10);
+    password = await bcrypt.hash(password, sal);
+    return password;
+};
+
+helpers.verifyPassword = async (password, hashedPassword) => {
+    try {
+        return await bcrypt.compare(password, hashedPassword);
+    } catch (e) {
+        console.log(e);
+    }
+}
+
 
 module.exports = helpers;

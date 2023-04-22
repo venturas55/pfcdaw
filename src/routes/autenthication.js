@@ -1,12 +1,39 @@
 const express = require('express');
 const router = express.Router();
+const passport = require('passport');
+const helpers = require('../lib/funciones');
 
-//MOSTRAR PAGINA INICIAL
-router.get('/login', (req, res) => {
-    res.send('longin page');
+//GESTION SIGNIN registrarse C---
+router.get('/signup',  (req, res) => {
+    res.render('auth/signup')
+});
+router.post('/signup', passport.authenticate('local.signup', {
+    successRedirect: '/profile',
+    failureRedirect: '/signup',
+    //passReqToCallback: true,
+    failureFlash: true
+}));
+
+//GESTION LOGIN login
+router.get('/signin',  (req, res) => {
+    res.render('auth/signin');
+});
+router.post('/signin', (req, res, next) => {
+    const p = passport.authenticate('local.signin', {
+        successRedirect: '/profile',
+        failureRedirect: '/signin',
+        failureFlash: true
+    })(req, res, next);
 });
 
-router.get('/signin', (req, res) => {
-    res.send('singin page');
-});
+//GESTION logout
+router.get('/logout',  (req, res) => {
+    req.logout(function(err) {
+        if (err) {
+            return next(err);
+        }
+        res.redirect('/');
+    });
+})
+
 module.exports = router;
