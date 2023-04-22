@@ -2,14 +2,13 @@ const express = require('express');
 const morgan = require('morgan');
 const exphbs = require('express-handlebars'); //Para usar plantillas
 const path = require('path'); //Para manejar directorios, basicamente unirlos 
-require('dotenv').config(); // Para hacer uso de .env
-console.log(process.env.DB_HOST);
-const session = require('express-session'); 
+const flash = require('connect-flash'); //Para mostar mensajes
+const session = require('express-session'); //Lo necesita el flash tb
 const MySQLstore = require('express-mysql-session'); // para poder guardar la sesion en la sql
 const passport = require('passport');
 const { database } = require('./config');
 
-
+//console.log(process.env.DB_HOST);
 
 
 //Inicializacion
@@ -36,6 +35,7 @@ app.use(session({
     saveUninitialized: false,
     store: new MySQLstore(database)
 }))
+app.use(flash()); // Para poder usar el middleware de enviar mensajes popups
 app.use(morgan('dev')); //Para que muestre mensajes relacionados con el desarrollo por consola
 app.use(express.urlencoded({ extended: false })); //aceptar los datos desde los formularios sin aceptar imagenes ni nada raro
 app.use(express.json()); //Para enviar y recibir jsons.
@@ -45,9 +45,11 @@ app.use(passport.session()); //para que sepa donde guardar y como manejar los da
 
 //Variables globales (que podrán ser usadas en cualquier vista)
 app.use((req, res, next) => {
-
+    app.locals.signupMessage = req.flash('signupMessage');
+    app.locals.success = req.flash('success');
+    app.locals.message = req.flash('message');
     app.locals.user = req.user;
-    next(); // Para que continue ejecutando
+    next();
 });
 
 

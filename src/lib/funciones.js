@@ -1,6 +1,8 @@
 const bcrypt = require('bcryptjs');
 const path = require('path');
 const fs = require('fs');
+const db = require("../database");
+const { stringify } = require('querystring');
 const helpers = {};
 
 helpers.listadoFotos = (req, res, next) => {
@@ -16,7 +18,6 @@ helpers.listadoFotos = (req, res, next) => {
     });
     return fotitos;
 }
-
 
 helpers.encryptPass = async (password) => {
     const sal = await bcrypt.genSalt(10);
@@ -59,6 +60,18 @@ helpers.isNotAdmin = (req, res, next) => {
     }
     return res.redirect('/noperm');
 }
+
+helpers.insertarLog = (usuario, accion, observacion) => {
+    const log = {
+        usuario,
+        accion,
+        observacion
+    }
+    console.log("Insertando log" + [log]);
+    const a = db.query("insert into logs SET ?", [log]);
+    console.log(a);
+    return a;
+};
 
 
 module.exports = helpers;
