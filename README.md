@@ -18,3 +18,5 @@ TODO: Simulador de destellos
 
 TODO: Gestion de Backups de BBDD
 
+TODO: Vue calculos.
+

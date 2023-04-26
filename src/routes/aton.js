@@ -95,9 +95,7 @@ router.post("/add", funciones.isAuthenticated, async (req, res) => {
 
 //CRUD ATON read
 router.get("/list", async (req, res) => {
-    const balizas = await db.query(
-        queryListadoAton
-    );
+    const balizas = await db.query( queryListadoAton );
     res.render("aton/list", { balizas });
 
 });

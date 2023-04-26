@@ -2,7 +2,7 @@
     <div class="d-flex flex-column p-0 m-0">
         <a href="http://www.valenciaport.com" target="_blank"> <img src="/img/logo-APV.svg" alt="APV logo"></a>
         <div>
-                {{>avatar}}
+            {{>avatar}}
             <a class="navbar-brand" href="/aton/list">BBDD SAN</a>
         </div>
 
@@ -15,7 +15,9 @@
     <ul class="navbar-nav ml-auto">
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false"> APV </a>
+                aria-haspopup="true" aria-expanded="false">
+                APV
+            </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="/aton/list">Listado global</a>
                 <a class="dropdown-item" href="/aton/list/Valen">Listado Valencia</a>
@@ -23,9 +25,10 @@
                 <a class="dropdown-item" href="/aton/list/Gand">Listado Gandia</a>
                 <a class="dropdown-item" href="/aton/list/Ext">Listado Externas</a>
                 <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="/aton/mapa">googleMaps</a>
-                <a class="dropdown-item" href="/aton/add">Añadir AtoN</a>
-
+                <a class="dropdown-item" href="/aton/mapaGeneral/1">Mapa Valencia</a>
+                <a class="dropdown-item" href="/aton/mapaGeneral/2">Mapa Sagunto</a>
+                <a class="dropdown-item" href="/aton/mapaGeneral/3">Mapa Gandia</a>
+            </div>
         </li>
 
         <li class="nav-item dropdown">
@@ -34,29 +37,34 @@
                 Externo
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-
+                <a class="dropdown-item" href="/aton/list/Canet">CN Canet</a>
+                <a class="dropdown-item" href="/aton/list/Sapla">CN Port Saplaya</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/aton/list/Marina">Marina JCI</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/aton/list/Perello">CN Perello</a>
+                <a class="dropdown-item" href="/aton/list/Cullera">Puerto Cullera</a>
+                <a class="dropdown-item" href="/aton/list/Oliva">CN Oliva</a>
             </div>
         </li>
 
 
-      {{#if user}}
+        {{#if user}}
 
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">
-          Panel Adm
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="/aton/add ">Baliza Nueva</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="/profile">Ver Perfil</a>
-          <a class="dropdown-item" href="/logout">Logout</a>
-        </div>
-      </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                Panel Adm
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="/aton/add ">Añadir Baliza</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/profile">Ver Perfil</a>
+                <a class="dropdown-item" href="/logout">Logout</a>
+            </div>
+        </li>
 
-      {{/if}}
-
-
+        {{/if}}
 
 
 
@@ -67,25 +75,24 @@
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item" href="/plan">Plan Inspeccion</a>
-
-
+                <a class="dropdown-item" href="/calculos">Calculos</a>
                 <div class="dropdown-divider"></div>
-
                 <a class="dropdown-item" href="/prueba">Prueba</a>
             </div>
         </li>
 
+        {{#if user}}
         <li class="nav-item">
             <a class="nav-link" href="/logout" tabindex="-1" aria-disabled="true">Logout</a>
         </li>
-
+        {{else}}
         <li class="nav-item">
             <a class="nav-link" href="/signin" tabindex="-1" aria-disabled="true">Login</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="/signup" tabindex="-1" aria-disabled="true">Sign up</a>
         </li>
-
+        {{/if}}
         <li class="nav-item">
             <a class="nav-link" href="javascript:void(0)" onclick="history.back();" tabindex="-1"
                 aria-disabled="true">Volver</a>
