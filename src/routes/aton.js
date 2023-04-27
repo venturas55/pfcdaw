@@ -399,7 +399,27 @@ router.post("/mantenimiento/edit/:idMan", funciones.isAuthenticated,async (req, 
 
 //GESTION MAPA
 router.get("/mapa", async (req, res) => {
-    res.render("mapas/mapa" , { layout: 'mapLayout'});
+    res.render("mapas/mapa" , { layout: 'layoutMapa'});
+});
+router.get("/mapa/:nif", async(req, res) => {
+    const { nif } = req.params;
+    const baliza = await db.query(queryListadoAton + ' where b.nif=?', [nif]);
+    res.render("mapas/localizacion", { layout: 'layoutLocalizacion', baliza: baliza[0], });
+});
+router.get("/mapaGeneral/:valor", (req, res) => {
+    const { valor } = req.params;
+    //console.log("Mapa " + valor);
+    switch (valor) {
+        case "1":
+            res.render("mapas/mapaValencia", { layout: 'layoutMapa' });
+            break;
+        case '2':
+            res.render("mapas/mapaSagunto", { layout: 'layoutMapa' });
+            break;
+        case "3":
+            res.render("mapas/mapaGandia", { layout: 'layoutMapa' });
+            break;
+    }
 });
 
 module.exports = router;
