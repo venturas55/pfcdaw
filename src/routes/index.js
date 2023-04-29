@@ -8,6 +8,16 @@ router.get('/', (req, res) => {
     res.render('index');
 });
 
+//MOSTRAR CALCULOS
+router.get('/calculos', (req, res) => {
+    res.render('calculos', { layout: 'layoutCalculos' });
+});
+
+//MOSTRAR PLAN
+router.get('/plan', (req, res) => {
+    res.render('plan', { layout: 'layoutSimple' });
+});
+
 //MOSTRAR PERFIL  -RUD  
 router.get('/profile',  (req, res) => {
     //console.log(req.user.usuario);
@@ -16,7 +26,6 @@ router.get('/profile',  (req, res) => {
 router.get('/profile/edit',  (req, res) => {
     res.render('auth/profileEdit');
 });
-
 router.post('/profile/edit/', funciones.isAuthenticated, async(req, res) => {
     const rows = await db.query("SELECT * FROM usuarios WHERE id= ?", [req.body.id]);
     var user = rows[0];
@@ -31,7 +40,6 @@ router.post('/profile/edit/', funciones.isAuthenticated, async(req, res) => {
         console.log("guardando en la BBDD");
         //console.log(user);
         const result = await db.query("UPDATE usuarios SET ? where id= ?", [user, req.body.id]);
-        funciones.insertarLog(req.user.usuario, "UPDATE usuarios", "");
         req.flash("success", "Usuario editado correctamente.");
         res.redirect('/profile');
     } else {
@@ -64,6 +72,7 @@ router.get("/profile/delete/:id", funciones.isAuthenticated, async(req, res) => 
     res.redirect('/');
 });
 
+
 //MOSTRAR ERROR
 router.get('/error', (req, res) => {
     console.log("Redirect");
@@ -74,6 +83,27 @@ router.get('/noperm', (req, res) => {
     console.log("Redirect");
     req.flash("warning", "No dispones de los permisos adecuados!");
     res.render('noPermission');
+});
+
+//MOSTRAR PRUEBA
+router.get("/prueba", (req, res) => {
+    req.flash("success", "Prueba ejecutada correctamente en index");
+    res.render("prueba");
+});
+router.post("/pruebaPost", async(req, res) => {
+    var password = req.masterPass;
+    userpass = req.body.pass;
+    //console.log("==>" + req.masterPass);
+    const validPassword = await funciones.verifyPassword(userpass, password);
+    if (validPassword) {
+        funciones.consultaPrueba();
+        req.flash("success", "Prueba ejecutada correctamente crack");
+        res.redirect("/");
+    } else {
+        req.flash("warning", "Sucedió algun error!");
+        res.redirect("/noperm");
+    }
+
 });
 
 
