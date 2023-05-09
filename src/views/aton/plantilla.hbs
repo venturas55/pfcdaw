@@ -1,5 +1,8 @@
 <div class="row m-5">
     <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12 ">
+        <div id="simulacionLuz">
+            <div id="luz"></div>
+        </div>
         <h1 class="text-center">Fotos</h1>
         <div class="miCarrusel">
             {{#each fotos}}
@@ -83,7 +86,7 @@
         </table>
         <a class="btn btn-primary btn-xs btn-block" href="/aton/editLocalizacion/{{baliza.nif}}">ACTUALIZAR
             LOCALIZACION </a>
-                   <a class="btn btn-primary btn-xs btn-block" target="_blank" href="/aton/mapa/{{baliza.nif}}">VER UBICACION
+        <a class="btn btn-primary btn-xs btn-block" target="_blank" href="/aton/mapa/{{baliza.nif}}">VER UBICACION
         </a>
     </div>
     <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 ">
@@ -162,7 +165,7 @@
             <tr>
 
                 {{!-- <td>{{timeago fecha}}</td> asi haciendo uso del timeago--}}
-                <td> {{fecha}} </td>
+                <td> {{timeago fecha}} </td>
                 <td>{{mantenimiento}}</td>
                 {{!-- <td> <a href="" class="btn btn-primary btn-xs btn-block"><i
                             class="fa-solid fa-pen-to-square">borrar</i> </a> </td> --}}

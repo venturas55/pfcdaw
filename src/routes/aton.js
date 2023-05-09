@@ -139,7 +139,7 @@ router.get("/plantilla/:nif", async (req, res) => {
     const observaciones = await db.query('SELECT * FROM observaciones where nif=?', [nif]);
     const mantenimiento = await db.query('SELECT * FROM mantenimiento where nif=? order by fecha DESC', [nif]);
     var fotos = funciones.listadoFotos(nif);
-    res.render("aton/plantilla", { baliza: baliza[0], obs: observaciones, mant: mantenimiento ,fotos});
+    res.render("aton/plantilla", { layout: 'layoutPlantilla',baliza: baliza[0], obs: observaciones, mant: mantenimiento ,fotos});
     // NO FUNCIONA CON LA BARRA DELANTE res.render('/links/list');
 });
 

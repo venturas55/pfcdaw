@@ -2,8 +2,14 @@ const bcrypt = require('bcryptjs');
 const path = require('path');
 const fs = require('fs');
 const db = require("../database");
+const mysqldump = require('mysqldump');
 const { stringify } = require('querystring');
 const helpers = {};
+
+function createdDate(file) {
+    const { birthtime } = fs.statSync(file)
+    return birthtime
+}
 
 helpers.listadoFotos = (req, res, next) => {
     const nif = req;
@@ -17,6 +23,26 @@ helpers.listadoFotos = (req, res, next) => {
         }
     });
     return fotitos;
+}
+
+helpers.listadoBackups = (req, res, next) => {
+    var documentos = [];
+    var directorio = path.join(__dirname, "../public/dumpSQL");
+    fs.readdir(directorio, (err, files) => {
+        if (files) {
+            files.forEach(file => {
+                var item = {
+                    'name': file,
+                    'created_at': createdDate(directorio+"/"+file)
+                }
+                documentos.push(item);
+            });
+        }
+        else {
+            console.log("No hay files");
+        }
+    });
+    return documentos;
 }
 
 helpers.encryptPass = async (password) => {
@@ -71,6 +97,27 @@ helpers.insertarLog = async (usuario, accion, observacion) => {
     const a = await db.query("insert into logs SET ?", [log]);
     return a;
 };
+
+helpers.dumpearSQL=() => {
+    // dump the result straight to a file
+    console.log("===============================");
+    console.log(db.config.connectionConfig);
+
+     mysqldump({
+        connection: {
+            host: db.config.connectionConfig.host,
+            user: db.config.connectionConfig.user,
+            password: db.config.connectionConfig.password,
+            database: db.config.connectionConfig.database,
+        },
+        dumpToFile: './src/public/dumpSQL/dumpSAN' + Date.now() + '.sql',
+    });
+} 
+
+helpers.consultaPrueba =() =>{
+    //console.log(database);
+
+}
 
 
 module.exports = helpers;

@@ -1,7 +1,11 @@
 const express = require ('express');
 const router = express.Router();
+const path = require('path');
 const db = require("../database"); //db hace referencia a la BBDD
 const funciones = require("../lib/funciones.js");
+const { unlink } = require('fs-extra');
+const { access, constants } = require('fs');
+const fs = require('fs');
 
 //MOSTRAR PAGINA INICIAL
 router.get('/', (req, res) => {
@@ -70,6 +74,32 @@ router.get("/profile/delete/:id", funciones.isAuthenticated, async(req, res) => 
     req.flash("success", "Usuario borrado correctamente");
 
     res.redirect('/');
+});
+
+//GESTION BACKUPS BBDD
+router.get("/backups", async(req, res) => {
+    var backups = funciones.listadoBackups();
+    res.render("documentos/listadoBackups", { backups });
+});
+router.get("/backups/del/:nombre", funciones.isAuthenticated, funciones.isAdmin, async(req, res) => {
+    var { nombre } = req.params;
+    var file = path.resolve('src/public/dumpSQL', nombre);
+    //console.log(file);
+    await fs.unlinkSync(file);
+    funciones.insertarLog(req.user.usuario, "DELETE backup", nombre);
+    res.redirect('/backups');
+});
+router.get("/dumpSQL", async(req, res) => {
+    funciones.dumpearSQL();
+    req.flash("success", "Backup de la BBDD realizado correctamente");
+    funciones.insertarLog(req.user.usuario, "DO backup", "nuevo backup");
+    res.redirect("backups");
+});
+
+//GESTION LOGS
+router.get("/logs", funciones.isAuthenticated, funciones.isAdmin, async(req, res) => {
+    var logs = await db.query("select * from logs order by fecha desc");
+    res.render("documentos/listadoLogs", { logs });
 });
 
 

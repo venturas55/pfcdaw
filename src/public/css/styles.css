@@ -3,6 +3,25 @@ body {
     font-family: sans-serif;
 }
 
+#simulacionLuz {
+    float: right;
+    width: 40px;
+    height: 40px;
+    margin-top: 5px;
+    border: 1px solid rgb(76, 75, 75);
+    border-radius: 50%;
+}
+
+#luz {
+    width: 40px;
+    height: 40px;
+    background-color: rgb(240, 240, 240);
+    border-radius: 50%;
+    display: block;
+    z-index: 100;
+    margin: 0 auto;
+}
+
 .fondo{
     /*   color: rgba(24, 59, 214, 0.182); */
      min-height: 30rem; 

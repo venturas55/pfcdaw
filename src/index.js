@@ -58,6 +58,7 @@ app.use(require('./routes')); //busca automaticamente index.js
 app.use(require('./routes/autenthication')); 
 app.use(require('./routes/fotos')); 
 app.use('/aton',require('./routes/aton')); 
+app.use(require('./routes/documentos'));
 
 
 //Public
@@ -65,5 +66,5 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //Arrancar servidor
 app.listen(app.get('port'), () => {
-    console.log('Servidor en puerto', app.get('port'));
+    console.log("Running on http://localhost:4000", app.get('port'));
 });
