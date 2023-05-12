@@ -59,6 +59,7 @@ app.use(require('./routes/autenthication'));
 app.use(require('./routes/fotos')); 
 app.use('/aton',require('./routes/aton')); 
 app.use(require('./routes/documentos'));
+app.use(require('./routes/api')); 
 
 
 //Public

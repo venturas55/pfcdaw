@@ -49,7 +49,7 @@ caracteristica = caracteristica.replace(/\ |\(|\[|\[|\)|\]\+/g, '');
 caracteristica = caracteristica.replace(/,/g, '.');
 caracteristica = caracteristica.replace(/oc/g, "l");
 caracteristica = caracteristica.replace(/o/g, "l");
-//console.log(caracteristica)
+console.log(caracteristica);
 
 //Tratamos las posibles repeticiones
 //Si hay X
@@ -61,7 +61,7 @@ if (caracteristica.search("x") != -1) {
     caracteristicaMod = caract[0].concat(caract[1]);
 } else
     caracteristicaMod = caracteristica;
-//console.log(caracteristicaMod)
+console.log(caracteristicaMod)
 
 
 //Doy por hecho que siempre se alternan L y O empezando por L
@@ -83,7 +83,7 @@ for (var i = 0; i < destellosAcum.length; i++) {
     }
 }
 
-//console.log(destellosAcum);
+console.log(destellosAcum);
 
 //ejecuto la primera vez
 secuencia();

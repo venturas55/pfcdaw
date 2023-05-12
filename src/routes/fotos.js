@@ -53,7 +53,7 @@ const uploadFoto = multer({
 }).single('imagen');
 
 //GESTION FOTOS DE BALIZAS
-router.post("/aton/upload/:nif", uploadFoto, async (req, res) => {
+router.post("/aton/upload/:nif", uploadFoto, funciones.isAuthenticated, async (req, res) => {
     console.log("Subiendo foto baliza");
     const { nif } = req.params;
     console.log(req.params);
@@ -65,7 +65,7 @@ router.get("/aton/fotos/:nif", async (req, res) => {
     var fotos = funciones.listadoFotos(nif);
     res.render("aton/fotos", { fotos, nif });
 });
-router.get("/aton/fotos/:nif/:src/delete", async (req, res) => {
+router.get("/aton/fotos/:nif/:src/delete",  funciones.isAuthenticated, async (req, res) => {
     const nif = req.params.nif;
     const src = req.params.src;
     await unlink(path.resolve('src/public/img/imagenes/' + nif + "/" + src));
