@@ -6,6 +6,7 @@ const funciones = require("../lib/funciones.js");
 const { unlink } = require('fs-extra');
 const { access, constants } = require('fs');
 const fs = require('fs');
+const queryListadoAton = "SELECT b.nif,b.num_internacional,b.tipo,b.apariencia,b.periodo,b.caracteristica,lo.puerto,lo.num_local,lo.localizacion,lo.latitud,lo.longitud,la.altura,la.elevacion,la.alcanceNom,la.linterna,la.candelasCalc,la.alcanceLum,la.candelasInst FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif";
 
 //MOSTRAR PAGINA INICIAL
 router.get('/', (req, res) => {
@@ -136,6 +137,30 @@ router.post("/pruebaPost", async(req, res) => {
 
 });
 
+//GESTION MAPA
+router.get("/mapa", async (req, res) => {
+    res.render("mapas/mapa" , { layout: 'layoutMapa'});
+});
+router.get("/mapa/:nif", async(req, res) => {
+    const { nif } = req.params;
+    const baliza = await db.query(queryListadoAton + ' where b.nif=?', [nif]);
+    res.render("mapas/localizacion", { layout: 'layoutLocalizacion', baliza: baliza[0] });
+});
+router.get("/mapaGeneral/:valor", (req, res) => {
+    const { valor } = req.params;
+    //console.log("Mapa " + valor);
+    switch (valor) {
+        case "1":
+            res.render("mapas/mapaValencia", { layout: 'layoutMapaEstatico' });
+            break;
+        case '2':
+            res.render("mapas/mapaSagunto", { layout: 'layoutMapaEstatico' });
+            break;
+        case "3":
+            res.render("mapas/mapaGandia", { layout: 'layoutMapaEstatico' });
+            break;
+    }
+});
 
 module.exports = router;
 

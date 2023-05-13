@@ -8,6 +8,7 @@ const MySQLstore = require('express-mysql-session'); // para poder guardar la se
 const passport = require('passport');
 const { database } = require('./config');
 
+
 //console.log(process.env.DB_HOST);
 
 
@@ -41,6 +42,14 @@ app.use(express.urlencoded({ extended: false })); //aceptar los datos desde los 
 app.use(express.json()); //Para enviar y recibir jsons.
 app.use(passport.initialize()); //iniciar passport
 app.use(passport.session()); //para que sepa donde guardar y como manejar los datos
+//CORS
+app.use((req, res, next) => {
+	res.header('Access-Control-Allow-Origin', '*');
+	res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, 	X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-	Method');
+	res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, 	DELETE');
+	res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
+	next();
+});
 
 
 //Variables globales (que podrán ser usadas en cualquier vista)

@@ -5,7 +5,7 @@ var marker;
 var map;
 
 function initMap() {
-    var myLatLng = { lat: 39.447891, lng: -0.314376 };
+    var myLatLng = { lat: 0, lng: 0 };
 
     map = new google.maps.Map(document.getElementById('myMap'), {
         zoom: 15,
@@ -19,8 +19,6 @@ function initMap() {
     });
     mover();
 }
-
-
 
 function mover() {
     var lat = document.getElementById("lat").value;

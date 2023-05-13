@@ -1,11 +1,13 @@
 let map;
 let marker;
+var contentBalizas = document.getElementById("contentBalizas");
 
 var baliza = ['39º 27.297´ N', '00º 17.161´ W'];
 const centerLatLng = { lat: 39.438, lng: -0.3172 };
 const myLatLng1 = { lat: 39.428, lng: -0.3152 };
 const myLatLng2 = { lat: 39.448, lng: -0.3182 };
 const myLatLng3 = { lat: 39.458, lng: -0.3182 };
+const myLatLng5 = { lat: 39.455, lng: -0.3181 };
 
 function setMarker(lat, lng) {
 
@@ -17,7 +19,7 @@ function setMarker(lat, lng) {
   var tres = parseFloat(dosv[1].split("´")[0]);
   var lat2 = uno + (dos + tres / 1000) / 60;
   if (utmarray[2] == 'N')
-    lat2 = 1*lat2.toFixed(5); // Si no multiplicas por 1, devuelve string
+    lat2 = 1 * lat2.toFixed(5); // Si no multiplicas por 1, devuelve string
   else if (utmarray[2] == 'S')
     lat2 = -1 * lat2.toFixed(5);
   console.log(lat2);
@@ -30,19 +32,14 @@ function setMarker(lat, lng) {
   var lng2 = uno + (dos + tres / 1000) / 60;
 
   if (utmarray[2] == 'E')
-    lng2 = 1 *lng2.toFixed(5);
+    lng2 = 1 * lng2.toFixed(5);
   else if (utmarray[2] == 'W')
-    lng2 = -1 *lng2.toFixed(5);
+    lng2 = -1 * lng2.toFixed(5);
   console.log(lng2);
   //alert("lat:" + lat2 + " y long:" + lng2);
   // marker.setPosition(new google.maps.LatLng(lat2, lng2));
   return { 'lat': lat2, 'lng': lng2 };
 }
-//const myLatLng4 = setMarker('39º 27.297´ N', '00º 17.161´ W');
-//console.log(myLatLng1);
-//console.log(myLatLng4);
-//alert(setMarker(baliza[0],baliza[1]).lat);
-//alert(setMarker(baliza[0],baliza[1]).lng);
 
 function initMap() {
   const map = new google.maps.Map(document.getElementById("myMap"), {
@@ -76,7 +73,28 @@ function initMap() {
 
 }
 
+function addMarker(location) {
+  marker = new google.maps.Marker({
+    position: location,
+    map: map,
+    title: "Añadiendo",
+  });
+}
 
+addMarker(myLatLng5);
 
+//UN FETCH
+function recibirData() {
+  var apiURL = "http://adriandeharo.es:4000/api/balizas";
+  fetch(apiURL).then(res => res.json())
+    .then(response => {
+      var  data  = response;
+      var atons = data.map(item => ("<p>" + item.nif+ " "+ item.longitud + " " + item.latitud+ "</p>")).join('');
+      contentBalizas.innerHTML = atons;
+    })
+
+}
+
+recibirData();
 
 window.initMap = initMap;
