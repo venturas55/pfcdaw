@@ -15,7 +15,9 @@ function initMap() {
     marker = new google.maps.Marker({
         position: myLatLng,
         map: map,
-        title: 'Tu Baliza!'
+        title:  document.getElementById("tipo").value,
+        label: document.getElementById("nif").value
+
     });
     mover();
 }

@@ -1,16 +1,52 @@
-let map;
-let marker;
+/* new google.maps.Marker({
+ position: myLatLng1,
+ map,
+ title: "Hola1!",
+});
+
+new google.maps.Marker({
+ position: myLatLng2,
+ map,
+ title: "Hola2!",
+});
+
+new google.maps.Marker({
+ position: myLatLng3,
+ map,
+ title: "hola3!",
+});
+
+new google.maps.Marker({
+   position: setMarkerLatLng('39º 27.297´ N', '00º 17.161´ W'),
+   map,
+   title: "faro!",
+ }); */
+
+var map;
+var marker;
 var contentBalizas = document.getElementById("contentBalizas");
+
+//UN FETCH
+function recibirData() {
+  var apiURL = "http://adriandeharo.es:4000/api/balizas";
+  fetch(apiURL).then(res => res.json())
+    .then(response => {
+      var data = response;
+      var atons = data.map(item => ("<p>" + item.nif + " " + item.longitud + " " + item.latitud + "</p>")).join('');
+      contentBalizas.innerHTML = atons;
+    })
+
+}
+recibirData();
 
 var baliza = ['39º 27.297´ N', '00º 17.161´ W'];
 const centerLatLng = { lat: 39.438, lng: -0.3172 };
 const myLatLng1 = { lat: 39.428, lng: -0.3152 };
 const myLatLng2 = { lat: 39.448, lng: -0.3182 };
 const myLatLng3 = { lat: 39.458, lng: -0.3182 };
-const myLatLng5 = { lat: 39.455, lng: -0.3181 };
+const myLatLng4 = { lat: 39.455, lng: -0.3181 };
 
-function setMarker(lat, lng) {
-
+function setMarkerLatLng(lat, lng) {
   var utmarray = lat.split(" ");    //separo grados y minutos
   var uno = parseFloat(utmarray[0].split("º")[0]);    //de los grados quito el simbolo del grado
   utmarray[1].replace(",", ".");  //sustituyo comas por PUNTOS
@@ -42,59 +78,19 @@ function setMarker(lat, lng) {
 }
 
 function initMap() {
-  const map = new google.maps.Map(document.getElementById("myMap"), {
+  map = new google.maps.Map(document.getElementById("myMap"), {
     zoom: 14,
     center: centerLatLng,
   });
-
-  new google.maps.Marker({
-    position: myLatLng1,
-    map,
-    title: "Hola!",
-  });
-
-  new google.maps.Marker({
-    position: myLatLng2,
-    map,
-    title: "Hola2!",
-  });
-
-  new google.maps.Marker({
-    position: myLatLng3,
-    map,
-    title: "hola3!",
-  });
-
-  new google.maps.Marker({
-    position: setMarker('39º 27.297´ N', '00º 17.161´ W'),
-    map,
-    title: "faro!",
-  });
-
 }
+
+window.initMap = initMap;
 
 function addMarker(location) {
   marker = new google.maps.Marker({
-    position: location,
-    map: map,
+    position: setMarkerLatLng('39º 27.297´ N', '00º 17.161´ W'),
+    map,
     title: "Añadiendo",
   });
 }
-
-addMarker(myLatLng5);
-
-//UN FETCH
-function recibirData() {
-  var apiURL = "http://adriandeharo.es:4000/api/balizas";
-  fetch(apiURL).then(res => res.json())
-    .then(response => {
-      var  data  = response;
-      var atons = data.map(item => ("<p>" + item.nif+ " "+ item.longitud + " " + item.latitud+ "</p>")).join('');
-      contentBalizas.innerHTML = atons;
-    })
-
-}
-
-recibirData();
-
-window.initMap = initMap;
+addMarker(myLatLng4);
