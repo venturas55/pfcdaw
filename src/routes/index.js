@@ -103,6 +103,52 @@ router.get("/logs", funciones.isAuthenticated, funciones.isAdmin, async(req, res
     res.render("documentos/listadoLogs", { logs });
 });
 
+//GESTION INVENTARIO
+router.get('/inventario', async(req, res) => {
+    const inventario = await db.query("select * from inventario order by fila,columna");
+    res.render('inventario/inventario', { inventario });
+});
+router.get('/inventario/edit/:id',funciones.isAuthenticated, async(req, res) => {
+    const { id } = req.params;
+    //console.log(id);
+    const item = await db.query("select * from inventario where id=?", id);
+    //console.log(item[0]);
+    res.render('inventario/edit', { item: item[0] });
+});
+router.post('/inventario/edit/:id', funciones.isAuthenticated, async(req, res) => {
+    var {
+        id,
+        tipo,
+        item,
+        descripcion,
+        cantidad,
+        fila,
+        columna
+    } = req.body;
+
+    const nuevoItem = {
+        id,
+        tipo,
+        item,
+        descripcion,
+        cantidad,
+        fila,
+        columna
+    };
+    await db.query("update inventario set ? where id=?", [nuevoItem, id]);
+    helpers.insertarLog(req.user.usuario, "UPDATE inventario", "Info actualizada " + nuevoItem.item + " " + nuevoItem.cantidad);
+    req.flash("success", "Inventario actualizado correctamente");
+    res.redirect("/inventario");
+});
+router.get("/inventario/delete/:id", funciones.isAuthenticated, funciones.isAdmin, async(req, res) => {
+    //console.log(req.params.idObs);
+    const { id } = req.params;
+    await db.query("delete from inventario where id=?", [id]);
+    req.flash("success", "Item eliminado correctamente.");
+    res.redirect("/inventario");
+});
+
+
 
 //MOSTRAR ERROR
 router.get('/error', (req, res) => {

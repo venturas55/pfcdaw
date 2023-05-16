@@ -1,8 +1,8 @@
 //UN FETCH que se guarda en la variable 'balizas'
 var contentBalizas = document.getElementById("contentBalizas");
 var balizas = [];
-var quees;
-balizas.push( {
+var json;
+balizas.push({
     nif: 11111,
     lat: '39º 25.22´N',
     lng: '00º 18.1´ W',
@@ -19,23 +19,42 @@ async function fetchData() {
             //var atons = data.map(item => (balizas.push({ 'nif': item.nif, 'lat': item.latitud, 'lng': item.longitud, 'tipo': item.tipo })));
             //var atons ="["+ data.map(item => ( "{'nif':'"+item.nif + " " + "','lng':'"+item.longitud + " " +"','lat':'"+ item.latitud +"','tipo':'"+ item.tipo+"'}")).join(',')+ "]"; 
             //var atons = data.map(item => (balizas.push({ 'nif': item.nif, coordenadas: setMarkerLatLng(item.latitud, item.longitud), 'tipo': item.tipo })));
-       
-        
+
+
             contentBalizas.innerHTML = balizasprueba;
             //return balizasprueba;
         });
-        
+
 }
 
-async function llamada(){
+
+/* async function llamada(){
     await fetchData();
     return document.getElementById("contentBalizas").innerHTML;
 }
-quees= llamada();
-console.log(quees);
 
+quees= llamada(); */
 //FIN FETCH
-//console.log(quees);
+async function fetchData2(){
+    var apiURL = "http://adriandeharo.es:4000/api/balizas";
+    let response = await fetch(apiURL);
+    if (response.ok) { // si el HTTP-status es 200-299
+        // obtener cuerpo de la respuesta (método debajo)
+        jsonf = await response.json();
+       
+        return jsonf;
+        
+    } else {
+        alert("Error-HTTP: " + response.status);
+    }
+}
+
+json=fetchData2();
+
+console.log(json);
+
+
+
 
 
 //console.log(balizas);
