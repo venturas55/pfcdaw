@@ -1,11 +1,8 @@
--- phpMyAdmin SQL Dump
--- version 5.2.0
--- https://www.phpmyadmin.net/
---
--- Servidor: localhost:3306
--- Tiempo de generación: 05-08-2022 a las 18:30:55
--- Versión del servidor: 10.4.25-MariaDB
--- Versión de PHP: 8.0.21
+drop database pfcdaw2;
+create database pfcdaw2;
+
+use pfcdaw2;
+
 SET
   SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 
@@ -25,7 +22,7 @@ CREATE TABLE `balizamiento` (
   `apariencia` varchar(50) DEFAULT NULL,
   `periodo` decimal(5, 2) DEFAULT NULL,
   `caracteristica` varchar(50) NULL
-) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'tabla de balizas';
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = 'tabla de balizas';
 
 CREATE TABLE `lampara` (
   `nif` varchar(8) NOT NULL,
@@ -36,7 +33,7 @@ CREATE TABLE `lampara` (
   `candelasCalc` float(12, 2) DEFAULT NULL,
   `alcanceLum` decimal(5,2) DEFAULT NULL,
   `candelasInst` float(12, 2) DEFAULT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'tabla de detalles lampara';
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = 'tabla de detalles lampara';
 
 CREATE TABLE `localizacion` (
   `nif` varchar(8) NOT NULL,
@@ -45,20 +42,20 @@ CREATE TABLE `localizacion` (
   `localizacion` varchar(70) DEFAULT NULL,
   `latitud` varchar(15) DEFAULT NULL,
   `longitud` varchar(15) DEFAULT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'tabla de localizacion del balizamiento';
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = 'tabla de localizacion del balizamiento';
 
 CREATE TABLE `mantenimiento` (
   `id_mantenimiento` int(10) UNSIGNED NOT NULL,
   `nif` varchar(8) NOT NULL,
   `fecha` date NOT NULL,
   `mantenimiento` varchar(250) NOT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'tabla de mantenimiento del balizamiento';
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = 'tabla de mantenimiento del balizamiento';
 
 CREATE TABLE `observaciones` (
   `id_observacion` int(10) UNSIGNED NOT NULL,
   `nif` varchar(8) NOT NULL,
   `observaciones` varchar(250) NOT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'tabla de observaciones del balizamiento';
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = 'tabla de observaciones del balizamiento';
 
 /*FIN ATON*/
 
@@ -75,7 +72,7 @@ CREATE TABLE `inventario` (
   `fila` int(11) DEFAULT NULL,
   `columna` int(11) DEFAULT NULL,
   `descripcion` varchar(250) DEFAULT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'tabla de inventario';
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = 'tabla de inventario';
 
 
 CREATE TABLE `eliminados` (
@@ -86,7 +83,7 @@ CREATE TABLE `eliminados` (
   `fila` int(11) DEFAULT NULL,
   `columna` int(11) DEFAULT NULL,
   `descripcion` varchar(250) DEFAULT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'Tabla de elementos de inventario eliminados';
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = 'Tabla de elementos de inventario eliminados';
 
 /* FIN DE inventario */
 /* DESCRIPCION DOCUMENTOS */ 
@@ -96,7 +93,7 @@ CREATE TABLE `documentos` (
   `nombre` varchar(100) DEFAULT NULL,
   `descripcion` varchar(250) DEFAULT NULL,
   `created_at` date NOT NULL DEFAULT current_timestamp()
-) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'tabla de documentos';
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = 'tabla de documentos';
 
 /* USUARIOS  LOGS  y SESIONES */
 
@@ -108,22 +105,14 @@ CREATE TABLE `usuarios` (
   `full_name` varchar(150) DEFAULT NULL,
   `privilegio` varchar(20) DEFAULT NULL,
   `pictureURL` varchar(100) CHARACTER SET utf16 COLLATE utf16_spanish2_ci DEFAULT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'tabla de usuarios';
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = 'tabla de usuarios';
 
 CREATE TABLE `logs` (
   `fecha` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `usuario` varchar(50) NOT NULL,
   `accion` varchar(100) DEFAULT NULL,
   `observacion` varchar(150) DEFAULT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = latin1 COMMENT = 'tabla de logs';
-
-
-CREATE TABLE `sessions` (
-  `session_id` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `expires` int(11) UNSIGNED NOT NULL,
-  `data` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = utf16 COLLATE = utf16_spanish2_ci;
-
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = 'tabla de logs';
 
 
 --
@@ -168,11 +157,6 @@ MODIFY
   AUTO_INCREMENT = 100;
 
 ALTER TABLE
-  `sessions`
-ADD
-  PRIMARY KEY (`session_id`);
-
-ALTER TABLE
   `usuarios`
 ADD
   PRIMARY KEY (`id`);
@@ -183,4 +167,10 @@ MODIFY
   `id` int(11) NOT NULL AUTO_INCREMENT,
   AUTO_INCREMENT = 1;
 
+  -- Inserta usuario "admin" con contraseña "admin"
+INSERT INTO `usuarios` (    `id`,    `usuario`,    `contrasena`,    `email`,    `full_name`,    `privilegio`,    `pictureURL`  ) VALUES  (    1,    'admin',    '$2a$10$44RiEqgdwBZhtbd1rN6pfe/CLbTMpc4mGUPDiCgAlle0ISkMuJAC2',    'admin@email.com',    'Admin name',    'admin',    ''  );
+
+
+
 COMMIT;
+

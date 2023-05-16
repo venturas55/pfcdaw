@@ -1,69 +1,15 @@
 //UN FETCH que se guarda en la variable 'balizas'
-var contentBalizas = document.getElementById("contentBalizas");
-var balizas = [];
-var json;
-balizas.push({
+let contentBalizas = document.getElementById("contentBalizas");
+let balizas = [];
+let json;
+/* balizas.push({
     nif: 11111,
     lat: '39º 25.22´N',
     lng: '00º 18.1´ W',
     tipo: "lkasfglkhjsdg"
 });
-//var balizaprueba;
-async function fetchData() {
-    var apiURL = "http://adriandeharo.es:4000/api/balizas";
-    await fetch(apiURL).then(res => res.json())
-        .then(response => {
-            var data = response;
-            balizasprueba = JSON.stringify(response);
-            //console.log(balizasprueba);
-            //var atons = data.map(item => (balizas.push({ 'nif': item.nif, 'lat': item.latitud, 'lng': item.longitud, 'tipo': item.tipo })));
-            //var atons ="["+ data.map(item => ( "{'nif':'"+item.nif + " " + "','lng':'"+item.longitud + " " +"','lat':'"+ item.latitud +"','tipo':'"+ item.tipo+"'}")).join(',')+ "]"; 
-            //var atons = data.map(item => (balizas.push({ 'nif': item.nif, coordenadas: setMarkerLatLng(item.latitud, item.longitud), 'tipo': item.tipo })));
-
-
-            contentBalizas.innerHTML = balizasprueba;
-            //return balizasprueba;
-        });
-
-}
-
-
-/* async function llamada(){
-    await fetchData();
-    return document.getElementById("contentBalizas").innerHTML;
-}
-
-quees= llamada(); */
-//FIN FETCH
-async function fetchData2(){
-    var apiURL = "http://adriandeharo.es:4000/api/balizas";
-    let response = await fetch(apiURL);
-    if (response.ok) { // si el HTTP-status es 200-299
-        // obtener cuerpo de la respuesta (método debajo)
-        jsonf = await response.json();
-       
-        return jsonf;
-        
-    } else {
-        alert("Error-HTTP: " + response.status);
-    }
-}
-
-json=fetchData2();
-
-console.log(json);
-
-
-
-
-
-//console.log(balizas);
-//console.log(balizaprueba);
-//var prueba = setMarkerLatLng("39º 26.139' N", "00° 18.349' W");
-//console.log(prueba);
-
-
-var balizas2 = [
+ */
+let balizas2 = [
     {
         nif: 11111,
         lat: '39º 25.22´N',
@@ -84,6 +30,63 @@ var balizas2 = [
     },
 
 ]
+//var balizaprueba;
+async function fetchData() {
+    var apiURL = "http://adriandeharo.es:4000/api/balizas";
+    await fetch(apiURL).then(res => res.json())
+        .then(response => {
+            var data = response;
+            //balizasprueba = JSON.stringify(response);
+            //console.log(balizasprueba);
+            //var atons = data.map(item => (balizas.push({ 'nif': item.nif, 'lat': item.latitud, 'lng': item.longitud, 'tipo': item.tipo })));
+            //var atons ="["+ data.map(item => ( "{'nif':'"+item.nif + " " + "','lng':'"+item.longitud + " " +"','lat':'"+ item.latitud +"','tipo':'"+ item.tipo+"'}")).join(',')+ "]"; 
+            //var atons = data.map(item => (balizas.push({ 'nif': item.nif, coordenadas: setMarkerLatLng(item.latitud, item.longitud), 'tipo': item.tipo })));
+            initMap(data);
+
+            //contentBalizas.innerHTML = balizasprueba;
+            //return balizasprueba;
+        });
+
+}
+
+
+/* async function llamada(){
+    await fetchData();
+    return document.getElementById("contentBalizas").innerHTML;
+}
+
+quees= llamada(); */
+//FIN FETCH
+async function fetchData2(){
+    var apiURL = "http://adriandeharo.es:4000/api/balizas";
+    let response = await fetch(apiURL);
+    if (response.ok) { // si el HTTP-status es 200-299
+        // obtener cuerpo de la respuesta (método debajo)
+        balizas = await response.json();
+        initMap(balizas);
+        //return jsonf;
+        
+    } else {
+        alert("Error-HTTP: " + response.status);
+    }
+}
+
+fetchData();
+
+/* 
+
+console.log(balizas);
+console.log(balizas2);
+ */
+
+
+
+//console.log(balizas);
+//console.log(balizaprueba);
+//var prueba = setMarkerLatLng("39º 26.139' N", "00° 18.349' W");
+//console.log(prueba);
+
+
 //FUNCION PARA TRADUCIR COORDENADAS A GOOGLE FORMAT
 
 function setMarkerLatLng(lat, lng) {
@@ -153,23 +156,18 @@ function setMarkerLatLng(lat, lng) {
 const centerLatLng = { lat: 39.438, lng: -0.3172 };
 
 // Initialize and add the map
-async function initMap() {
+async function initMap(balizas) {
     // The map, centered at faro
+    
     const map = new google.maps.Map(document.getElementById("myMap"), {
         zoom: 13,
         center: centerLatLng,
     });
 
-    // Add some markers to the map.
-
-    /*     balizas.forEach(element => {
-            console.log(element.nif);
-        }); */
-
     const markers = await Promise.all(balizas.map(async item => {
         //console.log(balizas);
         const marker = new google.maps.Marker({
-            position: setMarkerLatLng(item.lat, item.lng),
+            position: setMarkerLatLng(item.latitud, item.longitud),
             //position: centerLatLng,
             label: item.nif.toString(),
             title: item.tipo,
@@ -179,16 +177,13 @@ async function initMap() {
         // markers can only be keyboard focusable when they have click listeners
         // open info window when marker is clicked
         marker.addListener("click", () => {
-            alert(item.tipo);
-            /*   infoWindow.setContent(label);
-              infoWindow.open(map, marker); */
+            //alert(item.tipo);
+            infoWindow.setContent(label);
+              infoWindow.open(map, marker); 
 
         });
         return await marker;
     }));
-    //console.log(markers);
-
-
 }
 
 window.initMap = initMap;

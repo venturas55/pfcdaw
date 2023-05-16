@@ -25,19 +25,25 @@ new google.maps.Marker({
 var map;
 var marker;
 var contentBalizas = document.getElementById("contentBalizas");
+var balizasprueba = [];
 
 //UN FETCH
 function recibirData() {
-  var apiURL = "http://adriandeharo.es:4000/api/balizas";
+  var apiURL = "http://localhost:4000/api/balizas";
   fetch(apiURL).then(res => res.json())
     .then(response => {
       var data = response;
       var atons = data.map(item => ("<p>" + item.nif + " " + item.longitud + " " + item.latitud + "</p>")).join('');
       contentBalizas.innerHTML = atons;
+      balizasprueba=reponse;
+      console.log(balizasprueba);
     })
 
 }
+
 recibirData();
+
+console.log(balizasprueba);
 
 var baliza = ['39º 27.297´ N', '00º 17.161´ W'];
 const centerLatLng = { lat: 39.438, lng: -0.3172 };
@@ -58,7 +64,7 @@ function setMarkerLatLng(lat, lng) {
     lat2 = 1 * lat2.toFixed(5); // Si no multiplicas por 1, devuelve string
   else if (utmarray[2] == 'S')
     lat2 = -1 * lat2.toFixed(5);
-  console.log(lat2);
+  //console.log(lat2);
   utmarray = lng.split(" ");
   uno = parseFloat(utmarray[0].split("º")[0]);
   utmarray[1].replace(",", ".");
@@ -71,7 +77,7 @@ function setMarkerLatLng(lat, lng) {
     lng2 = 1 * lng2.toFixed(5);
   else if (utmarray[2] == 'W')
     lng2 = -1 * lng2.toFixed(5);
-  console.log(lng2);
+  //console.log(lng2);
   //alert("lat:" + lat2 + " y long:" + lng2);
   // marker.setPosition(new google.maps.LatLng(lat2, lng2));
   return { 'lat': lat2, 'lng': lng2 };
