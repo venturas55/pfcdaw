@@ -1,4 +1,4 @@
-const express = require ('express');
+const express = require('express');
 const router = express.Router();
 const path = require('path');
 const db = require("../database"); //db hace referencia a la BBDD
@@ -15,23 +15,23 @@ router.get('/', (req, res) => {
 
 //MOSTRAR CALCULOS
 router.get('/calculos', (req, res) => {
-    res.render('calculos', { layout: 'layoutCalculos' });
+    res.render('estaticas/calculos', { layout: 'layoutCalculos' });
 });
 
 //MOSTRAR PLAN
 router.get('/plan', (req, res) => {
-    res.render('plan', { layout: 'layoutSimple' });
+    res.render('estaticas/plan', { layout: 'layoutSimple' });
 });
 
 //MOSTRAR PERFIL  -RUD  
-router.get('/profile',  (req, res) => {
+router.get('/profile', (req, res) => {
     //console.log(req.user.usuario);
     res.render('auth/profile');
 });
-router.get('/profile/edit',  (req, res) => {
+router.get('/profile/edit', (req, res) => {
     res.render('auth/profileEdit');
 });
-router.post('/profile/edit/', funciones.isAuthenticated, async(req, res) => {
+router.post('/profile/edit/', funciones.isAuthenticated, async (req, res) => {
     const rows = await db.query("SELECT * FROM usuarios WHERE id= ?", [req.body.id]);
     var user = rows[0];
 
@@ -52,12 +52,12 @@ router.post('/profile/edit/', funciones.isAuthenticated, async(req, res) => {
         res.redirect('/noperm');
     }
 });
-router.get("/profile/delete/:id", funciones.isAuthenticated, async(req, res) => {
+router.get("/profile/delete/:id", funciones.isAuthenticated, async (req, res) => {
     console.log(req.params);
     const { id } = req.params;
     //borramos foto
     const filePath = path.resolve('src/public/img/profiles/' + user.pictureURL);
-    access(filePath, constants.F_OK, async(err) => {
+    access(filePath, constants.F_OK, async (err) => {
         if (err) {
             console.log("No tiene foto de perfil");
         } else {
@@ -78,11 +78,11 @@ router.get("/profile/delete/:id", funciones.isAuthenticated, async(req, res) => 
 });
 
 //GESTION BACKUPS BBDD
-router.get("/backups", async(req, res) => {
+router.get("/backups", async (req, res) => {
     var backups = funciones.listadoBackups();
     res.render("documentos/listadoBackups", { backups });
 });
-router.get("/backups/del/:nombre", funciones.isAuthenticated, funciones.isAdmin, async(req, res) => {
+router.get("/backups/del/:nombre", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     var { nombre } = req.params;
     var file = path.resolve('src/public/dumpSQL', nombre);
     //console.log(file);
@@ -90,7 +90,7 @@ router.get("/backups/del/:nombre", funciones.isAuthenticated, funciones.isAdmin,
     funciones.insertarLog(req.user.usuario, "DELETE backup", nombre);
     res.redirect('/backups');
 });
-router.get("/dumpSQL", async(req, res) => {
+router.get("/dumpSQL", async (req, res) => {
     funciones.dumpearSQL();
     req.flash("success", "Backup de la BBDD realizado correctamente");
     funciones.insertarLog(req.user.usuario, "DO backup", "nuevo backup");
@@ -98,24 +98,24 @@ router.get("/dumpSQL", async(req, res) => {
 });
 
 //GESTION LOGS
-router.get("/logs", funciones.isAuthenticated, funciones.isAdmin, async(req, res) => {
+router.get("/logs", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     var logs = await db.query("select * from logs order by fecha desc");
     res.render("documentos/listadoLogs", { logs });
 });
 
 //GESTION INVENTARIO
-router.get('/inventario', async(req, res) => {
+router.get('/inventario', async (req, res) => {
     const inventario = await db.query("select * from inventario order by fila,columna");
     res.render('inventario/inventario', { inventario });
 });
-router.get('/inventario/edit/:id',funciones.isAuthenticated, async(req, res) => {
+router.get('/inventario/edit/:id', funciones.isAuthenticated, async (req, res) => {
     const { id } = req.params;
     //console.log(id);
     const item = await db.query("select * from inventario where id=?", id);
     //console.log(item[0]);
     res.render('inventario/edit', { item: item[0] });
 });
-router.post('/inventario/edit/:id', funciones.isAuthenticated, async(req, res) => {
+router.post('/inventario/edit/:id', funciones.isAuthenticated, async (req, res) => {
     var {
         id,
         tipo,
@@ -140,7 +140,7 @@ router.post('/inventario/edit/:id', funciones.isAuthenticated, async(req, res) =
     req.flash("success", "Inventario actualizado correctamente");
     res.redirect("/inventario");
 });
-router.get("/inventario/delete/:id", funciones.isAuthenticated, funciones.isAdmin, async(req, res) => {
+router.get("/inventario/delete/:id", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     //console.log(req.params.idObs);
     const { id } = req.params;
     await db.query("delete from inventario where id=?", [id]);
@@ -164,10 +164,12 @@ router.get('/noperm', (req, res) => {
 
 //MOSTRAR PRUEBA
 router.get("/prueba", (req, res) => {
+    console.log("Ejecutando prueba");
+    funciones.consultaPrueba();
     req.flash("success", "Prueba ejecutada correctamente en index");
-    res.render("prueba");
+    //res.render("prueba");
 });
-router.post("/pruebaPost", async(req, res) => {
+router.post("/pruebaPost", async (req, res) => {
     var password = req.masterPass;
     userpass = req.body.pass;
     //console.log("==>" + req.masterPass);
@@ -185,13 +187,15 @@ router.post("/pruebaPost", async(req, res) => {
 
 //GESTION MAPA
 router.get("/mapa", async (req, res) => {
-    res.render("mapas/mapa" , { layout: 'layoutMapa'});
+    res.render("mapas/mapa", { layout: 'layoutMapa' });
 });
-router.get("/mapa/:nif", async(req, res) => {
+router.get("/mapa/:nif", async (req, res) => {
     const { nif } = req.params;
     const baliza = await db.query(queryListadoAton + ' where b.nif=?', [nif]);
     res.render("mapas/localizacion", { layout: 'layoutLocalizacion', baliza: baliza[0] });
 });
+
+/* //funcion get para mostrar los mapas estaticos
 router.get("/mapaGeneral/:valor", (req, res) => {
     const { valor } = req.params;
     //console.log("Mapa " + valor);
@@ -206,6 +210,15 @@ router.get("/mapaGeneral/:valor", (req, res) => {
             res.render("mapas/mapaGandia", { layout: 'layoutMapaEstatico' });
             break;
     }
+}); */
+
+//funcion get para mostrar los mapas dinamicos con la api de google maps
+router.get("/mapaGeneral/:valor", (req, res) => {
+    const { valor } = req.params;
+    console.log("Mapa " + valor);
+    res.render("mapas/mapa", { layout: 'layoutMapa', puerto: valor });
+
+
 });
 
 module.exports = router;

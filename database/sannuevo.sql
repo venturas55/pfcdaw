@@ -1,7 +1,7 @@
-drop database pfcdaw2;
-create database pfcdaw2;
+drop database sanpfcdaw;
+create database sanpfcdaw;
 
-use pfcdaw2;
+use sanpfcdaw;
 
 SET
   SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";

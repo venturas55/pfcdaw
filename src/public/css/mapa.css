@@ -3,7 +3,10 @@
  * that contains the map.
  */
 #myMap {
-  height: 100%;
+  height: 90%;
+}
+#puerto{
+  visibility:visible; 
 }
 
 /*
