@@ -30,5 +30,12 @@ helpers.suma = (balizas) => {
   return total;
 }
 
+helpers.esAdmin = (value) => {
+  return (value == "admin");
+}
+
+helpers.esTecnico = (value) => {
+  return (value == "san");
+}
 
 module.exports = helpers;

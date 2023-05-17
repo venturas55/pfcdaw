@@ -29,12 +29,18 @@ router.get('/profile', (req, res) => {
     res.render('auth/profile');
 });
 router.get('/profile/edit', (req, res) => {
-    res.render('auth/profileEdit');
+    let permisos = { 'tecnicosan': false, 'admin': false };
+    if (req.user.privilegio == 'admin')
+        permisos = { 'esTecnico': false, 'esAdmin': true };
+    if (req.user.privilegio == 'san')
+        permisos = { 'esTecnico': true, 'esAdmin': false };
+    //console.log(permisos);
+    res.render('auth/profileEdit', { permisos});
 });
-router.post('/profile/edit/', funciones.isAuthenticated, async (req, res) => {
+router.post('/profile/edit', funciones.isAuthenticated, async (req, res) => {
     const rows = await db.query("SELECT * FROM usuarios WHERE id= ?", [req.body.id]);
     var user = rows[0];
-
+    
     console.log(req.body.oldcontrasena + " / " + user.contrasena);
     const validPassword = await funciones.verifyPassword(req.body.oldcontrasena, user.contrasena);
     if (validPassword) {
@@ -42,7 +48,7 @@ router.post('/profile/edit/', funciones.isAuthenticated, async (req, res) => {
         user.email = req.body.email;
         user.full_name = req.body.full_name;
         user.contrasena = await funciones.encryptPass(req.body.newcontrasena);
-        console.log("guardando en la BBDD");
+        //console.log("guardando en la BBDD");
         //console.log(user);
         const result = await db.query("UPDATE usuarios SET ? where id= ?", [user, req.body.id]);
         req.flash("success", "Usuario editado correctamente.");
@@ -55,6 +61,7 @@ router.post('/profile/edit/', funciones.isAuthenticated, async (req, res) => {
 router.get("/profile/delete/:id", funciones.isAuthenticated, async (req, res) => {
     console.log(req.params);
     const { id } = req.params;
+    const user = await db.query("SELECT * FROM usuarios where id=?", id);
     //borramos foto
     const filePath = path.resolve('src/public/img/profiles/' + user.pictureURL);
     access(filePath, constants.F_OK, async (err) => {
@@ -66,16 +73,35 @@ router.get("/profile/delete/:id", funciones.isAuthenticated, async (req, res) =>
         }
     });
     //hacemos logout
-    req.logOut();
-    const user = await db.query("SELECT * FROM usuarios where id=?", [id]);
-    //TODO: las pxtas sesiones parece que hay que borrarlas todas si no empieza a dar errores...
-    await db.query("DELETE FROM sessions");
-    await db.query("DELETE FROM usuarios WHERE id=?", [id]);
+    req.logout(async function (err) {
+        if (err) {
+            return next(err);
+        }
+        await db.query("DELETE FROM sessions ");
+        await db.query("DELETE FROM usuarios WHERE id=?", [id]);
+    });
 
     req.flash("success", "Usuario borrado correctamente");
-
     res.redirect('/');
 });
+router.post('/doAdmin', funciones.isAuthenticated, async(req, res) => {
+    const { pass } = req.body;
+    console.log(pass + " / " + db.config.connectionConfig.masterpass);
+    console.log(req.user);
+    const validPassword = await funciones.verifyPassword(pass, db.config.connectionConfig.masterpass);
+
+    if (validPassword) {
+        req.user.privilegio = "admin";
+        console.log("guardando en la BBDD");
+        const result = await db.query("UPDATE usuarios SET ? where id= ?", [req.user, req.user.id]);
+        req.flash("success", "Permisos de usuario actualizados correctamente");
+        funciones.insertarLog(req.user.usuario, "UPDATE usuarios", "Se le añade permisos de admin");
+        res.redirect('/profile');
+    } else {
+        res.redirect('/noperm');
+    }
+});
+
 
 //GESTION BACKUPS BBDD
 router.get("/backups", async (req, res) => {

@@ -48,7 +48,7 @@ passport.use(
                 contrasena: password,
                 email:      req.body.email,
                 full_name:  req.body.fullname,
-                privilegio: "san",
+                privilegio: "",
             };
             newUser.contrasena = await funciones.encryptPass(password);
             const result = await pool.query("INSERT INTO usuarios SET ?", [newUser]);

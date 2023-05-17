@@ -50,9 +50,18 @@
           </form>
           <a href="/profile" class="btn btn-danger btn-sm m-4"> Cancelar cambios </a>
 
+          {{#if (esAdmin user.privilegio)}}
+          <a onclick="document.getElementById('modalAdmin').style.display = 'block';"
+            class="btn btn-warning btn-sm m-4"> Hacer Tecnico </a>
+          {{/if}}
+
+          {{#if (esTecnico user.privilegio)}}
+          <a onclick="document.getElementById('modalAdmin').style.display = 'block';"
+            class="btn btn-warning btn-sm m-4"> Hacer Admin </a>
+          {{/if}}
 
 
-
+          {{>ModalPrivilegios}}
         </div>
       </div>
     </div>
