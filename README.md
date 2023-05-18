@@ -41,28 +41,28 @@ Instalación de la infraestructura en linux
 Para instalar Node.js y npm en Linux, puedes seguir estos pasos generales:
 •	Abre la terminal en tu distribución de Linux.
 •	Actualiza los repositorios de paquetes ejecutando el siguiente comando:
-o	sudo apt update
+        o	sudo apt update
 •	Instala Node.js y npm utilizando el administrador de paquetes de tu distribución. En el caso de Ubuntu o Debian, puedes ejecutar el siguiente comando:
-o	sudo apt install nodejs npm
+        o	sudo apt install nodejs npm
 •	Verifica que Node.js y npm se hayan instalado correctamente ejecutando los siguientes comandos:
-o	node -v
-o	npm -v
+        o	node -v
+        o	npm -v
 Estos comandos mostrarán la versión instalada de Node.js y npm respectivamente.
 
 Para instalar MariaDB en Linux, puedes seguir estos pasos generales:
 •	Abre la terminal en tu distribución de Linux.
 •	Actualiza los repositorios de paquetes ejecutando el siguiente comando:
-o	sudo apt update
+        o	sudo apt update
 •	Instala MariaDB utilizando el administrador de paquetes de tu distribución. En el caso de Ubuntu o Debian, puedes ejecutar el siguiente comando:
-o	sudo apt install mariadb-server
+        o	sudo apt install mariadb-server
 •	Durante la instalación, se te pedirá que establezcas una contraseña para el usuario root de MariaDB. Asegúrate de elegir una contraseña segura y recuérdala.
 •	Una vez finalizada la instalación, puedes iniciar el servicio de MariaDB ejecutando el siguiente comando:
-o	sudo systemctl start mariadb
+        o	sudo systemctl start mariadb
 •	Para configurar la seguridad básica de MariaDB, puedes ejecutar el siguiente comando y seguir las instrucciones:
-o	sudo mysql_secure_installation
+        o	sudo mysql_secure_installation
 •	A lo largo del proceso, se te realizarán varias preguntas sobre la configuración de seguridad. Se recomienda seguir las indicaciones y responder "Y" (sí) para cada pregunta.
 •	Una vez completada la configuración de seguridad, puedes verificar que MariaDB esté funcionando ejecutando el siguiente comando:
-o	sudo systemctl status mariadb
+        o	sudo systemctl status mariadb
 
 •	Si el servicio está en ejecución, deberías ver un mensaje indicando que está activo y en ejecución.
 
