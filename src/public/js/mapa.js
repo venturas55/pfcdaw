@@ -54,7 +54,6 @@ async function fetchData() {
             //var atons ="["+ data.map(item => ( "{'nif':'"+item.nif + " " + "','lng':'"+item.longitud + " " +"','lat':'"+ item.latitud +"','tipo':'"+ item.tipo+"'}")).join(',')+ "]"; 
             //var atons = data.map(item => (balizas.push({ 'nif': item.nif, coordenadas: setMarkerLatLng(item.latitud, item.longitud), 'tipo': item.tipo })));
             initMap(data);
-           
         });
 
 }
@@ -142,14 +141,11 @@ async function initMap(balizas) {
             title: item.tipo,
             map: map,
         });
-
         // markers can only be keyboard focusable when they have click listeners
         // open info window when marker is clicked
         marker.addListener("click", () => {
-            //alert(item.tipo);
             infoWindow.setContent(label);
             infoWindow.open(map, marker);
-
         });
         return await marker;
     }));
