@@ -104,7 +104,7 @@ router.post('/doAdmin', funciones.isAuthenticated, async(req, res) => {
 
 
 //GESTION BACKUPS BBDD
-router.get("/backups", async (req, res) => {
+router.get("/backups", funciones.isAuthenticated,async (req, res) => {
     var backups = funciones.listadoBackups();
     res.render("documentos/listadoBackups", { backups });
 });
@@ -116,7 +116,7 @@ router.get("/backups/del/:nombre", funciones.isAuthenticated, funciones.isAdmin,
     funciones.insertarLog(req.user.usuario, "DELETE backup", nombre);
     res.redirect('/backups');
 });
-router.get("/dumpSQL", async (req, res) => {
+router.get("/dumpSQL", funciones.isAuthenticated, funciones.hasSanPrivileges,async (req, res) => {
     funciones.dumpearSQL();
     req.flash("success", "Backup de la BBDD realizado correctamente");
     funciones.insertarLog(req.user.usuario, "DO backup", "nuevo backup");
@@ -134,14 +134,14 @@ router.get('/inventario', async (req, res) => {
     const inventario = await db.query("select * from inventario order by fila,columna");
     res.render('inventario/inventario', { inventario });
 });
-router.get('/inventario/edit/:id', funciones.isAuthenticated, async (req, res) => {
+router.get('/inventario/edit/:id', funciones.isAuthenticated,funciones.hasSanPrivileges, async (req, res) => {
     const { id } = req.params;
     //console.log(id);
     const item = await db.query("select * from inventario where id=?", id);
     //console.log(item[0]);
     res.render('inventario/edit', { item: item[0] });
 });
-router.post('/inventario/edit/:id', funciones.isAuthenticated, async (req, res) => {
+router.post('/inventario/edit/:id', funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     var {
         id,
         tipo,

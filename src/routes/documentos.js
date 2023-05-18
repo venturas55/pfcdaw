@@ -58,12 +58,12 @@ router.get("/documentoDelete/:id", funciones.isAuthenticated,funciones.isAdmin, 
   const docus = await db.query("select * from documentos")
   res.render("documentos/documentos", { docus });
 });
-router.get("/documentoEdit/:id", async (req, res) => {
+router.get("/documentoEdit/:id",funciones.isAuthenticated,funciones.hasSanPrivileges, async (req, res) => {
   const id_archivo = req.params.id;
   const doc= await db.query("select * from documentos where id_archivo=?",[id_archivo]);
   res.render("documentos/documentoEdit",{documento: doc[0]});
 });
-router.post("/documentoEdit/:id", async (req, res) => {
+router.post("/documentoEdit/:id", funciones.isAuthenticated,funciones.hasSanPrivileges,async (req, res) => {
   const id_archivo = req.params.id;
   const nombre = req.body.nombre;
   const descripcion= req.body.descripcion;

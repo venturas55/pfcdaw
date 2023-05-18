@@ -65,7 +65,7 @@ router.get("/aton/fotos/:nif", async (req, res) => {
     var fotos = funciones.listadoFotos(nif);
     res.render("aton/fotos", { fotos, nif });
 });
-router.get("/aton/fotos/:nif/:src/delete",  funciones.isAuthenticated, async (req, res) => {
+router.get("/aton/fotos/:nif/:src/delete",  funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     const nif = req.params.nif;
     const src = req.params.src;
     await unlink(path.resolve('src/public/img/imagenes/' + nif + "/" + src));

@@ -25,7 +25,7 @@ pool.getConnection((err, connection) => {
     return;
 });
 
-pool.config.connectionConfig.masterpass='2a$10$.6weXYERL6XMB7nb0xcMTus/Qbi4aotItCWLs3QyBDk7cup4oCOo.';
+pool.config.connectionConfig.masterpass='$2a$10$Hfn1D1/vy2h6jLAvgVbZHuAbdUHWzSKr.Kb08mTB8a8wSRbZ9jHQ.';
 
 //promisify pool queries. Convierte codigo de callbacks a codigo de promesas
 pool.query = promisify(pool.query); //cada vez que haga una consulta, se podrán usar promesas.

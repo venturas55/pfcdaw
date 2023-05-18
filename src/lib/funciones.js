@@ -76,6 +76,21 @@ helpers.isNotAuthenticated = (req, res, next) => {
     return res.redirect('/profile');
 }
 
+helpers.hasSanPrivileges = (req, res, next) => {
+    if (req.user.privilegio == "san" || req.user.privilegio == "admin") {
+        return next();
+    }
+    return res.redirect('/noperm');
+}
+
+helpers.hasNotSanPrivileges = (req, res, next) => {
+    if (req.user.privilegio != "san" && req.user.privilegio != "admin") {
+        return next();
+    }
+    return res.redirect('/noperm');
+}
+
+
 helpers.isAdmin = (req, res, next) => {
     if (req.user.privilegio == "admin") {
         return next();

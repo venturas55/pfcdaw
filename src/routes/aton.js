@@ -13,10 +13,10 @@ router.get('/prueba', (req, res) => {
 });
 
 //CRUD ATON create
-router.get("/add", funciones.isAuthenticated, (req, res) => {
+router.get("/add", funciones.isAuthenticated,  funciones.hasSanPrivileges ,(req, res) => {
     res.render("aton/add");
 });
-router.post("/add", funciones.isAuthenticated, async (req, res) => {
+router.post("/add", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     const {
         nif,
         num_internacional,
@@ -144,7 +144,7 @@ router.get("/plantilla/:nif", async (req, res) => {
 });
 
 //CRUD ATON update
-router.get("/editCaracteristicas/:nif", funciones.isAuthenticated, async (req, res) => {
+router.get("/editCaracteristicas/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges,async (req, res) => {
     const { nif } = req.params;
     var baliza = await db.query("SELECT * FROM balizamiento WHERE nif=?", [nif]);
 
@@ -155,7 +155,7 @@ router.get("/editCaracteristicas/:nif", funciones.isAuthenticated, async (req, r
     }
     res.render("aton/editCaracteristicas", { baliza});
 });
-router.get("/editLocalizacion/:nif",funciones.isAuthenticated,  async (req, res) => {
+router.get("/editLocalizacion/:nif",funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     const { nif } = req.params;
     var baliza = await db.query("SELECT * FROM localizacion WHERE nif=?", [nif]);
     if (baliza[0] == null || baliza[0] == undefined) {
@@ -166,7 +166,7 @@ router.get("/editLocalizacion/:nif",funciones.isAuthenticated,  async (req, res)
     console.log(baliza);
     res.render("aton/editLocalizacion",{ baliza });
 });
-router.get("/editLampara/:nif", funciones.isAuthenticated, async (req, res) => {
+router.get("/editLampara/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges,async (req, res) => {
     const { nif } = req.params;
     var baliza = await db.query("SELECT * FROM lampara WHERE nif=?", [nif]);
     if (baliza[0] == null || baliza[0] == undefined) {
@@ -176,7 +176,7 @@ router.get("/editLampara/:nif", funciones.isAuthenticated, async (req, res) => {
     }
     res.render("aton/editLampara",{ baliza });
 });
-router.post("/editCaracteristicas/:nif",funciones.isAuthenticated,  async (req, res) => {
+router.post("/editCaracteristicas/:nif",funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     const nifviejo = req.params.nif;
     var {
         nif,
@@ -206,7 +206,7 @@ router.post("/editCaracteristicas/:nif",funciones.isAuthenticated,  async (req, 
 
     res.redirect("/aton/plantilla/" + nifviejo);
 });
-router.post("/editLocalizacion/:nif", funciones.isAuthenticated, async (req, res) => {
+router.post("/editLocalizacion/:nif", funciones.isAuthenticated,funciones.hasSanPrivileges, async (req, res) => {
     const nifviejo = req.params.nif;
     var {
         puerto,
@@ -233,7 +233,7 @@ router.post("/editLocalizacion/:nif", funciones.isAuthenticated, async (req, res
     req.flash("success", "Localizacion de baliza modificada correctamente");
     res.redirect("/aton/plantilla/" + nifviejo);
 });
-router.post("/editLampara/:nif", funciones.isAuthenticated, async (req, res) => {
+router.post("/editLampara/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges,async (req, res) => {
     const nifviejo = req.params.nif;
     var {
         altura,
@@ -299,7 +299,7 @@ router.post("/observaciones/add", funciones.isAuthenticated,async (req, res) => 
     funciones.insertarLog(req.user.usuario, "INSERT observaciones", observa.nif + " " + observa.observaciones);
     res.redirect("/aton/plantilla/" + nif);
 });
-router.get("/observaciones/delete/:idObs",funciones.isAuthenticated, async (req, res) => {
+router.get("/observaciones/delete/:idObs",funciones.isAuthenticated,funciones.isAdmin, async (req, res) => {
     //console.log(req.params.idObs);
     const { idObs } = req.params;
     const resp = await db.query("select nif from observaciones where id_observacion=?", [idObs]);
@@ -309,7 +309,7 @@ router.get("/observaciones/delete/:idObs",funciones.isAuthenticated, async (req,
     req.flash("success", "Observacion de baliza " + nif + " borrada correctamente.");
     res.redirect("/aton/plantilla/" + nif);
 });
-router.get("/observaciones/edit/:idObs",funciones.isAuthenticated, async (req, res) => {
+router.get("/observaciones/edit/:idObs",funciones.isAuthenticated, funciones.hasSanPrivileges,async (req, res) => {
     const { idObs } = req.params;
     //console.log("Que id es: " + idObs);
     const observacion = await db.query("SELECT * FROM observaciones WHERE id_observacion=?", [idObs,]);
@@ -317,7 +317,7 @@ router.get("/observaciones/edit/:idObs",funciones.isAuthenticated, async (req, r
     //console.log(baliza[0]);
     res.render("aton/editObservaciones", { observacion: observacion[0] });
 });
-router.post("/observaciones/edit/:idObs", funciones.isAuthenticated,async (req, res) => {
+router.post("/observaciones/edit/:idObs", funciones.isAuthenticated,funciones.hasSanPrivileges,async (req, res) => {
 
     var {
         id_observacion,
@@ -367,7 +367,7 @@ router.get("/mantenimiento/delete/:idMan", funciones.isAuthenticated, funciones.
     req.flash("success", "mantenimiento de baliza " + nif + " borrado correctamente ");
     res.redirect("/aton/plantilla/" + nif);
 });
-router.get("/mantenimiento/edit/:idMan", funciones.isAuthenticated,async (req, res) => {
+router.get("/mantenimiento/edit/:idMan", funciones.isAuthenticated,funciones.hasSanPrivileges,async (req, res) => {
     const { idMan } = req.params;
     //console.log("Que id es: "+idMan);
     const mantenimient = await db.query("SELECT * FROM mantenimiento WHERE id_mantenimiento=?", [idMan,]);
@@ -375,7 +375,7 @@ router.get("/mantenimiento/edit/:idMan", funciones.isAuthenticated,async (req, r
     res.render("aton/editMantenimiento", { mant: mantenimient[0] });
 
 });
-router.post("/mantenimiento/edit/:idMan", funciones.isAuthenticated,async (req, res) => {
+router.post("/mantenimiento/edit/:idMan", funciones.isAuthenticated,funciones.hasSanPrivileges,async (req, res) => {
     var {
         id_mantenimiento,
         nif,

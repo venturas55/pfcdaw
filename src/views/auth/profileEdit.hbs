@@ -52,12 +52,13 @@
 
           {{#if (esAdmin user.privilegio)}}
           <a onclick="document.getElementById('modalAdmin').style.display = 'block';"
-            class="btn btn-warning btn-sm m-4"> Hacer Tecnico </a>
-          {{/if}}
-
-          {{#if (esTecnico user.privilegio)}}
+            class="btn btn-warning btn-sm m-4"> Degradar a Tecnico </a>
+          {{else if (esTecnico user.privilegio)}}
           <a onclick="document.getElementById('modalAdmin').style.display = 'block';"
             class="btn btn-warning btn-sm m-4"> Hacer Admin </a>
+          {{else}}
+          <a onclick="document.getElementById('modalAdmin').style.display = 'block';"
+            class="btn btn-warning btn-sm m-4"> Hacer Tecnico </a>
           {{/if}}
 
 
