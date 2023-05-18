@@ -134,6 +134,34 @@ router.get('/inventario', async (req, res) => {
     const inventario = await db.query("select * from inventario order by fila,columna");
     res.render('inventario/inventario', { inventario });
 });
+router.get('/inventario/add',  funciones.isAuthenticated, async (req, res) => {
+    res.render('inventario/addItem');
+});
+router.post('/inventario/add', funciones.isAuthenticated,  async (req, res) => {
+     var {
+        tipo,
+        item,
+        descripcion,
+        cantidad,
+        fila,
+        columna
+    } = req.body;
+
+    const nuevoItem = {
+        tipo,
+        item,
+        descripcion,
+        cantidad,
+        fila,
+        columna
+    }; 
+
+    console.log(nuevoItem);
+    await db.query("insert into inventario set ? ", [nuevoItem]);
+    funciones.insertarLog(req.user.usuario, "INSERT inventario", "Item " + nuevoItem.item +" añadido "   + nuevoItem.cantidad+ " cantidades") ;
+    req.flash("success", "Item añadido al inventario correctamente");
+    res.redirect("/inventario");
+});
 router.get('/inventario/edit/:id', funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     const { id } = req.params;
     //console.log(id);
@@ -162,7 +190,7 @@ router.post('/inventario/edit/:id', funciones.isAuthenticated, funciones.hasSanP
         columna
     };
     await db.query("update inventario set ? where id=?", [nuevoItem, id]);
-    helpers.insertarLog(req.user.usuario, "UPDATE inventario", "Info actualizada " + nuevoItem.item + " " + nuevoItem.cantidad);
+    funciones.insertarLog(req.user.usuario, "UPDATE inventario", "Info actualizada " + nuevoItem.item + " " + nuevoItem.cantidad);
     req.flash("success", "Inventario actualizado correctamente");
     res.redirect("/inventario");
 });

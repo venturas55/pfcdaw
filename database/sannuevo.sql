@@ -1,4 +1,4 @@
-drop database sanpfcdaw;
+drop database if exists sanpfcdaw;
 create database sanpfcdaw;
 
 use sanpfcdaw;
@@ -63,7 +63,6 @@ CREATE TABLE `observaciones` (
 
 
 /* INVENTARIO */
-
 CREATE TABLE `inventario` (
   `id` mediumint(9) NOT NULL,
   `tipo` varchar(50) DEFAULT NULL,
@@ -75,19 +74,7 @@ CREATE TABLE `inventario` (
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = 'tabla de inventario';
 
 
-CREATE TABLE `eliminados` (
-  `fecha` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `usuario` varchar(10) NOT NULL,
-  `item` varchar(50) NOT NULL,
-  `cantidad` int(11) DEFAULT NULL,
-  `fila` int(11) DEFAULT NULL,
-  `columna` int(11) DEFAULT NULL,
-  `descripcion` varchar(250) DEFAULT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = 'Tabla de elementos de inventario eliminados';
-
-/* FIN DE inventario */
 /* DESCRIPCION DOCUMENTOS */ 
-
 CREATE TABLE `documentos` (
   `id_archivo` varchar(100) NOT NULL,
   `nombre` varchar(100) DEFAULT NULL,
@@ -95,8 +82,7 @@ CREATE TABLE `documentos` (
   `created_at` date NOT NULL DEFAULT current_timestamp()
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = 'tabla de documentos';
 
-/* USUARIOS  LOGS  y SESIONES */
-
+/* USUARIOS y LOGS */
 CREATE TABLE `usuarios` (
   `id` int(11) NOT NULL,
   `usuario` varchar(50) NOT NULL,
@@ -144,7 +130,7 @@ ADD
   KEY `mantenimiento_FK` (`nif`),
 MODIFY
   `id_mantenimiento` int(10) NOT NULL AUTO_INCREMENT,
-  AUTO_INCREMENT = 595;
+  AUTO_INCREMENT = 1;
 
 ALTER TABLE
   `observaciones`
@@ -154,7 +140,7 @@ ADD
   KEY `observaciones_FK` (`nif`),
 MODIFY
   `id_observacion` int(10) NOT NULL AUTO_INCREMENT,
-  AUTO_INCREMENT = 100;
+  AUTO_INCREMENT = 1;
 
 ALTER TABLE
   `usuarios`
@@ -166,6 +152,12 @@ ALTER TABLE
 MODIFY
   `id` int(11) NOT NULL AUTO_INCREMENT,
   AUTO_INCREMENT = 1;
+
+ALTER TABLE
+  `inventario`
+MODIFY
+  `id` mediumint(9) NOT NULL AUTO_INCREMENT,
+  AUTO_INCREMENT = 1; 
 
   -- Inserta usuario "admin" con contraseña "admin"
 INSERT INTO `usuarios` (    `id`,    `usuario`,    `contrasena`,    `email`,    `full_name`,    `privilegio`,    `pictureURL`  ) VALUES  (    1,    'admin',    '$2a$10$44RiEqgdwBZhtbd1rN6pfe/CLbTMpc4mGUPDiCgAlle0ISkMuJAC2',    'admin@email.com',    'Admin name',    'admin',    ''  );

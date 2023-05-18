@@ -285,16 +285,16 @@ router.get("/delete/:nif", funciones.isAuthenticated, funciones.isAdmin, async (
 
 //GESTION CRUD observaciones
 router.post("/observaciones/add", funciones.isAuthenticated,async (req, res) => {
-    const {
+/*     const {
         nif,
         observaciones,
     } = req.body;
     const observa = {
         nif,
         observaciones,
-    };
+    }; */
     //console.log(observa);
-    await db.query("INSERT INTO observaciones set ?", [observa]);
+    await db.query("INSERT INTO observaciones set ?", [req.body]);
     req.flash("success", "Observacion insertada correctamente");
     funciones.insertarLog(req.user.usuario, "INSERT observaciones", observa.nif + " " + observa.observaciones);
     res.redirect("/aton/plantilla/" + nif);
