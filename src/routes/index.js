@@ -35,12 +35,12 @@ router.get('/profile/edit', (req, res) => {
     if (req.user.privilegio == 'san')
         permisos = { 'esTecnico': true, 'esAdmin': false };
     //console.log(permisos);
-    res.render('auth/profileEdit', { permisos});
+    res.render('auth/profileEdit', { permisos });
 });
 router.post('/profile/edit', funciones.isAuthenticated, async (req, res) => {
     const rows = await db.query("SELECT * FROM usuarios WHERE id= ?", [req.body.id]);
     var user = rows[0];
-    
+
     console.log(req.body.oldcontrasena + " / " + user.contrasena);
     const validPassword = await funciones.verifyPassword(req.body.oldcontrasena, user.contrasena);
     if (validPassword) {
@@ -84,14 +84,14 @@ router.get("/profile/delete/:id", funciones.isAuthenticated, async (req, res) =>
     req.flash("success", "Usuario borrado correctamente");
     res.redirect('/');
 });
-router.post('/doAdmin', funciones.isAuthenticated, async(req, res) => {
-    const { pass } = req.body;
+router.post('/doAdmin', funciones.isAuthenticated, async (req, res) => {
+    const { pass, privilegio } = req.body;
     console.log(pass + " / " + db.config.connectionConfig.masterpass);
     console.log(req.user);
     const validPassword = await funciones.verifyPassword(pass, db.config.connectionConfig.masterpass);
 
     if (validPassword) {
-        req.user.privilegio = "admin";
+        req.user.privilegio = privilegio;
         console.log("guardando en la BBDD");
         const result = await db.query("UPDATE usuarios SET ? where id= ?", [req.user, req.user.id]);
         req.flash("success", "Permisos de usuario actualizados correctamente");
@@ -104,7 +104,7 @@ router.post('/doAdmin', funciones.isAuthenticated, async(req, res) => {
 
 
 //GESTION BACKUPS BBDD
-router.get("/backups", funciones.isAuthenticated,async (req, res) => {
+router.get("/backups", funciones.isAuthenticated, async (req, res) => {
     var backups = funciones.listadoBackups();
     res.render("documentos/listadoBackups", { backups });
 });
@@ -116,7 +116,7 @@ router.get("/backups/del/:nombre", funciones.isAuthenticated, funciones.isAdmin,
     funciones.insertarLog(req.user.usuario, "DELETE backup", nombre);
     res.redirect('/backups');
 });
-router.get("/dumpSQL", funciones.isAuthenticated, funciones.hasSanPrivileges,async (req, res) => {
+router.get("/dumpSQL", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     funciones.dumpearSQL();
     req.flash("success", "Backup de la BBDD realizado correctamente");
     funciones.insertarLog(req.user.usuario, "DO backup", "nuevo backup");
@@ -134,7 +134,7 @@ router.get('/inventario', async (req, res) => {
     const inventario = await db.query("select * from inventario order by fila,columna");
     res.render('inventario/inventario', { inventario });
 });
-router.get('/inventario/edit/:id', funciones.isAuthenticated,funciones.hasSanPrivileges, async (req, res) => {
+router.get('/inventario/edit/:id', funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     const { id } = req.params;
     //console.log(id);
     const item = await db.query("select * from inventario where id=?", id);

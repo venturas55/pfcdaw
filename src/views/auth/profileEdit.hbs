@@ -51,13 +51,15 @@
           <a href="/profile" class="btn btn-danger btn-sm m-4"> Cancelar cambios </a>
 
           {{#if (esAdmin user.privilegio)}}
-          <a onclick="document.getElementById('modalAdmin').style.display = 'block';"
+          <a onclick="document.getElementById('modalAdmin').style.display = 'block';document.getElementById('privilegio').value = 'san';"
             class="btn btn-warning btn-sm m-4"> Degradar a Tecnico </a>
           {{else if (esTecnico user.privilegio)}}
-          <a onclick="document.getElementById('modalAdmin').style.display = 'block';"
+          <a onclick="document.getElementById('modalAdmin').style.display = 'block';document.getElementById('privilegio').value = 'admin';"
             class="btn btn-warning btn-sm m-4"> Hacer Admin </a>
+                 <a onclick="document.getElementById('modalAdmin').style.display = 'block';document.getElementById('privilegio').value = '';"
+            class="btn btn-warning btn-sm m-4"> Eliminar privilegios </a>
           {{else}}
-          <a onclick="document.getElementById('modalAdmin').style.display = 'block';"
+          <a onclick="document.getElementById('modalAdmin').style.display = 'block';document.getElementById('privilegio').value = 'san';"
             class="btn btn-warning btn-sm m-4"> Hacer Tecnico </a>
           {{/if}}
 
