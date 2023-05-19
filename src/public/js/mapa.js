@@ -3,51 +3,37 @@
 // ESPECIAL ME
 // FARO FA
 
-//UN FETCH que se guarda en la variable 'balizas'
-let balizas2 = [
-    {
-        nif: 11111,
-        lat: '39º 25.22´N',
-        lng: '00º 18.1´ W',
-        tipo: "lkasfglkhjsdg"
-    },
-    {
-        nif: 22222,
-        lat: '39º 25.4´N',
-        lng: '00º 19.5´ W',
-        tipo: "346"
-    },
-    {
-        nif: 33333,
-        lat: '39º 25.6´N',
-        lng: '00º 20.500´ W',
-        tipo: "dfthyghk56k"
-    },
 
-]
+//FUNCION PARA CONFIGURAR LA VARIABLE CON LA QUE SE CENTRARÁ EL MAPA DE LA API DE GOOGLE, COGIENDO EL CENTRO DE LA PROPIA URL
 
-let centerLatLng = { lat: 0, lng: 0 };
-const puerto = document.getElementById("puerto").innerText;
-switch (puerto) {
-    case 'valencia':
-        centerLatLng = { lat: 39.438, lng: -0.3172 };
-        presetZoom=14;
-        break;
-    case 'sagunto':
-        centerLatLng = { lat: 39.644, lng: -0.2142 };
-        presetZoom=15;
-        break;
-    case 'gandia':
-        centerLatLng = { lat: 38.995, lng: -0.15202 };
-        presetZoom=16;
-        break;
-    default:
-        centerLatLng = { lat: 39.438, lng: -0.3172 };
+function centrar() {
+    let centerLatLng = { lat: 0, lng: 0 };
+    const url = window.location.href.split('/');
+    //console.log(url[url.length-1]);
+    switch (url[url.length - 1]) {
+        case 'valencia':
+            centerLatLng = { lat: 39.438, lng: -0.3172 };
+            presetZoom = 14;
+            break;
+        case 'sagunto':
+            centerLatLng = { lat: 39.644, lng: -0.2142 };
+            presetZoom = 15;
+            break;
+        case 'gandia':
+            centerLatLng = { lat: 38.995, lng: -0.15202 };
+            presetZoom = 16;
+            break;
+        default:
+            centerLatLng = { lat: 39.438, lng: -0.3172 };
+    }
+
+    // console.log(centerLatLng);
+    return centerLatLng;
 }
 
-console.log(centerLatLng);
+centerLatLng = centrar();
 
-//var balizaprueba;
+//UN FETCH que se guarda en la variable 'balizas'
 async function fetchData() {
     var apiURL = "http://localhost:4000/api/balizas";
     await fetch(apiURL).then(res => res.json())
@@ -63,8 +49,6 @@ async function fetchData() {
 
 }
 //FIN FETCH
-
-
 
 //FUNCION PARA TRADUCIR COORDENADAS A GOOGLE FORMAT
 function setMarkerLatLng(lat, lng) {
@@ -131,6 +115,87 @@ function setMarkerLatLng(lat, lng) {
     return { 'lat': lat2, 'lng': lng2 };
 }
 
+//FUNCION QUE LE PASA UN OBJETO BALIZA Y LE DEVUELVE UNA LETRA QUE REPRESENTA EL COLOR/TIPO
+function getcolor(item) {
+    var color = item.apariencia.toUpperCase().replaceAll(" ", "");
+    color = color.charAt(color.length - 1);
+    var caracteristica = item.caracteristica.toLowerCase().replaceAll(" ", "").replaceAll(".", "").replaceAll(",", "").replaceAll("+", "");
+    var tipo = item.tipo.toLowerCase();
+    item.cambio=false;
+
+    if (tipo.includes("faro")){
+        item.cambio=true;
+        color = "F";
+
+    }
+    else if (tipo.includes("semaforo")){
+        color = "S";
+        item.cambio=true;
+    }
+        
+    else if (tipo.includes("peligro")){
+        color = "PA";
+        item.cambio=true;
+    }
+    else if (tipo.includes("navegable")){
+        color = "AN";
+        item.cambio=true;
+    }
+    else if (tipo.includes("odas") || tipo.includes("sado")){
+        color = "ODAS";
+        item.cambio=true;
+    }
+    
+    else {
+        switch (color) {
+            case 'R':
+                item.cambio=true;
+                color = "R";
+                break;
+            case 'G':
+            case 'V':
+                item.cambio=true;
+                color = "V";
+                break;
+            case 'B':
+            case 'W':
+                item.cambio=true;
+                color = "B";
+                break;
+            case 'A':
+            case 'Y':
+                item.cambio=true;
+                color = "A";
+                break;
+            
+        }
+    }
+    //Si tiene una de las siguientes caracteristicas siendo Blanca... es muy probable que sea una cardinal.
+    if (caracteristica == "l025oc025" && color == "B"){
+        color = "CN";
+        item.cambio=true;
+    }
+    else if ((caracteristica == "[(l025oc025)x2]l025oc375" || caracteristica == "[(l03oc08)x2]l03oc25") && color == "B"){
+        color = "CE";
+        item.cambio=true;
+    }
+    else if (caracteristica == "[(l025oc025)x6]l2oc5" && color == "B"){
+        color = "CS";
+        item.cambio=true;
+    }
+    else if (caracteristica == "[(l025oc025)x5]l025oc375" && color == "B"){
+        color = "CO";
+        item.cambio=true;
+    }
+
+    if( !item.cambio){
+        //IMPRIMO ERRORES
+        color="B";
+        console.log(item);
+    } 
+
+    return color;
+}
 
 // Initialize and add the map
 async function initMap(balizas) {
@@ -140,40 +205,20 @@ async function initMap(balizas) {
     });
 
     const markers = await Promise.all(balizas.map(async item => {
-        var color = item.apariencia.charAt(item.apariencia.length - 1);
-        switch (color) {
-            case 'R':
-                color = "R";
-                break;
-            case 'G':
-            case 'V':
-                color = "V";
-                break;
-            case 'B':
-            case 'W':
-                color = "B";
-                break;
-            case 'A':
-            case 'Y':
-                color = "A";
-                break;
-            default:
-                color= "F";
-        }
         const marker = new google.maps.Marker({
             position: setMarkerLatLng(item.latitud, item.longitud),
-            label: {text: item.nif.toString(), className: 'etiquetaGoogle'},
+            label: { text: item.nif.toString(), className: 'etiquetaGoogle' },
             title: item.tipo,
-            icon: { url:'http://localhost:4000/img/icon/'+color+'.png', scaledSize: {width:25, height: 40}},
+            icon: { url: 'http://localhost:4000/img/icon/' + getcolor(item) + '.png', scaledSize: { width: 30, height: 60 } },
             map: map,
         });
         // markers can only be keyboard focusable when they have click listeners
         // open info window when marker is clicked
         marker.addListener("click", () => {
-            console.log(marker.label);
-            location.href='/aton/plantilla/'+marker.label.text;
-         /*    infoWindow.setContent(marker.label.text);
-            infoWindow.open(map, marker);  */
+            //console.log(marker.label);
+            location.href = '/aton/plantilla/' + marker.label.text;
+            /*    infoWindow.setContent(marker.label.text);
+               infoWindow.open(map, marker);  */
         });
         return await marker;
     }));
