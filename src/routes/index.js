@@ -240,31 +240,16 @@ router.post("/pruebaPost", async (req, res) => {
 });
 
 //GESTION MAPA
-router.get("/mapa", async (req, res) => {
+/* router.get("/mapa", async (req, res) => {
     res.render("mapas/mapa", { layout: 'layoutMapa' });
-});
+}); */
+//Mapa para mostrar localización de una baliza
 router.get("/mapa/:nif", async (req, res) => {
     const { nif } = req.params;
     const baliza = await db.query(queryListadoAton + ' where b.nif=?', [nif]);
     res.render("mapas/localizacion", { layout: 'layoutLocalizacion', baliza: baliza[0] });
 });
 
-/* //funcion get para mostrar los mapas estaticos
-router.get("/mapaGeneral/:valor", (req, res) => {
-    const { valor } = req.params;
-    //console.log("Mapa " + valor);
-    switch (valor) {
-        case "1":
-            res.render("mapas/mapaValencia", { layout: 'layoutMapaEstatico' });
-            break;
-        case '2':
-            res.render("mapas/mapaSagunto", { layout: 'layoutMapaEstatico' });
-            break;
-        case "3":
-            res.render("mapas/mapaGandia", { layout: 'layoutMapaEstatico' });
-            break;
-    }
-}); */
 
 //funcion get para mostrar los mapas dinamicos con la api de google maps
 router.get("/mapaGeneral/:valor", (req, res) => {
@@ -275,5 +260,21 @@ router.get("/mapaGeneral/:valor", (req, res) => {
 
 });
 
+//funcion get para mostrar los mapas estaticos
+router.get("/mapaGeneral2/:valor", (req, res) => {
+    const { valor } = req.params;
+    //console.log("Mapa " + valor);
+    switch (valor) {
+        case "valencia":
+            res.render("mapas/mapaValencia", { layout: 'layoutMapaEstatico' });
+            break;
+        case 'sagunto':
+            res.render("mapas/mapaSagunto", { layout: 'layoutMapaEstatico' });
+            break;
+        case "gandia":
+            res.render("mapas/mapaGandia", { layout: 'layoutMapaEstatico' });
+            break;
+    }
+});
 module.exports = router;
 
