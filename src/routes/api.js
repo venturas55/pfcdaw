@@ -2,7 +2,7 @@ const express = require('express');
 const { Passport } = require('passport');
 const router = express.Router();
 const pool = require("../database");
-const queryListadoAton = "SELECT b.nif,b.tipo,b.caracteristica,lo.localizacion,lo.latitud,lo.longitud FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif";
+const queryListadoAton = "SELECT b.nif,b.tipo,b.apariencia,b.caracteristica,lo.localizacion,lo.latitud,lo.longitud FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif";
 
 router.get('/api/balizas',async (req,res)=>{
     const balizas = await pool.query(queryListadoAton);

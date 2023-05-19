@@ -1,3 +1,8 @@
+// LE BE estribor LB babor BE
+// CARDINAL CN CS CE CO
+// ESPECIAL ME
+// FARO FA
+
 //UN FETCH que se guarda en la variable 'balizas'
 let balizas2 = [
     {
@@ -37,7 +42,7 @@ switch (puerto) {
         presetZoom=16;
         break;
     default:
-        centerLatLng = { lat: 27.438, lng: -0.3172 };
+        centerLatLng = { lat: 39.438, lng: -0.3172 };
 }
 
 console.log(centerLatLng);
@@ -135,19 +140,41 @@ async function initMap(balizas) {
     });
 
     const markers = await Promise.all(balizas.map(async item => {
+        var color = item.apariencia.charAt(item.apariencia.length - 1);
+        switch (color) {
+            case 'R':
+                color = "R";
+                break;
+            case 'G':
+            case 'V':
+                color = "V";
+                break;
+            case 'B':
+            case 'W':
+                color = "B";
+                break;
+            case 'A':
+            case 'Y':
+                color = "A";
+                break;
+            default:
+                color= "F";
+        }
         const marker = new google.maps.Marker({
             position: setMarkerLatLng(item.latitud, item.longitud),
-            label: item.nif.toString(),
+            label: {text: item.nif.toString(), className: 'etiquetaGoogle',x:5,y:20},
+            labelOrigin: new google.maps.Point(9, 9),
             title: item.tipo,
+            icon: { url:'http://localhost:4000/img/icon/'+color+'.png', scaledSize: {width:25, height: 40}},
             map: map,
         });
         // markers can only be keyboard focusable when they have click listeners
         // open info window when marker is clicked
         marker.addListener("click", () => {
             console.log(marker.label);
-            location.href='/aton/plantilla/'+marker.label;
-       /*      infoWindow.setContent(label);
-            infoWindow.open(map, marker); */
+            location.href='/aton/plantilla/'+marker.label.text;
+         /*    infoWindow.setContent(marker.label.text);
+            infoWindow.open(map, marker);  */
         });
         return await marker;
     }));
