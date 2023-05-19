@@ -144,8 +144,10 @@ async function initMap(balizas) {
         // markers can only be keyboard focusable when they have click listeners
         // open info window when marker is clicked
         marker.addListener("click", () => {
-            infoWindow.setContent(label);
-            infoWindow.open(map, marker);
+            console.log(marker.label);
+            location.href='/aton/plantilla/'+marker.label;
+       /*      infoWindow.setContent(label);
+            infoWindow.open(map, marker); */
         });
         return await marker;
     }));

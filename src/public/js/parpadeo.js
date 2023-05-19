@@ -1,4 +1,8 @@
-//cambia la 'visibilidad' del elemento circular que simula la luz
+//Este documento en js realiza la simulación de la luz, leyendo la caracteristica de la base de datos.
+//====================================================================================================//
+
+
+//Funcion que cambia la 'visibilidad' del elemento circular que simula la luz
 function parpadeoToggle() {
     let x = document.getElementById("luz");
     if (x.style.display === "block") {
@@ -15,6 +19,8 @@ function secuencia() {
         setTimeout(parpadeoToggle, destellosAcum[i] * 1000);
     }
 }
+
+//Funcion para leer el color de la señal.
 function defineColor() {
 
     let apariencia = document.getElementById("aparienciaID");
@@ -38,6 +44,8 @@ function defineColor() {
             break;
     }
 }
+
+//Funcion que cambia el estado tras un retardo indicado 
 function defineCambiosEstado(){
     let destellos;
     let destellosAcum;
@@ -46,13 +54,12 @@ function defineCambiosEstado(){
     let caracteristica = document.getElementById("caracteristicaID").innerText;
     if (caracteristica === null)
         caracteristica = "L0.5 oc1.5 L0.5 oc4.5";
-    //console.log(caracteristica);
     caracteristica = caracteristica.toLowerCase();
     caracteristica = caracteristica.replace(/\ |\(|\[|\[|\)|\]\+/g, '');
     caracteristica = caracteristica.replace(/,/g, '.');
     caracteristica = caracteristica.replace(/oc/g, "l");
     caracteristica = caracteristica.replace(/o/g, "l");
-    console.log(caracteristica);
+    //console.log(caracteristica);
     
     //Tratamos las posibles repeticiones
     //Si hay X
@@ -64,7 +71,7 @@ function defineCambiosEstado(){
         caracteristicaMod = caract[0].concat(caract[1]);
     } else
         caracteristicaMod = caracteristica;
-    console.log(caracteristicaMod)
+    //console.log(caracteristicaMod)
     
     
     //Doy por hecho que siempre se alternan L y O empezando por L
@@ -79,28 +86,29 @@ function defineCambiosEstado(){
         destellos[i] = parseFloat(destellos[i]);
     }
     //console.log(destellos);
-    
+
+
+    //Genero un array con los tiempos acumulados, desde 0 para poder aplicar los setInterval.
     for (let i = 0; i < destellosAcum.length; i++) {
         for (let j = 0; j <= i; j++) {
             destellosAcum[i] += parseFloat(destellos[j]);
         }
     }
-    
     console.log(destellosAcum);
     return destellosAcum;
 }
 
 
+//EJECUCIÓN DEL CODIGO
 
 //defino color
 defineColor();
 //defino cambios de estado en el tiempo
 let destellosAcum = defineCambiosEstado();
-//ejecuto la primera vez
+//ejecuto la primera vez para mostrar la simulacion de la luz porque inicialmente se encuentra oculto.
 secuencia();
-//Y sucesivas
+
+//Y ejecuto los siguientes cambios de estado.
 setInterval(() => {
     secuencia()
 }, destellosAcum[destellosAcum.length - 1] * 1150)
-
-//FIN PARPADEO VIRTUAL
