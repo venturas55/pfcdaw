@@ -96,4 +96,6 @@ body {
   }
   .etiquetaGoogle{
     background-color: rgba(245, 222, 179, 0.452);
+    top: 28px;
+    position: relative;
 }

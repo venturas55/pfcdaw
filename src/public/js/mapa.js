@@ -162,8 +162,7 @@ async function initMap(balizas) {
         }
         const marker = new google.maps.Marker({
             position: setMarkerLatLng(item.latitud, item.longitud),
-            label: {text: item.nif.toString(), className: 'etiquetaGoogle',x:5,y:20},
-            labelOrigin: new google.maps.Point(9, 9),
+            label: {text: item.nif.toString(), className: 'etiquetaGoogle'},
             title: item.tipo,
             icon: { url:'http://localhost:4000/img/icon/'+color+'.png', scaledSize: {width:25, height: 40}},
             map: map,
