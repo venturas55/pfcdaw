@@ -31,21 +31,20 @@ function centrar() {
     return centerLatLng;
 }
 
-centerLatLng = centrar();
-
 //UN FETCH que se guarda en la variable 'balizas'
-async function fetchData() {
+function fetchData() {
     var apiURL = "http://localhost:4000/api/balizas";
-    await fetch(apiURL).then(res => res.json())
-        .then(response => {
-            var data = response;
-            //balizasprueba = JSON.stringify(response);
-            //console.log(balizasprueba);
-            //var atons = data.map(item => (balizas.push({ 'nif': item.nif, 'lat': item.latitud, 'lng': item.longitud, 'tipo': item.tipo })));
-            //var atons ="["+ data.map(item => ( "{'nif':'"+item.nif + " " + "','lng':'"+item.longitud + " " +"','lat':'"+ item.latitud +"','tipo':'"+ item.tipo+"'}")).join(',')+ "]"; 
-            //var atons = data.map(item => (balizas.push({ 'nif': item.nif, coordenadas: setMarkerLatLng(item.latitud, item.longitud), 'tipo': item.tipo })));
-            initMap(data);
-        });
+    return fetch(apiURL).then(res => res.json());
+    /* .then(response => {
+        var data = response;
+        //balizasprueba = JSON.stringify(response);
+        //console.log(balizasprueba);
+        //var atons = data.map(item => (balizas.push({ 'nif': item.nif, 'lat': item.latitud, 'lng': item.longitud, 'tipo': item.tipo })));
+        //var atons ="["+ data.map(item => ( "{'nif':'"+item.nif + " " + "','lng':'"+item.longitud + " " +"','lat':'"+ item.latitud +"','tipo':'"+ item.tipo+"'}")).join(',')+ "]"; 
+        //var atons = data.map(item => (balizas.push({ 'nif': item.nif, coordenadas: setMarkerLatLng(item.latitud, item.longitud), 'tipo': item.tipo })));
+        return data;
+        //initMap(data);
+    }); */
 
 }
 //FIN FETCH
@@ -117,94 +116,99 @@ function setMarkerLatLng(lat, lng) {
 
 //FUNCION QUE LE PASA UN OBJETO BALIZA Y LE DEVUELVE UNA LETRA QUE REPRESENTA EL COLOR/TIPO
 function getcolor(item) {
+    //var balizaPrueba="25620";
     var color = item.apariencia.toUpperCase().replaceAll(" ", "");
     color = color.charAt(color.length - 1);
+
     var caracteristica = item.caracteristica.toLowerCase().replaceAll(" ", "").replaceAll(".", "").replaceAll(",", "").replaceAll("+", "");
     var tipo = item.tipo.toLowerCase();
-    item.cambio=false;
+    item.cambio = false;
 
-    if (tipo.includes("faro")){
-        item.cambio=true;
+    if (tipo.includes("faro")) {
+        item.cambio = true;
         color = "F";
 
     }
-    else if (tipo.includes("semaforo")){
+    else if (tipo.includes("semaforo")) {
         color = "S";
-        item.cambio=true;
+        item.cambio = true;
+        console.log(item.nif);
     }
-        
-    else if (tipo.includes("peligro")){
+
+    else if (tipo.includes("peligro")) {
         color = "PA";
-        item.cambio=true;
+        item.cambio = true;
     }
-    else if (tipo.includes("navegable")){
+    else if (tipo.includes("navegable")) {
         color = "AN";
-        item.cambio=true;
+        item.cambio = true;
     }
-    else if (tipo.includes("odas") || tipo.includes("sado")){
+    else if (tipo.includes(" odas ") || tipo.includes(" sado ")) {
         color = "ODAS";
-        item.cambio=true;
+        item.cambio = true;
     }
-    
+
     else {
         switch (color) {
             case 'R':
-                item.cambio=true;
+                item.cambio = true;
                 color = "R";
                 break;
             case 'G':
             case 'V':
-                item.cambio=true;
+                item.cambio = true;
                 color = "V";
                 break;
             case 'B':
             case 'W':
-                item.cambio=true;
+                item.cambio = true;
                 color = "B";
                 break;
             case 'A':
             case 'Y':
-                item.cambio=true;
+                item.cambio = true;
                 color = "A";
                 break;
-            
+
         }
     }
     //Si tiene una de las siguientes caracteristicas siendo Blanca... es muy probable que sea una cardinal.
-    if (caracteristica == "l025oc025" && color == "B"){
+    if (caracteristica == "l025oc025" && color == "B") {
         color = "CN";
-        item.cambio=true;
+        item.cambio = true;
     }
-    else if ((caracteristica == "[(l025oc025)x2]l025oc375" || caracteristica == "[(l03oc08)x2]l03oc25") && color == "B"){
+    else if ((caracteristica == "[(l025oc025)x2]l025oc375" || caracteristica == "[(l03oc08)x2]l03oc25") && color == "B") {
         color = "CE";
-        item.cambio=true;
+        item.cambio = true;
     }
-    else if (caracteristica == "[(l025oc025)x6]l2oc5" && color == "B"){
+    else if (caracteristica == "[(l025oc025)x6]l2oc5" && color == "B") {
         color = "CS";
-        item.cambio=true;
+        item.cambio = true;
     }
-    else if (caracteristica == "[(l025oc025)x5]l025oc375" && color == "B"){
+    else if (caracteristica == "[(l025oc025)x5]l025oc375" && color == "B") {
         color = "CO";
-        item.cambio=true;
+        item.cambio = true;
     }
 
-    if( !item.cambio){
+    if (!item.cambio) {
         //IMPRIMO ERRORES
-        color="B";
+        color = "B";
         console.log(item);
-    } 
+    }
+/*  if (item.nif==balizaPrueba)
+        console.log(color); */
 
     return color;
 }
 
 // Initialize and add the map
-async function initMap(balizas) {
+function initMap(balizas) {
     const map = new google.maps.Map(document.getElementById("myMap"), {
         zoom: presetZoom,
         center: centerLatLng,
     });
 
-    const markers = await Promise.all(balizas.map(async item => {
+    const markers = Promise.all(balizas.map(async item => {
         const marker = new google.maps.Marker({
             position: setMarkerLatLng(item.latitud, item.longitud),
             label: { text: item.nif.toString(), className: 'etiquetaGoogle' },
@@ -217,11 +221,14 @@ async function initMap(balizas) {
         marker.addListener("click", () => {
             //console.log(marker.label);
             location.href = '/aton/plantilla/' + marker.label.text;
-            /*    infoWindow.setContent(marker.label.text);
-               infoWindow.open(map, marker);  */
         });
         return await marker;
     }));
 }
 
-fetchData();
+let centerLatLng = centrar();
+
+fetchData().then((res) => initMap(res));
+
+
+
