@@ -3,9 +3,6 @@ Desarrollo del Proyecto final de ciclo para DAW
 TODO: Gestion de Backups de BBDD
 
 ==================
-
-
-
           NUEVA INSTALACION
 Manual de nueva instalación.
 La instalación de nodejs y el gestor de paquetes npm dependerá de si se realiza sobre un sistema Windows o un sistema Linux. Pasamos a detallar ambas opciones:
@@ -77,9 +74,53 @@ source C:\...ruta...\pfcdaw\database\sannuevo.sql
 Si se deseara poblar la base de datos con datos de prueba se podría ejecutar 
 source C:\...ruta...\pfcdaw\database\poblarDDBB.sql
 Una vez creada la base de datos habría que crear el archivo ‘.env’ que servirá para configurar la conexión con la base de datos. El contenido del ‘,env’ será:
-DB_HOST=localhost
-DB_USER=db_user
-DB_PASS=db_pass
-DB_NAME=sanpfcdaw
+                        DB_HOST=localhost
+                        DB_USER=db_user
+                        DB_PASS=db_pass
+                        DB_NAME=sanpfcdaw
 
 Donde ‘db_user’ y ‘db_pass’ serán las credenciales de acceso a tu base de datos MariaDB. El nombre de la base de datos en caso de usar el archivo ubicado en la ruta ./pfcdaw/database/sannuevo.sql sería sanpfcdaw.
+
+
+
+
+         RESUMEN NUEVA INSTALACION PUNTOS CLAVE
+============================================================
+1.- INSTALACION NODEJS/EXPRESS SERVER:
+    git clone https://github.com/venturas55/pfcdaw
+    cd pfcdaw
+    crear .env con datos con las variables 
+                                            DB_HOST=localhost
+                                            DB_USER=usuario
+                                            DB_PASS=contraseñapropia
+                                            DB_NAME=nombrebasedatos
+    npm install
+
+2.- INSTALACION BASE DE DATOS
+Para crear la estructura de tablas con un usuario
+mysql -u root -p 
+source D:\DEVELOPMENT\01DAW\3 PFC\serpis\prueba instalacion\pfcdaw\database\sannuevo.sql
+source D:\DEVELOPMENT\01DAW\3 PFC\serpis\pfcdaw\database\sannuevo.sql
+source /home/ubuntu/san/database/sannuevo.sql
+
+
+Para poblarla de datos:
+source D:\DEVELOPMENT\01DAW\3 PFC\serpis\pfcdaw\database\poblarDDBB.sql
+source D:\DEVELOPMENT\01DAW\3 PFC\serpis\pfcdaw\database\poblarDDBB.sql
+source /home/ubuntu/san/database/sannuevo.sql
+
+3.- COPIAR IMAGENES
+Copiar imagenes de las balizas en .\src\public\img
+
+
+===========================================
+
+npm i express express-handlebars express-session mysql express-mysql-session morgan bcryptjs passport passport-local timeago.js connect-flash express-validator multer fs-extra dotenv uuidv4 mysqldump
+
+is some modules needs highers version of nodejs, then you will find usefull how to
+
+update nodejs
+-------------------
+npm install -g n
+n <version-number>    or      n lts
+
