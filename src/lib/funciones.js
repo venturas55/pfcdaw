@@ -90,7 +90,6 @@ helpers.hasNotSanPrivileges = (req, res, next) => {
     return res.redirect('/noperm');
 }
 
-
 helpers.isAdmin = (req, res, next) => {
     if (req.user.privilegio == "admin") {
         return next();
@@ -132,7 +131,7 @@ helpers.dumpearSQL = () => {
     });
 }
 
-helpers.consultaPrueba = async () => {
+helpers.consultaPrueba2 = async () => {
     let ruta = path.join(__dirname, '..', '..', 'database', 'prueba.sql');
     console.log(ruta);
 
@@ -183,6 +182,11 @@ helpers.consultaPrueba = async () => {
             // connected!
           }); */
 
+}
+
+helpers.consultaPrueba = async () => {
+    let ruta = path.join(__dirname, '..', '..', 'database', 'prueba.sql');
+    console.log(ruta);
 }
 
 

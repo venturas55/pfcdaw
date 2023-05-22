@@ -46,7 +46,7 @@ function defineColor() {
 }
 
 //Funcion que cambia el estado tras un retardo indicado 
-function defineCambiosEstado(){
+function defineCambiosEstado() {
     let destellos;
     let destellosAcum;
     let caracteristicaMod;
@@ -55,12 +55,9 @@ function defineCambiosEstado(){
     if (caracteristica === null)
         caracteristica = "L0.5 oc1.5 L0.5 oc4.5";
     caracteristica = caracteristica.toLowerCase();
-    caracteristica = caracteristica.replace(/\ |\(|\[|\[|\)|\]\+/g, '');
-    caracteristica = caracteristica.replace(/,/g, '.');
-    caracteristica = caracteristica.replace(/oc/g, "l");
-    caracteristica = caracteristica.replace(/o/g, "l");
+    caracteristica = caracteristica.replace(/\ |\(|\[|\[|\)|\]\+/g, '').replace(/,/g, '.').replace(/oc/g, "l").replace(/o/g, "l");
     //console.log(caracteristica);
-    
+
     //Tratamos las posibles repeticiones
     //Si hay X
     if (caracteristica.search("x") != -1) {
@@ -72,15 +69,15 @@ function defineCambiosEstado(){
     } else
         caracteristicaMod = caracteristica;
     //console.log(caracteristicaMod)
-    
-    
+
+
     //Doy por hecho que siempre se alternan L y O empezando por L
     caracteristicaMod = caracteristicaMod.replace('l', '');
     //quito la primera L por no generar un item de array al usar el split
     destellos = caracteristicaMod.split('l');
     destellosAcum = new Array(destellos.length);
     destellosAcum.fill(0, 0, destellos.length);
-    
+
     //Lo parseo a float
     for (let i = 0; i < destellos.length; i++) {
         destellos[i] = parseFloat(destellos[i]);

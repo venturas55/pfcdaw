@@ -32,19 +32,21 @@ function centrar() {
 }
 
 //UN FETCH que se guarda en la variable 'balizas'
-function fetchData() {
-    var apiURL = "http://localhost:4000/api/balizas";
-    return fetch(apiURL).then(res => res.json());
-    /* .then(response => {
-        var data = response;
-        //balizasprueba = JSON.stringify(response);
-        //console.log(balizasprueba);
-        //var atons = data.map(item => (balizas.push({ 'nif': item.nif, 'lat': item.latitud, 'lng': item.longitud, 'tipo': item.tipo })));
-        //var atons ="["+ data.map(item => ( "{'nif':'"+item.nif + " " + "','lng':'"+item.longitud + " " +"','lat':'"+ item.latitud +"','tipo':'"+ item.tipo+"'}")).join(',')+ "]"; 
-        //var atons = data.map(item => (balizas.push({ 'nif': item.nif, coordenadas: setMarkerLatLng(item.latitud, item.longitud), 'tipo': item.tipo })));
-        return data;
-        //initMap(data);
-    }); */
+async function fetchData() {
+    try{
+        var apiURL = "http://localhost:4000/api/balizas";
+        return await fetch(apiURL).then(res => res.json());
+        /* .then(response => {
+            var data = response;
+            //balizasprueba = JSON.stringify(response);
+            //console.log(balizasprueba);
+            return data;
+            //initMap(data);
+        }); */
+    }catch(err){
+        console.log(err);
+    }
+    
 
 }
 //FIN FETCH
@@ -132,7 +134,6 @@ function getcolor(item) {
     else if (tipo.includes("semaforo")) {
         color = "S";
         item.cambio = true;
-        console.log(item.nif);
     }
 
     else if (tipo.includes("peligro")) {
@@ -203,6 +204,7 @@ function getcolor(item) {
 
 // Initialize and add the map
 function initMap(balizas) {
+    console.log(balizas);
     const map = new google.maps.Map(document.getElementById("myMap"), {
         zoom: presetZoom,
         center: centerLatLng,
@@ -228,7 +230,7 @@ function initMap(balizas) {
 
 let centerLatLng = centrar();
 
-fetchData().then((res) => initMap(res));
+fetchData().then((res) => {initMap(res)});
 
 
 
