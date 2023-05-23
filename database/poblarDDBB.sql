@@ -2625,6 +2625,15 @@ VALUES
     'Ultima Resolucion emitida por PPEE',
     '2023-05-16 21:09:53'
   );
+  INSERT INTO
+  `documentos` (`id_archivo`, `nombre`, `descripcion`, `created_at`)
+VALUES
+  (
+    'e4a920eb-f9d5-409d-9e46-cc1aae58b239.pdf',
+    'Resolucion Bateas',
+    'Resolucion de balizamiento de Bateas emitida por PPEE',
+    '2023-05-23 12:09:53'
+  );
 
 # ------------------------------------------------------------
 # DATA DUMP FOR TABLE: eliminados

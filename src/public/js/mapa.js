@@ -2,8 +2,8 @@
 // CARDINAL CN CS CE CO
 // ESPECIAL ME
 // FARO FA
-
-
+let myurl = 'http://localhost:4000';
+//let myurl = 'http://adriandeharo.es:4000/';
 //FUNCION PARA CONFIGURAR LA VARIABLE CON LA QUE SE CENTRARÁ EL MAPA DE LA API DE GOOGLE, COGIENDO EL CENTRO DE LA PROPIA URL
 
 function centrar() {
@@ -34,7 +34,7 @@ function centrar() {
 //UN FETCH que se guarda en la variable 'balizas'
 async function fetchData() {
     try{
-        var apiURL = "http://localhost:4000/api/balizas";
+        var apiURL = myurl+"/api/balizas";
         return await fetch(apiURL).then(res => res.json());
         /* .then(response => {
             var data = response;
@@ -194,7 +194,7 @@ function getcolor(item) {
     if (!item.cambio) {
         //IMPRIMO ERRORES
         color = "B";
-        console.log(item);
+        //console.log(item);
     }
 /*  if (item.nif==balizaPrueba)
         console.log(color); */
@@ -215,7 +215,7 @@ function initMap(balizas) {
             position: setMarkerLatLng(item.latitud, item.longitud),
             label: { text: item.nif.toString(), className: 'etiquetaGoogle' },
             title: item.tipo,
-            icon: { url: 'http://localhost:4000/img/icon/' + getcolor(item) + '.png', scaledSize: { width: 30, height: 60 } },
+            icon: { url: myurl+'/img/icon/' + getcolor(item) + '.png', scaledSize: { width: 30, height: 60 } },
             map: map,
         });
         // markers can only be keyboard focusable when they have click listeners
