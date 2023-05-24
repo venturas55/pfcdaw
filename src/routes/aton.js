@@ -284,7 +284,7 @@ router.get("/delete/:nif", funciones.isAuthenticated, funciones.isAdmin, async (
 });
 
 //GESTION CRUD observaciones
-router.post("/observaciones/add", funciones.isAuthenticated,async (req, res) => {
+router.post("/observaciones/add", funciones.isAuthenticated, funciones.hasSanPrivileges,async (req, res) => {
      const {
         nif,
         observaciones,
@@ -339,7 +339,7 @@ router.post("/observaciones/edit/:idObs", funciones.isAuthenticated,funciones.ha
 });
 
 //GESTION CRUD mantenimiento
-router.post("/mantenimiento/add", funciones.isAuthenticated,async (req, res) => {
+router.post("/mantenimiento/add", funciones.isAuthenticated, funciones.hasSanPrivileges,async (req, res) => {
     const {
         nif,
         fecha,

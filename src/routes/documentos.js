@@ -29,15 +29,15 @@ const uploadDocument = multer({
 }).single('documento');
 
 //CRUD read
-router.get("/documentos", async (req, res) => {
+router.get("/documentos",funciones.isAuthenticated,funciones.hasSanPrivileges, async (req, res) => {
   const docus = await db.query("select * from documentos")
   console.log(docus);
   res.render("documentos/documentos", { docus });
 });
-router.get("/documentoUpload", (req, res) => {
+router.get("/documentoUpload", funciones.isAuthenticated,funciones.hasSanPrivileges,(req, res) => {
   res.render("documentos/documentoUpload");
 });
-router.post("/documentos", uploadDocument, funciones.isAuthenticated, async (req, res) => {
+router.post("/documentos", funciones.isAuthenticated,funciones.hasSanPrivileges, uploadDocument, async (req, res) => {
   //console.log(req.body);
   //console.log(req.file);
   const { nombre, descripcion } = req.body;

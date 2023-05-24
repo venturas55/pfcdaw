@@ -53,7 +53,7 @@ const uploadFoto = multer({
 }).single('imagen');
 
 //GESTION FOTOS DE BALIZAS
-router.post("/aton/upload/:nif", uploadFoto, funciones.isAuthenticated, async (req, res) => {
+router.post("/aton/upload/:nif",  funciones.isAuthenticated, funciones.hasSanPrivileges,uploadFoto,async (req, res) => {
     console.log("Subiendo foto baliza");
     const { nif } = req.params;
     req.flash("success", "Nueva fotografia insertada correctamente");

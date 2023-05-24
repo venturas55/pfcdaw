@@ -104,7 +104,7 @@ router.post('/doAdmin', funciones.isAuthenticated, async (req, res) => {
 
 
 //GESTION BACKUPS BBDD
-router.get("/backups", funciones.isAuthenticated, async (req, res) => {
+router.get("/backups", funciones.isAuthenticated, funciones.hasSanPrivileges,async (req, res) => {
     var backups = funciones.listadoBackups();
     res.render("documentos/listadoBackups", { backups });
 });
@@ -130,14 +130,14 @@ router.get("/logs", funciones.isAuthenticated, funciones.isAdmin, async (req, re
 });
 
 //GESTION INVENTARIO
-router.get('/inventario', async (req, res) => {
+router.get('/inventario',funciones.isAuthenticated, async (req, res) => {
     const inventario = await db.query("select * from inventario order by fila,columna");
     res.render('inventario/inventario', { inventario });
 });
-router.get('/inventario/add',  funciones.isAuthenticated, async (req, res) => {
+router.get('/inventario/add',  funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     res.render('inventario/addItem');
 });
-router.post('/inventario/add', funciones.isAuthenticated,  async (req, res) => {
+router.post('/inventario/add', funciones.isAuthenticated, funciones.hasSanPrivileges,  async (req, res) => {
      var {
         tipo,
         item,
@@ -240,16 +240,11 @@ router.post("/pruebaPost", async (req, res) => {
 });
 
 //GESTION MAPA
-/* router.get("/mapa", async (req, res) => {
-    res.render("mapas/mapa", { layout: 'layoutMapa' });
-}); */
-//Mapa para mostrar localización de una baliza
 router.get("/mapa/:nif", async (req, res) => {
     const { nif } = req.params;
     const baliza = await db.query(queryListadoAton + ' where b.nif=?', [nif]);
     res.render("mapas/mapa", { layout: 'layoutMapa', baliza: baliza[0] });
 });
-
 
 //funcion get para mostrar los mapas dinamicos con la api de google maps
 router.get("/mapaGeneral/:valor", (req, res) => {

@@ -1,6 +1,6 @@
 <div class="row m-5">
     <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12 ">
-        <div id="simulacionLuz">
+        <div class="luzCard">
             <div id="luz"></div>
         </div>
         <h1 class="text-center">Fotos</h1>
@@ -148,7 +148,7 @@
             <form action="/aton/observaciones/add" method="POST">
                 <input type="hidden" name="nif" value="{{baliza.nif}}">
                 <tr>
-                    <td><input type="text" name="observaciones" style="width: 100%;" /></td>
+                    <td><input type="text" name="observaciones" style="width: 100%;" required /></td>
                     <td> <input type="submit" value="añadir" class="btn btn-primary btn-xs btn-block" /></td>
                 </tr>
             </form>
@@ -197,8 +197,8 @@
             <form action="/aton/mantenimiento/add" method="POST">
                 <input type="hidden" name="nif" value='{{baliza.nif}}' />
                 <tr>
-                    <td><input type="date" name="fecha" /></td>
-                    <td><input type="text" name="mantenimiento" /></td>
+                    <td><input type="date" name="fecha" required/></td>
+                    <td><input type="text" name="mantenimiento" required/></td>
                     <td> <input type="submit" value="añadir" class="btn btn-primary btn-xs btn-block" /></td>
                 </tr>
             </form>
