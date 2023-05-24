@@ -247,7 +247,7 @@ router.post("/pruebaPost", async (req, res) => {
 router.get("/mapa/:nif", async (req, res) => {
     const { nif } = req.params;
     const baliza = await db.query(queryListadoAton + ' where b.nif=?', [nif]);
-    res.render("mapas/localizacion", { layout: 'layoutLocalizacion', baliza: baliza[0] });
+    res.render("mapas/mapa", { layout: 'layoutMapa', baliza: baliza[0] });
 });
 
 
