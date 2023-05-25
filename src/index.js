@@ -50,12 +50,18 @@ app.use((req, res, next) => {
 	res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
 	next();
 });
+//Bootstrap
+app.use('/css', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')))
+app.use('/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')))
+app.use('/js', express.static(path.join(__dirname, 'node_modules/jquery/dist')))
 
 
 //Variables globales (que podrán ser usadas en cualquier vista)
 app.use((req, res, next) => {
     app.locals.signupMessage = req.flash('signupMessage');
     app.locals.success = req.flash('success');
+    app.locals.warning = req.flash('warning');
+    app.locals.error = req.flash('error');
     app.locals.message = req.flash('message');
     app.locals.user = req.user;
     next();

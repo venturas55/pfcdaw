@@ -13,7 +13,7 @@ router.get('/prueba', (req, res) => {
 });
 
 //CRUD ATON create
-router.get("/add", funciones.isAuthenticated,  funciones.hasSanPrivileges ,(req, res) => {
+router.get("/add", funciones.isAuthenticated, funciones.hasSanPrivileges, (req, res) => {
     res.render("aton/add");
 });
 router.post("/add", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
@@ -71,31 +71,39 @@ router.post("/add", funciones.isAuthenticated, funciones.hasSanPrivileges, async
             newBalizamiento[clave] = null;
         }
     }
-
     for (let clave in newBalizamientoLocalizacion) {
         if (!newBalizamientoLocalizacion[clave]) {
             newBalizamientoLocalizacion[clave] = null;
         }
     }
-
     for (let clave in newBalizamientoLampara) {
         if (!newBalizamientoLampara[clave]) {
             newBalizamientoLampara[clave] = null;
         }
     }
 
+    let existe = await db.query("SELECT * from balizamiento where nif= ?", [newBalizamiento.nif]);
+    //console.log(existe.length);
+    if (existe.length == 0) {
+        await db.query("INSERT INTO balizamiento set ?", [newBalizamiento]);
+        await db.query("INSERT INTO localizacion set ?", [newBalizamientoLocalizacion]);
+        await db.query("INSERT INTO lampara set ?", [newBalizamientoLampara]);
+        funciones.insertarLog(req.user.usuario, "INSERT balizamiento", newBalizamiento.nif);
+        req.flash("success", "Baliza insertada correctamente");
+        res.redirect("/aton/list");
+    }
+    else {
+        req.flash("error", "Ya existe un AtoN con el NIF " + newBalizamiento.nif);
+        res.redirect("/aton/list");
+    }
     //console.log(newBalizamiento);
-    await db.query("INSERT INTO balizamiento set ?", [newBalizamiento]);
-    await db.query("INSERT INTO localizacion set ?", [newBalizamientoLocalizacion]);
-    await db.query("INSERT INTO lampara set ?", [newBalizamientoLampara]);
-    funciones.insertarLog(req.user.usuario, "INSERT balizamiento", newBalizamiento.nif);
-    req.flash("success", "Baliza insertada correctamente");
-    res.redirect("/aton/list"); //te redirige una vez insertado el item
+
+
 });
 
 //CRUD ATON read
 router.get("/list", async (req, res) => {
-    const balizas = await db.query( queryListadoAton );
+    const balizas = await db.query(queryListadoAton);
     res.render("aton/list", { balizas });
 
 });
@@ -139,12 +147,12 @@ router.get("/plantilla/:nif", async (req, res) => {
     const observaciones = await db.query('SELECT * FROM observaciones where nif=?', [nif]);
     const mantenimiento = await db.query('SELECT * FROM mantenimiento where nif=? order by fecha DESC', [nif]);
     var fotos = funciones.listadoFotos(nif);
-    res.render("aton/plantilla", { layout: 'layoutPlantilla',baliza: baliza[0], obs: observaciones, mant: mantenimiento ,fotos});
+    res.render("aton/plantilla", { layout: 'layoutPlantilla', baliza: baliza[0], obs: observaciones, mant: mantenimiento, fotos });
     // NO FUNCIONA CON LA BARRA DELANTE res.render('/links/list');
 });
 
 //CRUD ATON update
-router.get("/editCaracteristicas/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges,async (req, res) => {
+router.get("/editCaracteristicas/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     const { nif } = req.params;
     var baliza = await db.query("SELECT * FROM balizamiento WHERE nif=?", [nif]);
 
@@ -153,9 +161,9 @@ router.get("/editCaracteristicas/:nif", funciones.isAuthenticated, funciones.has
     } else {
         baliza = baliza[0];
     }
-    res.render("aton/editCaracteristicas", { baliza});
+    res.render("aton/editCaracteristicas", { baliza });
 });
-router.get("/editLocalizacion/:nif",funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
+router.get("/editLocalizacion/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     const { nif } = req.params;
     var baliza = await db.query("SELECT * FROM localizacion WHERE nif=?", [nif]);
     if (baliza[0] == null || baliza[0] == undefined) {
@@ -164,9 +172,9 @@ router.get("/editLocalizacion/:nif",funciones.isAuthenticated, funciones.hasSanP
         baliza = baliza[0];
     }
     console.log(baliza);
-    res.render("aton/editLocalizacion",{ baliza });
+    res.render("aton/editLocalizacion", { baliza });
 });
-router.get("/editLampara/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges,async (req, res) => {
+router.get("/editLampara/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     const { nif } = req.params;
     var baliza = await db.query("SELECT * FROM lampara WHERE nif=?", [nif]);
     if (baliza[0] == null || baliza[0] == undefined) {
@@ -174,9 +182,9 @@ router.get("/editLampara/:nif", funciones.isAuthenticated, funciones.hasSanPrivi
     } else {
         baliza = baliza[0];
     }
-    res.render("aton/editLampara",{ baliza });
+    res.render("aton/editLampara", { baliza });
 });
-router.post("/editCaracteristicas/:nif",funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
+router.post("/editCaracteristicas/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     const nifviejo = req.params.nif;
     var {
         nif,
@@ -197,16 +205,25 @@ router.post("/editCaracteristicas/:nif",funciones.isAuthenticated, funciones.has
         periodo,
         caracteristica,
     };
-    await db.query("UPDATE balizamiento set ? WHERE nif = ?", [
-        newBaliza,
-        nifviejo,
-    ]);
-    funciones.insertarLog(req.user.usuario, "UPDATE balizamiento", newBaliza.nif + " " + newBaliza.num_internacional + " " + newBaliza.tipo + " " + newBaliza.telecontrol + newBaliza.apariencia + " " + newBaliza.periodo + " " + newBaliza.caracteristica);
-    req.flash("success", "Baliza modificada correctamente");
 
-    res.redirect("/aton/plantilla/" + nifviejo);
+    try {
+        await db.query("UPDATE balizamiento set ? WHERE nif = ?", [
+            newBaliza,
+            nifviejo,
+        ]);
+        funciones.insertarLog(req.user.usuario, "UPDATE balizamiento", newBaliza.nif + " " + newBaliza.num_internacional + " " + newBaliza.tipo + " " + newBaliza.telecontrol + newBaliza.apariencia + " " + newBaliza.periodo + " " + newBaliza.caracteristica);
+        req.flash("success", "Baliza modificada correctamente");
+        res.redirect("/aton/plantilla/" + nifviejo);
+
+    } catch (error) {
+        console.error(error);
+        req.flash("error", "Hubo algun error al modificar el aton " + newBaliza.nif);
+        res.redirect("/aton/plantilla/" + nifviejo);
+    }
+
+
 });
-router.post("/editLocalizacion/:nif", funciones.isAuthenticated,funciones.hasSanPrivileges, async (req, res) => {
+router.post("/editLocalizacion/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     const nifviejo = req.params.nif;
     var {
         puerto,
@@ -223,17 +240,26 @@ router.post("/editLocalizacion/:nif", funciones.isAuthenticated,funciones.hasSan
         latitud,
         longitud,
     };
-    var baliza = await db.query("SELECT * FROM localizacion WHERE nif=?", [nifviejo]);
-    if (baliza[0] == null || baliza[0] == undefined) {
-        await db.query("INSERT into localizacion set ? ", [newBaliza]);
-    } else {
-        await db.query("UPDATE localizacion set ? WHERE nif = ?", [newBaliza, nifviejo]);
+    try {
+
+        var baliza = await db.query("SELECT * FROM localizacion WHERE nif=?", [nifviejo]);
+        if (baliza[0] == null || baliza[0] == undefined) {
+            await db.query("INSERT into localizacion set ? ", [newBaliza]);
+        } else {
+            await db.query("UPDATE localizacion set ? WHERE nif = ?", [newBaliza, nifviejo]);
+        }
+        funciones.insertarLog(req.user.usuario, "UPDATE localizacion", newBaliza.nif + " " + newBaliza.puerto + " " + newBaliza.num_local + " " + newBaliza.localizacion + " " + newBaliza.latitud + " " + newBaliza.longitud);
+        req.flash("success", "Localizacion de baliza modificada correctamente");
+        res.redirect("/aton/plantilla/" + nifviejo);
+
+    } catch (error) {
+        console.error(error);
+        req.flash("error", "Hubo algun error al modificar la localización del aton con NIF " + nifviejo);
+        res.redirect("/aton/plantilla/" + nifviejo);
     }
-    funciones.insertarLog(req.user.usuario, "UPDATE localizacion", newBaliza.nif + " " + newBaliza.puerto + " " + newBaliza.num_local + " " + newBaliza.localizacion + " " + newBaliza.latitud + " " + newBaliza.longitud);
-    req.flash("success", "Localizacion de baliza modificada correctamente");
-    res.redirect("/aton/plantilla/" + nifviejo);
+
 });
-router.post("/editLampara/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges,async (req, res) => {
+router.post("/editLampara/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     const nifviejo = req.params.nif;
     var {
         altura,
@@ -254,17 +280,23 @@ router.post("/editLampara/:nif", funciones.isAuthenticated, funciones.hasSanPriv
         alcanceLum,
         candelasInst,
     };
+    try {
+        var baliza = await db.query("SELECT * FROM lampara WHERE nif=?", [nifviejo]);
+        if (baliza[0] == null || baliza[0] == undefined) {
+            await db.query("INSERT into lampara set ? ", [newBaliza]);
+        } else {
+            await db.query("UPDATE lampara set ? WHERE nif = ?", [newBaliza, nifviejo]);
+        }
+        funciones.insertarLog(req.user.usuario, "UPDATE lampara", newBaliza.nif + " " + newBaliza.altura + " " + newBaliza.elevacion + " " + newBaliza.alcanceNom + " " + newBaliza.linterna + " " + newBaliza.candelasCalc + " " + newBaliza.alcanceLum + " " + newBaliza.candelasInst);
+        req.flash("success", "Lampara del aton modificada correctamente");
+        res.redirect("/aton/plantilla/" + nifviejo);
 
-    var baliza = await db.query("SELECT * FROM lampara WHERE nif=?", [nifviejo]);
-    if (baliza[0] == null || baliza[0] == undefined) {
-        await db.query("INSERT into lampara set ? ", [newBaliza]);
-    } else {
-        await db.query("UPDATE lampara set ? WHERE nif = ?", [newBaliza, nifviejo]);
+    } catch (error) {
+        console.error(error);
+        req.flash("error", "Hubo algun error al modificar la lampara del aton con NIF: " + nifviejo);
+        res.redirect("/aton/plantilla/" + nifviejo);
     }
-    
-    funciones.insertarLog(req.user.usuario, "UPDATE lampara", newBaliza.nif + " " + newBaliza.altura + " " + newBaliza.elevacion + " " + newBaliza.alcanceNom + " " + newBaliza.linterna + " " + newBaliza.candelasCalc + " " + newBaliza.alcanceLum + " " + newBaliza.candelasInst);
-    req.flash("success", "Lampara del aton modificada correctamente");
-    res.redirect("/aton/plantilla/" + nifviejo);
+
 
 });
 
@@ -272,33 +304,43 @@ router.post("/editLampara/:nif", funciones.isAuthenticated, funciones.hasSanPriv
 router.get("/delete/:nif", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     console.log("Borrando aton " + req.params.nif + "...");
     const { nif } = req.params;
-
-    await db.query("DELETE FROM mantenimiento WHERE nif=?", [nif]);
-    await db.query("DELETE FROM observaciones WHERE nif=?", [nif]);
-    await db.query("DELETE FROM localizacion WHERE nif=?", [nif]);
-    await db.query("DELETE FROM lampara WHERE nif=?", [nif]);
-    await db.query("DELETE FROM balizamiento WHERE nif=?", [nif]);
-    funciones.insertarLog(req.user.usuario, "DELETE aton ", req.params.nif);
-    req.flash("success", "Baliza borrada correctamente");
-    res.redirect("/aton/list");
+    try {
+        await db.query("DELETE FROM mantenimiento WHERE nif=?", [nif]);
+        await db.query("DELETE FROM observaciones WHERE nif=?", [nif]);
+        await db.query("DELETE FROM localizacion WHERE nif=?", [nif]);
+        await db.query("DELETE FROM lampara WHERE nif=?", [nif]);
+        await db.query("DELETE FROM balizamiento WHERE nif=?", [nif]);
+        funciones.insertarLog(req.user.usuario, "DELETE aton ", req.params.nif);
+        req.flash("success", "Baliza borrada correctamente");
+        res.redirect("/aton/list");
+    } catch (error) {
+        req.flash("error", "Hubo algun error al borrar el AtoN con NIF: " + nif);
+        res.redirect("/aton/plantilla/" + nif);
+    }
 });
 
 //GESTION CRUD observaciones
-router.post("/observaciones/add", funciones.isAuthenticated, funciones.hasSanPrivileges,async (req, res) => {
-     const {
+router.post("/observaciones/add", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
+    const {
         nif,
         observaciones,
     } = req.body;
     const observa = {
         nif,
         observaciones,
-    }; 
-    await db.query("INSERT INTO observaciones set ?", [observa]);
-    req.flash("success", "Observacion insertada correctamente");
-    funciones.insertarLog(req.user.usuario, "INSERT observaciones", observa.nif + " " + observa.observaciones);
-    res.redirect("/aton/plantilla/" + nif);
+    };
+    try {
+        await db.query("INSERT INTO observaciones set ?", [observa]);
+        req.flash("success", "Observacion insertada correctamente");
+        funciones.insertarLog(req.user.usuario, "INSERT observaciones", observa.nif + " " + observa.observaciones);
+        res.redirect("/aton/plantilla/" + nif);
+    } catch (error) {
+        req.flash("error", "Hubo algun error al añadir la observación");
+        res.redirect("/aton/plantilla/" + nif);
+    }
+
 });
-router.get("/observaciones/delete/:idObs",funciones.isAuthenticated,funciones.isAdmin, async (req, res) => {
+router.get("/observaciones/delete/:idObs", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     //console.log(req.params.idObs);
     const { idObs } = req.params;
     const resp = await db.query("select nif from observaciones where id_observacion=?", [idObs]);
@@ -308,7 +350,7 @@ router.get("/observaciones/delete/:idObs",funciones.isAuthenticated,funciones.is
     req.flash("success", "Observacion de baliza " + nif + " borrada correctamente.");
     res.redirect("/aton/plantilla/" + nif);
 });
-router.get("/observaciones/edit/:idObs",funciones.isAuthenticated, funciones.hasSanPrivileges,async (req, res) => {
+router.get("/observaciones/edit/:idObs", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     const { idObs } = req.params;
     //console.log("Que id es: " + idObs);
     const observacion = await db.query("SELECT * FROM observaciones WHERE id_observacion=?", [idObs,]);
@@ -316,7 +358,7 @@ router.get("/observaciones/edit/:idObs",funciones.isAuthenticated, funciones.has
     //console.log(baliza[0]);
     res.render("aton/editObservaciones", { observacion: observacion[0] });
 });
-router.post("/observaciones/edit/:idObs", funciones.isAuthenticated,funciones.hasSanPrivileges,async (req, res) => {
+router.post("/observaciones/edit/:idObs", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
 
     var {
         id_observacion,
@@ -329,17 +371,25 @@ router.post("/observaciones/edit/:idObs", funciones.isAuthenticated,funciones.ha
         nif,
         observaciones: observacionNueva,
     };
-    await db.query("UPDATE observaciones set ? WHERE id_observacion = ?", [
-        newObservacion,
-        id_observacion,
-    ]);
-    funciones.insertarLog(req.user.usuario, "UPDATE observaciones", newObservacion.nif + " " + newObservacion.observaciones);
-    req.flash("success", "Observacion modificada correctamente en la baliza " + nif);
-    res.redirect("/aton/plantilla/" + nif);
+
+    try {
+        await db.query("UPDATE observaciones set ? WHERE id_observacion = ?", [
+            newObservacion,
+            id_observacion,
+        ]);
+        funciones.insertarLog(req.user.usuario, "UPDATE observaciones", newObservacion.nif + " " + newObservacion.observaciones);
+        req.flash("success", "Observacion modificada correctamente en la baliza " + nif);
+        res.redirect("/aton/plantilla/" + nif);
+
+    } catch (error) {
+        console.error(error);
+        req.flash("error", "Hubo algun error al editar la observación");
+        res.redirect("/aton/plantilla/" + nif);
+    }
 });
 
 //GESTION CRUD mantenimiento
-router.post("/mantenimiento/add", funciones.isAuthenticated, funciones.hasSanPrivileges,async (req, res) => {
+router.post("/mantenimiento/add", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     const {
         nif,
         fecha,
@@ -350,13 +400,19 @@ router.post("/mantenimiento/add", funciones.isAuthenticated, funciones.hasSanPri
         fecha,
         mantenimiento,
     };
-    //console.log(mant);
-    await db.query("INSERT INTO mantenimiento set ?", [mant]);
-    funciones.insertarLog(req.user.usuario, "INSERT mantenimiento", mant.nif + " " + mant.fecha + " " + mant.mantenimiento);
-    req.flash("success", "Mantenimiento en baliza insertado correctamente");
-    res.redirect("/aton/plantilla/" + nif);
+    try {
+        await db.query("INSERT INTO mantenimiento set ?", [mant]);
+        funciones.insertarLog(req.user.usuario, "INSERT mantenimiento", mant.nif + " " + mant.fecha + " " + mant.mantenimiento);
+        req.flash("success", "Mantenimiento en baliza insertado correctamente");
+        res.redirect("/aton/plantilla/" + nif);
+
+    } catch (error) {
+        console.error(error);
+        req.flash("error", "Hubo algun error al añadir mantenimiento al NIF: " + nif);
+        res.redirect("/aton/plantilla/" + nif);
+    }
 });
-router.get("/mantenimiento/delete/:idMan", funciones.isAuthenticated, funciones.isAdmin,async (req, res) => {
+router.get("/mantenimiento/delete/:idMan", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     //console.log(req.params.idMan);
     const { idMan } = req.params;
     const resp = await db.query("select nif from mantenimiento where id_mantenimiento=?", [idMan]);
@@ -366,7 +422,7 @@ router.get("/mantenimiento/delete/:idMan", funciones.isAuthenticated, funciones.
     req.flash("success", "mantenimiento de baliza " + nif + " borrado correctamente ");
     res.redirect("/aton/plantilla/" + nif);
 });
-router.get("/mantenimiento/edit/:idMan", funciones.isAuthenticated,funciones.hasSanPrivileges,async (req, res) => {
+router.get("/mantenimiento/edit/:idMan", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     const { idMan } = req.params;
     //console.log("Que id es: "+idMan);
     const mantenimient = await db.query("SELECT * FROM mantenimiento WHERE id_mantenimiento=?", [idMan,]);
@@ -374,7 +430,7 @@ router.get("/mantenimiento/edit/:idMan", funciones.isAuthenticated,funciones.has
     res.render("aton/editMantenimiento", { mant: mantenimient[0] });
 
 });
-router.post("/mantenimiento/edit/:idMan", funciones.isAuthenticated,funciones.hasSanPrivileges,async (req, res) => {
+router.post("/mantenimiento/edit/:idMan", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     var {
         id_mantenimiento,
         nif,
@@ -387,13 +443,16 @@ router.post("/mantenimiento/edit/:idMan", funciones.isAuthenticated,funciones.ha
         fecha: fechaNueva,
         mantenimiento: mantenimientoNuevo,
     };
-    await db.query("UPDATE mantenimiento set ? WHERE id_mantenimiento = ?", [
-        newObservacion,
-        id_mantenimiento,
-    ]);
-    funciones.insertarLog(req.user.usuario, "UPDATE mantenimiento", newObservacion.nif + " " + newObservacion.fecha + " " + newObservacion.mantenimiento);
-    req.flash("success", "Mantenimiento modificado correctamente en la baliza " + nif);
-    res.redirect("/aton/plantilla/" + nif);
+    try {
+        await db.query("UPDATE mantenimiento set ? WHERE id_mantenimiento = ?", [newObservacion, id_mantenimiento ]);
+        funciones.insertarLog(req.user.usuario, "UPDATE mantenimiento", newObservacion.nif + " " + newObservacion.fecha + " " + newObservacion.mantenimiento);
+        req.flash("success", "Mantenimiento modificado correctamente en la baliza " + nif);
+        res.redirect("/aton/plantilla/" + nif);
+      } catch (error) {
+          console.error(error);
+          req.flash("error", "Hubo algun error al modificar el mantenimiento al NIF: " + nif);
+          res.redirect("/aton/plantilla/" + nif);
+    }
 });
 
 

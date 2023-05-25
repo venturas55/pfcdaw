@@ -43,7 +43,8 @@ const uploadFoto = multer({
     fileFilter: (req, file, cb) => {
         const filetypes = /jpeg|jpg|png|bmp|gif/;
         const mimetype = filetypes.test(file.mimetype);
-        const extname = filetypes.test(path.extname(file.originalname));
+        console.log(mimetype);
+        const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
         if (mimetype && extname) {
             return cb(null, true);
         }
@@ -56,6 +57,7 @@ const uploadFoto = multer({
 router.post("/aton/upload/:nif",  funciones.isAuthenticated, funciones.hasSanPrivileges,uploadFoto,async (req, res) => {
     console.log("Subiendo foto baliza");
     const { nif } = req.params;
+
     req.flash("success", "Nueva fotografia insertada correctamente");
     funciones.insertarLog(req.user.usuario, "INSERT fotografia", nif);
     res.redirect("/aton/plantilla/" + nif);

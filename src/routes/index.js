@@ -206,13 +206,9 @@ router.get("/inventario/delete/:id", funciones.isAuthenticated, funciones.isAdmi
 
 //MOSTRAR ERROR
 router.get('/error', (req, res) => {
-    console.log("Redirect");
-    req.flash("warning", "Sucedió algun error!");
     res.render('error');
 });
 router.get('/noperm', (req, res) => {
-    console.log("Redirect");
-    req.flash("warning", "No dispones de los permisos adecuados!");
     res.render('noPermission');
 });
 
