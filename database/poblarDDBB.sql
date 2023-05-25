@@ -6,6 +6,17 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 --------------------------------------------
+TRUNCATE  table balizamiento;
+TRUNCATE  table lampara;
+TRUNCATE  table localizacion;
+TRUNCATE  table mantenimiento;
+TRUNCATE  table observaciones;
+
+TRUNCATE  table inventario;
+TRUNCATE  table documentos;
+TRUNCATE  table usuarios;
+TRUNCATE  table logs;
+
 
 INSERT INTO
   `balizamiento` (
@@ -22,7 +33,7 @@ VALUES
     '25460',
     'E-0190',
     'Baliza Torre troncopiramidal verde blanca',
-    '',
+    'telecontrol ',
     'GpD(2)V',
     7.00,
     'L0,5 oc1,5 L0,5 oc4,5'
@@ -42,7 +53,7 @@ VALUES
     '25470',
     'E-0190.2',
     'Baliza Torre troncopiramidal roja blanca',
-    '',
+    'teeee',
     'GpD(2)R',
     7.00,
     'L0,5 oc1,5 L0,5 oc4,5'
@@ -162,7 +173,7 @@ VALUES
     '25560',
     'E-0196.25',
     'Baliza Hormigon pequeña columna cuadrangular',
-    'NO',
+    'NOo',
     'GpD(4)R',
     11.00,
     '(L0,5 oc1,5)x3 L0,5 oc4,5'
@@ -301,7 +312,7 @@ VALUES
   (
     '25620',
     'E-0197.5',
-    'Baliza Panel circular blanco, bandas rojas en el tablero del puente',
+    'Baliza semaforo Panel circular blanco, bandas rojas en el tablero del puente',
     '',
     'Iso B',
     2.00,
@@ -341,7 +352,7 @@ VALUES
   (
     '25650',
     'E-0198',
-    'Faro',
+    'faro',
     'Si SCADA',
     'GpD(3)',
     20.00,
@@ -563,8 +574,8 @@ VALUES
     '',
     'Boya Castillete verde-roja-verde y marca de tope',
     'No',
-    'GpD(2+1) V',
-    9.60,
+    'GpD(2+1)V',
+    9.00,
     'L0.6 oc0.6 L0.6 oc1.8 L0.6 oc5.4'
   );
 INSERT INTO
@@ -663,7 +674,7 @@ VALUES
     'E-0201.4',
     'Baliza TPS 3.3',
     '',
-    'GpD(2)V   ',
+    'GpD(2)V',
     7.00,
     'L 0.5 oc 1.5 L 0.5 oc 4.5'
   );
@@ -1693,7 +1704,7 @@ VALUES
   (
     '26190',
     '',
-    'Boya Espeque negra roja negra',
+    'Boya Peligro aislado. Espeque negra roja negra',
     'no',
     'GpD(2)B',
     5.00,
@@ -1757,7 +1768,7 @@ VALUES
     '',
     'GpRp(3)B',
     5.00,
-    '[(L0,25 oc0,25)x2] L0,25 oc3,5'
+    '[(L0,25 oc0,25)x2] L0,25 oc3,75'
   );
 INSERT INTO
   `balizamiento` (
@@ -2579,11 +2590,38 @@ VALUES
     1.00,
     '[(L0,5 oc1,5)x3]+L0,5 oc4,5'
   );
-
-# ------------------------------------------------------------
-# DATA DUMP FOR TABLE: boyas
-# ------------------------------------------------------------
-
+INSERT INTO
+  `balizamiento` (
+    `nif`,
+    `num_internacional`,
+    `tipo`,
+    `telecontrol`,
+    `apariencia`,
+    `periodo`,
+    `caracteristica`
+  )
+VALUES
+  (
+    'batea1',
+    '0',
+    '0',
+    '0',
+    'GdD(4)A',
+    11.00,
+    '(L0.5+oC0.5)X3+L0.5+Oc4.5'
+  );
+INSERT INTO
+  `balizamiento` (
+    `nif`,
+    `num_internacional`,
+    `tipo`,
+    `telecontrol`,
+    `apariencia`,
+    `periodo`,
+    `caracteristica`
+  )
+VALUES
+  ('prueba', '0', '0', '0', 'GdD(4)A', 0.00, '0');
 
 # ------------------------------------------------------------
 # DATA DUMP FOR TABLE: documentos
@@ -2596,7 +2634,7 @@ VALUES
     '500eebfb-4302-4fe7-8954-155883d44f51.pdf',
     'Resolucion Valencia',
     'Resolucion provisional emitida por PPEE  sobre una parte del balizamiento',
-    '2023-05-16 21:08:30'
+    '2023-05-16'
   );
 INSERT INTO
   `documentos` (`id_archivo`, `nombre`, `descripcion`, `created_at`)
@@ -2605,7 +2643,7 @@ VALUES
     'de79b703-f67b-455b-9d8a-f8dacd6a3eed.pdf',
     'Resolucion Marina Real Juan Carlos I',
     'Ultima Resolucion emitida por PPEE sobre dicho balizamiento',
-    '2023-05-16 21:10:12'
+    '2023-05-16'
   );
 INSERT INTO
   `documentos` (`id_archivo`, `nombre`, `descripcion`, `created_at`)
@@ -2614,7 +2652,7 @@ VALUES
     'e502a93b-9a59-4d67-9486-23cca55e3f82.pdf',
     'Resolucion Sagunto',
     'Ultima Resolucion emitida por PPEE',
-    '2023-05-16 21:09:24'
+    '2023-05-16'
   );
 INSERT INTO
   `documentos` (`id_archivo`, `nombre`, `descripcion`, `created_at`)
@@ -2623,22 +2661,17 @@ VALUES
     'fa5861e4-3dca-4319-ab1e-f9f079ca2840.pdf',
     'Resolucion Gandia',
     'Ultima Resolucion emitida por PPEE',
-    '2023-05-16 21:09:53'
+    '2023-05-16'
   );
-  INSERT INTO
+INSERT INTO
   `documentos` (`id_archivo`, `nombre`, `descripcion`, `created_at`)
 VALUES
   (
     'e4a920eb-f9d5-409d-9e46-cc1aae58b239.pdf',
     'Resolucion Bateas',
-    'Resolucion de balizamiento de Bateas emitida por PPEE',
-    '2023-05-23 12:09:53'
+    'Resolucion de balizamiento de Bateas emitido por OPPE',
+    '2023-05-23'
   );
-
-# ------------------------------------------------------------
-# DATA DUMP FOR TABLE: eliminados
-# ------------------------------------------------------------
-
 
 # ------------------------------------------------------------
 # DATA DUMP FOR TABLE: inventario
@@ -3516,46 +3549,6 @@ INSERT INTO
   )
 VALUES
   (
-    51,
-    NULL,
-    'Bateria SB6',
-    6,
-    1,
-    1,
-    'Bateria SB6 de 200Ah medidas 24x19cm'
-  );
-INSERT INTO
-  `inventario` (
-    `id`,
-    `tipo`,
-    `item`,
-    `cantidad`,
-    `fila`,
-    `columna`,
-    `descripcion`
-  )
-VALUES
-  (
-    52,
-    '',
-    'Grupo monofasico',
-    111,
-    1,
-    1,
-    'Grupo monofasico Ayerbe de 1,5kw'
-  );
-INSERT INTO
-  `inventario` (
-    `id`,
-    `tipo`,
-    `item`,
-    `cantidad`,
-    `fila`,
-    `columna`,
-    `descripcion`
-  )
-VALUES
-  (
     53,
     NULL,
     'Cargador Bateria',
@@ -3794,6 +3787,33 @@ VALUES
   (78, NULL, 'Disolvente', 5, 5, 1, '');
 
 # ------------------------------------------------------------
+# DATA DUMP FOR TABLE: inventario_eliminados
+# ------------------------------------------------------------
+
+INSERT INTO
+  `inventario_eliminados` (
+    `fecha`,
+    `id`,
+    `tipo`,
+    `item`,
+    `cantidad`,
+    `fila`,
+    `columna`,
+    `descripcion`
+  )
+VALUES
+  (
+    '2023-05-23 07:45:59',
+    52,
+    '',
+    'Grupo monofasico',
+    111,
+    1,
+    1,
+    'Grupo monofasico Ayerbe de 1,5kw'
+  );
+
+# ------------------------------------------------------------
 # DATA DUMP FOR TABLE: lampara
 # ------------------------------------------------------------
 
@@ -3809,7 +3829,7 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('25460', 0, 0, 0.00, '0', 0.00, 0.00, 0.00);
+  ('25460', 1.00, 0.00, 0.00, '0', 0.00, 0.00, 0.00);
 INSERT INTO
   `lampara` (
     `nif`,
@@ -3822,7 +3842,7 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('25470', 0, 0, 0.00, '0', 0.00, 0.00, 0.00);
+  ('25470', 1.00, 0.00, 0.00, '0', 0.00, 0.00, 0.00);
 INSERT INTO
   `lampara` (
     `nif`,
@@ -3837,8 +3857,8 @@ INSERT INTO
 VALUES
   (
     '25530',
-    7,
-    15,
+    7.00,
+    15.00,
     7.00,
     'DES 33 MaqVal. Bola leds 50 w Óptica300 mm',
     0.00,
@@ -3859,8 +3879,8 @@ INSERT INTO
 VALUES
   (
     '25545',
-    3,
-    9,
+    3.00,
+    9.00,
     5.00,
     'Des 33 Maq. Val.Bola de leds de 50 W ÓpticaFresnel 300mm',
     0.00,
@@ -3881,8 +3901,8 @@ INSERT INTO
 VALUES
   (
     '25552',
-    4,
-    6,
+    4.00,
+    6.00,
     3.00,
     'DES 22 Maq. Val.  8 coronas de leds  Óptica BDL 120',
     0.00,
@@ -3901,7 +3921,16 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('25554', 22, 2, 1.00, 'MCL 160 (MSM)', 0.00, 0.00, 0.00);
+  (
+    '25554',
+    22.00,
+    2.00,
+    1.00,
+    'MCL 160 (MSM)',
+    0.00,
+    0.00,
+    0.00
+  );
 INSERT INTO
   `lampara` (
     `nif`,
@@ -3916,8 +3945,8 @@ INSERT INTO
 VALUES
   (
     '25555',
-    2,
-    4,
+    2.00,
+    4.00,
     1.00,
     'DES 22 Maq. Val.  4 coronas de leds  Óptica BDL 120',
     0.00,
@@ -3938,8 +3967,8 @@ INSERT INTO
 VALUES
   (
     '25560',
-    2,
-    4,
+    2.00,
+    4.00,
     1.00,
     'DES 22 LMV   4 coronas de leds  Óptica BDL 120',
     0.00,
@@ -3960,8 +3989,8 @@ INSERT INTO
 VALUES
   (
     '25563',
-    2,
-    33,
+    2.00,
+    33.00,
     1.00,
     'MBL 160 (MSM) S/N:224 Año 2015',
     0.00,
@@ -3980,7 +4009,16 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('25564', 3, 3, 2.32, 'MBL 160 (MSM)', 0.00, 0.01, 0.00);
+  (
+    '25564',
+    3.00,
+    3.00,
+    2.32,
+    'MBL 160 (MSM)',
+    0.00,
+    0.01,
+    0.00
+  );
 INSERT INTO
   `lampara` (
     `nif`,
@@ -3995,8 +4033,8 @@ INSERT INTO
 VALUES
   (
     '25565',
-    3,
-    5,
+    3.00,
+    5.00,
     1.00,
     'DES 22 LMV     2 discos de leds    Óptica BDL 120',
     0.00,
@@ -4017,8 +4055,8 @@ INSERT INTO
 VALUES
   (
     '25570',
-    3,
-    5,
+    3.00,
+    5.00,
     1.00,
     'DES 22 LMV  2 discos de leds  Óptica BDL 120',
     0.00,
@@ -4039,8 +4077,8 @@ INSERT INTO
 VALUES
   (
     '25590',
-    7,
-    10,
+    7.00,
+    10.00,
     5.00,
     'BDL 300 LMV Leds 18w. DES 22',
     0.00,
@@ -4061,8 +4099,8 @@ INSERT INTO
 VALUES
   (
     '25600',
-    7,
-    10,
+    7.00,
+    10.00,
     3.00,
     'BDL 120 LMV DES 22',
     0.00,
@@ -4081,7 +4119,7 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('25640', 0, 0, 0.00, '', 0.00, NULL, NULL);
+  ('25640', 0.00, 0.00, 0.00, '', 0.00, NULL, NULL);
 INSERT INTO
   `lampara` (
     `nif`,
@@ -4096,8 +4134,8 @@ INSERT INTO
 VALUES
   (
     '25650',
-    14,
-    28,
+    14.00,
+    28.00,
     19.00,
     'Lampara halogenuros venture light 400w',
     0.00,
@@ -4118,8 +4156,8 @@ INSERT INTO
 VALUES
   (
     '25665',
-    5,
-    7,
+    5.00,
+    7.00,
     4.00,
     'AUTONOMA MCL 140 MSM (3MN)',
     0.00,
@@ -4140,8 +4178,8 @@ INSERT INTO
 VALUES
   (
     '25667',
-    2,
-    3,
+    2.00,
+    3.00,
     1.00,
     'Autónoma SL60 SEALITE (1MN)',
     0.00,
@@ -4162,8 +4200,8 @@ INSERT INTO
 VALUES
   (
     '25700',
-    32,
-    35,
+    32.00,
+    35.00,
     24.00,
     'PRINCIPAL: MBR600L --- BAEM: MBR300L --- MOTOR: MRM160',
     2.00,
@@ -4182,7 +4220,16 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('25720', 5, 21, 5.00, 'BDL 300 50w.', 0.00, NULL, NULL);
+  (
+    '25720',
+    5.00,
+    21.00,
+    5.00,
+    'BDL 300 50w.',
+    0.00,
+    NULL,
+    NULL
+  );
 INSERT INTO
   `lampara` (
     `nif`,
@@ -4197,8 +4244,8 @@ INSERT INTO
 VALUES
   (
     '25721',
-    4,
-    6,
+    4.00,
+    6.00,
     1.00,
     'BDL 120 cuatro coronas.',
     0.00,
@@ -4217,7 +4264,16 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('25730', 3, 3, 3.00, 'MCL360 L', 1000.00, 3.00, 100.00);
+  (
+    '25730',
+    3.00,
+    3.00,
+    3.00,
+    'MCL360 L',
+    1000.00,
+    3.00,
+    100.00
+  );
 INSERT INTO
   `lampara` (
     `nif`,
@@ -4230,7 +4286,16 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('25740', 6, 6, 5.00, 'MCL360 L', 191.67, 0.00, 230.00);
+  (
+    '25740',
+    6.00,
+    6.00,
+    5.00,
+    'MCL360 L',
+    191.67,
+    0.00,
+    230.00
+  );
 INSERT INTO
   `lampara` (
     `nif`,
@@ -4245,8 +4310,8 @@ INSERT INTO
 VALUES
   (
     '25761',
-    4,
-    4,
+    4.00,
+    4.00,
     3.00,
     'BDL 120 una corona HI (DES33).',
     0.00,
@@ -4267,8 +4332,8 @@ INSERT INTO
 VALUES
   (
     '25765',
-    4,
-    4,
+    4.00,
+    4.00,
     3.00,
     'BDL 120 una corona HI (DES33).',
     0.00,
@@ -4287,7 +4352,7 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('25768', 3, 3, 2.00, 'MCL 160', 0.00, 0.00, 0.00);
+  ('25768', 3.00, 3.00, 2.00, 'MCL 160', 0.00, 0.00, 0.00);
 INSERT INTO
   `lampara` (
     `nif`,
@@ -4300,7 +4365,16 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('25774', 9, 21, 3.00, 'BDL 300 50w.', 0.00, NULL, NULL);
+  (
+    '25774',
+    9.00,
+    21.00,
+    3.00,
+    'BDL 300 50w.',
+    0.00,
+    NULL,
+    NULL
+  );
 INSERT INTO
   `lampara` (
     `nif`,
@@ -4315,8 +4389,8 @@ INSERT INTO
 VALUES
   (
     '25776',
-    3,
-    12,
+    3.00,
+    12.00,
     3.00,
     'BDL 120 ocho coronas.',
     0.00,
@@ -4337,8 +4411,8 @@ INSERT INTO
 VALUES
   (
     '25777',
-    4,
-    6,
+    4.00,
+    6.00,
     3.00,
     'BDL 120 ocho coronas.',
     0.00,
@@ -4359,8 +4433,8 @@ INSERT INTO
 VALUES
   (
     '25800',
-    3,
-    5,
+    3.00,
+    5.00,
     1.00,
     'BDL 120 ocho coronas.',
     0.00,
@@ -4381,8 +4455,8 @@ INSERT INTO
 VALUES
   (
     '25820',
-    4,
-    6,
+    4.00,
+    6.00,
     3.00,
     'BDL 120 ocho coronas.',
     0.00,
@@ -4401,7 +4475,7 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('25820.1', 3, 0, 1.00, '0', 0.00, 0.00, 0.00);
+  ('25820.1', 3.00, 0.00, 1.00, '0', 0.00, 0.00, 0.00);
 INSERT INTO
   `lampara` (
     `nif`,
@@ -4416,8 +4490,8 @@ INSERT INTO
 VALUES
   (
     '25830',
-    6,
-    8,
+    6.00,
+    8.00,
     1.00,
     'MBL 160 - 2 niveles',
     907.00,
@@ -4436,7 +4510,16 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('25831', 2, 5, 1.00, 'MCL200.', 360.00, 1.00, 300.00);
+  (
+    '25831',
+    2.00,
+    5.00,
+    1.00,
+    'MCL200.',
+    360.00,
+    1.00,
+    300.00
+  );
 INSERT INTO
   `lampara` (
     `nif`,
@@ -4451,8 +4534,8 @@ INSERT INTO
 VALUES
   (
     '25840',
-    4,
-    7,
+    4.00,
+    7.00,
     3.00,
     'BDL 120 ocho coronas.',
     0.00,
@@ -4473,8 +4556,8 @@ INSERT INTO
 VALUES
   (
     '25841',
-    3,
-    3,
+    3.00,
+    3.00,
     3.00,
     'BDL 120 (ocho coronas de led)',
     0.00,
@@ -4493,7 +4576,7 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('25842', 4, 5, 1.00, 'MCL 200', 0.00, NULL, NULL);
+  ('25842', 4.00, 5.00, 1.00, 'MCL 200', 0.00, NULL, NULL);
 INSERT INTO
   `lampara` (
     `nif`,
@@ -4508,8 +4591,8 @@ INSERT INTO
 VALUES
   (
     '25842.5',
-    2,
-    0,
+    2.00,
+    0.00,
     1.00,
     'MCL 160 12% divergencia',
     109.00,
@@ -4528,33 +4611,7 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('25843', 2, 0, 1.00, 'MCL 200', 0.00, NULL, NULL);
-INSERT INTO
-  `lampara` (
-    `nif`,
-    `altura`,
-    `elevacion`,
-    `alcanceNom`,
-    `linterna`,
-    `candelasCalc`,
-    `alcanceLum`,
-    `candelasInst`
-  )
-VALUES
-  ('25843.5', 2, 0, 1.00, 'MCL 140', 0.00, NULL, NULL);
-INSERT INTO
-  `lampara` (
-    `nif`,
-    `altura`,
-    `elevacion`,
-    `alcanceNom`,
-    `linterna`,
-    `candelasCalc`,
-    `alcanceLum`,
-    `candelasInst`
-  )
-VALUES
-  ('25843.8', 2, 0, 1.00, 'MCL 140', 0.00, NULL, NULL);
+  ('25843', 2.00, 0.00, 1.00, 'MCL 200', 0.00, NULL, NULL);
 INSERT INTO
   `lampara` (
     `nif`,
@@ -4568,11 +4625,11 @@ INSERT INTO
   )
 VALUES
   (
-    '25844',
-    3,
-    3,
-    3.00,
-    'BDL 120 dos. coronas.',
+    '25843.5',
+    2.00,
+    0.00,
+    1.00,
+    'MCL 140',
     0.00,
     NULL,
     NULL
@@ -4590,9 +4647,53 @@ INSERT INTO
   )
 VALUES
   (
+    '25843.8',
+    2.00,
+    0.00,
+    1.00,
+    'MCL 140',
+    0.00,
+    NULL,
+    NULL
+  );
+INSERT INTO
+  `lampara` (
+    `nif`,
+    `altura`,
+    `elevacion`,
+    `alcanceNom`,
+    `linterna`,
+    `candelasCalc`,
+    `alcanceLum`,
+    `candelasInst`
+  )
+VALUES
+  (
+    '25844',
+    3.00,
+    3.00,
+    3.00,
+    'BDL 120 dos. coronas.',
+    0.00,
+    0.00,
+    0.00
+  );
+INSERT INTO
+  `lampara` (
+    `nif`,
+    `altura`,
+    `elevacion`,
+    `alcanceNom`,
+    `linterna`,
+    `candelasCalc`,
+    `alcanceLum`,
+    `candelasInst`
+  )
+VALUES
+  (
     '25850',
-    4,
-    6,
+    4.00,
+    6.00,
     3.00,
     'BDL 120 ocho coronas',
     0.00,
@@ -4613,8 +4714,8 @@ INSERT INTO
 VALUES
   (
     '25920',
-    4,
-    6,
+    4.00,
+    6.00,
     1.00,
     'BDL 120 ocho coronas.',
     0.00,
@@ -4635,8 +4736,8 @@ INSERT INTO
 VALUES
   (
     '25940',
-    4,
-    6,
+    4.00,
+    6.00,
     1.00,
     'BDL 120 ocho coronas.',
     0.00,
@@ -4657,8 +4758,8 @@ INSERT INTO
 VALUES
   (
     '25960',
-    4,
-    5,
+    4.00,
+    5.00,
     1.00,
     'BDL 120 ocho coronas.',
     0.00,
@@ -4679,8 +4780,8 @@ INSERT INTO
 VALUES
   (
     '26020',
-    3,
-    9,
+    3.00,
+    9.00,
     3.00,
     'BDL 120 LC-b/ HI.',
     0.00,
@@ -4701,8 +4802,8 @@ INSERT INTO
 VALUES
   (
     '26021',
-    4,
-    9,
+    4.00,
+    9.00,
     3.00,
     'BDL 300 Piña de leds de 25W.',
     0.00,
@@ -4723,8 +4824,8 @@ INSERT INTO
 VALUES
   (
     '26025',
-    4,
-    5,
+    4.00,
+    5.00,
     1.00,
     'BDL 300 Piña de leds de 25W.',
     0.00,
@@ -4745,8 +4846,8 @@ INSERT INTO
 VALUES
   (
     '26035',
-    3,
-    5,
+    3.00,
+    5.00,
     1.00,
     'BDL 120 ocho coronas. ',
     0.00,
@@ -4767,8 +4868,8 @@ INSERT INTO
 VALUES
   (
     '26041',
-    3,
-    5,
+    3.00,
+    5.00,
     1.00,
     'BDL 120 ocho coronas.',
     0.00,
@@ -4789,8 +4890,8 @@ INSERT INTO
 VALUES
   (
     '26045',
-    4,
-    8,
+    4.00,
+    8.00,
     1.00,
     'BDL 120 ocho coronas.',
     0.00,
@@ -4811,8 +4912,8 @@ INSERT INTO
 VALUES
   (
     '26046',
-    4,
-    5,
+    4.00,
+    5.00,
     1.00,
     'BDL 120 ocho coronas.',
     0.00,
@@ -4831,7 +4932,7 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26047', 5, 17, 5.00, 'BDL 300', 0.00, NULL, NULL);
+  ('26047', 5.00, 17.00, 5.00, 'BDL 300', 0.00, NULL, NULL);
 INSERT INTO
   `lampara` (
     `nif`,
@@ -4844,7 +4945,16 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26047.1', 4, 16, 3.00, 'BDL 120 HI', 0.00, NULL, NULL);
+  (
+    '26047.1',
+    4.00,
+    16.00,
+    3.00,
+    'BDL 120 HI',
+    0.00,
+    NULL,
+    NULL
+  );
 INSERT INTO
   `lampara` (
     `nif`,
@@ -4857,7 +4967,16 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26047.2', 4, 16, 3.00, 'BDL 120 HI', 0.00, NULL, NULL);
+  (
+    '26047.2',
+    4.00,
+    16.00,
+    3.00,
+    'BDL 120 HI',
+    0.00,
+    NULL,
+    NULL
+  );
 INSERT INTO
   `lampara` (
     `nif`,
@@ -4870,7 +4989,7 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26048', 5, 12, 5.00, 'BDL 300', 0.00, NULL, NULL);
+  ('26048', 5.00, 12.00, 5.00, 'BDL 300', 0.00, NULL, NULL);
 INSERT INTO
   `lampara` (
     `nif`,
@@ -4883,7 +5002,16 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26048.1', 4, 9, 3.00, 'BDL 120', 0.00, NULL, NULL);
+  (
+    '26048.1',
+    4.00,
+    9.00,
+    3.00,
+    'BDL 120',
+    0.00,
+    NULL,
+    NULL
+  );
 INSERT INTO
   `lampara` (
     `nif`,
@@ -4896,7 +5024,16 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26048.2', 3, 0, 3.00, 'MBL 160', 0.00, NULL, NULL);
+  (
+    '26048.2',
+    3.00,
+    0.00,
+    3.00,
+    'MBL 160',
+    0.00,
+    NULL,
+    NULL
+  );
 INSERT INTO
   `lampara` (
     `nif`,
@@ -4909,7 +5046,16 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26048.3', 3, 0, 3.00, 'MBL 160', 0.00, NULL, NULL);
+  (
+    '26048.3',
+    3.00,
+    0.00,
+    3.00,
+    'MBL 160',
+    0.00,
+    NULL,
+    NULL
+  );
 INSERT INTO
   `lampara` (
     `nif`,
@@ -4922,7 +5068,7 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26049', 2, 2, 3.00, '', 0.00, NULL, NULL);
+  ('26049', 2.00, 2.00, 3.00, '', 0.00, NULL, NULL);
 INSERT INTO
   `lampara` (
     `nif`,
@@ -4935,7 +5081,7 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26050', 3, 9, 5.00, '', 0.00, NULL, NULL);
+  ('26050', 3.00, 9.00, 5.00, '', 0.00, NULL, NULL);
 INSERT INTO
   `lampara` (
     `nif`,
@@ -4948,7 +5094,7 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26052', 0, 6, 3.00, '', 0.00, NULL, NULL);
+  ('26052', 0.00, 6.00, 3.00, '', 0.00, NULL, NULL);
 INSERT INTO
   `lampara` (
     `nif`,
@@ -4961,7 +5107,16 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26052.5', 1, 0, 1.00, 'MCL 100', 0.00, 0.00, 0.00);
+  (
+    '26052.5',
+    1.00,
+    0.00,
+    1.00,
+    'MCL 100',
+    0.00,
+    0.00,
+    0.00
+  );
 INSERT INTO
   `lampara` (
     `nif`,
@@ -4974,7 +5129,16 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26052.7', 1, 0, 1.00, 'MCL 100', 0.00, NULL, NULL);
+  (
+    '26052.7',
+    1.00,
+    0.00,
+    1.00,
+    'MCL 100',
+    0.00,
+    NULL,
+    NULL
+  );
 INSERT INTO
   `lampara` (
     `nif`,
@@ -4987,7 +5151,7 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26055', 0, 5, 1.00, '', 0.00, NULL, NULL);
+  ('26055', 0.00, 5.00, 1.00, '', 0.00, NULL, NULL);
 INSERT INTO
   `lampara` (
     `nif`,
@@ -5000,7 +5164,7 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26055.5', 0, 0, 0.00, '0', 0.00, 0.00, 0.00);
+  ('26055.5', 0.00, 0.00, 0.00, '0', 0.00, 0.00, 0.00);
 INSERT INTO
   `lampara` (
     `nif`,
@@ -5013,7 +5177,7 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26055.6', 3, 5, 1.00, '', 0.00, NULL, NULL);
+  ('26055.6', 3.00, 5.00, 1.00, '', 0.00, NULL, NULL);
 INSERT INTO
   `lampara` (
     `nif`,
@@ -5026,7 +5190,7 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26056', 3, 5, 1.00, '', 0.00, NULL, NULL);
+  ('26056', 3.00, 5.00, 1.00, '', 0.00, NULL, NULL);
 INSERT INTO
   `lampara` (
     `nif`,
@@ -5039,7 +5203,7 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26058', 0, 0, 0.00, '0', 0.00, 0.00, 0.00);
+  ('26058', 0.00, 0.00, 0.00, '0', 0.00, 0.00, 0.00);
 INSERT INTO
   `lampara` (
     `nif`,
@@ -5052,7 +5216,7 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26058.1', 3, 5, 1.00, '', 0.00, NULL, NULL);
+  ('26058.1', 3.00, 5.00, 1.00, '', 0.00, NULL, NULL);
 INSERT INTO
   `lampara` (
     `nif`,
@@ -5065,7 +5229,7 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26058.15', 3, 5, 1.00, '', 0.00, NULL, NULL);
+  ('26058.15', 3.00, 5.00, 1.00, '', 0.00, NULL, NULL);
 INSERT INTO
   `lampara` (
     `nif`,
@@ -5078,7 +5242,7 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26058.16', 3, 5, 1.00, '', 0.00, NULL, NULL);
+  ('26058.16', 3.00, 5.00, 1.00, '', 0.00, NULL, NULL);
 INSERT INTO
   `lampara` (
     `nif`,
@@ -5091,7 +5255,7 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26058.17', 3, 5, 1.00, '', 0.00, NULL, NULL);
+  ('26058.17', 3.00, 5.00, 1.00, '', 0.00, NULL, NULL);
 INSERT INTO
   `lampara` (
     `nif`,
@@ -5104,7 +5268,7 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26058.2', 3, 5, 1.00, '', 0.00, NULL, NULL);
+  ('26058.2', 3.00, 5.00, 1.00, '', 0.00, NULL, NULL);
 INSERT INTO
   `lampara` (
     `nif`,
@@ -5117,7 +5281,7 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26058.4', 3, 5, 1.00, '', 0.00, NULL, NULL);
+  ('26058.4', 3.00, 5.00, 1.00, '', 0.00, NULL, NULL);
 INSERT INTO
   `lampara` (
     `nif`,
@@ -5130,7 +5294,7 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26058.6', 3, 5, 1.00, '', 0.00, NULL, NULL);
+  ('26058.6', 3.00, 5.00, 1.00, '', 0.00, NULL, NULL);
 INSERT INTO
   `lampara` (
     `nif`,
@@ -5143,7 +5307,7 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26058.8', 3, 5, 1.00, '', 0.00, NULL, NULL);
+  ('26058.8', 3.00, 5.00, 1.00, '', 0.00, NULL, NULL);
 INSERT INTO
   `lampara` (
     `nif`,
@@ -5156,7 +5320,7 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26060', 0, 0, 1.00, '', 0.00, NULL, NULL);
+  ('26060', 0.00, 0.00, 1.00, '', 0.00, NULL, NULL);
 INSERT INTO
   `lampara` (
     `nif`,
@@ -5169,7 +5333,7 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26083', 0, 0, 0.00, '0', 0.00, 0.00, 0.00);
+  ('26083', 0.00, 0.00, 0.00, '0', 0.00, 0.00, 0.00);
 INSERT INTO
   `lampara` (
     `nif`,
@@ -5182,7 +5346,7 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26190', 4, 4, 3.00, 'MCL140', 10.10, 2.30, 0.00);
+  ('26190', 4.00, 4.00, 3.00, 'MCL140', 10.10, 2.30, 0.00);
 INSERT INTO
   `lampara` (
     `nif`,
@@ -5195,7 +5359,7 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26200', 0, 0, 0.00, '0', 0.00, 0.00, 0.00);
+  ('26200', 0.00, 0.00, 0.00, '0', 0.00, 0.00, 0.00);
 INSERT INTO
   `lampara` (
     `nif`,
@@ -5208,7 +5372,7 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26202', 0, 0, 0.00, '0', 0.00, 0.00, 0.00);
+  ('26202', 0.00, 0.00, 0.00, '0', 0.00, 0.00, 0.00);
 INSERT INTO
   `lampara` (
     `nif`,
@@ -5221,7 +5385,7 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26205', 0, 0, 0.00, '0', 0.00, 0.00, 0.00);
+  ('26205', 0.00, 0.00, 0.00, '0', 0.00, 0.00, 0.00);
 INSERT INTO
   `lampara` (
     `nif`,
@@ -5234,7 +5398,7 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26220', 0, 0, 0.00, '0', 0.00, 0.00, 0.00);
+  ('26220', 0.00, 0.00, 0.00, '0', 0.00, 0.00, 0.00);
 INSERT INTO
   `lampara` (
     `nif`,
@@ -5247,7 +5411,7 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26230', 0, 0, 0.00, '0', 0.00, 0.00, 0.00);
+  ('26230', 0.00, 0.00, 0.00, '0', 0.00, 0.00, 0.00);
 INSERT INTO
   `lampara` (
     `nif`,
@@ -5262,8 +5426,8 @@ INSERT INTO
 VALUES
   (
     '26270',
-    2,
-    2,
+    2.00,
+    2.00,
     3.00,
     'MCL-140  SN 295  (Autoalimentada)',
     0.00,
@@ -5284,8 +5448,8 @@ INSERT INTO
 VALUES
   (
     '26285',
-    5,
-    20,
+    5.00,
+    20.00,
     5.00,
     ' BDL-300 (50w)/ DES-22',
     0.00,
@@ -5306,8 +5470,8 @@ INSERT INTO
 VALUES
   (
     '26290',
-    4,
-    7,
+    4.00,
+    7.00,
     2.00,
     'BDL-120 (3 coronas) / DES-22',
     0.00,
@@ -5328,8 +5492,8 @@ INSERT INTO
 VALUES
   (
     '26311',
-    4,
-    17,
+    4.00,
+    17.00,
     3.00,
     'BDL-120 (3 coronas) / DES-22',
     0.00,
@@ -5350,8 +5514,8 @@ INSERT INTO
 VALUES
   (
     '26312',
-    4,
-    17,
+    4.00,
+    17.00,
     3.00,
     'BDL-120 (8 coronas) / DES-22',
     0.00,
@@ -5372,8 +5536,8 @@ INSERT INTO
 VALUES
   (
     '26313',
-    5,
-    5,
+    5.00,
+    5.00,
     3.00,
     'BDL-120 (5 coronas) / DES-33',
     0.00,
@@ -5394,8 +5558,8 @@ INSERT INTO
 VALUES
   (
     '26314',
-    4,
-    12,
+    4.00,
+    12.00,
     3.00,
     'BDL-120 (4 coronas) / DES-22',
     0.00,
@@ -5416,8 +5580,8 @@ INSERT INTO
 VALUES
   (
     '26320',
-    4,
-    4,
+    4.00,
+    4.00,
     3.00,
     'BDL-120 (4 coronas) / DES-22',
     0.00,
@@ -5438,8 +5602,8 @@ INSERT INTO
 VALUES
   (
     '26325',
-    4,
-    8,
+    4.00,
+    8.00,
     3.00,
     'BDL-120 (8 coronas) / DES-22',
     0.00,
@@ -5458,7 +5622,7 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26326', 5, 7, 1.00, 'MBL-160', 0.00, NULL, NULL);
+  ('26326', 5.00, 7.00, 1.00, 'MBL-160', 0.00, NULL, NULL);
 INSERT INTO
   `lampara` (
     `nif`,
@@ -5473,8 +5637,8 @@ INSERT INTO
 VALUES
   (
     '26360',
-    4,
-    4,
+    4.00,
+    4.00,
     3.00,
     'BDL-120 (8 coronas) / DES-22',
     0.00,
@@ -5493,7 +5657,16 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26375', 3, 4, 1.00, 'MCL 200', 283.00, 1.00, 236.00);
+  (
+    '26375',
+    3.00,
+    4.00,
+    1.00,
+    'MCL 200',
+    283.00,
+    1.00,
+    236.00
+  );
 INSERT INTO
   `lampara` (
     `nif`,
@@ -5508,8 +5681,8 @@ INSERT INTO
 VALUES
   (
     '26380',
-    4,
-    6,
+    4.00,
+    6.00,
     3.00,
     'BDL-120 (8 coronas) / DES-22',
     0.00,
@@ -5530,8 +5703,8 @@ INSERT INTO
 VALUES
   (
     '26390',
-    4,
-    6,
+    4.00,
+    6.00,
     1.00,
     'BDL-120 HI (2 coronas) / DES-33',
     0.00,
@@ -5552,8 +5725,8 @@ INSERT INTO
 VALUES
   (
     '26392',
-    4,
-    6,
+    4.00,
+    6.00,
     1.00,
     'BDL-120 HI (2 coronas) / DES-33',
     0.00,
@@ -5574,8 +5747,8 @@ INSERT INTO
 VALUES
   (
     '26450',
-    6,
-    12,
+    6.00,
+    12.00,
     5.00,
     'MCL200 autonoma / DES-33',
     0.00,
@@ -5596,8 +5769,8 @@ INSERT INTO
 VALUES
   (
     '26450-a',
-    2,
-    2,
+    2.00,
+    2.00,
     1.00,
     'MCL100 sync',
     56.00,
@@ -5618,8 +5791,8 @@ INSERT INTO
 VALUES
   (
     '26450-b',
-    2,
-    2,
+    2.00,
+    2.00,
     1.00,
     'MCL100 sync',
     56.00,
@@ -5640,8 +5813,8 @@ INSERT INTO
 VALUES
   (
     '26450-c',
-    2,
-    2,
+    2.00,
+    2.00,
     1.00,
     'MCL100 sync',
     56.00,
@@ -5662,8 +5835,8 @@ INSERT INTO
 VALUES
   (
     '26450-d',
-    2,
-    2,
+    2.00,
+    2.00,
     1.00,
     'MCL100 sync',
     56.00,
@@ -5684,8 +5857,8 @@ INSERT INTO
 VALUES
   (
     '26450-e',
-    2,
-    2,
+    2.00,
+    2.00,
     1.00,
     'MCL100 sync',
     56.00,
@@ -5706,8 +5879,8 @@ INSERT INTO
 VALUES
   (
     '26450-f',
-    2,
-    2,
+    2.00,
+    2.00,
     1.00,
     'MCL100 sync',
     56.00,
@@ -5728,8 +5901,8 @@ INSERT INTO
 VALUES
   (
     '26450-g',
-    2,
-    2,
+    2.00,
+    2.00,
     1.00,
     'MCL100 sync',
     56.00,
@@ -5750,8 +5923,8 @@ INSERT INTO
 VALUES
   (
     '26450-h',
-    2,
-    2,
+    2.00,
+    2.00,
     1.00,
     'MCL100 sync',
     56.00,
@@ -5772,8 +5945,8 @@ INSERT INTO
 VALUES
   (
     '26450-i',
-    2,
-    2,
+    2.00,
+    2.00,
     1.00,
     'MCL100 sync',
     56.00,
@@ -5794,8 +5967,8 @@ INSERT INTO
 VALUES
   (
     '26450-j',
-    2,
-    2,
+    2.00,
+    2.00,
     1.00,
     'MCL100 sync',
     56.00,
@@ -5814,7 +5987,7 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26465', 0, 0, 3.00, 'Si', 0.00, 2.00, 0.00);
+  ('26465', 0.00, 0.00, 3.00, 'Si', 0.00, 2.00, 0.00);
 INSERT INTO
   `lampara` (
     `nif`,
@@ -5827,7 +6000,7 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26465.3', 0, 0, 0.00, '0', 0.00, 0.00, 0.00);
+  ('26465.3', 0.00, 0.00, 0.00, '0', 0.00, 0.00, 0.00);
 INSERT INTO
   `lampara` (
     `nif`,
@@ -5840,7 +6013,7 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26465.4', 0, 0, 0.00, '0', 0.00, 0.00, 0.00);
+  ('26465.4', 0.00, 0.00, 0.00, '0', 0.00, 0.00, 0.00);
 INSERT INTO
   `lampara` (
     `nif`,
@@ -5853,7 +6026,7 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26470', 0, 0, 3.00, 'Si', 0.00, NULL, NULL);
+  ('26470', 0.00, 0.00, 3.00, 'Si', 0.00, NULL, NULL);
 INSERT INTO
   `lampara` (
     `nif`,
@@ -5868,8 +6041,8 @@ INSERT INTO
 VALUES
   (
     '26500',
-    30,
-    33,
+    30.00,
+    33.00,
     23.00,
     'MV MGE150 2002',
     0.00,
@@ -5890,8 +6063,8 @@ INSERT INTO
 VALUES
   (
     '26508',
-    2,
-    4,
+    2.00,
+    4.00,
     1.00,
     'BDL 120 dos coronas.',
     0.00,
@@ -5910,7 +6083,42 @@ INSERT INTO
     `candelasInst`
   )
 VALUES
-  ('26512', 2, 4, 1.00, 'BDA 155 LMV', 0.00, NULL, NULL);
+  (
+    '26512',
+    2.00,
+    4.00,
+    1.00,
+    'BDA 155 LMV',
+    0.00,
+    NULL,
+    NULL
+  );
+INSERT INTO
+  `lampara` (
+    `nif`,
+    `altura`,
+    `elevacion`,
+    `alcanceNom`,
+    `linterna`,
+    `candelasCalc`,
+    `alcanceLum`,
+    `candelasInst`
+  )
+VALUES
+  ('batea1', 0.00, 0.00, 0.00, '0', 0.00, 0.00, 0.00);
+INSERT INTO
+  `lampara` (
+    `nif`,
+    `altura`,
+    `elevacion`,
+    `alcanceNom`,
+    `linterna`,
+    `candelasCalc`,
+    `alcanceLum`,
+    `candelasInst`
+  )
+VALUES
+  ('prueba', 0.00, 0.00, 0.00, '0', 0.00, 0.00, 0.00);
 
 # ------------------------------------------------------------
 # DATA DUMP FOR TABLE: localizacion
@@ -8224,6 +8432,42 @@ VALUES
     '39º 40.430\' N',
     '00º 12.093\' W'
   );
+INSERT INTO
+  `localizacion` (
+    `nif`,
+    `puerto`,
+    `num_local`,
+    `localizacion`,
+    `latitud`,
+    `longitud`
+  )
+VALUES
+  (
+    'batea1',
+    'Valencia',
+    0,
+    '0',
+    '39º 27.150\' N',
+    '000º 17.292\' W'
+  );
+INSERT INTO
+  `localizacion` (
+    `nif`,
+    `puerto`,
+    `num_local`,
+    `localizacion`,
+    `latitud`,
+    `longitud`
+  )
+VALUES
+  (
+    'prueba',
+    '0',
+    0,
+    '0',
+    '39º 26.724\' N',
+    '000º 17.292\' W'
+  );
 
 # ------------------------------------------------------------
 # DATA DUMP FOR TABLE: logs
@@ -8232,24 +8476,24 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-05-31 12:36:22', 'adrian', 'login', '');
+  ('2019-05-31 14:36:22', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-05-31 12:37:20', 'adrian', 'login', '');
+  ('2019-05-31 14:37:20', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-05-31 12:44:28', 'adrian', 'login', '');
+  ('2019-05-31 14:44:28', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-05-31 12:44:51', 'adrian', 'elimado', '');
+  ('2019-05-31 14:44:51', 'adrian', 'elimado', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-05-31 12:48:46',
+    '2019-05-31 14:48:46',
     'adrian',
     'Item elimi',
     'delete from inventario where id=62'
@@ -8257,12 +8501,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-05-31 12:59:11', 'adrian', 'login', '');
+  ('2019-05-31 14:59:11', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-05-31 12:59:48',
+    '2019-05-31 14:59:48',
     'adrian',
     'Item elimi',
     'delete from inventario where id=63'
@@ -8271,7 +8515,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-05-31 12:59:51',
+    '2019-05-31 14:59:51',
     'adrian',
     'Item elimi',
     'delete from inventario where id=64'
@@ -8280,7 +8524,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-05-31 12:59:53',
+    '2019-05-31 14:59:53',
     'adrian',
     'Item elimi',
     'delete from inventario where id=65'
@@ -8288,24 +8532,24 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-05-31 13:03:53', 'adrian', 'logout', '');
+  ('2019-05-31 15:03:53', 'adrian', 'logout', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-05-31 13:03:59', 'pepe', 'login', '');
+  ('2019-05-31 15:03:59', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-05-31 13:04:21', 'pepe', 'logout', '');
+  ('2019-05-31 15:04:21', 'pepe', 'logout', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-05-31 13:04:28', 'adrian', 'login', '');
+  ('2019-05-31 15:04:28', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-05-31 13:04:33',
+    '2019-05-31 15:04:33',
     'adrian',
     'Item elimi',
     'delete from inventario where id=66'
@@ -8314,7 +8558,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-05-31 13:09:39',
+    '2019-05-31 15:09:39',
     'adrian',
     'Item elimi',
     'delete from inventario where id=67'
@@ -8323,7 +8567,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-05-31 13:15:35',
+    '2019-05-31 15:15:35',
     'adrian',
     'Item elimi',
     'delete from inventario where id=68'
@@ -8332,7 +8576,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-05-31 13:18:58',
+    '2019-05-31 15:18:58',
     'adrian',
     'Item añadi',
     'insert into inventario values(NULL,\'fgg\',4,6,1,\'fg\')'
@@ -8341,7 +8585,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-05-31 13:22:21',
+    '2019-05-31 15:22:21',
     'adrian',
     'Item añadi',
     'insert into inventario values(NULL,\'gjfgjfkj\',5,6,1,\'6\')'
@@ -8350,7 +8594,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-05-31 13:31:43',
+    '2019-05-31 15:31:43',
     'adrian',
     'Item elimi',
     'fgg 4 6 1 fg'
@@ -8359,7 +8603,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-05-31 13:35:30',
+    '2019-05-31 15:35:30',
     'adrian',
     'Item elimi',
     'gjfgjfkj 5 6 1 6'
@@ -8367,24 +8611,24 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-05-31 13:41:58', 'adrian', 'logout', '');
+  ('2019-05-31 15:41:58', 'adrian', 'logout', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-06-04 08:12:09', 'adrian', 'login', '');
+  ('2019-06-04 10:12:09', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-06-05 12:28:51', 'adrian', 'login', '');
+  ('2019-06-05 14:28:51', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-06-05 14:02:16', 'adrian', 'login', '');
+  ('2019-06-05 16:02:16', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-05 14:10:39',
+    '2019-06-05 16:10:39',
     'adrian',
     'Mantenimie',
     'insert into mantenimiento values(25700,\'2019-06-05\',\'sfg\')'
@@ -8393,7 +8637,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-07 09:16:25',
+    '2019-06-07 11:16:25',
     '',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25740,\'2019-06-05\',\'Se recupera la boya varada en la playa de pinedo\')'
@@ -8402,7 +8646,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-07 09:28:27',
+    '2019-06-07 11:28:27',
     '',
     'Item añadido',
     'insert into inventario values(NULL,\'prueba\',2,5,3,\'e\')'
@@ -8411,7 +8655,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-07 09:29:19',
+    '2019-06-07 11:29:19',
     '',
     'Item añadido',
     'insert into inventario values(NULL,\'p2\',2,5,3,\'3\')'
@@ -8419,12 +8663,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-06-07 09:29:27', 'adrian', 'login', '');
+  ('2019-06-07 11:29:27', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-07 09:29:36',
+    '2019-06-07 11:29:36',
     'adrian',
     'Item eliminado',
     'delete prueba 2 5 3 e'
@@ -8433,7 +8677,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-07 09:29:39',
+    '2019-06-07 11:29:39',
     'adrian',
     'Item eliminado',
     'delete p2 2 5 3 3'
@@ -8442,7 +8686,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-07 13:02:33',
+    '2019-06-07 15:02:33',
     '',
     'Item añadido',
     'insert into inventario values(NULL,\'Pintura Spray VERDE\',8,5,1,\'6038 400ml\')'
@@ -8451,7 +8695,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-07 13:02:53',
+    '2019-06-07 15:02:53',
     '',
     'Item añadido',
     'insert into inventario values(NULL,\'Pintura Spray ROJO\',8,5,1,\'RAL 3024 400ml\')'
@@ -8460,7 +8704,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-07 13:03:11',
+    '2019-06-07 15:03:11',
     '',
     'Item añadido',
     'insert into inventario values(NULL,\'Pintura Spray BLANCO\',8,5,1,\'RAL 9016 400ml\')'
@@ -8469,7 +8713,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-07 13:03:25',
+    '2019-06-07 15:03:25',
     '',
     'Item añadido',
     'insert into inventario values(NULL,\'Pintura Spray AMARILLO\',8,5,1,\'RAL 1023 400ml\')'
@@ -8478,7 +8722,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-07 13:03:40',
+    '2019-06-07 15:03:40',
     '',
     'Item añadido',
     'insert into inventario values(NULL,\'Pintura Spray NEGRO\',8,5,1,\'RAL 9017 400ml\')'
@@ -8487,7 +8731,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-07 13:03:51',
+    '2019-06-07 15:03:51',
     '',
     'Item añadido',
     'insert into inventario values(NULL,\'Disolvente\',5,5,1,\'\')'
@@ -8495,12 +8739,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-06-07 13:20:43', 'adrian', 'login', '');
+  ('2019-06-07 15:20:43', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-07 13:20:51',
+    '2019-06-07 15:20:51',
     'adrian',
     'Mantenimiendo borrad',
     'delete from mantenimiento where nif=26285 AND fecha=\'2019-01-11\' AND mantenimiento=\'eSTOY CON GORRIZ\''
@@ -8508,16 +8752,16 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-06-07 13:44:48', 'adrian', 'logout', '');
+  ('2019-06-07 15:44:48', 'adrian', 'logout', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-06-07 13:45:32', 'marcos', 'login', '');
+  ('2019-06-07 15:45:32', 'marcos', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-07 13:45:42',
+    '2019-06-07 15:45:42',
     'marcos',
     'Mantenimiendo borrad',
     'delete from mantenimiento where nif=25700 AND fecha=\'2019-06-05\' AND mantenimiento=\'sfg\''
@@ -8526,7 +8770,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-07 13:45:49',
+    '2019-06-07 15:45:49',
     'marcos',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25700,\'2019-06-07\',\'sdd\')'
@@ -8535,7 +8779,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-07 13:45:54',
+    '2019-06-07 15:45:54',
     'marcos',
     'Mantenimiendo borrad',
     'delete from mantenimiento where nif=25700 AND fecha=\'2019-06-07\' AND mantenimiento=\'sdd\''
@@ -8543,44 +8787,44 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-06-07 13:45:58', 'marcos', 'logout', '');
+  ('2019-06-07 15:45:58', 'marcos', 'logout', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-06-07 13:52:09', 'adrian', 'login', '');
+  ('2019-06-07 15:52:09', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-06-07 13:58:54', 'marcos', 'login', '');
+  ('2019-06-07 15:58:54', 'marcos', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-06-07 14:03:35', 'marcos', 'logout', '');
+  ('2019-06-07 16:03:35', 'marcos', 'logout', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-06-07 14:07:36', 'adrian', 'logout', '');
+  ('2019-06-07 16:07:36', 'adrian', 'logout', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-06-10 11:19:35', 'pepe', 'login', '');
+  ('2019-06-10 13:19:35', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-06-10 12:44:10', 'adrian', 'login', '');
+  ('2019-06-10 14:44:10', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-06-10 13:05:51', 'adrian', 'login', '');
+  ('2019-06-10 15:05:51', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-06-10 13:09:30', 'adrian', 'login', '');
+  ('2019-06-10 15:09:30', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-10 13:16:06',
+    '2019-06-10 15:16:06',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Canet de Berenguer&quot;, num_local=1,localizacion=&quot;Extremo dique de Levante&quot;,latitud=&quot;39º 40.337\''
@@ -8588,24 +8832,24 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-06-11 08:09:21', 'pepe', 'login', '');
+  ('2019-06-11 10:09:21', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-06-11 08:10:53', 'pepe', 'logout', '');
+  ('2019-06-11 10:10:53', 'pepe', 'logout', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-06-11 08:15:42', 'adrian', 'login', '');
+  ('2019-06-11 10:15:42', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-06-11 09:02:38', 'pepe', 'login', '');
+  ('2019-06-11 11:02:38', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-11 09:04:20',
+    '2019-06-11 11:04:20',
     'pepe',
     'Modificacion Caracte',
     'UPDATE balizamiento set num_internacional=&quot;E-0198&quot;, tipo=&quot;Faro&quot;,apariencia=&quot;GpD(3)&quot;,periodo=20.00,caracteristica=&quot;L'
@@ -8614,7 +8858,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-11 09:05:25',
+    '2019-06-11 11:05:25',
     'pepe',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Gandia&quot;, num_local=1,localizacion=&quot;Extremo del cabo de Cullera&quot;,latitud=&quot;39º 11.188´N&quot;,l'
@@ -8623,7 +8867,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-11 09:05:53',
+    '2019-06-11 11:05:53',
     'pepe',
     'Modificacion lampara',
     'UPDATE lampara set altura=14, elevacion=28,alcanceNom=19.00,alcanceLum=0,linterna=&quot;1&quot;,candelasCalc=0, candelasInst=0 where nif=25650'
@@ -8632,7 +8876,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-11 09:06:17',
+    '2019-06-11 11:06:17',
     'pepe',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Gandia&quot;, num_local=0,localizacion=&quot;Extremo del cabo de Cullera&quot;,latitud=&quot;39º 11.188´N&quot;,l'
@@ -8641,7 +8885,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-11 09:08:24',
+    '2019-06-11 11:08:24',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26190,\'2019-04-21\',\'Varada en playa norte Port Saplaya debido a fuerte temporal (Baja)\')'
@@ -8650,7 +8894,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-11 09:08:32',
+    '2019-06-11 11:08:32',
     'pepe',
     'Mantenimiendo borrad',
     'delete from mantenimiento where nif=26190 AND fecha=\'2019-04-21\' AND mantenimiento=\'Varada en playa norte Port Saplaya debido a fuerte temporal\''
@@ -8659,7 +8903,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-11 09:10:04',
+    '2019-06-11 11:10:04',
     'pepe',
     'Modificacion lampara',
     'UPDATE lampara set altura=4, elevacion=4,alcanceNom=3.00,alcanceLum=2.3,linterna=&quot;MCL140&quot;,candelasCalc=10.1, candelasInst=0.00 where nif=261'
@@ -8667,12 +8911,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-06-11 10:38:27', 'adrian', 'login', '');
+  ('2019-06-11 12:38:27', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-11 10:56:42',
+    '2019-06-11 12:56:42',
     'adrian',
     'Uso coche añadido',
     'insert into cochecito values(\'adrian\',\'2019-06-11\',\'07:56\',\'12:56\',\'asdd\')'
@@ -8680,28 +8924,28 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-06-11 12:12:46', 'adrian', 'login', '');
+  ('2019-06-11 14:12:46', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-06-11 12:22:27', 'adrian', 'logout', '');
+  ('2019-06-11 14:22:27', 'adrian', 'logout', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-06-11 12:22:34', 'adrian', 'login', '');
+  ('2019-06-11 14:22:34', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-06-11 12:43:14', 'adrian', 'logout', '');
+  ('2019-06-11 14:43:14', 'adrian', 'logout', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-06-11 12:43:26', 'adrian', 'login', '');
+  ('2019-06-11 14:43:26', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-11 12:44:35',
+    '2019-06-11 14:44:35',
     'adrian',
     'Uso coche borrado',
     'delete from cochecito where usuario=\'adrian\' AND fecha=\'2019-06-11\''
@@ -8709,12 +8953,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-06-12 14:12:59', 'adrian', 'login', '');
+  ('2019-06-12 16:12:59', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-12 14:13:40',
+    '2019-06-12 16:13:40',
     'adrian',
     'Uso coche añadido',
     'insert into cochecito values(\'adrian\',\'2019-06-12\',\'08:13\',\'\',\'Revision balizamiento\')'
@@ -8723,7 +8967,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-12 14:14:24',
+    '2019-06-12 16:14:24',
     'adrian',
     'Uso coche añadido',
     'insert into cochecito values(\'adrian\',\'2019-06-11\',\'08:14\',\'14:15\',\'Deplazamiento a Cullera\')'
@@ -8732,7 +8976,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-12 14:14:30',
+    '2019-06-12 16:14:30',
     'adrian',
     'Uso coche borrado',
     'delete from cochecito where usuario=\'adrian\' AND fecha=\'0000-00-00\''
@@ -8740,12 +8984,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-06-13 08:00:16', 'adrian', 'login', '');
+  ('2019-06-13 10:00:16', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-13 08:00:36',
+    '2019-06-13 10:00:36',
     'adrian',
     'Uso coche añadido',
     'insert into cochecito values(\'adrian\',\'2019-06-13\',\'06:00\',\'dfgdg\',\'06:00\')'
@@ -8753,12 +8997,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-06-13 08:35:46', 'adrian', 'login', '');
+  ('2019-06-13 10:35:46', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-13 10:14:17',
+    '2019-06-13 12:14:17',
     'adrian',
     'Uso coche modificado',
     'update cochecito set fecha=\'\', horaE=\'08:14\',horaS=\'horaSout\',motivo=\'prueba\' where usuario=\'adrian\' AND fecha=\'2019-06-13\''
@@ -8767,7 +9011,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-13 10:15:08',
+    '2019-06-13 12:15:08',
     'adrian',
     'Uso coche modificado',
     'update cochecito set fecha=\'2019-09-13\', horaE=\'08:14\',horaS=\'09:14\',motivo=\'pruebecita\' where usuario=\'adrian\' AND fecha=\'0000-00-00\''
@@ -8776,7 +9020,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-13 10:19:15',
+    '2019-06-13 12:19:15',
     'adrian',
     'Uso coche modificado',
     'update cochecito set fecha=\'\', horaE=\'\',horaS=\'\',motivo=\'\' where usuario=\'adrian\' AND fecha=\'2019-06-12\''
@@ -8785,7 +9029,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-13 10:20:55',
+    '2019-06-13 12:20:55',
     'adrian',
     'Uso coche modificado',
     'update cochecito set fecha=\'2019-06-03\', horaE=\'08:00\',horaS=\'12:45\',motivo=\'Revision Balizamiento\' where usuario=\'adrian\' AND fecha=\'2019-09-13\''
@@ -8794,7 +9038,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-13 10:21:29',
+    '2019-06-13 12:21:29',
     'adrian',
     'Uso coche modificado',
     'update cochecito set fecha=\'2019-06-04\', horaE=\'08:21\',horaS=\'14:21\',motivo=\'Desplazamiento al Faro de Cullera\' where usuario=\'adrian\' AND fecha=\'2019'
@@ -8803,7 +9047,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-13 10:22:19',
+    '2019-06-13 12:22:19',
     'adrian',
     'Uso coche modificado',
     'update cochecito set fecha=\'2019-06-06\', horaE=\'08:15\',horaS=\'12:21\',motivo=\'Revision Balizamiento\' where usuario=\'adrian\' AND fecha=\'0000-00-00\''
@@ -8812,7 +9056,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-13 10:22:47',
+    '2019-06-13 12:22:47',
     'adrian',
     'Uso coche añadido',
     'insert into cochecito values(\'adrian\',\'2019-06-07\',\'08:07\',\'14:22\',\'Revision Balizamiento\')'
@@ -8821,7 +9065,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-13 10:23:07',
+    '2019-06-13 12:23:07',
     'adrian',
     'Uso coche añadido',
     'insert into cochecito values(\'adrian\',\'2019-06-10\',\'08:20\',\'14:30\',\'Revision Balizamiento\')'
@@ -8830,7 +9074,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-13 10:23:32',
+    '2019-06-13 12:23:32',
     'adrian',
     'Uso coche añadido',
     'insert into cochecito values(\'adrian\',\'2019-06-11\',\'08:15\',\'14:25\',\'Desplazamiento al Faro de Cullera\')'
@@ -8839,7 +9083,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-13 10:23:59',
+    '2019-06-13 12:23:59',
     'adrian',
     'Uso coche añadido',
     'insert into cochecito values(\'adrian\',\'2019-06-12\',\'08:15\',\'13:30\',\'Revision Boyas Valencia\')'
@@ -8847,20 +9091,20 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-06-13 10:56:30', 'adrian', 'logout', '');
+  ('2019-06-13 12:56:30', 'adrian', 'logout', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-06-13 11:04:37', 'adrian', 'login', '');
+  ('2019-06-13 13:04:37', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-06-13 12:25:08', 'adrian', 'login', '');
+  ('2019-06-13 14:25:08', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-13 12:25:22',
+    '2019-06-13 14:25:22',
     'adrian',
     'Observacion borrada',
     'delete from observaciones where nif=25554 AND observaciones=\'Pendiente de sacar con Wartsila, para revisar\''
@@ -8869,7 +9113,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-13 12:26:31',
+    '2019-06-13 14:26:31',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25554,\'2019-05-17\',\'Se recoloca la boya original en su sitio.\')'
@@ -8878,7 +9122,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-06-13 12:27:18',
+    '2019-06-13 14:27:18',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2019-06-12\',\'Se realiza supervision del sistema AIS bajo petición del CCI.\')'
@@ -8886,12 +9130,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-07-19 08:01:35', 'adrian', 'login', '');
+  ('2019-07-19 10:01:35', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-07-19 08:02:33',
+    '2019-07-19 10:02:33',
     'adrian',
     'Uso coche añadido',
     'insert into cochecito values(\'adrian\',\'2019-07-16\',\'07:20\',\'14:02\',\'Desplazamiento al Faro de Cullera\')'
@@ -8899,12 +9143,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-07-19 08:19:36', 'pepe', 'login', '');
+  ('2019-07-19 10:19:36', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-07-19 08:21:57',
+    '2019-07-19 10:21:57',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25820,\'2019-07-08\',\'Se sustituye la batería y se repone el fusible de 16A de salida de la fuente.\')'
@@ -8913,7 +9157,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-07-19 08:55:23',
+    '2019-07-19 10:55:23',
     'adrian',
     'Uso coche añadido',
     'insert into cochecito values(\'adrian\',\'2019-07-19\',\'08:54\',\'10:00\',\'Prestado a Marcos (lavadero)\')'
@@ -8922,7 +9166,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-07-19 09:18:21',
+    '2019-07-19 11:18:21',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26500,\'2019-07-12\',\'MSM instala dos convertidores 12 - 24 V. Se comprueba su funcionamiento y se da de alta.\')'
@@ -8931,7 +9175,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-07-19 09:18:44',
+    '2019-07-19 11:18:44',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26500,\'2019-07-03\',\'MSM sustituye y repara tarjetas SB03. Sigue de baja.\')'
@@ -8940,7 +9184,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-07-19 09:19:03',
+    '2019-07-19 11:19:03',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26500,\'2019-06-28\',\'Avería en la rotación. Se da de baja. Funciona con la B.E.\')'
@@ -8948,20 +9192,20 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-07-29 13:22:41', 'adrian', 'login', '');
+  ('2019-07-29 15:22:41', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-07-31 09:22:27', 'adrian', 'login', '');
+  ('2019-07-31 11:22:27', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-08-01 10:31:45', 'adrian', 'login', '');
+  ('2019-08-01 12:31:45', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-08-01 10:32:40',
+    '2019-08-01 12:32:40',
     'adrian',
     'Uso coche añadido',
     'insert into cochecito values(\'adrian\',\'\',\'11:31\',\'15:40\',\'Revision Balizamiento\')'
@@ -8970,7 +9214,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-08-01 10:32:53',
+    '2019-08-01 12:32:53',
     'adrian',
     'Uso coche modificado',
     'update cochecito set fecha=\'\', horaE=\'\',horaS=\'\',motivo=\'\' where usuario=\'adrian\' AND fecha=\'0000-00-00\''
@@ -8979,7 +9223,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-08-01 10:33:48',
+    '2019-08-01 12:33:48',
     'adrian',
     'Uso coche añadido',
     'insert into cochecito values(\'adrian\',\'2019-07-31\',\'11:33\',\'15:40\',\'Revision Balizamiento\')'
@@ -8988,7 +9232,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-08-01 10:34:55',
+    '2019-08-01 12:34:55',
     'adrian',
     'Uso coche modificado',
     'update cochecito set fecha=\'2019-08-01\', horaE=\'11:34\',horaS=\'14:30\',motivo=\'Revision Balizamiento\' where usuario=\'adrian\' AND fecha=\'0000-00-00\''
@@ -8996,12 +9240,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-08-06 10:14:34', 'adrian', 'login', '');
+  ('2019-08-06 12:14:34', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-08-06 10:15:04',
+    '2019-08-06 12:15:04',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2019-08-06\',\'La bateria del sistema de comunicacion de emisoras ha explotado. Se avisa a comunicaciones.\')'
@@ -9009,12 +9253,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-08-20 08:41:19', 'adrian', 'login', '');
+  ('2019-08-20 10:41:19', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-08-20 08:41:31',
+    '2019-08-20 10:41:31',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2019-08-20\',\'\')'
@@ -9023,7 +9267,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-08-20 08:41:55',
+    '2019-08-20 10:41:55',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2019-08-20\',\'Se instala verja como refuerzo antivandalico en ventanas exteriores del lado mar.\')'
@@ -9032,7 +9276,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-08-20 08:42:03',
+    '2019-08-20 10:42:03',
     'adrian',
     'Mantenimiendo borrad',
     'delete from mantenimiento where nif=25650 AND fecha=\'2019-08-20\' AND mantenimiento=\'\''
@@ -9040,24 +9284,24 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-08-20 13:15:36', 'adrian', 'login', '');
+  ('2019-08-20 15:15:36', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-08-26 07:35:26', 'adrian', 'login', '');
+  ('2019-08-26 09:35:26', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-08-26 08:38:13', 'adrian', 'login', '');
+  ('2019-08-26 10:38:13', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-08-27 12:41:12', 'adrian', 'login', '');
+  ('2019-08-27 14:41:12', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-08-27 12:41:38',
+    '2019-08-27 14:41:38',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2019-08-27\',\'El grupo electrogeno no entra en funcionamiento. Se sospecha de la bateria, y se pone a cargar pa'
@@ -9066,7 +9310,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-08-27 12:42:06',
+    '2019-08-27 14:42:06',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(25650,\'La bateria del sistema de comunicacion radio de emisores está funcionando sin bateria, pues explotó.\')'
@@ -9075,7 +9319,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-08-27 12:42:15',
+    '2019-08-27 14:42:15',
     'adrian',
     'Observacion borrada',
     'delete from observaciones where nif=25650 AND observaciones=\'La bateria del sistema de comunicacion radio de emisores está funcionando sin bateria, pu'
@@ -9084,7 +9328,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-08-27 12:42:32',
+    '2019-08-27 14:42:32',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(25650,\'El sistema de comunicacion radio de emisoras está funcionando sin bateria, pues ésta explotó.\')'
@@ -9093,7 +9337,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-08-27 12:43:07',
+    '2019-08-27 14:43:07',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(25650,\'Escasa presion en la instalación de fontaneria.\')'
@@ -9102,7 +9346,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-08-27 12:43:39',
+    '2019-08-27 14:43:39',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(25650,\'Muros tanto interior como exterior en condiciones pauperrimas.\')'
@@ -9111,7 +9355,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-08-27 12:44:44',
+    '2019-08-27 14:44:44',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2019-06-20\',\'El sistema AIS tiene un fallo en el cable de alimentacion. Está desconectado. A la espera de reci'
@@ -9119,12 +9363,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-08-28 13:18:51', 'adrian', 'login', '');
+  ('2019-08-28 15:18:51', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-08-28 13:19:25',
+    '2019-08-28 15:19:25',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2019-08-28\',\'Se sustituye la bateria del grupo electrógeno por una nueva. VARTA 720A 90Ah\')'
@@ -9132,12 +9376,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-09-02 10:07:30', 'adrian', 'login', '');
+  ('2019-09-02 12:07:30', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-09-02 10:08:03',
+    '2019-09-02 12:08:03',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25740,\'2019-08-22\',\'Se sustituye la antigua linterna BDL120 por la nueva MCL330. Además se refuerza el fondeo.\')'
@@ -9146,7 +9390,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-09-02 10:12:11',
+    '2019-09-02 12:12:11',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25740,\'2019-08-22\',\'Tambien se le sustituye el flotador por uno de mayores dimensiones.\')'
@@ -9155,7 +9399,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-09-02 10:12:38',
+    '2019-09-02 12:12:38',
     'adrian',
     'Modificacion lampara',
     'UPDATE lampara set altura=4, elevacion=4,alcanceNom=5.00,alcanceLum=0,linterna=&quot;MCL330&quot;,candelasCalc=0.00, candelasInst=0 where nif=25740'
@@ -9164,7 +9408,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-09-02 10:17:06',
+    '2019-09-02 12:17:06',
     'adrian',
     'Modificacion lampara',
     'UPDATE lampara set altura=4, elevacion=4,alcanceNom=3.00,alcanceLum=0,linterna=&quot;BDL 120 una corona HI (DES33).&quot;,candelasCalc=0.00, candelasI'
@@ -9172,28 +9416,28 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-09-02 10:30:09', 'adrian', 'login', '');
+  ('2019-09-02 12:30:09', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-09-02 11:53:51', 'adrian', 'login', '');
+  ('2019-09-02 13:53:51', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-09-02 12:55:51', 'adrian', 'login', '');
+  ('2019-09-02 14:55:51', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-09-04 11:40:33', 'adrian', 'login', '');
+  ('2019-09-04 13:40:33', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-09-05 07:41:19', 'pepe', 'login', '');
+  ('2019-09-05 09:41:19', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-09-05 07:45:08',
+    '2019-09-05 09:45:08',
     'pepe',
     'Observacion añadida',
     'insert into observaciones values(25765,\'2019-08-09 Se sustituye el flotador por degradación.\')'
@@ -9202,7 +9446,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-09-05 07:47:29',
+    '2019-09-05 09:47:29',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25765,\'2019-08-14\',\'Se sustituye el flotador por degradación del original.\')'
@@ -9211,7 +9455,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-09-05 07:49:15',
+    '2019-09-05 09:49:15',
     'pepe',
     'Observacion añadida',
     'insert into observaciones values(25765,\'\')'
@@ -9219,12 +9463,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-09-05 08:36:55', 'pepe', 'login', '');
+  ('2019-09-05 10:36:55', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-09-05 08:37:26',
+    '2019-09-05 10:37:26',
     'pepe',
     'Modificacion lampara',
     'UPDATE lampara set altura=4, elevacion=4,alcanceNom=5.00,alcanceLum=0.00,linterna=&quot;MCL330&quot;,candelasCalc=0.00, candelasInst=230 where nif=257'
@@ -9233,7 +9477,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-09-05 08:42:05',
+    '2019-09-05 10:42:05',
     'pepe',
     'Observacion borrada',
     'delete from observaciones where nif=25765 AND observaciones=\'\''
@@ -9242,7 +9486,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-09-05 08:42:15',
+    '2019-09-05 10:42:15',
     'pepe',
     'Observacion borrada',
     'delete from observaciones where nif=25765 AND observaciones=\'2019-08-09 Se sustituye el flotador por degradación.\''
@@ -9251,7 +9495,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-09-05 08:43:31',
+    '2019-09-05 10:43:31',
     'pepe',
     'Modificacion lampara',
     'UPDATE lampara set altura=4, elevacion=4,alcanceNom=5.00,alcanceLum=0.00,linterna=&quot;MCL330&quot;,candelasCalc=191.67, candelasInst=230.00 where ni'
@@ -9259,12 +9503,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-09-09 09:22:29', 'adrian', 'login', '');
+  ('2019-09-09 11:22:29', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-09-09 09:22:40',
+    '2019-09-09 11:22:40',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(25590,\'Necesita ser pintada\')'
@@ -9273,7 +9517,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-09-09 09:22:48',
+    '2019-09-09 11:22:48',
     'adrian',
     'Observacion borrada',
     'delete from observaciones where nif=25590 AND observaciones=\'Necesita ser pintada\''
@@ -9282,7 +9526,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-09-09 09:27:45',
+    '2019-09-09 11:27:45',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(25590,\'Necesita ser pintada, por presencia de grafitti que dificulta la identificación de la señal.\')'
@@ -9290,12 +9534,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-09-09 13:29:11', 'adrian', 'login', '');
+  ('2019-09-09 15:29:11', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-09-09 13:29:34',
+    '2019-09-09 15:29:34',
     'adrian',
     'Modificacion lampara',
     'UPDATE lampara set altura=2, elevacion=3,alcanceNom=1.00,alcanceLum=0,linterna=&quot;MBL 160 (MSM) S/N:224 Año 2015&quot;,candelasCalc=0.00, candelasI'
@@ -9304,7 +9548,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-09-09 13:30:22',
+    '2019-09-09 15:30:22',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(25565,\'El marco de la placa fotovoltaica mide 124x34 cm\')'
@@ -9313,7 +9557,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-09-09 13:30:52',
+    '2019-09-09 15:30:52',
     'adrian',
     'Modificacion Caracte',
     'UPDATE balizamiento set num_internacional=&quot;E-0196.32&quot;, tipo=&quot;Baliza Estribor Linterna sobre pilote.&quot;,apariencia=&quot;Gp D (4 )  V'
@@ -9322,7 +9566,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-09-09 13:31:18',
+    '2019-09-09 15:31:18',
     'adrian',
     'Modificacion Caracte',
     'UPDATE balizamiento set num_internacional=&quot;&quot;, tipo=&quot;Baliza amarilla Linterna sobre pilote.&quot;,apariencia=&quot;D Amarillos 3s.&quot;'
@@ -9331,7 +9575,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-09-09 13:32:19',
+    '2019-09-09 15:32:19',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(25570,\'Panel Fotovoltaico de 53x64cm (Agujeros a 48x30cm)\')'
@@ -9339,16 +9583,16 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-09-12 09:49:51', 'adrian', 'login', '');
+  ('2019-09-12 11:49:51', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-09-16 14:25:11', 'pepe', 'login', '');
+  ('2019-09-16 16:25:11', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-09-16 14:25:52',
+    '2019-09-16 16:25:52',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26048.1,\'2019-09-16\',\'Se sustituye la batería y la óptica por degradación y filtraciones\')'
@@ -9356,12 +9600,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-09-17 07:55:20', 'pepe', 'login', '');
+  ('2019-09-17 09:55:20', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-09-17 07:55:43',
+    '2019-09-17 09:55:43',
     'pepe',
     'Observacion añadida',
     'insert into observaciones values(26471,\'Suprimida definitivamente. Septiembre 2019\')'
@@ -9370,7 +9614,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-09-17 07:56:02',
+    '2019-09-17 09:56:02',
     'pepe',
     'Observacion añadida',
     'insert into observaciones values(26470,\'Suprimida definitivamente. Septiembre 2019\')'
@@ -9379,7 +9623,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-09-17 07:56:25',
+    '2019-09-17 09:56:25',
     'pepe',
     'Observacion añadida',
     'insert into observaciones values(26472,\'Suprimida definitivamente. Septiembre 2019\')'
@@ -9388,7 +9632,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-09-17 07:56:53',
+    '2019-09-17 09:56:53',
     'pepe',
     'Observacion añadida',
     'insert into observaciones values(26473,\'Suprimida definitivamente. Septiembre 2019\')'
@@ -9396,40 +9640,40 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-09-18 08:56:38', 'pepe', 'login', '');
+  ('2019-09-18 10:56:38', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-09-18 08:56:46', 'pepe', 'logout', '');
+  ('2019-09-18 10:56:46', 'pepe', 'logout', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-09-18 09:16:54', 'pepe', 'login', '');
+  ('2019-09-18 11:16:54', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-09-19 09:16:40', 'marcos', 'login', '');
+  ('2019-09-19 11:16:40', 'marcos', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-10-01 08:29:30', 'marcos', 'login', '');
+  ('2019-10-01 10:29:30', 'marcos', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-10-04 07:55:52', 'marcos', 'login', '');
+  ('2019-10-04 09:55:52', 'marcos', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-10-04 07:56:07', 'marcos', 'logout', '');
+  ('2019-10-04 09:56:07', 'marcos', 'logout', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-10-10 09:28:54', 'adrian', 'login', '');
+  ('2019-10-10 11:28:54', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-10-10 09:29:24',
+    '2019-10-10 11:29:24',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(25650,\'Alicatado del cuarto de baño de la oficina deteriorado. Han saltado cuatro azulejos.\')'
@@ -9438,7 +9682,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-10-10 09:31:57',
+    '2019-10-10 11:31:57',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2019-10-08\',\'Visita Concejales del ayuntamiento de Cullera.\')'
@@ -9446,12 +9690,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-10-14 09:03:04', 'adrian', 'login', '');
+  ('2019-10-14 11:03:04', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-10-14 09:04:04',
+    '2019-10-14 11:04:04',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25545,\'2019-10-11\',\'Se tuvo que resetear MOSCAD ya que se quedó encendida permanentemente.\')'
@@ -9459,16 +9703,16 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-10-15 12:01:26', 'adrian', 'login', '');
+  ('2019-10-15 14:01:26', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-10-17 07:30:37', 'adrian', 'login', '');
+  ('2019-10-17 09:30:37', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-10-17 07:30:43',
+    '2019-10-17 09:30:43',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(25640,\'Dada de baja del sistema de balizamiento\')'
@@ -9476,12 +9720,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-10-17 14:31:30', 'adrian', 'login', '');
+  ('2019-10-17 16:31:30', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-10-17 14:31:40',
+    '2019-10-17 16:31:40',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(25460,\'Estructura de poliester\')'
@@ -9490,7 +9734,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-10-17 14:40:55',
+    '2019-10-17 16:40:55',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(25470,\'Corona formada a base de (led con optica)\')'
@@ -9499,7 +9743,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-10-17 14:41:11',
+    '2019-10-17 16:41:11',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(25470,\'Recomendable pintar se cara a la proxima inspeccion\')'
@@ -9508,7 +9752,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-10-17 14:42:42',
+    '2019-10-17 16:42:42',
     'adrian',
     'Modificacion Caracte',
     'UPDATE balizamiento set num_internacional=&quot;E-0197.2&quot;, tipo=&quot;Baliza Torre cilíndrica roja sobre base roja&quot;,apariencia=&quot;GpD(4)R'
@@ -9517,7 +9761,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-10-17 14:42:50',
+    '2019-10-17 16:42:50',
     'adrian',
     'Modificacion lampara',
     'UPDATE lampara set altura=7, elevacion=10,alcanceNom=3.00,alcanceLum=0,linterna=&quot;BDL 120 LMV DES 22&quot;,candelasCalc=0.00, candelasInst=0 where'
@@ -9525,12 +9769,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-10-23 11:20:34', 'adrian', 'login', '');
+  ('2019-10-23 13:20:34', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-10-23 11:21:21',
+    '2019-10-23 13:21:21',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2019-10-23\',\'Se instalan las nuevas puertas de Almacen y tercera vivienda, a cargo de la empresa Nuñez-Armando'
@@ -9538,12 +9782,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-10-29 08:33:24', 'pepe', 'login', '');
+  ('2019-10-29 09:33:24', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-10-29 08:34:00',
+    '2019-10-29 09:34:00',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26048.1,\'2019-10-25\',\'Se repinta toda la torre.\')'
@@ -9552,7 +9796,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-10-29 08:34:53',
+    '2019-10-29 09:34:53',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26048,\'2019-10-25\',\'Se repinta toda la torre.\')'
@@ -9560,16 +9804,16 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-10-30 14:09:32', 'adrian', 'login', '');
+  ('2019-10-30 15:09:32', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-11-13 08:53:51', 'pepe', 'login', '');
+  ('2019-11-13 09:53:51', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-11-13 08:54:41',
+    '2019-11-13 09:54:41',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2019-11-12\',\'Se repara fallo de foto-célula interior (lámparas). Conector flojo, provocaba apagado del faro.\')'
@@ -9577,12 +9821,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-11-20 07:16:52', 'pepe', 'login', '');
+  ('2019-11-20 08:16:52', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-11-20 07:20:14',
+    '2019-11-20 08:20:14',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26500,\'2019-11-19\',\'Se ajusta a la baja la sensibilidad de la foto-célula de encendido (encendía y apagaba continuame'
@@ -9590,12 +9834,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-11-20 08:16:58', 'pepe', 'login', '');
+  ('2019-11-20 09:16:58', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-11-20 08:18:12',
+    '2019-11-20 09:18:12',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26500,\'2019-11-19\',\'Se sustituye la LDR interna por una nueva.\')'
@@ -9603,12 +9847,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-12-02 08:24:07', 'pepe', 'login', '');
+  ('2019-12-02 09:24:07', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-12-02 08:25:19',
+    '2019-12-02 09:25:19',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25545,\'2019-11-27\',\'Se repinta toda la torre.\')'
@@ -9617,7 +9861,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-12-02 08:26:05',
+    '2019-12-02 09:26:05',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25552,\'2019-11-26\',\'Se repinta toda la torre.\')'
@@ -9626,7 +9870,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-12-02 08:26:47',
+    '2019-12-02 09:26:47',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25565,\'2019-11-26\',\'Se repinta toda la torre.\')'
@@ -9635,7 +9879,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-12-02 08:35:46',
+    '2019-12-02 09:35:46',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25565,\'2019-11-28\',\'Se repinta toda la torre.\')'
@@ -9644,7 +9888,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-12-02 08:37:20',
+    '2019-12-02 09:37:20',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25564,\'2019-11-27\',\'Se repinta todo el soporte.\')'
@@ -9653,7 +9897,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-12-02 08:38:29',
+    '2019-12-02 09:38:29',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25563,\'2019-11-27\',\'Se repinta todo el soporte.\')'
@@ -9662,7 +9906,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-12-02 08:41:16',
+    '2019-12-02 09:41:16',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25700,\'2019-11-26\',\'Avería en la rotación.  Funciona con la B.E.\')'
@@ -9671,7 +9915,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-12-02 08:42:36',
+    '2019-12-02 09:42:36',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25700,\'2019-11-27\',\'Se fuerza el encendido con motor dos y queda en funcionamiento.\')'
@@ -9680,7 +9924,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-12-02 08:51:27',
+    '2019-12-02 09:51:27',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25700,\'2019-11-28\',\'VARESER comienza las obras para instalar agua potable en el faro.\')'
@@ -9688,12 +9932,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-12-10 08:28:16', 'pepe', 'login', '');
+  ('2019-12-10 09:28:16', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-12-10 08:29:04',
+    '2019-12-10 09:29:04',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25830,\'2019-12-09\',\'Se repinta toda la torre.\')'
@@ -9702,7 +9946,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-12-10 08:29:56',
+    '2019-12-10 09:29:56',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25831,\'2019-12-09\',\'Se repinta todo el soporte.\')'
@@ -9710,12 +9954,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-12-13 10:36:03', 'pepe', 'login', '');
+  ('2019-12-13 11:36:03', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-12-13 10:36:40',
+    '2019-12-13 11:36:40',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26326,\'2019-12-12\',\'Se repinta todo el soporte.\')'
@@ -9723,16 +9967,16 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-12-27 08:45:26', 'adrian', 'login', '');
+  ('2019-12-27 09:45:26', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-12-27 08:47:16', 'adrian', 'login', '');
+  ('2019-12-27 09:47:16', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-12-27 08:48:03',
+    '2019-12-27 09:48:03',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26360,\'2019-12-23\',\'Se dió de baja por la noche.\')'
@@ -9741,7 +9985,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2019-12-27 08:48:59',
+    '2019-12-27 09:48:59',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26360,\'2019-12-26\',\'Se sustituye una bateria ???\')'
@@ -9749,32 +9993,32 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-12-30 13:38:25', 'adrian', 'login', '');
+  ('2019-12-30 14:38:25', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-12-30 15:32:38', 'adrian', 'login', '');
+  ('2019-12-30 16:32:38', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-12-30 17:47:33', 'pepe', 'login', '');
+  ('2019-12-30 18:47:33', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2019-12-31 08:45:22', 'pepe', 'login', '');
+  ('2019-12-31 09:45:22', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-01-03 09:19:52', 'pepe', 'login', '');
+  ('2020-01-03 10:19:52', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-01-10 12:39:28', 'pepe', 'login', '');
+  ('2020-01-10 13:39:28', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-01-10 12:40:33',
+    '2020-01-10 13:40:33',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26048,\'2020-01-10\',\'Se instala un panel solar por la perdida del anterior.\')'
@@ -9782,12 +10026,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-01-24 08:07:37', 'pepe', 'login', '');
+  ('2020-01-24 09:07:37', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-01-24 08:09:10',
+    '2020-01-24 09:09:10',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26450,\'2020-01-21\',\'Se apaga por el fuerte temporal y se da de baja.\')'
@@ -9795,12 +10039,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-01-24 13:49:24', 'pepe', 'login', '');
+  ('2020-01-24 14:49:24', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-01-24 13:52:07',
+    '2020-01-24 14:52:07',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25730,\'2020-01-22\',\'Queda a la deriva y se localiza en la playa (Pinedo) sin paneles, ni linterna, ni baterías.\')'
@@ -9809,7 +10053,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-01-24 13:53:45',
+    '2020-01-24 14:53:45',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25730,\'2020-01-24\',\'Se retira de la playa para su reparación y se deposita en la campa de la Dársena de Servicios.\')'
@@ -9817,16 +10061,16 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-01-30 06:58:23', 'pepe', 'login', '');
+  ('2020-01-30 07:58:23', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-02-04 14:06:58', 'pepe', 'login', '');
+  ('2020-02-04 15:06:58', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-02-04 14:08:44',
+    '2020-02-04 15:08:44',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26450,\'2020-02-04\',\'Se instala baliza nueva MCL 200 y se da de alta.\')'
@@ -9835,7 +10079,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-02-04 14:10:45',
+    '2020-02-04 15:10:45',
     'pepe',
     'Observacion añadida',
     'insert into observaciones values(26450,\'Se modifica la característica a GpRp (3) 5s. Se comunica a PP EE y al Hidrográfico\')'
@@ -9843,36 +10087,36 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-02-05 08:41:21', 'pepe', 'login', '');
+  ('2020-02-05 09:41:21', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-02-05 09:15:39', 'pepe', 'login', '');
+  ('2020-02-05 10:15:39', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-02-13 14:12:40', 'pepe', 'login', '');
+  ('2020-02-13 15:12:40', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-02-13 14:14:27', 'adrian', 'logout', '');
+  ('2020-02-13 15:14:27', 'adrian', 'logout', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-02-13 14:17:26', 'pepe', 'login', '');
+  ('2020-02-13 15:17:26', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-02-13 14:17:30', 'pepe', 'logout', '');
+  ('2020-02-13 15:17:30', 'pepe', 'logout', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-07-08 14:23:20', 'adrian', 'login', '');
+  ('2020-07-08 16:23:20', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-08 14:23:46',
+    '2020-07-08 16:23:46',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2020-07-06\',\'Pintores Nuñez inician trabajos de impermeabilizar terrazas y pintar fachada principal.\')'
@@ -9881,7 +10125,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-08 14:25:33',
+    '2020-07-08 16:25:33',
     'adrian',
     'Uso coche añadido',
     'insert into cochecito values(\'adrian\',\'2020-07-08\',\'09:00\',\'14:00\',\'Revision Balizamiento Valeancia\')'
@@ -9889,12 +10133,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-07-09 08:04:43', 'adrian', 'login', '');
+  ('2020-07-09 10:04:43', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 08:05:25',
+    '2020-07-09 10:05:25',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26285,\'2020-04-20\',\'Se repinta toda la torre.\')'
@@ -9903,7 +10147,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 08:05:47',
+    '2020-07-09 10:05:47',
     'adrian',
     'Observacion borrada',
     'delete from observaciones where nif=26285 AND observaciones=\' SE REPINTARÁ EN 2019\''
@@ -9912,7 +10156,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 08:06:42',
+    '2020-07-09 10:06:42',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26285,\'2011-10-21\',\'Sustitución de la fotocélula y la tarjeta destelladora del litepipe derecho.\')'
@@ -9921,7 +10165,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 08:07:57',
+    '2020-07-09 10:07:57',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26290,\'2020-04-20\',\'Se repinta la torre y vallado.\')'
@@ -9930,7 +10174,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 08:10:35',
+    '2020-07-09 10:10:35',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26320,\'2020-02-27\',\'Se sustituye por la mobilis para su reparación y mantenimiento.\')'
@@ -9939,7 +10183,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 08:11:14',
+    '2020-07-09 10:11:14',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26325,\'2019-02-18\',\'Se sustituye LDR por avería.\')'
@@ -9948,7 +10192,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 08:12:14',
+    '2020-07-09 10:12:14',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26325,\'2018-12-07\',\'Se repinta la torre de la baliza.\')'
@@ -9957,7 +10201,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 08:13:08',
+    '2020-07-09 10:13:08',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26326,\'2012-04-17\',\'Sustitución de la óptica.\')'
@@ -9966,7 +10210,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 08:14:58',
+    '2020-07-09 10:14:58',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26360,\'2019-02-27\',\'Se repone la boya en su posición con el telecontrol desconectado.\')'
@@ -9975,7 +10219,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 08:15:34',
+    '2020-07-09 10:15:34',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26360,\'2019-12-24\',\'CCE comunica que esta apagada. Se da de baja.\')'
@@ -9984,7 +10228,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 08:16:05',
+    '2020-07-09 10:16:05',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26360,\'2019-12-26\',\'Se sustituye una batería y se da de alta.\')'
@@ -9993,7 +10237,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 08:16:16',
+    '2020-07-09 10:16:16',
     'adrian',
     'Mantenimiendo borrad',
     'delete from mantenimiento where nif=26360 AND fecha=\'2019-12-26\' AND mantenimiento=\'Se sustituye una bateria ???\''
@@ -10002,7 +10246,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 08:16:36',
+    '2020-07-09 10:16:36',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26360,\'2020-04-28\',\'Se le reduce el alcance a 1mn.\')'
@@ -10011,7 +10255,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 08:16:51',
+    '2020-07-09 10:16:51',
     'adrian',
     'Mantenimiendo borrad',
     'delete from mantenimiento where nif=26326 AND fecha=\'2012-04-17\' AND mantenimiento=\'Sustitución de la óptica.\''
@@ -10020,7 +10264,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 08:17:59',
+    '2020-07-09 10:17:59',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26380,\'2020-04-28\',\'Se modifica pasando a ser una Marca lateral de bifurcación (Se repinta).\')'
@@ -10029,7 +10273,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 08:19:51',
+    '2020-07-09 10:19:51',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26390,\'2020-04-27\',\'Se repinta la torre y el contorno blanco.\')'
@@ -10038,7 +10282,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 08:20:30',
+    '2020-07-09 10:20:30',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26392,\'2019-02-18\',\'Se rearma diferencial de acometida.\')'
@@ -10047,7 +10291,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 08:26:00',
+    '2020-07-09 10:26:00',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26375,\'2020-04-28\',\'Entra en servicio.\')'
@@ -10056,7 +10300,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 08:27:07',
+    '2020-07-09 10:27:07',
     'adrian',
     'Modificacion Caracte',
     'UPDATE balizamiento set num_internacional=&quot;E-0214&quot;, tipo=&quot;Baliza TPS 3.3&quot;,apariencia=&quot;GpD(4)R&quot;,periodo=14.5,caracteristi'
@@ -10065,7 +10309,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 08:27:52',
+    '2020-07-09 10:27:52',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26380,\'2020-04-28\',\'Se modifica pasando a ser una Marca lateral de bifurcación. Se repinta del color correspondiente '
@@ -10074,7 +10318,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 08:28:01',
+    '2020-07-09 10:28:01',
     'adrian',
     'Mantenimiendo borrad',
     'delete from mantenimiento where nif=26380 AND fecha=\'2020-04-28\' AND mantenimiento=\'Se modifica pasando a ser una Marca lateral de bifurcación (Se rep'
@@ -10083,7 +10327,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 08:33:03',
+    '2020-07-09 10:33:03',
     'adrian',
     'Modificacion lampara',
     'UPDATE lampara set altura=6, elevacion=12,alcanceNom=5.00,alcanceLum=0,linterna=&quot;MCL200 / DES-33&quot;,candelasCalc=0.00, candelasInst=0 where ni'
@@ -10092,7 +10336,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 08:33:13',
+    '2020-07-09 10:33:13',
     'adrian',
     'Modificacion lampara',
     'UPDATE lampara set altura=6, elevacion=12,alcanceNom=5.00,alcanceLum=0.00,linterna=&quot;MCL200 autonoma / DES-33&quot;,candelasCalc=0.00, candelasIns'
@@ -10101,7 +10345,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 08:40:43',
+    '2020-07-09 10:40:43',
     'adrian',
     'Modificacion lampara',
     'UPDATE lampara set altura=2, elevacion=2,alcanceNom=3.00,alcanceLum=0,linterna=&quot;MCL-140  SN 295  (Autoalimentada)&quot;,candelasCalc=0.00, candel'
@@ -10110,7 +10354,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 08:43:10',
+    '2020-07-09 10:43:10',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25555,\'2019-06-25\',\'Se sustituye la batería por avería.\')'
@@ -10119,7 +10363,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 08:45:56',
+    '2020-07-09 10:45:56',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25530,\'2020-02-26\',\'Se reinicia MOSCAD reestableciendose comunicaciones con el SCADA.\')'
@@ -10128,7 +10372,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 08:46:13',
+    '2020-07-09 10:46:13',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25545,\'2020-04-03\',\'Se reinicia MOSCAD reestableciendose comunicaciones con el SCADA.\')'
@@ -10137,7 +10381,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 08:47:02',
+    '2020-07-09 10:47:02',
     'adrian',
     'Modificacion lampara',
     'UPDATE lampara set altura=3, elevacion=2,alcanceNom=1.00,alcanceLum=0,linterna=&quot;Des 33 Maq. Val.Bola de leds de 50 W ÓpticaFresnel 300mm&quot;,ca'
@@ -10146,7 +10390,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 08:47:11',
+    '2020-07-09 10:47:11',
     'adrian',
     'Modificacion lampara',
     'UPDATE lampara set altura=7, elevacion=15,alcanceNom=7.00,alcanceLum=0,linterna=&quot;DES 33 MaqVal. Bola leds 50 w Óptica300 mm&quot;,candelasCalc=0.'
@@ -10155,7 +10399,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 08:47:21',
+    '2020-07-09 10:47:21',
     'adrian',
     'Modificacion lampara',
     'UPDATE lampara set altura=4, elevacion=6,alcanceNom=3.00,alcanceLum=0,linterna=&quot;DES 22 Maq. Val.  8 coronas de leds  Óptica BDL 120&quot;,candela'
@@ -10164,7 +10408,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 08:47:46',
+    '2020-07-09 10:47:46',
     'adrian',
     'Modificacion lampara',
     'UPDATE lampara set altura=2, elevacion=2,alcanceNom=1.00,alcanceLum=0,linterna=&quot;MCL 160 (MSM)&quot;,candelasCalc=0.00, candelasInst=0 where nif=2'
@@ -10173,7 +10417,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 08:48:14',
+    '2020-07-09 10:48:14',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25554,\'2019-05-17\',\'Se recoloca la boya original en su sitio, repintada.\')'
@@ -10182,7 +10426,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 08:48:25',
+    '2020-07-09 10:48:25',
     'adrian',
     'Mantenimiendo borrad',
     'delete from mantenimiento where nif=25554 AND fecha=\'2019-05-17\' AND mantenimiento=\'Se recoloca la boya original en su sitio.\''
@@ -10191,7 +10435,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 08:48:57',
+    '2020-07-09 10:48:57',
     'adrian',
     'Modificacion lampara',
     'UPDATE lampara set altura=2, elevacion=4,alcanceNom=1.00,alcanceLum=0,linterna=&quot;DES 22 Maq. Val.  4 coronas de leds  Óptica BDL 120&quot;,candela'
@@ -10200,7 +10444,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 08:54:36',
+    '2020-07-09 10:54:36',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25560,\'2020-02-14\',\'Aparece con grafities, limpiando y parcheando a spray para obtener un color homogeneo.\')'
@@ -10209,7 +10453,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 08:54:57',
+    '2020-07-09 10:54:57',
     'adrian',
     'Modificacion lampara',
     'UPDATE lampara set altura=2, elevacion=4,alcanceNom=1.00,alcanceLum=0,linterna=&quot;DES 22 LMV   4 coronas de leds  Óptica BDL 120&quot;,candelasCalc'
@@ -10218,7 +10462,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 08:56:42',
+    '2020-07-09 10:56:42',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25563,\'2020-06-04\',\'Pantalan acordonado por policia portuaria, y pivote de la baliza doblado.\')'
@@ -10227,7 +10471,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 09:02:42',
+    '2020-07-09 11:02:42',
     'adrian',
     'Modificacion lampara',
     'UPDATE lampara set altura=3, elevacion=5,alcanceNom=1.00,alcanceLum=0,linterna=&quot;DES 22 LMV     2 discos de leds    Óptica BDL 120&quot;,candelasC'
@@ -10235,12 +10479,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-07-09 11:22:57', 'adrian', 'login', '');
+  ('2020-07-09 13:22:57', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 11:24:24',
+    '2020-07-09 13:24:24',
     'adrian',
     'Uso coche añadido',
     'insert into cochecito values(\'adrian\',\'2020-07-09\',\'11:00\',\'13:00\',\'Desplazamiento oficinas\')'
@@ -10248,12 +10492,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-07-09 11:40:03', 'pepe', 'login', '');
+  ('2020-07-09 13:40:03', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-09 11:46:22',
+    '2020-07-09 13:46:22',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25730,\'2020-02-17\',\'Se fondea la boya de sustitución sin tele-control.\')'
@@ -10261,12 +10505,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-07-10 08:46:37', 'adrian', 'login', '');
+  ('2020-07-10 10:46:37', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-10 08:47:03',
+    '2020-07-10 10:47:03',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2020-05-07\',\'Mecanicos cambian las bisagras de la puerta de acceso peatonal.\')'
@@ -10275,7 +10519,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-10 08:47:47',
+    '2020-07-10 10:47:47',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2020-04-30\',\'Se reinicia el SAI del faro, reestableciendose las comunicaciones de dicho elemento.\')'
@@ -10284,7 +10528,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-10 08:49:46',
+    '2020-07-10 10:49:46',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2020-03-12\',\'Se inician las obras de conservacion y mantenimiento del faro.\')'
@@ -10293,7 +10537,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-10 08:51:16',
+    '2020-07-10 10:51:16',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2020-03-27\',\'Se tiende una nueva linea desde la camara de servicio del faro hasta el cuadro general de electri'
@@ -10302,7 +10546,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-10 08:52:41',
+    '2020-07-10 10:52:41',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2020-02-25\',\'Mecanicos instalan nueva pieza anti-retorno y reductor de caudal de agua.\')'
@@ -10311,7 +10555,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-10 08:54:22',
+    '2020-07-10 10:54:22',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2020-03-11\',\'Kgest toma muestras de calidad de ambiente interior de las instalaciones del faro.\')'
@@ -10320,7 +10564,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-10 08:54:51',
+    '2020-07-10 10:54:51',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2020-01-30\',\'Guipons hace la revisión de extintores.\')'
@@ -10329,7 +10573,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-10 08:56:11',
+    '2020-07-10 10:56:11',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(25650,\'Grupo electrógeno aterpillar 13.5 KVA\')'
@@ -10338,7 +10582,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-10 08:56:29',
+    '2020-07-10 10:56:29',
     'adrian',
     'Observacion borrada',
     'delete from observaciones where nif=25650 AND observaciones=\'Muros tanto interior como exterior en condiciones pauperrimas.\''
@@ -10347,7 +10591,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-10 08:57:25',
+    '2020-07-10 10:57:25',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2020-10-23\',\'Guipons hace la revisión del material contra incendios.\')'
@@ -10356,7 +10600,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-10 08:58:49',
+    '2020-07-10 10:58:49',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2019-09-30\',\'Visita del responsable de Gestión Documental. Se acuerda llevar los documentos historicos a la bi'
@@ -10365,7 +10609,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-10 08:59:59',
+    '2020-07-10 10:59:59',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2019-08-06\',\'Explota la batería del sistema de comunicaciones de las emisoras ubicada en la camara de servicio'
@@ -10374,7 +10618,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-10 09:01:02',
+    '2020-07-10 11:01:02',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2019-08-15\',\'Se sustituye la fuente de alimentación del sistema de comunicación de las emisoras.\')'
@@ -10383,7 +10627,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-10 09:02:13',
+    '2020-07-10 11:02:13',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2020-07-01\',\'Guipons hace la revisión de los extintores. Kgest hace la recogida de muestras en agua potable.\')'
@@ -10392,7 +10636,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-10 09:02:44',
+    '2020-07-10 11:02:44',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2019-10-23\',\'Guipons hace la revisión del material contra incendios.\')'
@@ -10401,7 +10645,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-10 09:02:51',
+    '2020-07-10 11:02:51',
     'adrian',
     'Mantenimiendo borrad',
     'delete from mantenimiento where nif=25650 AND fecha=\'2020-10-23\' AND mantenimiento=\'Guipons hace la revisión del material contra incendios.\''
@@ -10410,7 +10654,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-10 09:03:49',
+    '2020-07-10 11:03:49',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2020-06-09\',\'No se puede acceder remotamente al PC del AIS. Se resetea y se reestablecen las comunicaciones.\')'
@@ -10419,7 +10663,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-10 09:04:56',
+    '2020-07-10 11:04:56',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2020-06-03\',\'Soler realiza la revisión de los sistemas de detección de incendios.\')'
@@ -10428,7 +10672,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-10 09:08:20',
+    '2020-07-10 11:08:20',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2020-02-05\',\'Se acude con persoanl de la climina para toma de muestras de calidad.\')'
@@ -10437,7 +10681,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-10 09:08:58',
+    '2020-07-10 11:08:58',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2020-02-05\',\'Se acude con personal de la clinica y subcontrata para toma de muestras de calidad.\')'
@@ -10446,7 +10690,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-10 09:09:20',
+    '2020-07-10 11:09:20',
     'adrian',
     'Mantenimiendo borrad',
     'delete from mantenimiento where nif=25650 AND fecha=\'2020-02-05\' AND mantenimiento=\'Se acude con persoanl de la climina para toma de muestras de calid'
@@ -10455,7 +10699,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-10 09:10:57',
+    '2020-07-10 11:10:57',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2019-09-20\',\'KGEST realiza la toma de muestras de calidad del aire interior (CAI).\')'
@@ -10464,7 +10708,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-10 09:11:45',
+    '2020-07-10 11:11:45',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2019-09-12\',\'Se procede a la sustitución del cable de alimentación del ELMAN ABT 1103, pues el conector se enc'
@@ -10473,7 +10717,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-10 09:13:05',
+    '2020-07-10 11:13:05',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2019-07-09\',\'Se reactiva el funcionamiento tanto de la camara de la sala de máquinas como de la camara de la l'
@@ -10482,7 +10726,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-10 09:13:42',
+    '2020-07-10 11:13:42',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2019-07-17\',\'Guipons realiza la revisión de extintores.\')'
@@ -10491,7 +10735,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-10 09:15:28',
+    '2020-07-10 11:15:28',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2019-05-21\',\'Se resuelve a traves del SAUSI avería en el ordenador de la oficina del faro. Se le sustituyó la '
@@ -10500,7 +10744,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-10 09:17:09',
+    '2020-07-10 11:17:09',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2019-04-23\',\'SOLER realiza la revisión del sistema de detección de incendios.\')'
@@ -10509,7 +10753,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-10 09:19:01',
+    '2020-07-10 11:19:01',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2019-05-21\',\'Personal de la clínica acuden junto con el técnico de sonido para la medición de ruidos.\')'
@@ -10518,7 +10762,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-10 09:19:44',
+    '2020-07-10 11:19:44',
     'adrian',
     'Mantenimiendo borrad',
     'delete from mantenimiento where nif=25650 AND fecha=\'2019-05-21\' AND mantenimiento=\'Visita del técnico de sonido\''
@@ -10527,7 +10771,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-10 09:21:25',
+    '2020-07-10 11:21:25',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2020-04-16\',\'Se retoman las obras en el faro por parte de PAVASAL.\')'
@@ -10536,7 +10780,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-10 09:22:12',
+    '2020-07-10 11:22:12',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2020-04-21\',\'Se rearma el magnetotermico de la bomba del pozo, la hizo saltar los servicios conectados en el a'
@@ -10545,7 +10789,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-10 09:23:53',
+    '2020-07-10 11:23:53',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2020-06-03\',\'PAVASAL finaliza las obras de restauración en el faro.(Pozo incluido)\')'
@@ -10554,7 +10798,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-10 09:25:10',
+    '2020-07-10 11:25:10',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2020-07-07\',\'Se retira un trozo de unos 3KG de la cornisa de la terraza superior del faro (linterna) por riesg'
@@ -10563,7 +10807,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-10 09:26:10',
+    '2020-07-10 11:26:10',
     'adrian',
     'Modificacion lampara',
     'UPDATE lampara set altura=10, elevacion=20,alcanceNom=20.00,alcanceLum=0,linterna=&quot;2&quot;,candelasCalc=2.00, candelasInst=0 where nif=25700'
@@ -10572,7 +10816,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-10 09:26:23',
+    '2020-07-10 11:26:23',
     'adrian',
     'Modificacion lampara',
     'UPDATE lampara set altura=4, elevacion=6,alcanceNom=1.00,alcanceLum=0,linterna=&quot;BDL 120 cuatro coronas.&quot;,candelasCalc=0.00, candelasInst=0 w'
@@ -10581,7 +10825,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-10 09:26:36',
+    '2020-07-10 11:26:36',
     'adrian',
     'Modificacion lampara',
     'UPDATE lampara set altura=3, elevacion=5,alcanceNom=1.00,alcanceLum=0,linterna=&quot;BDL 120 ocho coronas.&quot;,candelasCalc=0.00, candelasInst=0 whe'
@@ -10590,7 +10834,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-10 09:26:37',
+    '2020-07-10 11:26:37',
     'adrian',
     'Modificacion lampara',
     'UPDATE lampara set altura=3, elevacion=5,alcanceNom=1.00,alcanceLum=0,linterna=&quot;BDL 120 ocho coronas.&quot;,candelasCalc=0.00, candelasInst=0 whe'
@@ -10598,12 +10842,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-07-13 07:41:43', 'pepe', 'login', '');
+  ('2020-07-13 09:41:43', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-13 07:42:55',
+    '2020-07-13 09:42:55',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25700,\'2020-10-27\',\'•\tDurante todo el mes de enero, se suceden averías por fallos de rotación en los dos motores, pid'
@@ -10612,7 +10856,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-13 07:44:32',
+    '2020-07-13 09:44:32',
     'pepe',
     'Mantenimiendo borrad',
     'delete from mantenimiento where nif=25700 AND fecha=\'2020-10-27\' AND mantenimiento=\'•Durante todo el mes de enero, se suceden averías por fallos de ro'
@@ -10621,7 +10865,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-13 07:55:32',
+    '2020-07-13 09:55:32',
     'pepe',
     'Mantenimiendo borrad',
     'delete from mantenimiento where nif=25700 AND fecha=\'2020-10-27\' AND mantenimiento=\'•Durante todo el mes de enero, se suceden averías por fallos de ro'
@@ -10629,16 +10873,16 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-07-13 07:56:30', 'pepe', 'logout', '');
+  ('2020-07-13 09:56:30', 'pepe', 'logout', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-07-13 07:56:37', 'pepe', 'login', '');
+  ('2020-07-13 09:56:37', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-13 07:58:28',
+    '2020-07-13 09:58:28',
     'pepe',
     'Mantenimiendo borrad',
     'delete from mantenimiento where nif=25700 AND fecha=\'2020-10-27\' AND mantenimiento=\'•Durante todo el mes de enero, se suceden averías por fallos de ro'
@@ -10647,7 +10891,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-13 08:01:18',
+    '2020-07-13 10:01:18',
     'pepe',
     'Mantenimiendo borrad',
     'delete from mantenimiento where nif=25700 AND fecha=\'2020-10-27\' AND mantenimiento=\'•Durante todo el mes de enero, se suceden averías por fallos de ro'
@@ -10655,12 +10899,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-07-13 08:31:33', 'adrian', 'login', '');
+  ('2020-07-13 10:31:33', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-13 08:31:56',
+    '2020-07-13 10:31:56',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25700,\'2020-01-27\',\'Durante todo el mes de enero, se suceden averías por fallos de rotación en los dos motores, pido '
@@ -10669,7 +10913,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-13 08:32:08',
+    '2020-07-13 10:32:08',
     'adrian',
     'Mantenimiendo borrad',
     'delete from mantenimiento where nif=25700 AND fecha=\'2020-10-27\' AND mantenimiento=\'•Durante todo el mes de enero, se suceden averías por fallos de ro'
@@ -10678,7 +10922,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-13 08:32:33',
+    '2020-07-13 10:32:33',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25700,\'2020-07-13\',\'prueba\')'
@@ -10687,7 +10931,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-13 08:32:50',
+    '2020-07-13 10:32:50',
     'adrian',
     'Mantenimiendo borrad',
     'delete from mantenimiento where nif=25700 AND fecha=\'2020-07-13\' AND mantenimiento=\'prueba\''
@@ -10696,7 +10940,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-13 08:42:07',
+    '2020-07-13 10:42:07',
     'adrian',
     'Mantenimiendo borrad',
     'delete from mantenimiento where nif=25700 AND fecha=\'2020-10-27\' AND mantenimiento=\'•Durante todo el mes de enero, se suceden averías por fallos de ro'
@@ -10705,7 +10949,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-13 08:42:15',
+    '2020-07-13 10:42:15',
     'adrian',
     'Mantenimiendo borrad',
     'delete from mantenimiento where nif=25700 AND fecha=\'2020-01-27\' AND mantenimiento=\'Durante todo el mes de enero, se suceden averías por fallos de rot'
@@ -10714,7 +10958,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-13 09:02:54',
+    '2020-07-13 11:02:54',
     'adrian',
     'Uso coche añadido',
     'insert into cochecito values(\'adrian\',\'2020-07-06\',\'08:02\',\'13:02\',\'Desplazamiento Faro cullera\')'
@@ -10723,7 +10967,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-13 09:03:20',
+    '2020-07-13 11:03:20',
     'adrian',
     'Uso coche añadido',
     'insert into cochecito values(\'adrian\',\'2020-07-07\',\'08:03\',\'14:03\',\'Desplazamiento Faro cullera\')'
@@ -10731,12 +10975,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-07-13 11:55:22', 'pepe', 'login', '');
+  ('2020-07-13 13:55:22', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-13 11:55:29',
+    '2020-07-13 13:55:29',
     'pepe',
     'Mantenimiendo borrad',
     'delete from mantenimiento where nif=25700 AND fecha=\'2020-10-27\' AND mantenimiento=\'•Durante todo el mes de enero, se suceden averías por fallos de ro'
@@ -10745,7 +10989,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-13 11:56:14',
+    '2020-07-13 13:56:14',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25700,\'2020-01-27\',\'Durante todo el mes de enero, se suceden averías por fallos de rotación en los dos motores, pido '
@@ -10754,7 +10998,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-13 11:56:33',
+    '2020-07-13 13:56:33',
     'pepe',
     'Mantenimiendo borrad',
     'delete from mantenimiento where nif=25700 AND fecha=\'2020-01-27\' AND mantenimiento=\'Durante todo el mes de enero, se suceden averías por fallos de rot'
@@ -10763,7 +11007,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-13 11:56:38',
+    '2020-07-13 13:56:38',
     'pepe',
     'Mantenimiendo borrad',
     'delete from mantenimiento where nif=25700 AND fecha=\'2020-10-27\' AND mantenimiento=\'•Durante todo el mes de enero, se suceden averías por fallos de ro'
@@ -10772,7 +11016,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-13 11:59:55',
+    '2020-07-13 13:59:55',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25700,\'2020-07-14\',\'3\')'
@@ -10781,7 +11025,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-13 12:00:02',
+    '2020-07-13 14:00:02',
     'pepe',
     'Mantenimiendo borrad',
     'delete from mantenimiento where nif=25700 AND fecha=\'2020-07-14\' AND mantenimiento=\'3\''
@@ -10789,16 +11033,16 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-07-13 14:19:23', 'adrian', 'login', '');
+  ('2020-07-13 16:19:23', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-07-14 11:29:32', 'adrian', 'login', '');
+  ('2020-07-14 13:29:32', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-14 11:30:09',
+    '2020-07-14 13:30:09',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2020-07-13\',\'Nuñez acaba con los trabajos de pintura. Se impermeabilizan las dos terrazas y se pinta la fachad'
@@ -10807,7 +11051,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-14 11:30:46',
+    '2020-07-14 13:30:46',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2020-07-14\',\'Se rearma el diferencial que protege la linea del repetidor de las señales maritimas de Gandia.\')'
@@ -10815,20 +11059,20 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-07-14 14:12:42', 'pepe', 'login', '');
+  ('2020-07-14 16:12:42', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-07-14 14:13:16', 'pepe', 'logout', '');
+  ('2020-07-14 16:13:16', 'pepe', 'logout', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-07-14 14:13:24', 'pepe', 'login', '');
+  ('2020-07-14 16:13:24', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-14 14:14:46',
+    '2020-07-14 16:14:46',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25700,\'2020-07-14\',\'Se repinta todo el soporte.\')'
@@ -10837,7 +11081,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-14 14:17:09',
+    '2020-07-14 16:17:09',
     'pepe',
     'Mantenimiendo borrad',
     'delete from mantenimiento where nif=25700 AND fecha=\'2020-07-14\' AND mantenimiento=\'Se repinta todo el soporte.\''
@@ -10846,7 +11090,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-14 14:17:27',
+    '2020-07-14 16:17:27',
     'pepe',
     'Mantenimiendo borrad',
     'delete from mantenimiento where nif=25700 AND fecha=\'2020-10-27\' AND mantenimiento=\'•Durante todo el mes de enero, se suceden averías por fallos de ro'
@@ -10854,12 +11098,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-07-15 08:41:14', 'pepe', 'login', '');
+  ('2020-07-15 10:41:14', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-15 08:47:32',
+    '2020-07-15 10:47:32',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26048.2,\'2020-07-07\',\'Se saca a tierra por mantenimiento. Se sustituyen baterías, regulador, LDRs y se repinta añadie'
@@ -10868,7 +11112,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-15 08:48:30',
+    '2020-07-15 10:48:30',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26048.2,\'2020-07-15\',\'Se fondea en su ubicación y se da de alta.\')'
@@ -10876,12 +11120,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-07-15 12:18:14', 'adrian', 'login', '');
+  ('2020-07-15 14:18:14', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-15 12:26:29',
+    '2020-07-15 14:26:29',
     'adrian',
     'Mantenimiendo borrad',
     'delete from mantenimiento where nif=25700 AND fecha=\'2020-10-27\' AND mantenimiento=\'•Durante todo el mes de enero, se suceden averías por fallos de ro'
@@ -10889,28 +11133,28 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-07-21 10:51:16', 'adrian', 'login', '');
+  ('2020-07-21 12:51:16', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-07-21 11:01:18', 'Raul', 'login', '');
+  ('2020-07-21 13:01:18', 'Raul', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-07-21 11:54:35', 'adrian', 'logout', '');
+  ('2020-07-21 13:54:35', 'adrian', 'logout', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-07-21 11:54:42', 'raul', 'login', '');
+  ('2020-07-21 13:54:42', 'raul', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-07-23 08:15:40', 'pepe', 'login', '');
+  ('2020-07-23 10:15:40', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-23 08:18:12',
+    '2020-07-23 10:18:12',
     'pepe',
     'Mantenimiendo borrad',
     'delete from mantenimiento where nif=25700 AND fecha=\'2020-10-27\' AND mantenimiento=\'•Durante todo el mes de enero, se suceden averías por fallos de ro'
@@ -10918,12 +11162,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-07-23 13:46:02', 'adrian', 'login', '');
+  ('2020-07-23 15:46:02', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-23 13:46:19',
+    '2020-07-23 15:46:19',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26500,\'2020-07-23\',\'Se sustituye la lámpara 1 en la baliza principal.\')'
@@ -10931,12 +11175,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-07-27 11:06:11', 'adrian', 'login', '');
+  ('2020-07-27 13:06:11', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-27 11:07:21',
+    '2020-07-27 13:07:21',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26190,\'2020-06-12\',\'Tras mantenimiento, se fondea de nuevo en su ubicación.\')'
@@ -10945,7 +11189,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-27 11:07:58',
+    '2020-07-27 13:07:58',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25768,\'2020-07-23\',\'Se realiza revisión submarina.\')'
@@ -10954,7 +11198,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-27 11:08:16',
+    '2020-07-27 13:08:16',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25820.1,\'2020-07-23\',\'Se realiza revisión submarina.\')'
@@ -10962,24 +11206,24 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-07-28 10:51:42', 'Raul', 'login', '');
+  ('2020-07-28 12:51:42', 'Raul', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-07-28 12:01:11', 'adrian', 'login', '');
+  ('2020-07-28 14:01:11', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-07-30 08:39:16', 'adrian', 'login', '');
+  ('2020-07-30 10:39:16', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-07-30 11:53:19', 'adrian', 'login', '');
+  ('2020-07-30 13:53:19', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-30 11:53:27',
+    '2020-07-30 13:53:27',
     'adrian',
     'Mantenimiendo borrad',
     'delete from mantenimiento where nif=25700 AND fecha=\'2020-10-27\' AND mantenimiento=\'•Durante todo el mes de enero, se suceden averías por fallos de ro'
@@ -10988,7 +11232,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-30 11:56:58',
+    '2020-07-30 13:56:58',
     'adrian',
     'Modificacion Caracte',
     'UPDATE balizamiento set num_internacional=&quot;FCanet&quot;, tipo=&quot;Faro&quot;,apariencia=&quot;GpD(2)&quot;,periodo=10.00,caracteristica=&quot;L'
@@ -10997,7 +11241,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-30 11:57:11',
+    '2020-07-30 13:57:11',
     'adrian',
     'Modificacion lampara',
     'UPDATE lampara set altura=10, elevacion=20,alcanceNom=20.00,alcanceLum=0,linterna=&quot;0&quot;,candelasCalc=0.00, candelasInst=0 where nif=26500'
@@ -11006,7 +11250,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-07-30 11:58:06',
+    '2020-07-30 13:58:06',
     'adrian',
     'Modificacion lampara',
     'UPDATE lampara set altura=14, elevacion=28,alcanceNom=19.00,alcanceLum=0.00,linterna=&quot;Lampara 400w&quot;,candelasCalc=0.00, candelasInst=0.00 whe'
@@ -11014,12 +11258,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-08-11 11:45:31', 'adrian', 'login', '');
+  ('2020-08-11 13:45:31', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-08-11 11:46:18',
+    '2020-08-11 13:46:18',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25776,\'2020-08-05\',\'Se cambiaron las dos LDR\')'
@@ -11028,7 +11272,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-08-11 11:47:05',
+    '2020-08-11 13:47:05',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25920,\'2020-08-06\',\'Fallo rectificador. Se resetea y desaparece el aviso.\')'
@@ -11037,7 +11281,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-08-11 11:48:08',
+    '2020-08-11 13:48:08',
     'adrian',
     'Modificacion Caracte',
     'UPDATE balizamiento set num_internacional=&quot;E-0194&quot;, tipo=&quot;Baliza bocana Torre de hormigón verde&quot;,apariencia=&quot;DV  5s&quot;,per'
@@ -11046,7 +11290,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-08-11 11:48:26',
+    '2020-08-11 13:48:26',
     'adrian',
     'Modificacion Caracte',
     'UPDATE balizamiento set num_internacional=&quot;E-0193&quot;, tipo=&quot;Baliza bocana Torre de hormigón&quot;,apariencia=&quot;DR 5s&quot;,periodo=5.'
@@ -11055,7 +11299,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-08-11 11:48:55',
+    '2020-08-11 13:48:55',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(25545,\'Medio Litepipe se queda encendido\')'
@@ -11063,12 +11307,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-08-14 08:27:36', 'adrian', 'login', '');
+  ('2020-08-14 10:27:36', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-08-14 08:28:03',
+    '2020-08-14 10:28:03',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25940,\'2020-08-14\',\'Se sustituye la LDR 2 (derecha)\')'
@@ -11077,7 +11321,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-08-14 08:31:31',
+    '2020-08-14 10:31:31',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2020-08-11\',\'Se sustituyen las lamparas del alumbrado exterior.\')'
@@ -11086,7 +11330,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-08-14 08:31:55',
+    '2020-08-14 10:31:55',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2020-08-13\',\'Se revisa el SAI, que entra en by-pass interno.\')'
@@ -11094,12 +11338,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-08-19 10:04:54', 'adrian', 'login', '');
+  ('2020-08-19 12:04:54', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-08-19 10:06:09',
+    '2020-08-19 12:06:09',
     'adrian',
     'Observacion borrada',
     'delete from observaciones where nif=25650 AND observaciones=\'Escasa presion en la instalación de fontaneria.\''
@@ -11107,16 +11351,16 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-08-20 11:15:34', 'adrian', 'login', '');
+  ('2020-08-20 13:15:34', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-08-26 08:02:42', 'adrian', 'login', '');
+  ('2020-08-26 10:02:42', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-08-26 08:03:07',
+    '2020-08-26 10:03:07',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25920,\'2020-08-25\',\'Se sustituye la bateria por una nueva.\')'
@@ -11124,16 +11368,16 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-08-26 14:43:29', 'adrian', 'login', '');
+  ('2020-08-26 16:43:29', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-08-26 14:44:34', 'adrian', 'login', '');
+  ('2020-08-26 16:44:34', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-08-26 14:44:55',
+    '2020-08-26 16:44:55',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25920,\'2020-08-26\',\'Se sustituye el rectificador, pero sigue dando fallo rectificador.\')'
@@ -11141,12 +11385,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-08-31 13:46:44', 'adrian', 'login', '');
+  ('2020-08-31 15:46:44', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-08-31 13:47:37',
+    '2020-08-31 15:47:37',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25920,\'2020-08-31\',\'Tras tres intentos se coloca un rectificador diferente y parece que se resuelve la alarma del SCA'
@@ -11154,12 +11398,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-09-14 14:17:07', 'adrian', 'login', '');
+  ('2020-09-14 16:17:07', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-09-14 14:17:22',
+    '2020-09-14 16:17:22',
     'adrian',
     'Modificacion Caracte',
     'UPDATE balizamiento set num_internacional=&quot;E-0201.5&quot;, tipo=&quot;Baliza TPS 4.8&quot;,apariencia=&quot;GpD(3)V&quot;,periodo=9.00,caracteris'
@@ -11167,16 +11411,16 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-09-17 14:03:53', 'pepe', 'login', '');
+  ('2020-09-17 16:03:53', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-09-21 08:23:42', 'pepe', 'login', '');
+  ('2020-09-21 10:23:42', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-09-21 08:24:57',
+    '2020-09-21 10:24:57',
     'pepe',
     'Modificacion lampara',
     'UPDATE lampara set altura=6, elevacion=8,alcanceNom=1.00,alcanceLum=1,linterna=&quot;BDL 120 ocho coronas.&quot;,candelasCalc=0.00, candelasInst=137 w'
@@ -11185,7 +11429,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-09-21 08:25:58',
+    '2020-09-21 10:25:58',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25830,\'2020-09-13\',\'Destruida por accidente de grúa (Se da de baja).\')'
@@ -11194,7 +11438,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-09-21 08:27:58',
+    '2020-09-21 10:27:58',
     'pepe',
     'Modificacion lampara',
     'UPDATE lampara set altura=6, elevacion=8,alcanceNom=1.00,alcanceLum=1.00,linterna=&quot;BDL 120 ocho coronas.&quot;,candelasCalc=214, candelasInst=0 w'
@@ -11203,7 +11447,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-09-21 08:31:34',
+    '2020-09-21 10:31:34',
     'pepe',
     'Modificacion lampara',
     'UPDATE lampara set altura=6, elevacion=8,alcanceNom=1.00,alcanceLum=1.00,linterna=&quot;BDL 120 ocho coronas.&quot;,candelasCalc=0, candelasInst=214 w'
@@ -11212,7 +11456,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-09-21 08:32:33',
+    '2020-09-21 10:32:33',
     'pepe',
     'Modificacion lampara',
     'UPDATE lampara set altura=2, elevacion=5,alcanceNom=1.00,alcanceLum=1,linterna=&quot;BDL HI dos coronas.&quot;,candelasCalc=178, candelasInst=178 wher'
@@ -11220,20 +11464,20 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-09-25 10:59:06', 'pepe', 'login', '');
+  ('2020-09-25 12:59:06', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-09-25 11:00:06', 'pepe', 'logout', '');
+  ('2020-09-25 13:00:06', 'pepe', 'logout', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-09-25 11:01:48', 'pepe', 'login', '');
+  ('2020-09-25 13:01:48', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-09-25 11:03:18',
+    '2020-09-25 13:03:18',
     'pepe',
     'Modificacion Caracte',
     'UPDATE balizamiento set num_internacional=&quot;&quot;, tipo=&quot;Boya Castillete verde y marca de tope&quot;,apariencia=&quot;GpD (2)V&quot;,periodo'
@@ -11242,7 +11486,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-09-25 11:04:47',
+    '2020-09-25 13:04:47',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25820.1,\'2020-09-25\',\'Detectado fallo en la cadena de la durmiente, pendiente de sustitución.\')'
@@ -11250,12 +11494,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-09-25 13:51:21', 'adrian', 'login', '');
+  ('2020-09-25 15:51:21', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-09-25 13:51:41',
+    '2020-09-25 15:51:41',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2020-09-22\',\'Visita Carlos Kgest para medicion ambiental.\')'
@@ -11263,12 +11507,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-10-05 10:09:38', 'adrian', 'login', '');
+  ('2020-10-05 12:09:38', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-10-05 10:10:23',
+    '2020-10-05 12:10:23',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26046,\'2020-10-02\',\'Se sustituye la fotocélula por avería.\')'
@@ -11276,12 +11520,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-10-08 07:30:19', 'pepe', 'login', '');
+  ('2020-10-08 09:30:19', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-10-08 07:33:14',
+    '2020-10-08 09:33:14',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25830,\'2020-10-07\',\'Instalamos un espeque provisional con baliza autónoma MCL140\')'
@@ -11289,12 +11533,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-10-13 08:24:08', 'adrian', 'login', '');
+  ('2020-10-13 10:24:08', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-10-13 08:24:40',
+    '2020-10-13 10:24:40',
     'adrian',
     'Uso coche añadido',
     'insert into cochecito values(\'adrian\',\'2020-10-08\',\'08:00\',\'15:00\',\'Puerto Gandia y  CN Oliva\')'
@@ -11303,7 +11547,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-10-13 08:25:05',
+    '2020-10-13 10:25:05',
     'adrian',
     'Uso coche añadido',
     'insert into cochecito values(\'adrian\',\'2020-10-13\',\'08:30\',\'14:30\',\'Faro Cullera\')'
@@ -11311,12 +11555,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-10-22 14:24:46', 'pepe', 'login', '');
+  ('2020-10-22 16:24:46', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-10-22 14:26:01',
+    '2020-10-22 16:26:01',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25554,\'2020-10-05\',\'Se montan nuevos ánodos de sacrificio\')'
@@ -11325,7 +11569,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-10-22 14:28:01',
+    '2020-10-22 16:28:01',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25820.1,\'2020-10-22\',\'Se repone tramo de cadena desgastada.\')'
@@ -11333,12 +11577,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-10-27 07:17:40', 'pepe', 'login', '');
+  ('2020-10-27 08:17:40', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-10-27 07:19:10',
+    '2020-10-27 08:19:10',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25761,\'2020-10-23\',\'Reponemos ánodos de sacrificio por desgaste.\')'
@@ -11347,7 +11591,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-10-27 07:19:53',
+    '2020-10-27 08:19:53',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25841,\'2020-10-23\',\'Reponemos ánodos de sacrificio por desgaste.\')'
@@ -11356,7 +11600,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-10-27 07:20:41',
+    '2020-10-27 08:20:41',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25842.5,\'2020-10-22\',\'Reponemos ánodos de sacrificio por desgaste.\')'
@@ -11365,7 +11609,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-10-27 07:21:22',
+    '2020-10-27 08:21:22',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25843.8,\'2020-10-22\',\'Reponemos ánodos de sacrificio por desgaste.\')'
@@ -11373,12 +11617,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-11-12 12:46:15', 'pepe', 'login', '');
+  ('2020-11-12 13:46:15', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-11-12 12:48:27',
+    '2020-11-12 13:48:27',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26500,\'2018-01-26\',\'Esteban Ruiz de Viñaspre deja oficialmente el faro por jubilación\')'
@@ -11387,7 +11631,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-11-12 12:49:55',
+    '2020-11-12 13:49:55',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26500,\'2018-01-29\',\'Revisión del grupo electrógeno por el taller de vehículos\')'
@@ -11396,7 +11640,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-11-12 12:51:39',
+    '2020-11-12 13:51:39',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26500,\'2018-02-07\',\'Estudio in situ, para instalar cámaras y alarmas de seguridad\')'
@@ -11405,7 +11649,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-11-12 12:53:07',
+    '2020-11-12 13:53:07',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26500,\'2018-02-09\',\'Visita de autoridades para estudiar la cesión al Ayuntamiento.\')'
@@ -11414,7 +11658,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-11-12 12:55:15',
+    '2020-11-12 13:55:15',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26500,\'2018-02-12\',\'Plan de prevención y control de plagas (Labaqua)\')'
@@ -11423,7 +11667,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-11-12 12:56:29',
+    '2020-11-12 13:56:29',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26500,\'2018-05-07\',\'Revisión de los extintores (Guipons)\')'
@@ -11432,7 +11676,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-11-12 12:57:32',
+    '2020-11-12 13:57:32',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26500,\'2018-06-04\',\'Revisión y analisis de legionela.\')'
@@ -11441,7 +11685,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-11-12 12:58:18',
+    '2020-11-12 13:58:18',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26500,\'2018-06-20\',\'Se sustituye lámpara uno.\')'
@@ -11450,7 +11694,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-11-12 12:59:46',
+    '2020-11-12 13:59:46',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26500,\'2018-06-27\',\'Cambian el contador eléctrico (sigue a 230v.)\')'
@@ -11459,7 +11703,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-11-12 13:00:51',
+    '2020-11-12 14:00:51',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26500,\'2018-07-12\',\'Se localiza y elimina un foco de mosquitos en el pozo ciego.\')'
@@ -11468,7 +11712,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-11-12 13:02:16',
+    '2020-11-12 14:02:16',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26500,\'2018-07-19\',\'Después de una larga temporada sin aparecer, van los jardineros ha hacer mantenimiento.\')'
@@ -11477,7 +11721,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-11-12 13:04:14',
+    '2020-11-12 14:04:14',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26500,\'2018-09-05\',\'tras varios cortes de red, localizamos la avería en el embornado del contador. Reparamos.\')'
@@ -11486,7 +11730,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-11-12 13:05:24',
+    '2020-11-12 14:05:24',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26500,\'2018-09-14\',\'Revisión del pararrayos.\')'
@@ -11495,7 +11739,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-11-12 13:06:07',
+    '2020-11-12 14:06:07',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26500,\'2018-10-19\',\'Revisión de los extintores (Guipons)\')'
@@ -11504,7 +11748,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-11-12 13:07:33',
+    '2020-11-12 14:07:33',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26500,\'2018-11-13\',\'Fuga de agua en una cisterna de la vivienda que la inunda. Se repara.\')'
@@ -11513,7 +11757,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-11-12 13:08:31',
+    '2020-11-12 14:08:31',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26500,\'2018-12-27\',\'Se instala una nueva central de intrusión por Santiago de AJP\')'
@@ -11522,7 +11766,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-11-12 13:13:04',
+    '2020-11-12 14:13:04',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25700,\'2020-01-30\',\'Durante todo el mes de enero, se suceden averías por fallos de rotación en los dos motores, pido '
@@ -11531,7 +11775,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-11-12 13:15:48',
+    '2020-11-12 14:15:48',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25700,\'2020-05-04\',\'Marc Martí y Oscar Aponte de la La empresa MESEMAR revisa la linterna y la programación del faro '
@@ -11540,7 +11784,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-11-12 13:16:49',
+    '2020-11-12 14:16:49',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25700,\'2020-05-22\',\'Los mismos técnicos de MESEMAR se personan en el faro para reparar los problemas detectados en la'
@@ -11549,7 +11793,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-11-12 13:17:49',
+    '2020-11-12 14:17:49',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25700,\'2020-11-05\',\'Tras dos días de tormentas no hay más remedio que conectar el faro a la red 230v ca. La tensión d'
@@ -11557,12 +11801,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-11-18 07:56:39', 'pepe', 'login', '');
+  ('2020-11-18 08:56:39', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-11-18 07:58:52',
+    '2020-11-18 08:58:52',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26392,\'2020-11-17\',\'Fallo en la acometida eléctrica. Se rearma el diferencial.\')'
@@ -11570,12 +11814,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-11-26 11:31:59', 'pepe', 'login', '');
+  ('2020-11-26 12:31:59', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-11-26 11:33:13',
+    '2020-11-26 12:33:13',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26500,\'2020-11-24\',\'La empresa SICA regula el convertidor de las fotocélulas y propone su cambio.\')'
@@ -11583,12 +11827,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-11-30 07:54:50', 'pepe', 'login', '');
+  ('2020-11-30 08:54:50', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-11-30 07:57:18',
+    '2020-11-30 08:57:18',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26048.1,\'2020-11-27\',\'Por fuerte tormenta se ve afectado todo el sistema de alimentación y se apaga (se da de baja).\''
@@ -11596,12 +11840,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-12-09 11:56:03', 'pepe', 'login', '');
+  ('2020-12-09 12:56:03', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-12-09 11:59:17',
+    '2020-12-09 12:59:17',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25830,\'2020-12-07\',\'Mesemar instala nueva torre y baliza MBL 160-2 sincronizada con la 25831.\')'
@@ -11610,7 +11854,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-12-09 12:02:39',
+    '2020-12-09 13:02:39',
     'pepe',
     'Modificacion lampara',
     'UPDATE lampara set altura=6, elevacion=8,alcanceNom=1.00,alcanceLum=1.00,linterna=&quot;MBL 160 - 2 niveles&quot;,candelasCalc=907, candelasInst=756 w'
@@ -11619,7 +11863,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-12-09 12:04:55',
+    '2020-12-09 13:04:55',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25831,\'\',\'Mesemar instala nueva  baliza MCL 200 sincronizada con la 25830.\')'
@@ -11628,7 +11872,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-12-09 12:06:03',
+    '2020-12-09 13:06:03',
     'pepe',
     'Modificacion lampara',
     'UPDATE lampara set altura=2, elevacion=5,alcanceNom=1.00,alcanceLum=1.00,linterna=&quot;MCL200.&quot;,candelasCalc=360, candelasInst=300 where nif=258'
@@ -11637,7 +11881,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-12-09 12:07:36',
+    '2020-12-09 13:07:36',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25831,\'2020-12-07\',\'Mesemar instala nueva  baliza MCL 200 sincronizada con la 25830.\')'
@@ -11646,7 +11890,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-12-09 12:08:04',
+    '2020-12-09 13:08:04',
     'pepe',
     'Mantenimiendo borrad',
     'delete from mantenimiento where nif=25831 AND fecha=\'0000-00-00\' AND mantenimiento=\'Mesemar instala nueva  baliza MCL 200 sincronizada con la 25830.\''
@@ -11655,7 +11899,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-12-09 12:12:50',
+    '2020-12-09 13:12:50',
     'pepe',
     'Modificacion lampara',
     'UPDATE lampara set altura=3, elevacion=4,alcanceNom=1.00,alcanceLum=1.00,linterna=&quot;MCL 200&quot;,candelasCalc=283, candelasInst=236 where nif=263'
@@ -11663,24 +11907,24 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-12-10 11:37:49', 'pepe', 'login', '');
+  ('2020-12-10 12:37:49', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-12-10 11:44:12', 'pepe', 'login', '');
+  ('2020-12-10 12:44:12', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-12-10 11:46:41', 'pepe', 'login', '');
+  ('2020-12-10 12:46:41', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-12-14 13:27:25', 'pepe', 'login', '');
+  ('2020-12-14 14:27:25', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-12-14 13:28:34',
+    '2020-12-14 14:28:34',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25840,\'2020-12-14\',\'Sustitución de las dos LDR por mal funcionamiento.\')'
@@ -11688,12 +11932,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2020-12-28 11:10:12', 'pepe', 'login', '');
+  ('2020-12-28 12:10:12', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-12-28 11:11:40',
+    '2020-12-28 12:11:40',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26047,\'2020-12-18\',\'Rotura de la linterna lineal y soporte de panel solar. Baterías para cambiar.\')'
@@ -11702,7 +11946,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-12-28 11:17:53',
+    '2020-12-28 12:17:53',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2020-12-15\',\'El grupo electrógeno  no arranca, posible fallo del cargador de batería.\')'
@@ -11711,7 +11955,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2020-12-28 11:20:29',
+    '2020-12-28 12:20:29',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2020-12-17\',\'Se instala de forma provisional un cargador externo y queda en funcionamiento. Aviso al T. Mecáni'
@@ -11719,12 +11963,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-01-05 07:54:57', 'pepe', 'login', '');
+  ('2021-01-05 08:54:57', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-01-05 07:58:11',
+    '2021-01-05 08:58:11',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2020-12-31\',\'El faro está apagado por fallo de la LDR interna, la BAEM no funciona.\')'
@@ -11733,7 +11977,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-01-05 07:59:55',
+    '2021-01-05 08:59:55',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2020-12-31\',\'Tras la intervención del técnico de guardia se consigue activar de manera permanente la BAEM.\')'
@@ -11742,7 +11986,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-01-05 08:02:28',
+    '2021-01-05 09:02:28',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2021-01-04\',\'Adrián se persona en el faro para intentar dejar en funcionamiento en modo automático el mismo, n'
@@ -11751,7 +11995,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-01-05 08:04:51',
+    '2021-01-05 09:04:51',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26360,\'2021-01-02\',\'Avisan de que la boya está apagada. Se da de baja a través de AtoN de PPEE.\')'
@@ -11759,12 +12003,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-01-05 13:07:08', 'pepe', 'login', '');
+  ('2021-01-05 14:07:08', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-01-05 13:11:56',
+    '2021-01-05 14:11:56',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26360,\'2021-01-05\',\'Reponemos baterías y se repasa instalación solar (cableado). Se da de alta.\')'
@@ -11772,12 +12016,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-01-11 07:40:51', 'pepe', 'login', '');
+  ('2021-01-11 08:40:51', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-01-11 07:44:00',
+    '2021-01-11 08:44:00',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2021-01-08\',\'Tras la intervención de SICA y con repuestos del antiguo faro de Valencia se consigue reparar la '
@@ -11785,16 +12029,16 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-01-11 07:50:17', 'adrian', 'login', '');
+  ('2021-01-11 08:50:17', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-01-11 11:53:01', 'pepe', 'login', '');
+  ('2021-01-11 12:53:01', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-01-11 11:54:36',
+    '2021-01-11 12:54:36',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25820.1,\'2021-01-11\',\'Boya apagada. Se procede a su sustitución aunque no quedará sincronizada.\')'
@@ -11803,7 +12047,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-01-11 11:56:24',
+    '2021-01-11 12:56:24',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26390,\'2021-01-11\',\'La policia portuaria informa de que está apagada. Se procede a la sustitución de la batería.\')'
@@ -11811,12 +12055,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-01-15 11:21:46', 'pepe', 'login', '');
+  ('2021-01-15 12:21:46', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-01-15 11:23:21',
+    '2021-01-15 12:23:21',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25820.1,\'2021-01-15\',\'La boya se ha pintado y se le han sustituido las baterías y los ánodos de sacrificio.\')'
@@ -11824,12 +12068,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-01-31 09:20:05', 'pepe', 'login', '');
+  ('2021-01-31 10:20:05', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-01-31 09:21:24',
+    '2021-01-31 10:21:24',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25820.1,\'2021-01-29\',\'Se fondea en su ubicación y se retira la sustituta.\')'
@@ -11838,7 +12082,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-01-31 09:25:53',
+    '2021-01-31 10:25:53',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26500,\'2021-01-21\',\'SICA ING procede a la sustitución del convertidor de señal y ajusta la maniobra para poder conect'
@@ -11846,12 +12090,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-02-03 14:11:31', 'pepe', 'login', '');
+  ('2021-02-03 15:11:31', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-02-03 14:13:37',
+    '2021-02-03 15:13:37',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2021-02-03\',\'Se sustituye la LDR a la BAEM. se contacta con Sica para rematar ajustes y sustituir sonda del de'
@@ -11859,12 +12103,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-02-12 13:10:41', 'adrian', 'login', '');
+  ('2021-02-12 14:10:41', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-02-12 13:11:46',
+    '2021-02-12 14:11:46',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2021-02-12\',\'Sica reconfigura PLC para el correcto funcionamiento de la BAEM a traves de su propia LDR. Queda '
@@ -11872,12 +12116,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-02-19 13:43:35', 'pepe', 'login', '');
+  ('2021-02-19 14:43:35', 'pepe', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-02-19 13:46:36',
+    '2021-02-19 14:46:36',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26500,\'2021-02-19\',\'Se sustituye fuente de alimentación de la cámara de la linterna y vuelve a funcionar dicha cámara'
@@ -11886,7 +12130,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-02-19 13:48:43',
+    '2021-02-19 14:48:43',
     'pepe',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(26500,\'2021-02-19\',\'Vareser repone vidrio facturado en la linterna, en el sector de oscuridad.\')'
@@ -11894,12 +12138,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-02-23 08:22:23', 'adrian', 'login', '');
+  ('2021-02-23 09:22:23', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-02-23 08:22:41',
+    '2021-02-23 09:22:41',
     'adrian',
     'Modificacion Caracte',
     'UPDATE balizamiento set num_internacional=&quot;&quot;, tipo=&quot;Boya De castillete amarilla y marca de tope X amarilla&quot;,apariencia=&quot;DA&qu'
@@ -11908,7 +12152,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-02-23 08:22:49',
+    '2021-02-23 09:22:49',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(26460,\'Sincronizada con el resto de boyas\')'
@@ -11917,7 +12161,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-02-23 08:23:18',
+    '2021-02-23 09:23:18',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Cultivos marinos &amp;quot;Costa Blanca&amp;quot;&quot;, num_local=1,localizacion=&quot;Boya SW&quot;,latitud=&qu'
@@ -11926,7 +12170,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-02-23 08:23:37',
+    '2021-02-23 09:23:37',
     'adrian',
     'Modificacion Caracte',
     'UPDATE balizamiento set num_internacional=&quot;46465&quot;, tipo=&quot;Boya De castillete amarilla y marca de tope X amarilla&quot;,apariencia=&quot;'
@@ -11935,7 +12179,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-02-23 08:23:57',
+    '2021-02-23 09:23:57',
     'adrian',
     'Modificacion Caracte',
     'UPDATE balizamiento set num_internacional=&quot;&quot;, tipo=&quot;Boya De castillete amarilla y marca de tope X amarilla&quot;,apariencia=&quot;DA&qu'
@@ -11944,7 +12188,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-02-23 08:27:18',
+    '2021-02-23 09:27:18',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(26460,\'Nombre actual(2021): Bersolaz Spain - Sagunto\')'
@@ -11952,12 +12196,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-02-24 10:13:50', 'adrian', 'login', '');
+  ('2021-02-24 11:13:50', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-02-24 10:14:00',
+    '2021-02-24 11:14:00',
     'adrian',
     'Modificacion lampara',
     'UPDATE lampara set altura=0, elevacion=0,alcanceNom=3.00,alcanceLum=0,linterna=&quot;Si&quot;,candelasCalc=0.00, candelasInst=0 where nif=26460'
@@ -11966,7 +12210,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-02-24 10:14:12',
+    '2021-02-24 11:14:12',
     'adrian',
     'Modificacion lampara',
     'UPDATE lampara set altura=0, elevacion=0,alcanceNom=0,alcanceLum=0,linterna=&quot;0&quot;,candelasCalc=0, candelasInst=0 where nif=26460.1'
@@ -11974,12 +12218,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-03-04 13:46:48', 'adrian', 'login', '');
+  ('2021-03-04 14:46:48', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-03-04 13:47:29',
+    '2021-03-04 14:47:29',
     'adrian',
     'Mantenimiendo añadid',
     'insert into mantenimiento values(25650,\'2021-03-02\',\'Se sustituyeron las pilas de la puerta de acceso. Pilas 3,6V del lado sensor barrera.\')'
@@ -11987,12 +12231,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-04-16 14:17:45', 'adrian', 'login', '');
+  ('2021-04-16 16:17:45', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-04-16 14:19:21',
+    '2021-04-16 16:19:21',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25530\',\'2021-04-14\',\'Se sustituye la batería por una de SONNENSCHEIN SB12 de100Ah.\')'
@@ -12001,7 +12245,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-04-16 14:19:36',
+    '2021-04-16 16:19:36',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -12010,7 +12254,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-04-16 14:19:45',
+    '2021-04-16 16:19:45',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25545\',\'2021-04-14\',\'Se sustituye la batería por una de SONNENSCHEIN SB12 de100Ah.\')'
@@ -12019,7 +12263,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-04-16 14:20:28',
+    '2021-04-16 16:20:28',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25545\',\'2021-03-26\',\'Se elimina cuadro en completo desuso.\')'
@@ -12027,16 +12271,16 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-04-19 08:57:17', 'adrian', 'login', '');
+  ('2021-04-19 10:57:17', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-04-23 08:26:21', 'adrian', 'login', '');
+  ('2021-04-23 10:26:21', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-04-23 08:30:33',
+    '2021-04-23 10:30:33',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'25720\',\'Suministro desde el VCT42\')'
@@ -12045,7 +12289,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-04-23 08:30:52',
+    '2021-04-23 10:30:52',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'25721\',\'Suministro desde el VCT41\')'
@@ -12053,28 +12297,28 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-04-27 10:42:29', 'Raul', 'login', '');
+  ('2021-04-27 12:42:29', 'Raul', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-04-30 09:09:36', 'Raul', 'login', '');
+  ('2021-04-30 11:09:36', 'Raul', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-05-03 08:30:43', 'adrian', 'login', '');
+  ('2021-05-03 10:30:43', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-05-05 10:40:10', 'adrian', 'login', '');
+  ('2021-05-05 12:40:10', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-05-05 11:02:13', 'raul', 'login', '');
+  ('2021-05-05 13:02:13', 'raul', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-05-05 11:02:46',
+    '2021-05-05 13:02:46',
     'raul',
     'Item añadido',
     'insert into inventario values(NULL,\'bn\',5,6,1,\'fghfh\')'
@@ -12082,12 +12326,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-05-11 12:33:15', 'raul', 'login', '');
+  ('2021-05-11 14:33:15', 'raul', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-05-11 12:36:07',
+    '2021-05-11 14:36:07',
     'raul',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26320\',\'2021-04-27\',\'Se da de baja por apagados intermitentes. El 29 se le cambia LDR y anula el penúltimo panel por'
@@ -12095,16 +12339,16 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-05-12 11:46:12', 'adrian', 'login', '');
+  ('2021-05-12 13:46:12', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-05-20 07:57:43', 'adrian', 'login', '');
+  ('2021-05-20 09:57:43', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-05-20 07:57:54',
+    '2021-05-20 09:57:54',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Port saplaya pontona&quot;, num_local=3,localizacion=&quot;Señaliza pontona hundida&quot;,latitud=&quot;39º 32.74'
@@ -12113,7 +12357,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-05-20 08:05:17',
+    '2021-05-20 10:05:17',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -12122,7 +12366,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-05-20 08:05:52',
+    '2021-05-20 10:05:52',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25850\',\'2008-11-30\',\'Se instala la torre nueva mod TPS33\')'
@@ -12131,7 +12375,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-05-20 08:06:17',
+    '2021-05-20 10:06:17',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25850\',\'2010-03-26\',\'Se instala el telecontrol\')'
@@ -12140,7 +12384,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-05-20 08:06:33',
+    '2021-05-20 10:06:33',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25850\',\'2014-01-17\',\'Se repinta por DRAGADOS\')'
@@ -12149,7 +12393,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-05-20 08:06:55',
+    '2021-05-20 10:06:55',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25850\',\'2017-03-08\',\'Pavasal cambia la acometida que pasa a tomar corriente del CT Nº1\')'
@@ -12158,7 +12402,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-05-20 08:07:10',
+    '2021-05-20 10:07:10',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25850\',\'2017-08-13\',\'Se repinta toda la baliza\')'
@@ -12167,7 +12411,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-05-20 08:07:22',
+    '2021-05-20 10:07:22',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25850\',\'2020-04-17\',\'Se repinta toda la torre\')'
@@ -12176,7 +12420,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-05-20 08:09:19',
+    '2021-05-20 10:09:19',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Puerto de Valencia.&quot;, num_local=6,localizacion=&quot;Canal, ángulo Norte del contradique.&quot;,latitud=&quo'
@@ -12185,7 +12429,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-05-20 08:11:11',
+    '2021-05-20 10:11:11',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Puerto de Valencia.&quot;, num_local=6,localizacion=&quot;Canal, ángulo Norte del contradique.&quot;,latitud=&quo'
@@ -12194,7 +12438,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-05-20 08:12:55',
+    '2021-05-20 10:12:55',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Valencia&quot;, num_local=0,localizacion=&quot;0&quot;,latitud=&quot;0&quot;,longitud=&quot;00&quot; where nif=25'
@@ -12203,7 +12447,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-05-20 08:19:47',
+    '2021-05-20 10:19:47',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;1&quot;, num_local=1,localizacion=&quot;RETIRADA&quot;,latitud=&quot;1&quot;,longitud=&quot;1&quot; where nif=258'
@@ -12212,7 +12456,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-05-20 08:26:49',
+    '2021-05-20 10:26:49',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Marina Real JCI Valencia&quot;, num_local=0,localizacion=&quot;0&quot;,latitud=&quot;39º 27.677´N&quot;,longitud='
@@ -12221,7 +12465,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-05-20 08:26:58',
+    '2021-05-20 10:26:58',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Marina Real JCI Valencia&quot;, num_local=0,localizacion=&quot;Espigón - Extremo - Darsena Auxiliar&quot;,latitud'
@@ -12230,7 +12474,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-05-20 08:27:17',
+    '2021-05-20 10:27:17',
     'adrian',
     'Modificacion lampara',
     ''
@@ -12239,7 +12483,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-05-20 08:28:09',
+    '2021-05-20 10:28:09',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Marina Real JCI Valencia&quot;, num_local=0,localizacion=&quot;Primera boya Marca Especial Dársena Exterior&quot;'
@@ -12248,7 +12492,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-05-20 08:28:24',
+    '2021-05-20 10:28:24',
     'adrian',
     'Modificacion lampara',
     ''
@@ -12257,7 +12501,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-05-20 08:30:11',
+    '2021-05-20 10:30:11',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Marina Real Juan Carlos I Valencia&quot;, num_local=0,localizacion=&quot;0&quot;,latitud=&quot;0&quot;,longitud=&'
@@ -12266,7 +12510,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-05-20 08:31:15',
+    '2021-05-20 10:31:15',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Marina Real Juan Carlos I Valencia&quot;, num_local=43,localizacion=&quot;Dique - Extremo - Darsena Sur&quot;,lat'
@@ -12275,7 +12519,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-05-20 08:31:41',
+    '2021-05-20 10:31:41',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Marina Real Juan Carlos I. Valencia.&quot;, num_local=44,localizacion=&quot;Espigón - Extremo - Darsena Auxiliar&'
@@ -12283,12 +12527,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-06-07 07:43:19', 'adrian', 'login', '');
+  ('2021-06-07 09:43:19', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-06-07 08:02:51',
+    '2021-06-07 10:02:51',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25650\',\'2021-06-03\',\'Se sustituye el SAI, a falta de configuración el proximo martes 8 de junio.\')'
@@ -12297,7 +12541,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-06-07 08:03:48',
+    '2021-06-07 10:03:48',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25650\',\'2021-06-02\',\'Personal del taller de fluidos realizan trabajos en la acometida de agua, solventando un proble'
@@ -12305,12 +12549,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-06-07 11:38:51', 'adrian', 'login', '');
+  ('2021-06-07 13:38:51', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-06-07 11:39:44',
+    '2021-06-07 13:39:44',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'26500\',\'VISIBLE:336º-226º        OCULTACION:110º\')'
@@ -12319,7 +12563,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-06-07 11:43:06',
+    '2021-06-07 13:43:06',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'26500\',\'VISIBLE:336º-226º (250º)\')'
@@ -12328,7 +12572,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-06-07 11:43:15',
+    '2021-06-07 13:43:15',
     'adrian',
     'Observacion borrada',
     'delete from observaciones where nif=\'26500\' AND observaciones=\'VISIBLE:336º-226º        OCULTACION:110º\''
@@ -12336,12 +12580,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-06-14 11:41:19', 'adrian', 'login', '');
+  ('2021-06-14 13:41:19', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-06-14 11:42:53',
+    '2021-06-14 13:42:53',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25850\',\'2021-06-11\',\'Se sustituye el bloque de 8 discos LED y la óptica.\')'
@@ -12349,20 +12593,20 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-06-22 09:20:19', 'raul', 'login', '');
+  ('2021-06-22 11:20:19', 'raul', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-06-28 13:31:17', 'adrian', 'login', '');
+  ('2021-06-28 15:31:17', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-06-29 09:40:40', 'raul', 'login', '');
+  ('2021-06-29 11:40:40', 'raul', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-06-29 09:42:35',
+    '2021-06-29 11:42:35',
     'raul',
     'Modificacion lampara',
     ''
@@ -12371,7 +12615,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-06-29 09:44:07',
+    '2021-06-29 11:44:07',
     'raul',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Faro de Canet&quot;, num_local=1,localizacion=&quot;Cabo Canet&quot;,latitud=&quot;39º 40,471´ N&quot;,longitud=&'
@@ -12379,12 +12623,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-07-07 13:08:58', 'adrian', 'login', '');
+  ('2021-07-07 15:08:58', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-07 13:09:49',
+    '2021-07-07 15:09:49',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25960\',\'2021-07-07\',\'Se sustituye la batería por una de SONNENSCHEIN SB12 de100Ah.\')'
@@ -12393,7 +12637,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-07 13:11:17',
+    '2021-07-07 15:11:17',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25960\',\'2014-03-07\',\'Se instala un panel solar por avería en la acometida eléctrica 230V\')'
@@ -12402,7 +12646,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-07 13:12:59',
+    '2021-07-07 15:12:59',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25960\',\'2010-10-26\',\'Se repinta incluyendo una franja verde y convertirla en marca lateral de bifurcación.\')'
@@ -12411,7 +12655,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-07 13:13:17',
+    '2021-07-07 15:13:17',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25960\',\'2009-12-10\',\'Se instala el telecontrol\')'
@@ -12420,7 +12664,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-07 13:13:35',
+    '2021-07-07 15:13:35',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25960\',\'2013-11-05\',\'se instala punto de luz\')'
@@ -12429,7 +12673,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-07 13:13:54',
+    '2021-07-07 15:13:54',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25960\',\'2014-01-17\',\'Se repinta por DRAGADOS\')'
@@ -12438,7 +12682,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-07 13:14:22',
+    '2021-07-07 15:14:22',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25960\',\'2017-01-14\',\'Se repinta la torre\')'
@@ -12446,12 +12690,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-07-19 08:33:57', 'raul', 'login', '');
+  ('2021-07-19 10:33:57', 'raul', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-19 08:37:01',
+    '2021-07-19 10:37:01',
     'raul',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26392\',\'2021-07-14\',\'Sustitución de F.A. por avería en una de las salidas de C.C.\')'
@@ -12460,7 +12704,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-19 08:46:30',
+    '2021-07-19 10:46:30',
     'raul',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26312\',\'2021-07-13\',\'Sustitución LDR\')'
@@ -12469,7 +12713,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-19 08:51:19',
+    '2021-07-19 10:51:19',
     'raul',
     'Modificacion lampara',
     ''
@@ -12478,7 +12722,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-19 08:54:02',
+    '2021-07-19 10:54:02',
     'raul',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26500\',\'2021-06-30\',\'El SAI se encuentra en avería por las baterías\')'
@@ -12486,12 +12730,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-07-21 08:17:53', 'adrian', 'login', '');
+  ('2021-07-21 10:17:53', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-21 08:18:10',
+    '2021-07-21 10:18:10',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Faro de Valencia&quot;, num_local=1,localizacion=&quot;Angulo del dique de la ampliacion norte&quot;,latitud=&quo'
@@ -12499,12 +12743,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-07-23 13:51:11', 'adrian', 'login', '');
+  ('2021-07-23 15:51:11', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-23 13:51:44',
+    '2021-07-23 15:51:44',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Faro de Canet Sagunto&quot;, num_local=1,localizacion=&quot;Cabo Canet&quot;,latitud=&quot;39º 40,471´ N&quot;,lo'
@@ -12513,7 +12757,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-23 13:52:00',
+    '2021-07-23 15:52:00',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -12522,7 +12766,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-23 13:52:36',
+    '2021-07-23 15:52:36',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26500\',\'2021-07-23\',\'Se realiza la revisión del pararrayos.\')'
@@ -12531,7 +12775,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-23 13:52:50',
+    '2021-07-23 15:52:50',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -12540,7 +12784,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-23 13:52:57',
+    '2021-07-23 15:52:57',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -12549,7 +12793,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-23 13:53:09',
+    '2021-07-23 15:53:09',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -12558,7 +12802,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-23 13:53:20',
+    '2021-07-23 15:53:20',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -12567,7 +12811,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-23 13:53:33',
+    '2021-07-23 15:53:33',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -12576,7 +12820,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-23 13:53:42',
+    '2021-07-23 15:53:42',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -12585,7 +12829,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-23 13:53:56',
+    '2021-07-23 15:53:56',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -12594,7 +12838,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-23 13:54:07',
+    '2021-07-23 15:54:07',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -12603,7 +12847,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-23 13:54:17',
+    '2021-07-23 15:54:17',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -12612,7 +12856,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-23 13:54:42',
+    '2021-07-23 15:54:42',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -12621,7 +12865,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-23 13:54:53',
+    '2021-07-23 15:54:53',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -12629,21 +12873,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-07-26 12:15:08', 'adrian', 'login', '');
+  ('2021-07-26 14:15:08', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-26 12:15:15',
-    'adrian',
-    'Modificacion Caracte',
-    ''
-  );
-INSERT INTO
-  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
-VALUES
-  (
-    '2021-07-26 12:16:14',
+    '2021-07-26 14:15:15',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -12652,7 +12887,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-26 12:16:27',
+    '2021-07-26 14:16:14',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -12661,7 +12896,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-26 12:16:45',
+    '2021-07-26 14:16:27',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -12670,20 +12905,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-26 12:16:51',
-    'adrian',
-    'Modificacion Caracte',
-    ''
-  );
-INSERT INTO
-  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
-VALUES
-  ('2021-07-28 08:05:02', 'adrian', 'login', '');
-INSERT INTO
-  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
-VALUES
-  (
-    '2021-07-28 08:06:57',
+    '2021-07-26 14:16:45',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -12692,7 +12914,29 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 08:36:36',
+    '2021-07-26 14:16:51',
+    'adrian',
+    'Modificacion Caracte',
+    ''
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  ('2021-07-28 10:05:02', 'adrian', 'login', '');
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2021-07-28 10:06:57',
+    'adrian',
+    'Modificacion Caracte',
+    ''
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2021-07-28 10:36:36',
     'adrian',
     'Lampara borrada',
     'delete from lampara where nif=\'MENERA1\''
@@ -12701,7 +12945,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 08:36:36',
+    '2021-07-28 10:36:36',
     'adrian',
     'Observacion borrada',
     'delete from observaciones where nif=\'MENERA1\''
@@ -12710,7 +12954,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 08:36:36',
+    '2021-07-28 10:36:36',
     'adrian',
     'mantenimiento borrad',
     'delete from mantenimiento where nif=\'MENERA1\''
@@ -12719,7 +12963,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 08:36:36',
+    '2021-07-28 10:36:36',
     'adrian',
     'Localizacion borrada',
     'delete from localizacion where nif=\'MENERA1\''
@@ -12728,7 +12972,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 08:36:36',
+    '2021-07-28 10:36:36',
     'adrian',
     'Balizamiento borrado',
     'delete from balizamiento where nif=\'MENERA1\''
@@ -12737,7 +12981,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 08:36:36',
+    '2021-07-28 10:36:36',
     'adrian',
     'Balizamiento borrado',
     'Las cinco tablas borradas: lampara, observaciones,mantenimiento, localizacion y balizamiento'
@@ -12746,7 +12990,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 08:37:41',
+    '2021-07-28 10:37:41',
     'adrian',
     'Lampara borrada',
     'delete from lampara where nif=\'MENERA2\''
@@ -12755,7 +12999,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 08:37:41',
+    '2021-07-28 10:37:41',
     'adrian',
     'Observacion borrada',
     'delete from observaciones where nif=\'MENERA2\''
@@ -12764,7 +13008,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 08:37:41',
+    '2021-07-28 10:37:41',
     'adrian',
     'mantenimiento borrad',
     'delete from mantenimiento where nif=\'MENERA2\''
@@ -12773,7 +13017,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 08:37:41',
+    '2021-07-28 10:37:41',
     'adrian',
     'Localizacion borrada',
     'delete from localizacion where nif=\'MENERA2\''
@@ -12782,7 +13026,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 08:37:41',
+    '2021-07-28 10:37:41',
     'adrian',
     'Balizamiento borrado',
     'delete from balizamiento where nif=\'MENERA2\''
@@ -12791,7 +13035,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 08:37:41',
+    '2021-07-28 10:37:41',
     'adrian',
     'Balizamiento borrado',
     'Las cinco tablas borradas: lampara, observaciones,mantenimiento, localizacion y balizamiento'
@@ -12799,12 +13043,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-07-28 10:34:44', 'adrian', 'login', '');
+  ('2021-07-28 12:34:44', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 10:36:38',
+    '2021-07-28 12:36:38',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -12813,7 +13057,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 10:36:53',
+    '2021-07-28 12:36:53',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -12822,7 +13066,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 10:55:43',
+    '2021-07-28 12:55:43',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -12831,7 +13075,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 10:55:56',
+    '2021-07-28 12:55:56',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'26460.1\',\'Sincronizada con el resto de BOYAS\')'
@@ -12840,7 +13084,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 10:57:49',
+    '2021-07-28 12:57:49',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -12849,7 +13093,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 10:57:53',
+    '2021-07-28 12:57:53',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'26470\',\'(Sincronizada con 26471, 26472 y 26473)\')'
@@ -12858,7 +13102,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 10:58:08',
+    '2021-07-28 12:58:08',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -12867,7 +13111,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 10:58:16',
+    '2021-07-28 12:58:16',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'26471\',\'Sincronizada con 26470, 26472 y 26473\')'
@@ -12876,7 +13120,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 10:58:30',
+    '2021-07-28 12:58:30',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -12885,7 +13129,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 10:58:36',
+    '2021-07-28 12:58:36',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'26472\',\'Sincronizada con 26470, 26471 y 26473\')'
@@ -12894,7 +13138,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 10:58:48',
+    '2021-07-28 12:58:48',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -12903,7 +13147,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 10:58:52',
+    '2021-07-28 12:58:52',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'26473\',\'Sincronizada con 26470, 26471 y 26472\')'
@@ -12912,7 +13156,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 10:59:11',
+    '2021-07-28 12:59:11',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -12921,7 +13165,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 10:59:51',
+    '2021-07-28 12:59:51',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -12930,7 +13174,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 11:00:12',
+    '2021-07-28 13:00:12',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -12939,7 +13183,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 11:00:20',
+    '2021-07-28 13:00:20',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'26460.2\',\'Sincronizada con el resto de boyas\')'
@@ -12948,7 +13192,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 11:00:44',
+    '2021-07-28 13:00:44',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -12957,7 +13201,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 11:00:50',
+    '2021-07-28 13:00:50',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'26460.3\',\'Sincronizada con el resto de Boyas\')'
@@ -12966,7 +13210,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 11:01:03',
+    '2021-07-28 13:01:03',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -12975,7 +13219,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 11:01:23',
+    '2021-07-28 13:01:23',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -12984,7 +13228,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 11:01:33',
+    '2021-07-28 13:01:33',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -12993,7 +13237,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 11:01:46',
+    '2021-07-28 13:01:46',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13002,7 +13246,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 11:01:59',
+    '2021-07-28 13:01:59',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13011,7 +13255,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 11:02:11',
+    '2021-07-28 13:02:11',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13020,7 +13264,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 11:02:30',
+    '2021-07-28 13:02:30',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13029,7 +13273,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 11:02:45',
+    '2021-07-28 13:02:45',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13038,7 +13282,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 11:03:59',
+    '2021-07-28 13:03:59',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13047,7 +13291,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 11:04:01',
+    '2021-07-28 13:04:01',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13056,7 +13300,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 11:04:20',
+    '2021-07-28 13:04:20',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13065,7 +13309,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 11:04:36',
+    '2021-07-28 13:04:36',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13074,7 +13318,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 11:04:49',
+    '2021-07-28 13:04:49',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13083,7 +13327,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 11:04:59',
+    '2021-07-28 13:04:59',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13092,7 +13336,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 11:15:24',
+    '2021-07-28 13:15:24',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13101,7 +13345,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 11:15:50',
+    '2021-07-28 13:15:50',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13109,12 +13353,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-07-28 12:41:01', 'adrian', 'login', '');
+  ('2021-07-28 14:41:01', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 12:46:23',
+    '2021-07-28 14:46:23',
     'adrian',
     'Modificacion lampara',
     ''
@@ -13122,12 +13366,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-07-28 14:07:41', 'adrian', 'login', '');
+  ('2021-07-28 16:07:41', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 14:20:50',
+    '2021-07-28 16:20:50',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'25700\',\'AIS sintetico\')'
@@ -13136,7 +13380,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-28 14:21:03',
+    '2021-07-28 16:21:03',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'25720\',\'AIS sintetico\')'
@@ -13144,16 +13388,16 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-07-29 08:35:57', 'adrian', 'login', '');
+  ('2021-07-29 10:35:57', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-07-30 10:39:15', 'adrian', 'login', '');
+  ('2021-07-30 12:39:15', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-07-30 10:39:26',
+    '2021-07-30 12:39:26',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13161,12 +13405,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-08-02 11:33:10', 'adrian', 'login', '');
+  ('2021-08-02 13:33:10', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-02 11:33:20',
+    '2021-08-02 13:33:20',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13175,7 +13419,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-02 11:33:24',
+    '2021-08-02 13:33:24',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13183,12 +13427,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-08-04 13:51:21', 'adrian', 'login', '');
+  ('2021-08-04 15:51:21', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-04 13:51:37',
+    '2021-08-04 15:51:37',
     'adrian',
     'Observacion borrada',
     'delete from observaciones where nif=\'25720\' AND observaciones=\'Suministro desde el VCT42\''
@@ -13197,7 +13441,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-04 13:51:58',
+    '2021-08-04 15:51:58',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'25720\',\'Suministro desde el VCT42 pasando por la pecera SAI en la cueva de Batman.\')'
@@ -13206,7 +13450,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-04 13:52:47',
+    '2021-08-04 15:52:47',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25720\',\'2021-08-04\',\'Se retira cuadro de comunicaciones Red Industrial y estaciones meteorológicas.\')'
@@ -13215,7 +13459,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-04 13:53:47',
+    '2021-08-04 15:53:47',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25650\',\'2021-07-29\',\'Falla SAI\')'
@@ -13223,12 +13467,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-08-10 09:55:24', 'adrian', 'login', '');
+  ('2021-08-10 11:55:24', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-10 09:55:36',
+    '2021-08-10 11:55:36',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26460\',\'2021-07-02\',\'DADA DE BAJA EN RESOLUCION DE BALIZAMIENTO Nº 2021170\')'
@@ -13237,7 +13481,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-10 09:55:50',
+    '2021-08-10 11:55:50',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26460.1\',\'2021-07-02\',\'DADA DE BAJA EN RESOLUCION DE BALIZAMIENTO Nº 2021170\')'
@@ -13246,7 +13490,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-10 09:56:06',
+    '2021-08-10 11:56:06',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26460.2\',\'2021-07-02\',\'DADA DE BAJA EN RESOLUCION DE BALIZAMIENTO Nº 2021170\')'
@@ -13255,7 +13499,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-10 09:56:25',
+    '2021-08-10 11:56:25',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26460.3\',\'2021-07-02\',\'DADA DE BAJA EN RESOLUCION DE BALIZAMIENTO Nº 2021170\')'
@@ -13263,20 +13507,20 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-08-11 08:51:22', 'adrian', 'login', '');
+  ('2021-08-11 10:51:22', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-08-11 12:38:22', 'adrian', 'login', '');
+  ('2021-08-11 14:38:22', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-08-12 08:28:07', 'adrian', 'login', '');
+  ('2021-08-12 10:28:07', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-12 09:00:45',
+    '2021-08-12 11:00:45',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'25650\',\'Grupo electrógeno Caterpillar 13.5 KVA\')'
@@ -13285,7 +13529,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-12 09:00:55',
+    '2021-08-12 11:00:55',
     'adrian',
     'Observacion borrada',
     'delete from observaciones where nif=\'25650\' AND observaciones=\'Grupo electrógeno aterpillar 13.5 KVA\''
@@ -13293,12 +13537,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-08-13 10:43:25', 'adrian', 'login', '');
+  ('2021-08-13 12:43:25', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-13 11:13:19',
+    '2021-08-13 13:13:19',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Marina Real Juan Carlos I Valencia&quot;, num_local=43,localizacion=&quot;Dique - Extremo - Darsena Sur&quot;,lat'
@@ -13307,7 +13551,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-13 11:14:08',
+    '2021-08-13 13:14:08',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Marina Real JC I. Valencia&quot;, num_local=51,localizacion=&quot;Angulo oeste - Darsena auxiliar&quot;,latitud=&'
@@ -13316,7 +13560,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-13 11:15:34',
+    '2021-08-13 13:15:34',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Puerto de Valencia.&quot;, num_local=34,localizacion=&quot;1ª Baliza de babor del nuevo contradique de la amp. N&'
@@ -13325,7 +13569,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-13 11:15:49',
+    '2021-08-13 13:15:49',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Puerto de Valencia.&quot;, num_local=34,localizacion=&quot;1ª Baliza de babor del nuevo contradique de la amp. N&'
@@ -13334,7 +13578,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-13 11:16:58',
+    '2021-08-13 13:16:58',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13343,7 +13587,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-13 11:17:11',
+    '2021-08-13 13:17:11',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13352,7 +13596,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-13 11:47:04',
+    '2021-08-13 13:47:04',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13361,7 +13605,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-13 11:47:28',
+    '2021-08-13 13:47:28',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13370,7 +13614,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-13 11:47:42',
+    '2021-08-13 13:47:42',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13379,7 +13623,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-13 11:47:54',
+    '2021-08-13 13:47:54',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13388,7 +13632,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-13 11:48:08',
+    '2021-08-13 13:48:08',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13397,7 +13641,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-13 11:48:19',
+    '2021-08-13 13:48:19',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13406,7 +13650,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-13 11:48:34',
+    '2021-08-13 13:48:34',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13415,7 +13659,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-13 11:48:55',
+    '2021-08-13 13:48:55',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13424,7 +13668,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-13 11:49:10',
+    '2021-08-13 13:49:10',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13433,7 +13677,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-13 11:50:45',
+    '2021-08-13 13:50:45',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13442,7 +13686,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-13 11:51:43',
+    '2021-08-13 13:51:43',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13451,7 +13695,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-13 12:18:13',
+    '2021-08-13 14:18:13',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'26270\',\'No es de la APV. Solo se lleva a cabo su inspección (a terceros)\')'
@@ -13459,16 +13703,16 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-08-23 10:25:49', 'adrian', 'login', '');
+  ('2021-08-23 12:25:49', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-08-24 08:49:17', 'adrian', 'login', '');
+  ('2021-08-24 10:49:17', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-24 08:49:54',
+    '2021-08-24 10:49:54',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26325\',\'2021-08-24\',\'Se sustituyen las dos LDR\')'
@@ -13476,12 +13720,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-08-24 13:09:44', 'adrian', 'login', '');
+  ('2021-08-24 15:09:44', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-24 13:10:01',
+    '2021-08-24 15:10:01',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25850\',\'2021-08-24\',\'\')'
@@ -13489,12 +13733,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-08-25 08:01:48', 'raul', 'login', '');
+  ('2021-08-25 10:01:48', 'raul', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-25 08:07:03',
+    '2021-08-25 10:07:03',
     'raul',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26380\',\'2021-08-24\',\'Se sustituyen las dos LDRs\')'
@@ -13502,12 +13746,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-08-26 13:30:29', 'adrian', 'login', '');
+  ('2021-08-26 15:30:29', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-26 13:31:01',
+    '2021-08-26 15:31:01',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13516,7 +13760,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-26 13:31:17',
+    '2021-08-26 15:31:17',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13525,7 +13769,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-26 13:31:44',
+    '2021-08-26 15:31:44',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13534,7 +13778,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-26 13:32:16',
+    '2021-08-26 15:32:16',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13543,7 +13787,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-26 13:32:49',
+    '2021-08-26 15:32:49',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13551,12 +13795,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-08-31 12:46:45', 'adrian', 'login', '');
+  ('2021-08-31 14:46:45', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-31 12:47:06',
+    '2021-08-31 14:47:06',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25765\',\'2021-08-27\',\'Se da de baja por fallo.\')'
@@ -13565,7 +13809,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-08-31 12:47:34',
+    '2021-08-31 14:47:34',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25765\',\'2021-08-31\',\'Se sustituyen las baterias y el regulador. Se da de alta.\')'
@@ -13573,12 +13817,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-09-08 09:07:13', 'adrian', 'login', '');
+  ('2021-09-08 11:07:13', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-09-08 09:08:14',
+    '2021-09-08 11:08:14',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25800\',\'2020-04-21\',\'Se repinta la torre.\')'
@@ -13587,7 +13831,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-09-08 09:13:02',
+    '2021-09-08 11:13:02',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26190\',\'2020-05-18\',\'Se repinta la boya.\')'
@@ -13596,7 +13840,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-09-08 09:14:05',
+    '2021-09-08 11:14:05',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25730\',\'2020-02-10\',\'Se repinta la boya.\')'
@@ -13604,12 +13848,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-09-08 13:18:13', 'adrian', 'login', '');
+  ('2021-09-08 15:18:13', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-09-08 13:18:41',
+    '2021-09-08 15:18:41',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Puerto de Sagunto&quot;, num_local=0,localizacion=&quot;Pantalan Sierra Menera&quot;,latitud=&quot;39° 38.8852\' N'
@@ -13618,7 +13862,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-09-08 13:19:21',
+    '2021-09-08 15:19:21',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Puerto de Sagunto&quot;, num_local=0,localizacion=&quot;Pantalan Sierra Menera&quot;,latitud=&quot;39° 38.8852\' N'
@@ -13627,7 +13871,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-09-08 13:20:27',
+    '2021-09-08 15:20:27',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Puerto de Sagunto&quot;, num_local=0,localizacion=&quot;Pantalan Sierra Menera&quot;,latitud=&quot;39º 38.885\' N&'
@@ -13636,7 +13880,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-09-08 13:20:59',
+    '2021-09-08 15:20:59',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Puerto de Sagunto&quot;, num_local=0,localizacion=&quot;Pantalan Sierra Menera&quot;,latitud=&quot;39° 38.838\' N&'
@@ -13645,7 +13889,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-09-08 13:21:40',
+    '2021-09-08 15:21:40',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Puerto de Sagunto&quot;, num_local=0,localizacion=&quot;Pantalan Sierra Menera&quot;,latitud=&quot;39° 38.940\' N&'
@@ -13654,7 +13898,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-09-08 13:21:58',
+    '2021-09-08 15:21:58',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Puerto de Sagunto&quot;, num_local=0,localizacion=&quot;Pantalan Sierra Menera&quot;,latitud=&quot;39° 38.894\' N&'
@@ -13663,7 +13907,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-09-08 13:22:47',
+    '2021-09-08 15:22:47',
     'adrian',
     'Lampara borrada',
     'delete from lampara where nif=\'menera5\''
@@ -13672,7 +13916,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-09-08 13:22:47',
+    '2021-09-08 15:22:47',
     'adrian',
     'Observacion borrada',
     'delete from observaciones where nif=\'menera5\''
@@ -13681,7 +13925,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-09-08 13:22:47',
+    '2021-09-08 15:22:47',
     'adrian',
     'mantenimiento borrad',
     'delete from mantenimiento where nif=\'menera5\''
@@ -13690,7 +13934,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-09-08 13:22:47',
+    '2021-09-08 15:22:47',
     'adrian',
     'Localizacion borrada',
     'delete from localizacion where nif=\'menera5\''
@@ -13699,7 +13943,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-09-08 13:22:47',
+    '2021-09-08 15:22:47',
     'adrian',
     'Balizamiento borrado',
     'delete from balizamiento where nif=\'menera5\''
@@ -13708,7 +13952,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-09-08 13:22:47',
+    '2021-09-08 15:22:47',
     'adrian',
     'Balizamiento borrado',
     'Las cinco tablas borradas: lampara, observaciones,mantenimiento, localizacion y balizamiento'
@@ -13717,7 +13961,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-09-08 13:24:16',
+    '2021-09-08 15:24:16',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Puerto de Sagunto&quot;, num_local=5,localizacion=&quot;Pantalan sierra menera sagunto&quot;,latitud=&quot;39° 38'
@@ -13726,7 +13970,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-09-08 13:24:41',
+    '2021-09-08 15:24:41',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13735,7 +13979,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-09-08 13:25:42',
+    '2021-09-08 15:25:42',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Puerto de Sagunto&quot;, num_local=0,localizacion=&quot;Pantalan Sierra Menera&quot;,latitud=&quot;39° 38.9495\' N'
@@ -13744,7 +13988,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-09-08 13:26:03',
+    '2021-09-08 15:26:03',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Puerto de Sagunto&quot;, num_local=0,localizacion=&quot;Pantalan Sierra Menera&quot;,latitud=&quot;39° 39.051\' N&'
@@ -13753,7 +13997,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-09-08 13:26:26',
+    '2021-09-08 15:26:26',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Puerto de Sagunto&quot;, num_local=6,localizacion=&quot;Pantalan Sierra Menera&quot;,latitud=&quot;39° 38.9495\' N'
@@ -13762,7 +14006,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-09-08 13:26:41',
+    '2021-09-08 15:26:41',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13771,7 +14015,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-09-08 13:26:49',
+    '2021-09-08 15:26:49',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13780,7 +14024,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-09-08 13:27:21',
+    '2021-09-08 15:27:21',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Puerto de Sagunto&quot;, num_local=0,localizacion=&quot;Pantalan Sierra Menera&quot;,latitud=&quot;39° 39.005\' N&'
@@ -13789,7 +14033,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-09-08 13:27:39',
+    '2021-09-08 15:27:39',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Puerto de Sagunto&quot;, num_local=0,localizacion=&quot;Pantalan Sierra Menera&quot;,latitud=&quot;39° 39.106\' N&'
@@ -13798,7 +14042,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-09-08 13:28:01',
+    '2021-09-08 15:28:01',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Puerto de Sagunto&quot;, num_local=0,localizacion=&quot;Pantalan Sierra Menera&quot;,latitud=&quot;39° 39.0602\' N'
@@ -13807,7 +14051,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-09-08 13:28:09',
+    '2021-09-08 15:28:09',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Puerto de Sagunto&quot;, num_local=0,localizacion=&quot;Pantalan Sierra Menera&quot;,latitud=&quot;39° 39.060\' N&'
@@ -13815,16 +14059,16 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-09-08 15:05:53', 'adrian', 'login', '');
+  ('2021-09-08 17:05:53', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-09-09 08:49:35', 'adrian', 'login', '');
+  ('2021-09-09 10:49:35', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-09-09 08:50:35',
+    '2021-09-09 10:50:35',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13833,7 +14077,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-09-09 08:50:43',
+    '2021-09-09 10:50:43',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13842,7 +14086,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-09-09 08:50:46',
+    '2021-09-09 10:50:46',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13850,16 +14094,16 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-09-09 10:02:16', 'adrian', 'login', '');
+  ('2021-09-09 12:02:16', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-09-09 12:48:06', 'adrian', 'login', '');
+  ('2021-09-09 14:48:06', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-09-09 13:11:42',
+    '2021-09-09 15:11:42',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13868,7 +14112,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-09-09 13:11:47',
+    '2021-09-09 15:11:47',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13876,16 +14120,16 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-09-10 08:22:03', 'adrian', 'login', '');
+  ('2021-09-10 10:22:03', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-09-16 11:22:59', 'adrian', 'login', '');
+  ('2021-09-16 13:22:59', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-09-16 11:23:38',
+    '2021-09-16 13:23:38',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26312\',\'2021-09-15\',\'Se sustituye el MOSCAD por fallo de comunicaciones\')'
@@ -13894,7 +14138,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-09-16 11:24:02',
+    '2021-09-16 13:24:02',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26326\',\'2021-09-15\',\'Se sustituye el MOSCAD por fallo de comunicaciones. (ANFER)\')'
@@ -13902,12 +14146,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-09-20 08:12:28', 'adrian', 'login', '');
+  ('2021-09-20 10:12:28', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-09-20 08:13:20',
+    '2021-09-20 10:13:20',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25650\',\'2021-09-17\',\'Se sustituye por garantía el SAI por uno nuevo, quedando la instalación protegida.\')'
@@ -13915,12 +14159,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-09-20 12:33:49', 'raul', 'login', '');
+  ('2021-09-20 14:33:49', 'raul', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-09-20 12:37:39',
+    '2021-09-20 14:37:39',
     'raul',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26392\',\'2021-09-20\',\'Sustitución F.A. por avería\')'
@@ -13928,12 +14172,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-09-22 12:49:20', 'adrian', 'login', '');
+  ('2021-09-22 14:49:20', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-09-22 12:49:54',
+    '2021-09-22 14:49:54',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26500\',\'2021-09-21\',\'Se sustituye la batería del grupo electrógeno.\')'
@@ -13941,12 +14185,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-09-23 08:32:43', 'adrian', 'login', '');
+  ('2021-09-23 10:32:43', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-09-23 08:33:05',
+    '2021-09-23 10:33:05',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26500\',\'2021-09-29\',\'Revisión de los AA.\')'
@@ -13954,12 +14198,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-10-01 09:06:09', 'adrian', 'login', '');
+  ('2021-10-01 11:06:09', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-01 09:07:06',
+    '2021-10-01 11:07:06',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26190\',\'2021-09-13\',\'Se realiza revisión anual con personal de Wartsila.\')'
@@ -13968,7 +14212,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-01 09:07:30',
+    '2021-10-01 11:07:30',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25554\',\'2021-09-29\',\'Se realiza revisión anual con personal de Wartsila.\')'
@@ -13976,12 +14220,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-10-01 10:40:10', 'adrian', 'login', '');
+  ('2021-10-01 12:40:10', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-01 10:40:40',
+    '2021-10-01 12:40:40',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13990,7 +14234,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-01 10:41:23',
+    '2021-10-01 12:41:23',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -13999,7 +14243,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-01 10:42:16',
+    '2021-10-01 12:42:16',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14008,7 +14252,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-01 10:49:42',
+    '2021-10-01 12:49:42',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14017,7 +14261,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-01 10:49:51',
+    '2021-10-01 12:49:51',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14026,7 +14270,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-01 10:51:49',
+    '2021-10-01 12:51:49',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14034,21 +14278,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-10-05 08:23:46', 'adrian', 'login', '');
+  ('2021-10-05 10:23:46', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-05 08:36:32',
-    'adrian',
-    'Modificacion Caracte',
-    ''
-  );
-INSERT INTO
-  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
-VALUES
-  (
-    '2021-10-05 08:36:47',
+    '2021-10-05 10:36:32',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14057,7 +14292,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-05 08:36:57',
+    '2021-10-05 10:36:47',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14066,7 +14301,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-05 08:37:10',
+    '2021-10-05 10:36:57',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14075,7 +14310,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-05 08:37:17',
+    '2021-10-05 10:37:10',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14084,7 +14319,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-05 08:37:30',
+    '2021-10-05 10:37:17',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14093,7 +14328,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-05 08:37:39',
+    '2021-10-05 10:37:30',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14102,7 +14337,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-05 08:37:49',
+    '2021-10-05 10:37:39',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14111,7 +14346,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-05 08:37:59',
+    '2021-10-05 10:37:49',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14120,7 +14355,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-05 08:38:39',
+    '2021-10-05 10:37:59',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14129,7 +14364,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-05 08:38:45',
+    '2021-10-05 10:38:39',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14138,7 +14373,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-05 08:38:58',
+    '2021-10-05 10:38:45',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14147,7 +14382,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-05 08:39:08',
+    '2021-10-05 10:38:58',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14156,7 +14391,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-05 08:39:16',
+    '2021-10-05 10:39:08',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14165,7 +14400,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-05 08:39:23',
+    '2021-10-05 10:39:16',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14174,7 +14409,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-05 08:39:31',
+    '2021-10-05 10:39:23',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14183,20 +14418,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-05 08:39:50',
-    'adrian',
-    'Modificacion Caracte',
-    ''
-  );
-INSERT INTO
-  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
-VALUES
-  ('2021-10-06 09:37:18', 'adrian', 'login', '');
-INSERT INTO
-  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
-VALUES
-  (
-    '2021-10-06 09:39:35',
+    '2021-10-05 10:39:31',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14205,7 +14427,20 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-06 09:39:42',
+    '2021-10-05 10:39:50',
+    'adrian',
+    'Modificacion Caracte',
+    ''
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  ('2021-10-06 11:37:18', 'adrian', 'login', '');
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2021-10-06 11:39:35',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14214,7 +14449,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-06 09:39:57',
+    '2021-10-06 11:39:42',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14223,7 +14458,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-06 09:40:15',
+    '2021-10-06 11:39:57',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14232,7 +14467,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-06 09:40:32',
+    '2021-10-06 11:40:15',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14241,7 +14476,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-06 09:40:49',
+    '2021-10-06 11:40:32',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14250,7 +14485,16 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-06 09:49:11',
+    '2021-10-06 11:40:49',
+    'adrian',
+    'Modificacion Caracte',
+    ''
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2021-10-06 11:49:11',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26190\',\'2021-09-30\',\'Se sustituye un tramo de cadena.\')'
@@ -14259,7 +14503,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-06 09:51:17',
+    '2021-10-06 11:51:17',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'25730\',\'Se recomienda soldar anodo nuevo\')'
@@ -14268,7 +14512,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-06 09:51:43',
+    '2021-10-06 11:51:43',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'25761\',\'Cadena al 35% desgaste\')'
@@ -14277,7 +14521,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-06 09:52:23',
+    '2021-10-06 11:52:23',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'25765\',\'Cadena durmiente presenta 25% desgaste\')'
@@ -14285,12 +14529,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-10-11 10:57:58', 'adrian', 'login', '');
+  ('2021-10-11 12:57:58', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-11 10:58:48',
+    '2021-10-11 12:58:48',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25720\',\'2020-06-01\',\'Cambio de LDR por mal funcionamiento\')'
@@ -14299,7 +14543,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-11 10:59:38',
+    '2021-10-11 12:59:38',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25721\',\'2020-05-29\',\'Cambio de los 8 niveles de leds y de la óptica.\')'
@@ -14308,7 +14552,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-11 11:00:20',
+    '2021-10-11 13:00:20',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26047.2\',\'2020-05-29\',\'Reparada mala conexión entre la placa solar y el regulador.\')'
@@ -14316,12 +14560,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-10-15 08:49:51', 'adrian', 'login', '');
+  ('2021-10-15 10:49:51', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-15 08:50:26',
+    '2021-10-15 10:50:26',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25776\',\'2021-10-14\',\'Se acude a las 22:00 por fallo. Se sustituye un fusible y queda funcionando.\')'
@@ -14330,7 +14574,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-15 08:50:38',
+    '2021-10-15 10:50:38',
     'adrian',
     'Modificacion lampara',
     ''
@@ -14338,12 +14582,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-10-21 09:15:31', 'adrian', 'login', '');
+  ('2021-10-21 11:15:31', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-21 09:15:46',
+    '2021-10-21 11:15:46',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'MENERA1\',\'2021-10-08\',\'Se repone la marca tope, perdida en un temporal y se asegura con tuerca autoblocante.\')'
@@ -14352,7 +14596,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-21 09:16:08',
+    '2021-10-21 11:16:08',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'MENERA10\',\'2021-10-08\',\'Se asegura la marca de tope con tuerca autoblocante.\')'
@@ -14361,7 +14605,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-21 09:16:19',
+    '2021-10-21 11:16:19',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'MENERA2\',\'2021-10-08\',\'Se asegura la marca de tope con tuerca autoblocante.\')'
@@ -14370,7 +14614,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-21 09:16:30',
+    '2021-10-21 11:16:30',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'MENERA3\',\'2021-10-08\',\'Se asegura la marca de tope con tuerca autoblocante.\')'
@@ -14379,7 +14623,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-21 09:16:39',
+    '2021-10-21 11:16:39',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'MENERA4\',\'2021-10-08\',\'Se asegura la marca de tope con tuerca autoblocante.\')'
@@ -14388,7 +14632,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-21 09:16:48',
+    '2021-10-21 11:16:48',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'MENERA5\',\'2021-10-08\',\'Se asegura la marca de tope con tuerca autoblocante.\')'
@@ -14397,7 +14641,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-21 09:16:59',
+    '2021-10-21 11:16:59',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'MENERA6\',\'2021-10-08\',\'Se asegura la marca de tope con tuerca autoblocante.\')'
@@ -14406,7 +14650,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-21 09:17:07',
+    '2021-10-21 11:17:07',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'MENERA7\',\'2021-10-08\',\'Se asegura la marca de tope con tuerca autoblocante.\')'
@@ -14415,7 +14659,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-21 09:17:15',
+    '2021-10-21 11:17:15',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'MENERA8\',\'2021-10-08\',\'Se asegura la marca de tope con tuerca autoblocante.\')'
@@ -14424,7 +14668,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-21 09:17:23',
+    '2021-10-21 11:17:23',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'MENERA9\',\'2021-10-08\',\'Se asegura la marca de tope con tuerca autoblocante.\')'
@@ -14433,7 +14677,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-21 09:18:26',
+    '2021-10-21 11:18:26',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26285\',\'2021-10-20\',\'Los mecánicos llevan a cabo labores de mantenimiento en los cerramientos de la baliza.\')'
@@ -14441,12 +14685,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-10-27 10:48:14', 'adrian', 'login', '');
+  ('2021-10-27 12:48:14', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-27 10:48:40',
+    '2021-10-27 12:48:40',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26500\',\'2021-10-21\',\'Se sustituyen las baterias del SAI.\')'
@@ -14454,12 +14698,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-10-28 13:18:07', 'adrian', 'login', '');
+  ('2021-10-28 15:18:07', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-10-28 13:18:44',
+    '2021-10-28 15:18:44',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26047\',\'2021-10-28\',\'Se le sustituye el MOSCAD y la radio, que estaban averiadas. Vuelve a funcionar el telecontrol.'
@@ -14467,16 +14711,16 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-10-29 09:49:39', 'adrian', 'login', '');
+  ('2021-10-29 11:49:39', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-12-15 11:06:00', 'adrian', 'login', '');
+  ('2021-12-15 12:06:00', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-12-15 11:06:49',
+    '2021-12-15 12:06:49',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25761\',\'2021-11-11\',\'Se coloca tramo de cadena de 5m.\')'
@@ -14485,7 +14729,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-12-15 11:07:11',
+    '2021-12-15 12:07:11',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25765\',\'2021-11-11\',\'Se coloca tramo de cadena de 5m.\')'
@@ -14494,7 +14738,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-12-15 11:07:39',
+    '2021-12-15 12:07:39',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25765\',\'2021-11-11\',\'Se sustituyen los dos ánodos de sacrificio.\')'
@@ -14503,7 +14747,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-12-15 11:08:19',
+    '2021-12-15 12:08:19',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25841\',\'2021-11-11\',\'Se sustituyen los dos ánodos de sacrificio.\')'
@@ -14512,7 +14756,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-12-15 11:08:47',
+    '2021-12-15 12:08:47',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25842.5\',\'2021-11-11\',\'Se coloca un tramo de 2m de cadena.\')'
@@ -14521,7 +14765,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-12-15 11:09:19',
+    '2021-12-15 12:09:19',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25843\',\'2021-11-11\',\'Se acorta la cadena.\')'
@@ -14530,7 +14774,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-12-15 11:10:23',
+    '2021-12-15 12:10:23',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25554\',\'2021-11-11\',\'Se montan dos ánodos de sacrificio.\')'
@@ -14538,12 +14782,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-12-21 09:02:18', 'adrian', 'login', '');
+  ('2021-12-21 10:02:18', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-12-21 09:03:50',
+    '2021-12-21 10:03:50',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25720\',\'2021-12-20\',\'Fuente alimentacion en averia. Se queda en funcionamiento con la segunda salida de la fuente de'
@@ -14552,7 +14796,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-12-21 09:07:23',
+    '2021-12-21 10:07:23',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26047\',\'2021-12-21\',\'LitePipe1 está en fallo.\')'
@@ -14560,12 +14804,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2021-12-22 12:19:24', 'adrian', 'login', '');
+  ('2021-12-22 13:19:24', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2021-12-22 12:19:43',
+    '2021-12-22 13:19:43',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25842\',\'2021-12-22\',\'Falla la baliza autónoma y se sustituye por una de repuesto.\')'
@@ -14573,12 +14817,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-01-03 11:56:51', 'adrian', 'login', '');
+  ('2022-01-03 12:56:51', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-01-03 11:57:13',
+    '2022-01-03 12:57:13',
     'adrian',
     'Modificacion lampara',
     ''
@@ -14587,7 +14831,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-01-03 11:57:26',
+    '2022-01-03 12:57:26',
     'adrian',
     'Modificacion lampara',
     ''
@@ -14595,24 +14839,24 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-01-12 09:52:28', 'adrian', 'login', '');
+  ('2022-01-12 10:52:28', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-01-12 13:57:41', 'adrian', 'login', '');
+  ('2022-01-12 14:57:41', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-01-17 09:48:31', 'adrian', 'login', '');
+  ('2022-01-17 10:48:31', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-01-20 12:35:54', 'adrian', 'login', '');
+  ('2022-01-20 13:35:54', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-01-20 12:41:28',
+    '2022-01-20 13:41:28',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14621,7 +14865,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-01-20 12:42:10',
+    '2022-01-20 13:42:10',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14630,7 +14874,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-01-20 12:43:21',
+    '2022-01-20 13:43:21',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14638,16 +14882,16 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-01-21 10:36:58', 'adrian', 'login', '');
+  ('2022-01-21 11:36:58', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-01-21 12:23:27', 'adrian', 'login', '');
+  ('2022-01-21 13:23:27', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-01-21 12:24:35',
+    '2022-01-21 13:24:35',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14656,7 +14900,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-01-21 12:24:41',
+    '2022-01-21 13:24:41',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14664,16 +14908,16 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-01-27 13:57:30', 'adrian', 'login', '');
+  ('2022-01-27 14:57:30', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-01-31 11:32:52', 'adrian', 'login', '');
+  ('2022-01-31 12:32:52', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-01-31 11:35:09',
+    '2022-01-31 12:35:09',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25761\',\'2022-01-28\',\'Se le sustituye la LDR izquierda\')'
@@ -14682,7 +14926,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-01-31 11:35:31',
+    '2022-01-31 12:35:31',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'25841\',\'Necesita repintado\')'
@@ -14691,7 +14935,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-01-31 11:35:44',
+    '2022-01-31 12:35:44',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25841\',\'2022-01-28\',\'Se le sustituye la LDR izquierda\')'
@@ -14700,7 +14944,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-01-31 11:36:52',
+    '2022-01-31 12:36:52',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25843\',\'2022-01-28\',\'Marca de tope perdida. Se prepara una encargándola al taller mecánico.\')'
@@ -14708,12 +14952,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-02-02 11:05:59', 'adrian', 'login', '');
+  ('2022-02-02 12:05:59', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-02-02 11:06:59',
+    '2022-02-02 12:06:59',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14722,7 +14966,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-02-02 11:07:15',
+    '2022-02-02 12:07:15',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14731,7 +14975,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-02-02 11:33:29',
+    '2022-02-02 12:33:29',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25768\',\'2022-02-02\',\'Se cambia la caracteristica de L0.5 oc1 L0.5 oc3 L0.5 oc9 a L0.6 oc0.6 L0.6 oc1.8 L0.6 oc5.4\')'
@@ -14740,7 +14984,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-02-02 11:49:11',
+    '2022-02-02 12:49:11',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14748,12 +14992,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-02-04 13:47:11', 'adrian', 'login', '');
+  ('2022-02-04 14:47:11', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-02-04 13:47:40',
+    '2022-02-04 14:47:40',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25920\',\'2022-02-04\',\'Se sustituyen los 8 discos LEDs y las LDR.\')'
@@ -14762,7 +15006,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-02-04 13:49:13',
+    '2022-02-04 14:49:13',
     'adrian',
     'Modificacion lampara',
     ''
@@ -14770,12 +15014,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-02-16 08:09:50', 'adrian', 'login', '');
+  ('2022-02-16 09:09:50', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-02-16 08:12:06',
+    '2022-02-16 09:12:06',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'25820.1\',\'Fallo destellador según SCADA. Funciona sin sincronización con la 25820\')'
@@ -14783,12 +15027,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-02-17 11:56:40', 'adrian', 'login', '');
+  ('2022-02-17 12:56:40', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-02-17 11:57:36',
+    '2022-02-17 12:57:36',
     'adrian',
     'Mantenimiendo borrad',
     'delete from mantenimiento where nif=\'25565\' AND fecha=\'2019-11-26\' AND mantenimiento LIKE \'%Se repinta toda la torre.%\''
@@ -14796,12 +15040,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-02-22 07:42:41', 'adrian', 'login', '');
+  ('2022-02-22 08:42:41', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-02-22 07:42:49',
+    '2022-02-22 08:42:49',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'prueba1\',\'L0.5 Oc0.7 L0.5 Oc2.1 L0.5 OC6.3\')'
@@ -14810,7 +15054,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-02-22 07:43:28',
+    '2022-02-22 08:43:28',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14819,7 +15063,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-02-22 07:43:35',
+    '2022-02-22 08:43:35',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14828,7 +15072,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-02-22 07:43:41',
+    '2022-02-22 08:43:41',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14837,7 +15081,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-02-22 07:46:10',
+    '2022-02-22 08:46:10',
     'adrian',
     'Modificacion lampara',
     ''
@@ -14845,12 +15089,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-02-23 12:54:14', 'adrian', 'login', '');
+  ('2022-02-23 13:54:14', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-02-23 12:54:24',
+    '2022-02-23 13:54:24',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14859,7 +15103,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-02-23 12:54:38',
+    '2022-02-23 13:54:38',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14868,7 +15112,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-02-23 12:55:40',
+    '2022-02-23 13:55:40',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Marina Real JCI Valencia&quot;, num_local=0,localizacion=&quot;Primera boya Marca Especial Dársena Exterior&quot;'
@@ -14876,12 +15120,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-03-01 08:21:37', 'adrian', 'login', '');
+  ('2022-03-01 09:21:37', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-01 08:21:46',
+    '2022-03-01 09:21:46',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14890,7 +15134,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-01 08:21:54',
+    '2022-03-01 09:21:54',
     'adrian',
     'Modificacion lampara',
     ''
@@ -14899,7 +15143,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-01 08:25:19',
+    '2022-03-01 09:25:19',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14907,12 +15151,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-03-08 08:45:16', 'adrian', 'login', '');
+  ('2022-03-08 09:45:16', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-08 08:45:45',
+    '2022-03-08 09:45:45',
     'adrian',
     'Modificacion lampara',
     ''
@@ -14920,12 +15164,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-03-08 12:02:35', 'adrian', 'login', '');
+  ('2022-03-08 13:02:35', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-08 12:02:52',
+    '2022-03-08 13:02:52',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -14934,16 +15178,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-08 12:10:39',
-    'adrian',
-    'Modificacion lampara',
-    ''
-  );
-INSERT INTO
-  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
-VALUES
-  (
-    '2022-03-08 12:11:38',
+    '2022-03-08 13:10:39',
     'adrian',
     'Modificacion lampara',
     ''
@@ -14952,7 +15187,16 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-08 12:13:54',
+    '2022-03-08 13:11:38',
+    'adrian',
+    'Modificacion lampara',
+    ''
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2022-03-08 13:13:54',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Puerto de Valencia.&quot;, num_local=19,localizacion=&quot;3ª boya Br. Dársena de Servicios Náuticos&quot;,latitu'
@@ -14961,7 +15205,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-08 12:14:16',
+    '2022-03-08 13:14:16',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Puerto de Valencia.&quot;, num_local=19,localizacion=&quot;3ª boya Br. Dársena de Servicios Náuticos&quot;,latitu'
@@ -14970,7 +15214,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-08 12:14:50',
+    '2022-03-08 13:14:50',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Puerto de Valencia.&quot;, num_local=19,localizacion=&quot;3ª boya Br. Dársena de Servicios Náuticos&quot;,latitu'
@@ -14979,7 +15223,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-08 12:15:09',
+    '2022-03-08 13:15:09',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Puerto de Valencia.&quot;, num_local=19,localizacion=&quot;3ª boya Br. Dársena de Servicios Náuticos&quot;,latitu'
@@ -14988,7 +15232,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-08 12:15:17',
+    '2022-03-08 13:15:17',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Puerto de Valencia.&quot;, num_local=19,localizacion=&quot;3ª boya Br. Dársena de Servicios Náuticos&quot;,latitu'
@@ -14997,7 +15241,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-08 12:34:34',
+    '2022-03-08 13:34:34',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -15006,7 +15250,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-08 13:14:22',
+    '2022-03-08 14:14:22',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -15015,7 +15259,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-08 13:15:14',
+    '2022-03-08 14:15:14',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -15024,7 +15268,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-08 13:29:32',
+    '2022-03-08 14:29:32',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;PORT-SAPLAYA&quot;, num_local=1,localizacion=&quot;Extremo dique Sur&quot;,latitud=&quot;39º 30.614\' N&quot;,long'
@@ -15032,12 +15276,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-03-09 09:24:21', 'adrian', 'login', '');
+  ('2022-03-09 10:24:21', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-09 09:24:30',
+    '2022-03-09 10:24:30',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Marina Real JCI Valencia&quot;, num_local=0,localizacion=&quot;Primera boya Marca Especial Dársena Exterior&quot;'
@@ -15046,7 +15290,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-09 09:30:55',
+    '2022-03-09 10:30:55',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -15055,7 +15299,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-09 09:31:38',
+    '2022-03-09 10:31:38',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -15064,7 +15308,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-09 09:32:05',
+    '2022-03-09 10:32:05',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -15073,7 +15317,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-09 09:32:38',
+    '2022-03-09 10:32:38',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -15082,7 +15326,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-09 09:34:17',
+    '2022-03-09 10:34:17',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -15091,7 +15335,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-09 09:34:26',
+    '2022-03-09 10:34:26',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -15100,7 +15344,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-09 09:34:33',
+    '2022-03-09 10:34:33',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -15108,12 +15352,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-03-10 07:53:56', 'adrian', 'login', '');
+  ('2022-03-10 08:53:56', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-10 07:54:05',
+    '2022-03-10 08:54:05',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -15122,7 +15366,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-10 08:09:34',
+    '2022-03-10 09:09:34',
     'adrian',
     'Modificacion lampara',
     ''
@@ -15131,7 +15375,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-10 08:09:38',
+    '2022-03-10 09:09:38',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'25700\',\'\')'
@@ -15140,7 +15384,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-10 08:09:45',
+    '2022-03-10 09:09:45',
     'adrian',
     'Observacion borrada',
     'delete from observaciones where nif=\'25700\' AND observaciones=\'\''
@@ -15149,7 +15393,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-10 08:10:54',
+    '2022-03-10 09:10:54',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'25700\',\'PANELES 95/12V --- BATERIAS:720Ah - 24v --- AEROGENERADOR: 150W/24V\')'
@@ -15158,7 +15402,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-10 08:20:46',
+    '2022-03-10 09:20:46',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'25700\',\'MBR600L 80w --- MBR300R 10w\')'
@@ -15167,7 +15411,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-10 08:21:19',
+    '2022-03-10 09:21:19',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'25700\',\'REFERENCIA CATASTRAL: 0304101YJ3700G0001PW\')'
@@ -15176,7 +15420,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-10 08:23:25',
+    '2022-03-10 09:23:25',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -15185,7 +15429,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-10 08:24:52',
+    '2022-03-10 09:24:52',
     'adrian',
     'Modificacion lampara',
     ''
@@ -15194,7 +15438,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-10 08:25:19',
+    '2022-03-10 09:25:19',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'26500\',\'REFERENCIA CATASTRA: 9555403YJ3986S0001XP\')'
@@ -15203,7 +15447,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-10 08:25:52',
+    '2022-03-10 09:25:52',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'26500\',\'AÑO CONSTRUCCION 1904\')'
@@ -15212,7 +15456,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-10 08:27:12',
+    '2022-03-10 09:27:12',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -15221,7 +15465,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-10 08:28:14',
+    '2022-03-10 09:28:14',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'25650\',\'REFERENCIA CATASTRAL: 0413301YJ4401S0001JK\')'
@@ -15230,7 +15474,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-10 08:31:00',
+    '2022-03-10 09:31:00',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'25650\',\'AIS SBS 002241047 / SINTETICO 992241055\')'
@@ -15239,7 +15483,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-10 08:31:39',
+    '2022-03-10 09:31:39',
     'adrian',
     'Modificacion lampara',
     ''
@@ -15247,16 +15491,16 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-03-10 11:49:24', 'adrian', 'login', '');
+  ('2022-03-10 12:49:24', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-03-16 08:27:15', 'adrian', 'login', '');
+  ('2022-03-16 09:27:15', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-16 08:28:26',
+    '2022-03-16 09:28:26',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26190\',\'2022-03-10\',\'Varada en playa norte Port Saplaya debido a fuerte temporal Celia (Se da de baja)\')'
@@ -15265,7 +15509,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-16 08:45:45',
+    '2022-03-16 09:45:45',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'25820.1\',\'Elastomero (Espuma polietileno cubierta de poliuretano)\')'
@@ -15274,7 +15518,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-16 08:45:52',
+    '2022-03-16 09:45:52',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'25820.1\',\'2 X SB6V/ 200A .Regulador Morningstar/sunsaver\')'
@@ -15283,7 +15527,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-16 08:46:19',
+    '2022-03-16 09:46:19',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'25820.1\',\'Telecontrol RTU53 y reflector radar.\')'
@@ -15292,7 +15536,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-16 08:47:45',
+    '2022-03-16 09:47:45',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'25841\',\'Elastomero (Espuma polietileno cubierta de poliuretano)\')'
@@ -15301,7 +15545,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-16 08:48:16',
+    '2022-03-16 09:48:16',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'25841\',\'Telecontrol RTU 54 y reflector radar\')'
@@ -15310,7 +15554,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-16 08:48:31',
+    '2022-03-16 09:48:31',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'25841\',\'2 X SB6V/ 200A .Regulador Morningstar/sunsaver\')'
@@ -15318,12 +15562,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-03-16 11:50:00', 'adrian', 'login', '');
+  ('2022-03-16 12:50:00', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-16 11:50:30',
+    '2022-03-16 12:50:30',
     'adrian',
     'Modificacion lampara',
     ''
@@ -15332,7 +15576,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-16 11:51:43',
+    '2022-03-16 12:51:43',
     'adrian',
     'Modificacion lampara',
     ''
@@ -15341,7 +15585,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-16 11:52:04',
+    '2022-03-16 12:52:04',
     'adrian',
     'Modificacion lampara',
     ''
@@ -15350,7 +15594,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-16 11:52:21',
+    '2022-03-16 12:52:21',
     'adrian',
     'Modificacion lampara',
     ''
@@ -15359,7 +15603,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-16 11:52:37',
+    '2022-03-16 12:52:37',
     'adrian',
     'Modificacion lampara',
     ''
@@ -15368,7 +15612,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-16 11:52:55',
+    '2022-03-16 12:52:55',
     'adrian',
     'Modificacion lampara',
     ''
@@ -15377,7 +15621,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-16 11:53:12',
+    '2022-03-16 12:53:12',
     'adrian',
     'Modificacion lampara',
     ''
@@ -15386,7 +15630,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-16 11:53:27',
+    '2022-03-16 12:53:27',
     'adrian',
     'Modificacion lampara',
     ''
@@ -15395,7 +15639,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-16 11:53:44',
+    '2022-03-16 12:53:44',
     'adrian',
     'Modificacion lampara',
     ''
@@ -15404,7 +15648,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-16 11:53:56',
+    '2022-03-16 12:53:56',
     'adrian',
     'Modificacion lampara',
     ''
@@ -15413,7 +15657,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-16 11:54:12',
+    '2022-03-16 12:54:12',
     'adrian',
     'Modificacion lampara',
     ''
@@ -15421,12 +15665,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-03-31 13:13:49', 'adrian', 'login', '');
+  ('2022-03-31 15:13:49', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-31 13:15:29',
+    '2022-03-31 15:15:29',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26083\',\'2022-03-29\',\'Traida por el POLLUX a puerto, se encontró a la deriva.\')'
@@ -15435,7 +15679,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-31 13:15:57',
+    '2022-03-31 15:15:57',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'26083\',\'Marta de Alfonso PPEE telf 676209300\')'
@@ -15444,7 +15688,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-31 13:16:20',
+    '2022-03-31 15:16:20',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'26083\',\'Empresa que lleva mantenimiento FUGRO NORWAY AS.  Olga Fernandez y Carlos Oyonarte.\')'
@@ -15453,7 +15697,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-31 13:17:06',
+    '2022-03-31 15:17:06',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'26083\',\'Carlos Oyonarte c.oyonarte@fugro.com 609688503\')'
@@ -15462,7 +15706,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-03-31 13:17:56',
+    '2022-03-31 15:17:56',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'26083\',\'Olga Fernandez  o.fernandez@fugro.com 609 233 630\')'
@@ -15470,12 +15714,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-04-27 09:40:31', 'adrian', 'login', '');
+  ('2022-04-27 11:40:31', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-04-27 09:41:10',
+    '2022-04-27 11:41:10',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26190\',\'2022-04-26\',\'Se vuelve a fondear en su ubicación habitual.\')'
@@ -15483,12 +15727,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-04-27 12:04:04', 'adrian', 'login', '');
+  ('2022-04-27 14:04:04', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-04-27 12:04:22',
+    '2022-04-27 14:04:22',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Port saplaya pontona&quot;, num_local=3,localizacion=&quot;Señaliza pontona hundida&quot;,latitud=&quot;39º 32.76'
@@ -15497,7 +15741,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-04-27 12:04:34',
+    '2022-04-27 14:04:34',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Port saplaya pontona&quot;, num_local=3,localizacion=&quot;Señaliza pontona hundida&quot;,latitud=&quot;39º 32.76'
@@ -15505,20 +15749,20 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-04-27 12:45:27', 'adrian', 'login', '');
+  ('2022-04-27 14:45:27', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-04-29 12:33:02', 'adrian', 'login', '');
+  ('2022-04-29 14:33:02', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-05-11 10:40:01', 'adrian', 'login', '');
+  ('2022-05-11 12:40:01', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-05-11 10:40:12',
+    '2022-05-11 12:40:12',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'26285\',\'MMSI: 992241052\')'
@@ -15526,24 +15770,24 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-05-11 10:40:28', 'adrian', 'logout', '');
+  ('2022-05-11 12:40:28', 'adrian', 'logout', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-05-11 10:40:57', 'adrian', 'login', '');
+  ('2022-05-11 12:40:57', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-05-13 09:34:45', 'adrian', 'login', '');
+  ('2022-05-13 11:34:45', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-06-03 11:10:01', 'adrian', 'login', '');
+  ('2022-06-03 13:10:01', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-06-03 11:10:50',
+    '2022-06-03 13:10:50',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25552\',\'2022-06-02\',\'Se cambia batería y borneros + limpieza\')'
@@ -15551,12 +15795,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-06-16 13:01:50', 'Raul', 'login', '');
+  ('2022-06-16 15:01:50', 'Raul', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-06-16 13:09:10',
+    '2022-06-16 15:09:10',
     'raul',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26500\',\'2022-06-15\',\'Se sustituye el SAI averiado\')'
@@ -15565,7 +15809,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-06-16 13:16:07',
+    '2022-06-16 15:16:07',
     'raul',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26500\',\'2022-03-15\',\'Se cae parte de la valla perimetral que da a la avenida\')'
@@ -15574,7 +15818,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-06-16 13:23:49',
+    '2022-06-16 15:23:49',
     'raul',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26500\',\'2020-02-13\',\'Se crea el sector de ocultación con vinilo\')'
@@ -15582,12 +15826,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-06-21 12:09:17', 'Raul', 'login', '');
+  ('2022-06-21 14:09:17', 'Raul', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-06-21 12:12:27',
+    '2022-06-21 14:12:27',
     'raul',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26500\',\'2022-06-20\',\'Jose Luis de IRD deja operativa la cámara de entrada faro tras poner un UTP que faltaba del rad'
@@ -15595,12 +15839,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-06-22 13:32:45', 'adrian', 'login', '');
+  ('2022-06-22 15:32:45', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-06-22 13:33:49',
+    '2022-06-22 15:33:49',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25740\',\'2022-06-21\',\'Se sustituye la boya completa por la nueva EBM-HV 30y linterna MCL360 XL\')'
@@ -15609,7 +15853,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-06-22 13:34:21',
+    '2022-06-22 15:34:21',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25730\',\'\',\'Se sustituye la boya completa por la nueva EBM-HV23 y linterna MCL360 XL\')'
@@ -15618,7 +15862,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-06-22 13:35:16',
+    '2022-06-22 15:35:16',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25776\',\'2022-06-21\',\'Se sustituyen las dos LDR\')'
@@ -15626,12 +15870,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-07-27 13:46:58', 'adrian', 'login', '');
+  ('2022-07-27 15:46:58', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-07-27 13:47:31',
+    '2022-07-27 15:47:31',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25730\',\'2022-06-20\',\'Se sustituye la boya al reemplazarla por la nueva EBM22-HV\')'
@@ -15640,7 +15884,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-07-27 13:47:41',
+    '2022-07-27 15:47:41',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'25730\',\'PESO MUERTO: 4600 Kg\')'
@@ -15649,7 +15893,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-07-27 13:52:43',
+    '2022-07-27 15:52:43',
     'adrian',
     'Modificacion lampara',
     ''
@@ -15657,12 +15901,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-07-28 10:19:09', 'adrian', 'login', '');
+  ('2022-07-28 12:19:09', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-07-28 10:19:20',
+    '2022-07-28 12:19:20',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Puerto de Sagunto&quot;, num_local=16,localizacion=&quot;Muelle de servicios, extremo&quot;,latitud=&quot;39º 38.'
@@ -15670,16 +15914,16 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-07-28 12:11:53', 'adrian', 'login', '');
+  ('2022-07-28 14:11:53', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-07-29 11:19:08', 'adrian', 'login', '');
+  ('2022-07-29 13:19:08', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-07-29 11:20:13',
+    '2022-07-29 13:20:13',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25730\',\'2022-07-29\',\'Se corrige la información del AIS. De ser aguas navegables se reconfigura a Cardinal Este\')'
@@ -15688,7 +15932,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-07-29 11:20:47',
+    '2022-07-29 13:20:47',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25740\',\'2022-07-29\',\'Se reconfigura informacion AIS. De ser lateral de estribor, pasa a ser lateral de babor.\')'
@@ -15697,7 +15941,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-07-29 11:24:24',
+    '2022-07-29 13:24:24',
     'adrian',
     'Modificacion lampara',
     ''
@@ -15706,7 +15950,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-07-29 11:24:37',
+    '2022-07-29 13:24:37',
     'adrian',
     'Modificacion lampara',
     ''
@@ -15714,16 +15958,16 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-07-29 13:04:16', 'adrian', 'login', '');
+  ('2022-07-29 15:04:16', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-08-01 10:14:11', 'adrian', 'login', '');
+  ('2022-08-01 12:14:11', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-01 10:15:26',
+    '2022-08-01 12:15:26',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25730\',\'2021-06-11\',\'Se suelda ánodo nuevo de sacrificio.\')'
@@ -15731,12 +15975,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-08-18 12:59:11', 'adrian', 'login', '');
+  ('2022-08-18 14:59:11', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-18 12:59:18',
+    '2022-08-18 14:59:18',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'25840\',\'SERA PINTADA EN 2022\')'
@@ -15745,7 +15989,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-18 12:59:27',
+    '2022-08-18 14:59:27',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'25940\',\'SERA PINTADA EN 2022\')'
@@ -15754,7 +15998,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-18 12:59:36',
+    '2022-08-18 14:59:36',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'25850\',\'SERA PINTADA EN 2022\')'
@@ -15763,7 +16007,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-18 12:59:47',
+    '2022-08-18 14:59:47',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'26047.2\',\'SERA PINTADA EN 2022\')'
@@ -15772,7 +16016,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-18 12:59:57',
+    '2022-08-18 14:59:57',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'26047\',\'SERA PINTADA EN 2022\')'
@@ -15781,7 +16025,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-18 13:00:05',
+    '2022-08-18 15:00:05',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'25774\',\'SERA PINTADA EN 2022\')'
@@ -15790,7 +16034,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-18 13:00:18',
+    '2022-08-18 15:00:18',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'26390\',\'SERA PINTADA EN 2022\')'
@@ -15799,7 +16043,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-18 13:00:29',
+    '2022-08-18 15:00:29',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'26311\',\'SERA PINTADA EN 2022\')'
@@ -15808,7 +16052,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-18 13:00:38',
+    '2022-08-18 15:00:38',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'26314\',\'SERA PINTADA EN 2022\')'
@@ -15817,7 +16061,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-18 13:00:45',
+    '2022-08-18 15:00:45',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'26392\',\'SERA PINTADA EN 2022\')'
@@ -15826,7 +16070,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-18 13:00:57',
+    '2022-08-18 15:00:57',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'25570\',\'SERA PINTADA EN 2022\')'
@@ -15835,7 +16079,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-18 13:01:45',
+    '2022-08-18 15:01:45',
     'adrian',
     'Observacion borrada',
     'delete from observaciones where nif=\'25570\' AND observaciones=\'Necesita ser repitanda\''
@@ -15843,12 +16087,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-08-19 13:19:11', 'adrian', 'login', '');
+  ('2022-08-19 15:19:11', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-19 13:19:42',
+    '2022-08-19 15:19:42',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26360\',\'2022-08-18\',\'Wartsila realiza revisión submarina.\')'
@@ -15857,7 +16101,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-19 13:20:48',
+    '2022-08-19 15:20:48',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25843\',\'2022-08-12\',\'Wartsila realiza revisión submarina.\')'
@@ -15866,7 +16110,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-19 13:21:06',
+    '2022-08-19 15:21:06',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25843.5\',\'2022-08-12\',\'Wartsila realiza revisión submarina.\')'
@@ -15875,7 +16119,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-19 13:21:23',
+    '2022-08-19 15:21:23',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25843.8\',\'2022-08-12\',\'Wartsila realiza revisión submarina.\')'
@@ -15884,7 +16128,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-19 13:21:38',
+    '2022-08-19 15:21:38',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25842.5\',\'2022-08-12\',\'Wartsila realiza revisión submarina.\')'
@@ -15893,7 +16137,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-19 13:22:27',
+    '2022-08-19 15:22:27',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25761\',\'2022-08-02\',\'Wartsila realiza revisión submarina.\')'
@@ -15902,7 +16146,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-19 13:24:06',
+    '2022-08-19 15:24:06',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26313\',\'2022-08-19\',\'Wartsila realiza revisión submarina.\')'
@@ -15911,7 +16155,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-19 13:24:27',
+    '2022-08-19 15:24:27',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26320\',\'2022-08-19\',\'Wartsila realiza revisión submarina.\')'
@@ -15920,7 +16164,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-19 14:09:21',
+    '2022-08-19 16:09:21',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Marina Real Juan Carlos I. Valencia&quot;, num_local=51,localizacion=&quot;Angulo oeste - Darsena auxiliar&quot;,'
@@ -15929,7 +16173,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-19 14:10:17',
+    '2022-08-19 16:10:17',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Marina Real Juan Carlos I. Valencia&quot;, num_local=102,localizacion=&quot;Semaforo a estribor - Puente móvil. V'
@@ -15938,7 +16182,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-19 14:10:35',
+    '2022-08-19 16:10:35',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Marina Real Juan Carlos I. Valencia&quot;, num_local=103,localizacion=&quot;Semáforo a babor - Puente móvil. Vale'
@@ -15947,7 +16191,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-19 14:10:51',
+    '2022-08-19 16:10:51',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Marina Real Juan Carlos I. Valencia&quot;, num_local=104,localizacion=&quot;Semáforo sobre tablero del puente móv'
@@ -15955,12 +16199,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-08-22 10:40:00', 'adrian', 'login', '');
+  ('2022-08-22 12:40:00', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-22 10:40:57',
+    '2022-08-22 12:40:57',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Marina Real Juan Carlos I Valencia&quot;, num_local=0,localizacion=&quot;Primera boya Marca Especial Dársena Exte'
@@ -15968,12 +16212,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-08-23 13:54:53', 'adrian', 'login', '');
+  ('2022-08-23 15:54:53', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-23 13:55:23',
+    '2022-08-23 15:55:23',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'MENERA1\',\'2022-08-23\',\'Se realiza la revisión anual por parte de personal de Wartsila.\')'
@@ -15982,7 +16226,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-23 13:55:33',
+    '2022-08-23 15:55:33',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'MENERA2\',\'2022-08-23\',\'Se realiza la revisión anual por parte de personal de Wartsila.\')'
@@ -15991,7 +16235,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-23 13:55:43',
+    '2022-08-23 15:55:43',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'MENERA3\',\'2022-08-23\',\'Se realiza la revisión anual por parte de personal de Wartsila.\')'
@@ -16000,7 +16244,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-23 13:55:52',
+    '2022-08-23 15:55:52',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'MENERA4\',\'2022-08-23\',\'Se realiza la revisión anual por parte de personal de Wartsila.\')'
@@ -16009,7 +16253,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-23 13:56:03',
+    '2022-08-23 15:56:03',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'MENERA5\',\'2022-08-23\',\'Se realiza la revisión anual por parte de personal de Wartsila.\')'
@@ -16018,7 +16262,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-23 13:56:17',
+    '2022-08-23 15:56:17',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'MENERA6\',\'2022-08-23\',\'Se realiza la revisión anual por parte de personal de Wartsila.\')'
@@ -16027,7 +16271,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-23 13:56:25',
+    '2022-08-23 15:56:25',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'MENERA7\',\'2022-08-23\',\'Se realiza la revisión anual por parte de personal de Wartsila.\')'
@@ -16036,7 +16280,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-23 13:56:34',
+    '2022-08-23 15:56:34',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'MENERA8\',\'2022-08-23\',\'Se realiza la revisión anual por parte de personal de Wartsila.\')'
@@ -16045,7 +16289,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-23 13:56:44',
+    '2022-08-23 15:56:44',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'MENERA9\',\'2022-08-23\',\'Se realiza la revisión anual por parte de personal de Wartsila.\')'
@@ -16054,7 +16298,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-23 13:56:52',
+    '2022-08-23 15:56:52',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'MENERA10\',\'2022-08-23\',\'Se realiza la revisión anual por parte de personal de Wartsila.\')'
@@ -16062,12 +16306,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-08-25 08:41:03', 'adrian', 'login', '');
+  ('2022-08-25 10:41:03', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-25 08:45:09',
+    '2022-08-25 10:45:09',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26048.1\',\'2022-08-24\',\'Se da de baja por no dar servicio de ayuda luminosa.\')'
@@ -16075,16 +16319,16 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-08-25 12:06:30', 'adrian', 'login', '');
+  ('2022-08-25 14:06:30', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-08-29 08:10:49', 'adrian', 'login', '');
+  ('2022-08-29 10:10:49', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-29 08:11:00',
+    '2022-08-29 10:11:00',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25768\',\'2022-08-03\',\'Wartsila realiza revisión submarina.\')'
@@ -16093,7 +16337,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-29 08:11:19',
+    '2022-08-29 10:11:19',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25841\',\'2022-08-03\',\'Wartsila realiza revisión submarina.\')'
@@ -16102,7 +16346,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-29 08:11:44',
+    '2022-08-29 10:11:44',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26048.3\',\'2022-08-04\',\'Wartsila realiza revisión submarina.\')'
@@ -16111,7 +16355,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-29 08:12:01',
+    '2022-08-29 10:12:01',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26048.2\',\'2022-08-04\',\'Wartsila realiza revisión submarina.\')'
@@ -16120,7 +16364,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-29 08:12:17',
+    '2022-08-29 10:12:17',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25765\',\'2022-08-05\',\'Wartsila realiza revisión submarina.\')'
@@ -16129,7 +16373,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-08-29 08:13:45',
+    '2022-08-29 10:13:45',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26190\',\'2022-08-24\',\'Wartsila realiza revisión submarina.\')'
@@ -16137,12 +16381,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-09-02 10:07:38', 'adrian', 'login', '');
+  ('2022-09-02 12:07:38', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-09-02 10:08:15',
+    '2022-09-02 12:08:15',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25761\',\'2022-09-02\',\'Se sustituyen ánodos de sacrificio.\')'
@@ -16151,7 +16395,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-09-02 10:08:31',
+    '2022-09-02 12:08:31',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25843.5\',\'2022-09-02\',\'Se sustituyen ánodos de sacrificio.\')'
@@ -16160,7 +16404,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-09-02 10:08:47',
+    '2022-09-02 12:08:47',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25843.8\',\'2022-09-02\',\'Se sustituyen ánodos de sacrificio.\')'
@@ -16169,7 +16413,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-09-02 10:09:37',
+    '2022-09-02 12:09:37',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25820.1\',\'2022-09-02\',\'Se sustituyen ánodos de sacrificio.\')'
@@ -16177,12 +16421,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-09-09 08:36:40', 'adrian', 'login', '');
+  ('2022-09-09 10:36:40', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-09-09 08:37:15',
+    '2022-09-09 10:37:15',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25650\',\'2022-09-08\',\'Se cambia la batería del grupo electrógeno. Se rellena liquido refrigerante.\')'
@@ -16190,32 +16434,32 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-09-12 10:56:31', 'marcos', 'login', '');
+  ('2022-09-12 12:56:31', 'marcos', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-09-12 10:56:35', 'marcos', 'logout', '');
+  ('2022-09-12 12:56:35', 'marcos', 'logout', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-09-12 10:56:51', 'raul', 'login', '');
+  ('2022-09-12 12:56:51', 'raul', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-09-12 10:56:54', 'raul', 'logout', '');
+  ('2022-09-12 12:56:54', 'raul', 'logout', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-09-12 10:57:32', 'guillermo', 'login', '');
+  ('2022-09-12 12:57:32', 'guillermo', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-09-12 10:58:07', 'marcos', 'login', '');
+  ('2022-09-12 12:58:07', 'marcos', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-09-12 11:00:06',
+    '2022-09-12 13:00:06',
     'marcos',
     'Observacion añadida',
     'insert into observaciones values(\'26048.1\',\'09/09/22 se cambia la LDR de la linterna .\')'
@@ -16224,7 +16468,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-09-12 11:00:43',
+    '2022-09-12 13:00:43',
     'marcos',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26048.1\',\'2022-09-09\',\'Se cambia la LDR de la linterna.\')'
@@ -16233,7 +16477,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-09-12 11:00:48',
+    '2022-09-12 13:00:48',
     'marcos',
     'Observacion borrada',
     'delete from observaciones where nif=\'26048.1\' AND observaciones=\'09/09/22 se cambia la LDR de la linterna .\''
@@ -16241,16 +16485,16 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-09-13 09:17:22', 'adrian', 'login', '');
+  ('2022-09-13 11:17:22', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-09-13 13:41:33', 'adrian', 'login', '');
+  ('2022-09-13 15:41:33', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-09-13 13:41:50',
+    '2022-09-13 15:41:50',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25776\',\'2022-09-12\',\'Se sustituye la LDR superior.\')'
@@ -16258,12 +16502,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-09-15 10:16:30', 'adrian', 'login', '');
+  ('2022-09-15 12:16:30', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-09-15 10:16:46',
+    '2022-09-15 12:16:46',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -16272,7 +16516,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-09-15 10:18:49',
+    '2022-09-15 12:18:49',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -16280,16 +16524,16 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-09-28 10:09:35', 'adrian', 'login', '');
+  ('2022-09-28 12:09:35', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-09-29 08:54:27', 'adrian', 'login', '');
+  ('2022-09-29 10:54:27', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-09-29 08:55:01',
+    '2022-09-29 10:55:01',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25554\',\'2022-09-05\',\'Wartsila realiza la revisión anual de la boya.\')'
@@ -16297,12 +16541,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-09-29 13:06:08', 'adrian', 'login', '');
+  ('2022-09-29 15:06:08', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-09-29 13:06:34',
+    '2022-09-29 15:06:34',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'25830\',\'Sincronizada con la 25831.\')'
@@ -16310,20 +16554,20 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-10-06 09:44:52', 'adrian', 'login', '');
+  ('2022-10-06 11:44:52', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-10-06 11:56:46', 'adrian', 'login', '');
+  ('2022-10-06 13:56:46', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-10-06 13:37:15', 'adrian', 'login', '');
+  ('2022-10-06 15:37:15', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-10-06 13:37:33',
+    '2022-10-06 15:37:33',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -16332,7 +16576,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-10-06 13:37:51',
+    '2022-10-06 15:37:51',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'26465\',\'Responsable: Grupo culmarex\')'
@@ -16341,7 +16585,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-10-06 13:38:32',
+    '2022-10-06 15:38:32',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26465\',\'2022-08-16\',\'Cambio su NIF, pasando a ser la 26465\')'
@@ -16350,7 +16594,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-10-06 13:40:49',
+    '2022-10-06 15:40:49',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -16359,7 +16603,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-10-06 13:41:09',
+    '2022-10-06 15:41:09',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26465.1\',\'2022-08-16\',\'Cambio su NIF, pasando a ser la 26465.1\')'
@@ -16368,7 +16612,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-10-06 13:41:26',
+    '2022-10-06 15:41:26',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Cultivos marinos &amp;quot;Costa Blanca&amp;quot;&quot;, num_local=4,localizacion=&quot;Boya SE&quot;,latitud=&qu'
@@ -16377,7 +16621,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-10-06 13:41:32',
+    '2022-10-06 15:41:32',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'26465.1\',\'Responsable: Grupo culmarex\')'
@@ -16386,7 +16630,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-10-06 13:41:52',
+    '2022-10-06 15:41:52',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Cultivos marinos &amp;quot;Culmarex&amp;quot;&quot;, num_local=4,localizacion=&quot;Boya SE&quot;,latitud=&quot;3'
@@ -16395,7 +16639,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-10-06 13:42:30',
+    '2022-10-06 15:42:30',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Cultivos marinos &amp;quot;Culmarex&amp;quot;&quot;, num_local=1,localizacion=&quot;Boya SE&quot;,latitud=&quot;3'
@@ -16404,7 +16648,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-10-06 13:42:53',
+    '2022-10-06 15:42:53',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Cultivos marinos &amp;quot;Culmarex&amp;quot;&quot;, num_local=4,localizacion=&quot;Boya NE&quot;,latitud=&quot;3'
@@ -16413,7 +16657,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-10-06 13:43:50',
+    '2022-10-06 15:43:50',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Cultivos marinos &amp;quot;Costa Blanca&amp;quot;&quot;, num_local=4,localizacion=&quot;Boya NW&quot;,latitud=&qu'
@@ -16422,7 +16666,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-10-06 13:45:15',
+    '2022-10-06 15:45:15',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Cultivos marinos &amp;quot;Costa Blanca&amp;quot;&quot;, num_local=4,localizacion=&quot;Boya NW&quot;,latitud=&qu'
@@ -16431,7 +16675,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-10-06 13:45:47',
+    '2022-10-06 15:45:47',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Cultivos marinos &amp;quot;Costa Blanca&amp;quot;&quot;, num_local=3,localizacion=&quot;Boya NE&quot;,latitud=&qu'
@@ -16440,7 +16684,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-10-06 13:46:34',
+    '2022-10-06 15:46:34',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Cultivos marinos &amp;quot;Costa Blanca&amp;quot;&quot;, num_local=2,localizacion=&quot;Boya NW&quot;,latitud=&qu'
@@ -16449,7 +16693,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-10-06 13:46:47',
+    '2022-10-06 15:46:47',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -16458,7 +16702,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-10-06 13:46:58',
+    '2022-10-06 15:46:58',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -16467,7 +16711,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-10-06 13:47:20',
+    '2022-10-06 15:47:20',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Cultivos marinos &amp;quot;Culmarex&amp;quot;&quot;, num_local=4,localizacion=&quot;Boya NW&quot;,latitud=&quot;3'
@@ -16476,7 +16720,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-10-06 13:47:25',
+    '2022-10-06 15:47:25',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'26465.4\',\'Responsable: Grupo culmarex\')'
@@ -16485,7 +16729,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-10-06 13:47:40',
+    '2022-10-06 15:47:40',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26465.4\',\'2022-08-16\',\'Cambio su NIF, pasando a ser la 26465.4\')'
@@ -16494,7 +16738,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-10-06 13:48:03',
+    '2022-10-06 15:48:03',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -16503,7 +16747,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-10-06 13:48:30',
+    '2022-10-06 15:48:30',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Cultivos marinos &amp;quot;Costa Blanca&amp;quot;&quot;, num_local=3,localizacion=&quot;Boya SW&quot;,latitud=&qu'
@@ -16512,7 +16756,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-10-06 13:48:35',
+    '2022-10-06 15:48:35',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'26465.3\',\'Responsable: Grupo culmarex\')'
@@ -16521,7 +16765,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-10-06 13:48:42',
+    '2022-10-06 15:48:42',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26465.3\',\'\',\'Cambio su NIF, pasando a ser la 26465.3\')'
@@ -16530,7 +16774,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-10-06 13:49:22',
+    '2022-10-06 15:49:22',
     'adrian',
     'Modificacion Localiz',
     'UPDATE localizacion set puerto=&quot;Cultivos marinos &amp;quot;Culmarex&amp;quot;&quot;, num_local=4,localizacion=&quot;Boya NE&quot;,latitud=&quot;3'
@@ -16539,7 +16783,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-10-06 13:50:22',
+    '2022-10-06 15:50:22',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -16548,7 +16792,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-10-06 13:50:32',
+    '2022-10-06 15:50:32',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -16557,7 +16801,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-10-06 13:50:41',
+    '2022-10-06 15:50:41',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -16566,7 +16810,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-10-06 13:50:54',
+    '2022-10-06 15:50:54',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -16574,12 +16818,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-10-11 12:39:01', 'adrian', 'login', '');
+  ('2022-10-11 14:39:01', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-10-11 12:39:15',
+    '2022-10-11 14:39:15',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25720\',\'2022-10-11\',\'\')'
@@ -16588,7 +16832,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-10-11 12:40:12',
+    '2022-10-11 14:40:12',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25720\',\'2022-10-11\',\'Se sustituye la LDR frontal (Orientacion S)\')'
@@ -16597,7 +16841,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-10-11 12:40:19',
+    '2022-10-11 14:40:19',
     'adrian',
     'Mantenimiendo borrad',
     'delete from mantenimiento where nif=\'25720\' AND fecha=\'2022-10-11\' AND mantenimiento LIKE \'%%\''
@@ -16606,7 +16850,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-10-11 12:41:55',
+    '2022-10-11 14:41:55',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25720\',\'2022-10-11\',\'Se sustituye la LDR frontal (Orientacion S)\')'
@@ -16614,16 +16858,16 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-11-03 14:27:48', 'raul', 'login', '');
+  ('2022-11-03 15:27:48', 'raul', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-12-16 08:28:35', 'marcos', 'login', '');
+  ('2022-12-16 09:28:35', 'marcos', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-12-16 08:36:49',
+    '2022-12-16 09:36:49',
     'marcos',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25761\',\'2022-11-30\',\'Se cambia la LDR (derecha) de la linterna\')'
@@ -16632,7 +16876,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-12-16 08:39:54',
+    '2022-12-16 09:39:54',
     'marcos',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26048.3\',\'2022-11-30\',\'Se cambia la LDR (izquierda) de la linterna\')'
@@ -16640,16 +16884,16 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-12-21 08:33:38', 'adrian', 'login', '');
+  ('2022-12-21 09:33:38', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-12-22 10:16:07', 'marcos', 'login', '');
+  ('2022-12-22 11:16:07', 'marcos', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-12-22 10:20:15',
+    '2022-12-22 11:20:15',
     'marcos',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25721\',\'2022-12-21\',\'Se rearma diferencial del CT (en Grimaldi) y el propio de la baliza, tras aviso del CCE.\')'
@@ -16657,20 +16901,20 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-12-22 14:02:43', 'adrian', 'login', '');
+  ('2022-12-22 15:02:43', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-12-26 08:21:09', 'adrian', 'login', '');
+  ('2022-12-26 09:21:09', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-12-26 12:52:12', 'marcos', 'login', '');
+  ('2022-12-26 13:52:12', 'marcos', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2022-12-26 12:54:24',
+    '2022-12-26 13:54:24',
     'marcos',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'25841\',\'2022-12-23\',\'Se revisa el RTU sin poder repararlo al ser competencia de Anfer\')'
@@ -16678,36 +16922,36 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2022-12-27 10:39:54', 'adrian', 'login', '');
+  ('2022-12-27 11:39:54', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2023-01-24 11:29:50', 'guillermo', 'login', '');
+  ('2023-01-24 12:29:50', 'guillermo', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2023-01-24 12:46:10', 'guillermo', 'login', '');
+  ('2023-01-24 13:46:10', 'guillermo', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2023-01-24 12:54:53', 'guillermo', 'logout', '');
+  ('2023-01-24 13:54:53', 'guillermo', 'logout', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2023-01-24 12:55:10', 'guillermo', 'login', '');
+  ('2023-01-24 13:55:10', 'guillermo', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2023-01-25 08:18:51', 'guillermo', 'login', '');
+  ('2023-01-25 09:18:51', 'guillermo', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2023-02-02 10:37:08', 'adrian', 'login', '');
+  ('2023-02-02 11:37:08', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-02 10:40:24',
+    '2023-02-02 11:40:24',
     'adrian',
     'Observacion añadida',
     'insert into observaciones values(\'25563\',\'Necesita ser pintada\')'
@@ -16716,7 +16960,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-02 10:42:01',
+    '2023-02-02 11:42:01',
     'adrian',
     'Observacion borrada',
     'delete from observaciones where nif=\'25565\' AND observaciones=\'SE REPINTARÁ EN 2019\''
@@ -16724,12 +16968,12 @@ VALUES
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
-  ('2023-02-07 08:40:34', 'adrian', 'login', '');
+  ('2023-02-07 09:40:34', 'adrian', 'login', '');
 INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-07 08:40:46',
+    '2023-02-07 09:40:46',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -16738,7 +16982,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-07 08:41:10',
+    '2023-02-07 09:41:10',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -16747,7 +16991,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-07 08:41:29',
+    '2023-02-07 09:41:29',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -16756,7 +17000,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-07 08:41:42',
+    '2023-02-07 09:41:42',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -16765,7 +17009,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-07 08:41:55',
+    '2023-02-07 09:41:55',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -16774,7 +17018,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-07 08:42:06',
+    '2023-02-07 09:42:06',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -16783,7 +17027,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-07 08:42:17',
+    '2023-02-07 09:42:17',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -16792,7 +17036,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-07 08:42:28',
+    '2023-02-07 09:42:28',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -16801,7 +17045,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-07 08:42:39',
+    '2023-02-07 09:42:39',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -16810,7 +17054,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-07 08:42:49',
+    '2023-02-07 09:42:49',
     'adrian',
     'Modificacion Caracte',
     ''
@@ -16819,7 +17063,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-07 08:46:30',
+    '2023-02-07 09:46:30',
     'adrian',
     'Mantenimiento añadid',
     'insert into mantenimiento values(\'26450\',\'2023-02-02\',\'Se fondea boya de sustitución con BDL120 y placas\')'
@@ -16828,7 +17072,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-08 14:45:37',
+    '2023-02-08 15:45:37',
     'adrian',
     'LOGIN usuario',
     '1 adrian adeharo@puerto.com'
@@ -16837,7 +17081,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-09 08:24:05',
+    '2023-02-09 09:24:05',
     'adrian',
     'LOGIN usuario',
     '1 adrian adeharo@puerto.com'
@@ -16846,7 +17090,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-09 08:24:23',
+    '2023-02-09 09:24:23',
     'adrian',
     'UPDATE profile',
     'adrian actualizó su foto'
@@ -16855,7 +17099,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-09 08:26:42',
+    '2023-02-09 09:26:42',
     'adrian',
     'LOGIN usuario',
     '1 adrian adeharo@puerto.com'
@@ -16864,7 +17108,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-09 10:03:32',
+    '2023-02-09 11:03:32',
     'adrian',
     'LOGOUT usuario',
     '1 adrian'
@@ -16873,7 +17117,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-09 10:03:42',
+    '2023-02-09 11:03:42',
     'adrian',
     'LOGOUT usuario',
     '1 adrian'
@@ -16882,7 +17126,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-09 10:05:00',
+    '2023-02-09 11:05:00',
     'adrian',
     'LOGOUT usuario',
     '1 adrian'
@@ -16891,7 +17135,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-09 10:13:17',
+    '2023-02-09 11:13:17',
     'adrian',
     'LOGOUT usuario',
     '1 adrian'
@@ -16900,7 +17144,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-09 10:14:13',
+    '2023-02-09 11:14:13',
     'adrian',
     'DELETE observaciones',
     '25563'
@@ -16909,7 +17153,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-09 10:14:52',
+    '2023-02-09 11:14:52',
     'adrian',
     'LOGOUT usuario',
     '1 adrian'
@@ -16918,7 +17162,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-09 11:45:21',
+    '2023-02-09 12:45:21',
     'adrian',
     'LOGOUT usuario',
     '1 adrian'
@@ -16927,7 +17171,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-09 11:46:13',
+    '2023-02-09 12:46:13',
     'guillermo',
     'LOGIN usuario',
     '2 guillermo gcasamayor@puerto.com'
@@ -16936,7 +17180,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-09 11:49:14',
+    '2023-02-09 12:49:14',
     'guillermo',
     'INSERT foto',
     '25552'
@@ -16945,7 +17189,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-09 11:49:39',
+    '2023-02-09 12:49:39',
     'guillermo',
     'LOGOUT usuario',
     '2 guillermo'
@@ -16954,7 +17198,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-09 11:49:56',
+    '2023-02-09 12:49:56',
     'guillermo',
     'UPDATE usuarios',
     'Se le añade permisos de admin'
@@ -16963,7 +17207,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-09 11:50:10',
+    '2023-02-09 12:50:10',
     'guillermo',
     'DELETE foto',
     '25552 IMG_0740.JPG'
@@ -16972,7 +17216,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-09 11:52:30',
+    '2023-02-09 12:52:30',
     'guillermo',
     'LOGOUT usuario',
     '2 guillermo'
@@ -16981,7 +17225,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-09 12:17:48',
+    '2023-02-09 13:17:48',
     'adrian',
     'LOGIN usuario',
     '1 adrian adeharo@puerto.com'
@@ -16990,7 +17234,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-09 12:18:02',
+    '2023-02-09 13:18:02',
     'adrian',
     'INSERT mantenimiento',
     '25460 2023-02-09 prrueba'
@@ -16999,7 +17243,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-09 12:18:07',
+    '2023-02-09 13:18:07',
     'adrian',
     'INSERT mantenimiento',
     '25460  prueba2'
@@ -17008,7 +17252,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-09 12:18:38',
+    '2023-02-09 13:18:38',
     'adrian',
     'INSERT mantenimiento',
     '25470 2023-02-09 zxc'
@@ -17017,7 +17261,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-09 12:19:09',
+    '2023-02-09 13:19:09',
     'adrian',
     'DELETE mantenimiento',
     '25730'
@@ -17026,7 +17270,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-09 12:19:56',
+    '2023-02-09 13:19:56',
     'adrian',
     'DELETE mantenimiento',
     '25940'
@@ -17035,7 +17279,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-09 12:20:54',
+    '2023-02-09 13:20:54',
     'adrian',
     'INSERT mantenimiento',
     '25940 2016-03-09 Se repinta la baliza y se deja el tercio inferior blanco'
@@ -17044,7 +17288,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-09 12:21:26',
+    '2023-02-09 13:21:26',
     'adrian',
     'DELETE mantenimiento',
     '26465.3'
@@ -17053,7 +17297,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-24 09:11:37',
+    '2023-02-24 10:11:37',
     'guillermo',
     'LOGIN usuario',
     '2 guillermo gcasamayor@puerto.com'
@@ -17062,7 +17306,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-24 13:02:59',
+    '2023-02-24 14:02:59',
     'guillermo',
     'LOGOUT usuario',
     '2 guillermo'
@@ -17071,7 +17315,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-28 12:52:33',
+    '2023-02-28 13:52:33',
     'guillermo',
     'LOGIN usuario',
     '2 guillermo gcasamayor@puerto.com'
@@ -17080,7 +17324,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-02-28 12:54:33',
+    '2023-02-28 13:54:33',
     'guillermo',
     'UPDATE localizacion',
     '25765 Puerto de Valencia. 6 Canal, ángulo Norte del contradique. 39º 26.150´N 00º 18.766´ W'
@@ -17089,7 +17333,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-15 08:33:56',
+    '2023-03-15 09:33:56',
     'adrian',
     'LOGIN usuario',
     '1 adrian adeharo@puerto.com'
@@ -17098,7 +17342,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-16 11:13:57',
+    '2023-03-16 12:13:57',
     'adrian',
     'LOGIN usuario',
     '1 adrian adeharo@puerto.com'
@@ -17107,7 +17351,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-16 11:15:21',
+    '2023-03-16 12:15:21',
     'adrian',
     'INSERT mantenimiento',
     '25700 2023-02-10 a de activación de la baliza de emergencia ante el paro en la rotación de la baliza principal. '
@@ -17116,7 +17360,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-16 11:16:15',
+    '2023-03-16 12:16:15',
     'adrian',
     'INSERT mantenimiento',
     '25700 2023-02-16 Personal de MSM reprograma el PLC resolviendo el problema de activacion de baliza de emergencia'
@@ -17125,7 +17369,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-16 11:16:28',
+    '2023-03-16 12:16:28',
     'adrian',
     'UPDATE mantenimiento',
     '25700 2023-02-10 Faltaa de activación de la baliza de emergencia ante el paro en la rotación de la baliza principal. '
@@ -17134,7 +17378,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-16 11:16:34',
+    '2023-03-16 12:16:34',
     'adrian',
     'UPDATE mantenimiento',
     '25700 2023-02-10 Falta de activación de la baliza de emergencia ante el paro en la rotación de la baliza principal. '
@@ -17143,7 +17387,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-16 11:17:47',
+    '2023-03-16 12:17:47',
     'adrian',
     'INSERT mantenimiento',
     '25563 2023-02-08 Se rehace el pantalan, reubicando la baliza sobre un poste lateral en el extremo del mismo. Falta pintar la marca diurna.'
@@ -17152,7 +17396,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-16 11:18:12',
+    '2023-03-16 12:18:12',
     'adrian',
     'UPDATE observaciones',
     '25563 su marca diurna necesita ser pintada por rehabilitación de pantalán.'
@@ -17161,7 +17405,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-16 11:22:40',
+    '2023-03-16 12:22:40',
     'adrian',
     'INSERT documento',
     'c6bbf18c-aaab-4b1e-b86c-5b9ea4228203.pdf'
@@ -17170,7 +17414,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-16 11:25:42',
+    '2023-03-16 12:25:42',
     'adrian',
     'INSERT documento',
     '6bda280d-ad06-4602-8e56-1401a6ecd796.pdf'
@@ -17179,7 +17423,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-16 11:29:43',
+    '2023-03-16 12:29:43',
     'adrian',
     'INSERT documento',
     '62335b2d-6015-430c-8449-379d3baa06b0.pdf'
@@ -17188,7 +17432,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-16 11:31:47',
+    '2023-03-16 12:31:47',
     'adrian',
     'DELETE documento',
     '62335b2d-6015-430c-8449-379d3baa06b0.pdf'
@@ -17197,7 +17441,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-16 11:32:15',
+    '2023-03-16 12:32:15',
     'adrian',
     'INSERT documento',
     '69c6c4ad-f37a-475c-a2a5-bac57990ece6.pdf'
@@ -17206,7 +17450,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-16 11:33:31',
+    '2023-03-16 12:33:31',
     'adrian',
     'INSERT documento',
     '0ed8c7bb-e602-4ef6-8445-1783e2d7696b.pdf'
@@ -17215,7 +17459,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-16 11:43:26',
+    '2023-03-16 12:43:26',
     'adrian',
     'INSERT documento',
     'a9888520-17b3-4011-8b4c-a44368b2f1e7.pdf'
@@ -17224,7 +17468,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-17 08:21:36',
+    '2023-03-17 09:21:36',
     'adrian',
     'LOGIN usuario',
     '1 adrian adeharo@puerto.com'
@@ -17233,7 +17477,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-17 08:22:04',
+    '2023-03-17 09:22:04',
     'adrian',
     'LOGOUT usuario',
     '1 adrian'
@@ -17242,7 +17486,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-17 08:22:32',
+    '2023-03-17 09:22:32',
     'adrian',
     'LOGOUT usuario',
     '1 adrian'
@@ -17251,7 +17495,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-17 08:23:20',
+    '2023-03-17 09:23:20',
     'adrian',
     'DELETE aton ',
     'Prueba'
@@ -17260,7 +17504,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-17 08:23:33',
+    '2023-03-17 09:23:33',
     'adrian',
     'DELETE aton ',
     'prueba1'
@@ -17269,7 +17513,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-17 10:26:01',
+    '2023-03-17 11:26:01',
     'guillermo',
     'LOGIN usuario',
     '2 guillermo gcasamayor@puerto.com'
@@ -17278,7 +17522,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-17 10:26:06',
+    '2023-03-17 11:26:06',
     'guillermo',
     'LOGOUT usuario',
     '2 guillermo'
@@ -17287,7 +17531,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-17 10:26:24',
+    '2023-03-17 11:26:24',
     'marcos',
     'LOGIN usuario',
     '3 marcos msaez@puerto.com'
@@ -17296,7 +17540,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-17 10:26:49',
+    '2023-03-17 11:26:49',
     'raul',
     'LOGIN usuario',
     '4 raul rrubio@puerto.com'
@@ -17305,7 +17549,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-17 10:26:52',
+    '2023-03-17 11:26:52',
     'raul',
     'LOGOUT usuario',
     '4 raul'
@@ -17314,7 +17558,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-17 10:27:47',
+    '2023-03-17 11:27:47',
     'adrian',
     'LOGIN usuario',
     '1 adrian adeharo@puerto.com'
@@ -17323,7 +17567,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-17 10:28:31',
+    '2023-03-17 11:28:31',
     'adrian',
     'INSERT documento',
     'bb6b64c4-049c-4804-be84-1818ddfa5b0e.pdf'
@@ -17332,7 +17576,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-17 11:05:38',
+    '2023-03-17 12:05:38',
     'adrian',
     'LOGIN usuario',
     '1 adrian adeharo@puerto.com'
@@ -17341,7 +17585,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-17 11:05:50',
+    '2023-03-17 12:05:50',
     'adrian',
     'UPDATE balizamiento',
     '25761  Boya Castillete amarilla y marca de tope RTU 04GpD(4)A 11 [(L 0.5 oc 1.5) x3] L 0.5 oc 4.5'
@@ -17350,7 +17594,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-17 11:06:01',
+    '2023-03-17 12:06:01',
     'adrian',
     'UPDATE balizamiento',
     '25765  Boya Castillete amarilla y marca de tope RTU 02GpD(4)A 11 [(L 0.5 oc 1.5) x3] L 0.5 oc 4.5'
@@ -17359,7 +17603,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-17 11:06:17',
+    '2023-03-17 12:06:17',
     'adrian',
     'UPDATE balizamiento',
     '26020 E-0206.7 Baliza SUR Tronco piramidal negro-amarillo con marca de tope. NoGpRp(6)B 10 [(L0.25 oc0.25)x6] L2 oc5'
@@ -17368,7 +17612,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-17 11:06:30',
+    '2023-03-17 12:06:30',
     'adrian',
     'UPDATE balizamiento',
     '25920 E-0204.2 Baliza TPS 3.3 RTU 13GpD(4)V 11 [(L 0.5 oc 1.5) x3] L 0.5 oc 4.5'
@@ -17377,7 +17621,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-17 11:06:40',
+    '2023-03-17 12:06:40',
     'adrian',
     'UPDATE balizamiento',
     '25840 E-0202 Baliza TPS 3.3 RTU 44GpD(4)R 11 [(0.5 oc 1.5)x3] L 0.5 oc 4.5'
@@ -17386,7 +17630,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-17 11:06:48',
+    '2023-03-17 12:06:48',
     'adrian',
     'UPDATE balizamiento',
     '25774 E-0201.11 Baliza Cilíndrica roja, base blanca RTU 10GpD(2)R 7 L0.5 oc 1.5 L0.5 oc 4.5'
@@ -17395,7 +17639,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-17 11:06:57',
+    '2023-03-17 12:06:57',
     'adrian',
     'UPDATE balizamiento',
     '25820.1  Boya Castillete verde y marca de tope SíGpD(2)V 7 L 0.5 oc 1.5 L 0.5 oc 4.5'
@@ -17404,7 +17648,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-17 11:07:05',
+    '2023-03-17 12:07:05',
     'adrian',
     'UPDATE balizamiento',
     '25831  Baliza Columna cilíndrica verde con la base blanca. GpD(3)V 9 [L0,5+oc 1,5]x2+L0,5+oc4,5'
@@ -17413,7 +17657,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-17 11:07:13',
+    '2023-03-17 12:07:13',
     'adrian',
     'UPDATE balizamiento',
     '25841  Boya Castillete rojo y marca de tope RTU 54GpD(4)R 11 [( L 0.5 oc 1.5)x3] L 0.5 oc 4.5'
@@ -17422,7 +17666,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-17 11:07:21',
+    '2023-03-17 12:07:21',
     'adrian',
     'UPDATE balizamiento',
     '25844  Boya oceanográfica Castillete amarilla y marca de tope RTU 37GpD(4)A 11 [(L 0.5 oc 1.5) x3] L 0.5 oc 4.5'
@@ -17431,7 +17675,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-17 11:07:43',
+    '2023-03-17 12:07:43',
     'adrian',
     'UPDATE balizamiento',
     '26375  Baliza B torre poligonal metálica NOGpD(4)R 11 [ ( L0,5 oc1,5 )x 3 ] L0,5 oc4,5'
@@ -17440,7 +17684,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-17 12:17:42',
+    '2023-03-17 13:17:42',
     'jose',
     'INSERT usuario',
     '5 jose Jose Martin Tur'
@@ -17449,7 +17693,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-17 12:18:17',
+    '2023-03-17 13:18:17',
     'jose',
     'LOGOUT usuario',
     '5 jose'
@@ -17458,7 +17702,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-17 12:55:40',
+    '2023-03-17 13:55:40',
     'adrian',
     'LOGIN usuario',
     '1 adrian adeharo@puerto.com'
@@ -17467,7 +17711,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-17 12:56:33',
+    '2023-03-17 13:56:33',
     'adrian',
     'UPDATE lampara',
     '26465 0 0 3 Si 0 2 0'
@@ -17476,7 +17720,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-17 12:56:40',
+    '2023-03-17 13:56:40',
     'adrian',
     'LOGOUT usuario',
     '1 adrian'
@@ -17485,7 +17729,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-20 08:02:19',
+    '2023-03-20 09:02:19',
     'adrian',
     'LOGIN usuario',
     '1 adrian adeharo@puerto.com'
@@ -17494,7 +17738,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-20 12:02:08',
+    '2023-03-20 13:02:08',
     'adrian',
     'LOGIN usuario',
     '1 adrian adeharo@puerto.com'
@@ -17503,7 +17747,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-20 12:02:26',
+    '2023-03-20 13:02:26',
     'adrian',
     'INSERT mantenimiento',
     '25564 2023-03-18 CCE avisa fallo de lampara'
@@ -17512,7 +17756,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-20 12:02:37',
+    '2023-03-20 13:02:37',
     'adrian',
     'INSERT mantenimiento',
     '25564 2023-03-20 Se sustituye por MCL200Y ref:668.'
@@ -17521,7 +17765,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-20 12:22:52',
+    '2023-03-20 13:22:52',
     'adrian',
     'LOGIN usuario',
     '1 adrian adeharo@puerto.com'
@@ -17530,7 +17774,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-20 12:22:54',
+    '2023-03-20 13:22:54',
     'adrian',
     'LOGOUT usuario',
     '1 adrian'
@@ -17539,7 +17783,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-20 12:23:03',
+    '2023-03-20 13:23:03',
     'adrian',
     'LOGOUT usuario',
     '1 adrian'
@@ -17548,7 +17792,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-20 12:27:22',
+    '2023-03-20 13:27:22',
     'adrian',
     'LOGOUT usuario',
     '1 adrian'
@@ -17557,7 +17801,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-21 09:49:28',
+    '2023-03-21 10:49:28',
     'adrian',
     'LOGOUT usuario',
     '1 adrian'
@@ -17566,7 +17810,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-21 10:16:14',
+    '2023-03-21 11:16:14',
     'adrian',
     'LOGOUT usuario',
     '1 adrian'
@@ -17575,7 +17819,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-21 10:31:43',
+    '2023-03-21 11:31:43',
     'adrian',
     'LOGOUT usuario',
     '1 adrian'
@@ -17584,7 +17828,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-21 10:31:44',
+    '2023-03-21 11:31:44',
     'adrian',
     'LOGOUT usuario',
     '1 adrian'
@@ -17593,7 +17837,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-21 10:31:46',
+    '2023-03-21 11:31:46',
     'adrian',
     'LOGOUT usuario',
     '1 adrian'
@@ -17602,7 +17846,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-21 10:31:46',
+    '2023-03-21 11:31:46',
     'adrian',
     'LOGOUT usuario',
     '1 adrian'
@@ -17611,7 +17855,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-22 08:06:47',
+    '2023-03-22 09:06:47',
     'adrian',
     'LOGOUT usuario',
     '1 adrian'
@@ -17620,7 +17864,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-22 08:06:51',
+    '2023-03-22 09:06:51',
     'adrian',
     'LOGIN usuario',
     '1 adrian adeharo@puerto.com'
@@ -17629,7 +17873,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-22 08:07:42',
+    '2023-03-22 09:07:42',
     'adrian',
     'INSERT mantenimiento',
     '25700 2023-03-22 se da de baja por fallo en rotación. Según NETCOM fallo fotocelula'
@@ -17638,7 +17882,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-22 08:20:16',
+    '2023-03-22 09:20:16',
     'adrian',
     'UPDATE mantenimiento',
     '25564 2023-03-18 CCE avisa fallo de lampara. Se da de baja.'
@@ -17647,7 +17891,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-22 08:20:24',
+    '2023-03-22 09:20:24',
     'adrian',
     'UPDATE mantenimiento',
     '25564 2023-03-20 Se sustituye por MCL200Y ref:668. Se da de alta.'
@@ -17656,7 +17900,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-23 09:39:20',
+    '2023-03-23 10:39:20',
     'adrian',
     'LOGIN usuario',
     '1 adrian adeharo@puerto.com'
@@ -17665,7 +17909,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-24 08:52:54',
+    '2023-03-24 09:52:54',
     'adrian',
     'LOGIN usuario',
     '1 adrian adeharo@puerto.com'
@@ -17674,7 +17918,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-24 08:54:09',
+    '2023-03-24 09:54:09',
     'adrian',
     'INSERT mantenimiento',
     '25842 2010-12-03 Instalación y puesta en marcha. Total factura: 24973.52€'
@@ -17683,7 +17927,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-24 08:55:37',
+    '2023-03-24 09:55:37',
     'adrian',
     'UPDATE mantenimiento',
     '25777 2010-01-20 Se instala la nueva torre TPS 3.3 (LMV). Total Factura: 28744.80€'
@@ -17692,7 +17936,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-24 08:57:04',
+    '2023-03-24 09:57:04',
     'adrian',
     'UPDATE mantenimiento',
     '25840 2011-06-16 Se instala sincronismo con la boya 25840.1 (no está fondeada todavía). 3660€'
@@ -17701,7 +17945,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-24 08:58:30',
+    '2023-03-24 09:58:30',
     'adrian',
     'UPDATE mantenimiento',
     '26021 2009-10-30 Se instala nueva torre TPS 3.3. 22199.10€'
@@ -17710,7 +17954,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-24 08:58:48',
+    '2023-03-24 09:58:48',
     'adrian',
     'UPDATE mantenimiento',
     '26021 2011-10-06 Se instala nueva torre TPS 3.3. 22199.10€'
@@ -17719,7 +17963,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-24 09:49:25',
+    '2023-03-24 10:49:25',
     'adrian',
     'INSERT mantenimiento',
     '25720 2010-03-09 Suministro de 2 balizas lineales (litepipe) por Mesemar. 10.880€'
@@ -17728,7 +17972,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-24 10:17:01',
+    '2023-03-24 11:17:01',
     'adrian',
     'UPDATE lampara',
     '25740 6 6 5 MCL360 L 191.67 0 230'
@@ -17737,7 +17981,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-24 10:17:12',
+    '2023-03-24 11:17:12',
     'adrian',
     'UPDATE lampara',
     '25730 3 3 3 MCL360 L 1000 3 100'
@@ -17746,7 +17990,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-24 10:57:28',
+    '2023-03-24 11:57:28',
     'adrian',
     'INSERT mantenimiento',
     '26021 2009-12-02 Se instala baliza nueva.'
@@ -17755,7 +17999,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-24 11:01:15',
+    '2023-03-24 12:01:15',
     'adrian',
     'UPDATE mantenimiento',
     '25850 2008-11-30 Se instala la torre nueva mod TPS33 con baliza LEds 300 de 50w. 19174.80€'
@@ -17764,7 +18008,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-27 10:48:08',
+    '2023-03-27 12:48:08',
     'adrian',
     'LOGIN usuario',
     '1 adrian adeharo@puerto.com'
@@ -17773,7 +18017,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-27 10:49:26',
+    '2023-03-27 12:49:26',
     'adrian',
     'UPDATE localizacion',
     '26510 Canet de Berenguer 3 Extremo Sur Contradique 39º 40.370\' N 00º 12.105\' W'
@@ -17782,7 +18026,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-27 10:50:17',
+    '2023-03-27 12:50:17',
     'adrian',
     'UPDATE localizacion',
     '25600 Desembocadura Júcar Cullera 2 Malecón Sur a 39 m del extremo 39º 09.034\' N 00º 14.164\' W'
@@ -17791,7 +18035,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-28 13:35:08',
+    '2023-03-28 15:35:08',
     'adrian',
     'LOGIN usuario',
     '1 adrian adeharo@puerto.com'
@@ -17800,7 +18044,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-28 13:35:15',
+    '2023-03-28 15:35:15',
     'adrian',
     'DO backup',
     'nuevo backup'
@@ -17809,7 +18053,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-28 17:19:31',
+    '2023-03-28 19:19:31',
     'adrian',
     'LOGIN usuario',
     '1 adrian adeharo@puerto.com'
@@ -17818,7 +18062,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-03-28 17:19:41',
+    '2023-03-28 19:19:41',
     'adrian',
     'DELETE foto',
     '25740 1674727402943.jpeg'
@@ -17827,7 +18071,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-04-22 23:47:09',
+    '2023-04-23 01:47:09',
     'adrian',
     'UPDATE lampara',
     '25460 0 0 0 0 0 0 0'
@@ -17836,7 +18080,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-04-22 23:47:14',
+    '2023-04-23 01:47:14',
     'adrian',
     'UPDATE lampara',
     '25460 00 0 0 0 0 0 0'
@@ -17845,7 +18089,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-04-22 23:47:21',
+    '2023-04-23 01:47:21',
     'adrian',
     'UPDATE localizacion',
     '25460 C.N. Oliva 12 Extremo dique de abrigo 38 º59.004\' N 00º 05.490\' W'
@@ -17854,7 +18098,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-04-22 23:50:03',
+    '2023-04-23 01:50:03',
     'adrian',
     'UPDATE localizacion',
     '25460 C.N. Oliva 1 Extremo dique de abrigo 38 º59.004\' N 00º 05.490\' W'
@@ -17863,7 +18107,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-04-22 23:50:13',
+    '2023-04-23 01:50:13',
     'adrian',
     'UPDATE localizacion',
     '25530 Puerto de Gandía 12 Extremo dique norte 38º 59.712\' N 00º 8.666\' W'
@@ -17872,7 +18116,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-04-22 23:55:12',
+    '2023-04-23 01:55:12',
     'adrian',
     'UPDATE localizacion',
     '25530 Puerto de Gandía 122 Extremo dique norte 38º 59.712\' N 00º 8.666\' W'
@@ -17881,7 +18125,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-04-22 23:57:36',
+    '2023-04-23 01:57:36',
     'adrian',
     'UPDATE localizacion',
     '25530 Puerto de Gandía 1 Extremo dique norte 38º 59.712\' N 00º 8.666\' W'
@@ -17890,7 +18134,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-04-23 00:00:35',
+    '2023-04-23 02:00:35',
     'adrian',
     'UPDATE localizacion',
     '25530 Puerto de Gandía 1111 Extremo dique norte 38º 59.712\' N 00º 8.666\' W'
@@ -17899,7 +18143,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-04-23 00:01:32',
+    '2023-04-23 02:01:32',
     'adrian',
     'UPDATE localizacion',
     '25530 Puerto de Gandía 111 Extremo dique norte 38º 59.712\' N 00º 8.666\' W'
@@ -17908,7 +18152,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-04-23 00:04:55',
+    '2023-04-23 02:04:55',
     'adrian',
     'UPDATE localizacion',
     '25530 Puerto de Gandía 11 Extremo dique norte 38º 59.712\' N 00º 8.666\' W'
@@ -17917,7 +18161,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-04-23 00:11:05',
+    '2023-04-23 02:11:05',
     'adrian',
     'UPDATE localizacion',
     '25530 Puerto de Gandía 112 Extremo dique norte 38º 59.712\' N 00º 8.666\' W'
@@ -17926,7 +18170,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-04-23 00:16:38',
+    '2023-04-23 02:16:38',
     'adrian',
     'UPDATE localizacion',
     '25530 Puerto de Gandía 11 Extremo dique norte 38º 59.712\' N 00º 8.666\' W'
@@ -17935,7 +18179,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-04-23 00:24:11',
+    '2023-04-23 02:24:11',
     'adrian',
     'UPDATE lampara',
     '25530 7 15 7 DES 33 MaqVal. Bola leds 50 w Óptica300 mm 0 0 2'
@@ -17944,7 +18188,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-04-23 00:27:02',
+    '2023-04-23 02:27:02',
     'adrian',
     'INSERT observaciones',
     '25530 rjkj'
@@ -17953,7 +18197,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-04-26 16:38:36',
+    '2023-04-26 18:38:36',
     'adrian',
     'UPDATE lampara',
     '25470 0 0 0 0 0 0 0'
@@ -17962,7 +18206,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-09 19:15:35',
+    '2023-05-09 21:15:35',
     'adrian',
     'UPDATE lampara',
     '25564 3 3 2.32 MBL 160 (MSM) 0.01 0.01 0.01'
@@ -17971,7 +18215,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-09 19:15:43',
+    '2023-05-09 21:15:43',
     'adrian',
     'UPDATE lampara',
     '25564 3 3 2.32 MBL 160 (MSM) 0 0.01 0'
@@ -17980,7 +18224,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-09 19:30:52',
+    '2023-05-09 21:30:52',
     'adrian',
     'DO backup',
     'nuevo backup'
@@ -17989,7 +18233,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-09 19:31:20',
+    '2023-05-09 21:31:20',
     'adrian',
     'DO backup',
     'nuevo backup'
@@ -17998,7 +18242,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-09 19:31:47',
+    '2023-05-09 21:31:47',
     'adrian',
     'DO backup',
     'nuevo backup'
@@ -18007,7 +18251,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-09 19:32:05',
+    '2023-05-09 21:32:05',
     'adrian',
     'DO backup',
     'nuevo backup'
@@ -18016,7 +18260,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-09 19:32:19',
+    '2023-05-09 21:32:19',
     'adrian',
     'DO backup',
     'nuevo backup'
@@ -18025,7 +18269,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-09 19:32:50',
+    '2023-05-09 21:32:50',
     'adrian',
     'DO backup',
     'nuevo backup'
@@ -18034,7 +18278,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-09 19:34:15',
+    '2023-05-09 21:34:15',
     'adrian',
     'DO backup',
     'nuevo backup'
@@ -18043,7 +18287,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-09 19:35:17',
+    '2023-05-09 21:35:17',
     'adrian',
     'DELETE backup',
     'dumpSAN1683653570200.sql'
@@ -18052,7 +18296,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-09 19:44:05',
+    '2023-05-09 21:44:05',
     'adrian',
     'DELETE documento',
     '0ed8c7bb-e602-4ef6-8445-1783e2d7696b.pdf'
@@ -18061,7 +18305,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-09 19:44:10',
+    '2023-05-09 21:44:10',
     'adrian',
     'DELETE documento',
     '0ed8c7bb-e602-4ef6-8445-1783e2d7696b.pdf'
@@ -18070,7 +18314,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-09 19:48:21',
+    '2023-05-09 21:48:21',
     'adrian',
     'INSERT documento',
     '1e003a9e-b2fe-4e91-8f50-2c746b91f649.pdf'
@@ -18079,7 +18323,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-09 19:48:30',
+    '2023-05-09 21:48:30',
     'adrian',
     'DELETE documento',
     '1e003a9e-b2fe-4e91-8f50-2c746b91f649.pdf'
@@ -18088,7 +18332,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-09 19:49:46',
+    '2023-05-09 21:49:46',
     'adrian',
     'DELETE documento',
     '69c6c4ad-f37a-475c-a2a5-bac57990ece6.pdf'
@@ -18097,7 +18341,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-09 19:50:20',
+    '2023-05-09 21:50:20',
     'adrian',
     'DELETE documento',
     '6bda280d-ad06-4602-8e56-1401a6ecd796.pdf'
@@ -18106,7 +18350,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-09 19:50:35',
+    '2023-05-09 21:50:35',
     'adrian',
     'DELETE documento',
     '6bda280d-ad06-4602-8e56-1401a6ecd796.pdf'
@@ -18115,7 +18359,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-09 19:51:13',
+    '2023-05-09 21:51:13',
     'adrian',
     'DELETE documento',
     'a9888520-17b3-4011-8b4c-a44368b2f1e7.pdf'
@@ -18124,7 +18368,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-09 19:51:39',
+    '2023-05-09 21:51:39',
     'adrian',
     'DELETE documento',
     'a9888520-17b3-4011-8b4c-a44368b2f1e7.pdf'
@@ -18133,7 +18377,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-09 19:51:41',
+    '2023-05-09 21:51:41',
     'adrian',
     'DELETE documento',
     'bb6b64c4-049c-4804-be84-1818ddfa5b0e.pdf'
@@ -18142,7 +18386,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-09 19:51:47',
+    '2023-05-09 21:51:47',
     'adrian',
     'DELETE documento',
     'c6bbf18c-aaab-4b1e-b86c-5b9ea4228203.pdf'
@@ -18151,7 +18395,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-09 19:52:02',
+    '2023-05-09 21:52:02',
     'adrian',
     'INSERT documento',
     'b4a4d2db-4919-406a-a150-5f2fc13aa2e8.pdf'
@@ -18160,7 +18404,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-09 19:52:15',
+    '2023-05-09 21:52:15',
     'adrian',
     'DO backup',
     'nuevo backup'
@@ -18169,7 +18413,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-09 19:59:01',
+    '2023-05-09 21:59:01',
     'adrian',
     'INSERT documento',
     'd3202c00-23f1-4934-938d-938f1924d51e.pdf'
@@ -18178,7 +18422,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-09 19:59:03',
+    '2023-05-09 21:59:03',
     'adrian',
     'DELETE documento',
     'd3202c00-23f1-4934-938d-938f1924d51e.pdf'
@@ -18187,7 +18431,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-13 15:19:53',
+    '2023-05-13 17:19:53',
     'adrian',
     'UPDATE localizacion',
     '25460 C.N. Oliva 1 Extremo dique de abrigo 38º 59.004\' N 00º 05.490\' W'
@@ -18196,7 +18440,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-13 16:16:40',
+    '2023-05-13 18:16:40',
     'adrian',
     'UPDATE localizacion',
     '25470 C.N. Oliva 2 Extremo contradique 38º55.989\' N 00º 05.559\' W'
@@ -18205,7 +18449,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-13 16:53:56',
+    '2023-05-13 18:53:56',
     'adrian',
     'UPDATE localizacion',
     '26326 Puerto de Sagunto 15 Muelle Norte Dos 39º 38.562\' N 00º 12.805\' W'
@@ -18214,7 +18458,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-13 16:55:43',
+    '2023-05-13 18:55:43',
     'adrian',
     'UPDATE localizacion',
     '26326 Puerto de Sagunto 15 Muelle Norte Dos 39º 38.562\' N 00º 12.805\' W'
@@ -18223,7 +18467,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-13 17:00:38',
+    '2023-05-13 19:00:38',
     'adrian',
     'UPDATE localizacion',
     '25650 Gandia 0 Extremo del cabo de Cullera 39º 11.188\' N 00º 13.016\' W'
@@ -18232,7 +18476,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-13 17:01:33',
+    '2023-05-13 19:01:33',
     'adrian',
     'UPDATE localizacion',
     '25720 Puerto de Valencia. 1 Extremo dique del Este 39º 26.028´ N 000º 18.171´ W'
@@ -18241,7 +18485,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-13 17:02:07',
+    '2023-05-13 19:02:07',
     'adrian',
     'UPDATE localizacion',
     '25720 Puerto de Valencia. 1 Extremo dique del Este 39º 26.028\' N 000º 18.171\' W'
@@ -18250,7 +18494,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-13 17:03:57',
+    '2023-05-13 19:03:57',
     'adrian',
     'UPDATE localizacion',
     '25720 Puerto de Valencia. 1 Extremo dique del Este 39º 26.028\' N 000º 18.171\' W'
@@ -18259,7 +18503,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-16 17:31:44',
+    '2023-05-16 19:31:44',
     'adrian',
     'INSERT mantenimiento',
     '26450 2023-05-15 snn'
@@ -18268,7 +18512,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-16 17:36:37',
+    '2023-05-16 19:36:37',
     'adrian',
     'UPDATE documento',
     'kkvdsbffndn descripcion prueba dni34636u'
@@ -18277,7 +18521,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-16 17:37:11',
+    '2023-05-16 19:37:11',
     'adrian',
     'INSERT documento',
     '20573ea8-4d11-42ab-a635-d117b9e528d7.pdf'
@@ -18286,7 +18530,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-16 17:37:35',
+    '2023-05-16 19:37:35',
     'adrian',
     'DELETE documento',
     '20573ea8-4d11-42ab-a635-d117b9e528d7.pdf'
@@ -18295,7 +18539,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-16 17:37:55',
+    '2023-05-16 19:37:55',
     'adrian',
     'DO backup',
     'nuevo backup'
@@ -18304,7 +18548,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-16 18:00:46',
+    '2023-05-16 20:00:46',
     'adrian',
     'UPDATE balizamiento',
     '25554 36564 Boya de espeque roja/verde MSM NOGpD(2+1)V 14 L0,5 oc1 L0,5 oc3 L0,5 oc1'
@@ -18313,7 +18557,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-16 18:01:07',
+    '2023-05-16 20:01:07',
     'adrian',
     'UPDATE balizamiento',
     '25554 36564 Boya de espeque roja/verde MSM NOGpD(2+1)V 14 L0,5 oc1 L5,5 oc3 L0,5 oc1'
@@ -18322,7 +18566,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-16 20:54:58',
+    '2023-05-16 22:54:58',
     'adrian',
     'DO backup',
     'nuevo backup'
@@ -18331,7 +18575,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-16 21:07:55',
+    '2023-05-16 23:07:55',
     'adrian',
     'DELETE documento',
     'b4a4d2db-4919-406a-a150-5f2fc13aa2e8.pdf'
@@ -18340,7 +18584,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-16 21:08:30',
+    '2023-05-16 23:08:30',
     'adrian',
     'INSERT documento',
     '500eebfb-4302-4fe7-8954-155883d44f51.pdf'
@@ -18349,7 +18593,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-16 21:08:57',
+    '2023-05-16 23:08:57',
     'adrian',
     'UPDATE documento',
     'Resolucion Valencia Resolucion provisional emitida por PPEE  sobre una parte del balizamiento'
@@ -18358,7 +18602,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-16 21:09:24',
+    '2023-05-16 23:09:24',
     'adrian',
     'INSERT documento',
     'e502a93b-9a59-4d67-9486-23cca55e3f82.pdf'
@@ -18367,7 +18611,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-16 21:09:53',
+    '2023-05-16 23:09:53',
     'adrian',
     'INSERT documento',
     'fa5861e4-3dca-4319-ab1e-f9f079ca2840.pdf'
@@ -18376,7 +18620,7 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-16 21:10:12',
+    '2023-05-16 23:10:12',
     'adrian',
     'INSERT documento',
     'de79b703-f67b-455b-9d8a-f8dacd6a3eed.pdf'
@@ -18385,8 +18629,593 @@ INSERT INTO
   `logs` (`fecha`, `usuario`, `accion`, `observacion`)
 VALUES
   (
-    '2023-05-16 22:36:45',
+    '2023-05-17 00:36:45',
     'adrian',
+    'DO backup',
+    'nuevo backup'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-18 13:41:42',
+    'admin',
+    'UPDATE inventario',
+    'Info actualizada Bateria SB6 6'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-18 13:41:46',
+    'admin',
+    'UPDATE inventario',
+    'Info actualizada Bateria SB6 6'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-18 13:44:16',
+    'admin',
+    'INSERT inventario',
+    'Item dgdgshsh añadido 1 cantidades'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-18 13:44:18',
+    'admin',
+    'INSERT inventario',
+    'Item dgdgshsh añadido 1 cantidades'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-18 13:44:32',
+    'admin',
+    'INSERT inventario',
+    'Item dgdgshsh añadido 1 cantidades'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-18 13:44:44',
+    'admin',
+    'INSERT inventario',
+    'Item nuevo añadido 2 cantidades'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-18 13:57:56',
+    'admin',
+    'UPDATE fotografia perfil',
+    ''
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-18 13:58:04',
+    'admin',
+    'DELETE fotografia perfil',
+    ''
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-18 13:58:07',
+    'admin',
+    'UPDATE fotografia perfil',
+    ''
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-18 13:58:12',
+    'admin',
+    'DELETE fotografia perfil',
+    ''
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-18 13:59:41',
+    'admin',
+    'UPDATE fotografia perfil',
+    ''
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-18 14:00:27',
+    'admin',
+    'DELETE fotografia perfil',
+    ''
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-19 18:44:00',
+    'admin',
+    'DELETE fotografia',
+    '25700'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-19 20:36:04',
+    'admin',
+    'UPDATE balizamiento',
+    '26190  Boya Peligro especial Espeque negra roja negra noGpD(2)B 5 L0,5 oc1 L0,5 oc3'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-19 20:36:13',
+    'admin',
+    'UPDATE balizamiento',
+    '26190  Boya Peligro aislado. Espeque negra roja negra noGpD(2)B 5 L0,5 oc1 L0,5 oc3'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-19 21:20:00',
+    'admin',
+    'UPDATE balizamiento',
+    '25820 E-0201.4 Baliza TPS 3.3 GpD(2)V 7 L 0.5 oc 1.5 L 0.5 oc 4.5'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-19 21:20:47',
+    'admin',
+    'UPDATE balizamiento',
+    '25768  Boya Castillete verde-roja-verde y marca de tope NoGpD(2+1)V 9 L0.6 oc0.6 L0.6 oc1.8 L0.6 oc5.4'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-19 21:23:57',
+    'admin',
+    'UPDATE balizamiento',
+    '26205 E-0210.74 Baliza CE Columna cilíndrica GpRp(3)B 5 [(L0,25 oc0,25)x2] L0,25 oc3,75'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-19 21:24:58',
+    'admin',
+    'UPDATE balizamiento',
+    '25563 E-0196.32 Baliza Metal Estribor Linterna sobre pilote. NOGpD(4)V 11 (L0,5 oc1,5)x3 L0,5 oc4,5'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-19 21:25:53',
+    'admin',
+    'UPDATE balizamiento',
+    '25563 E-0196.32 Baliza Metal Estribor Linterna sobre pilote. NOGpD(4) V 11 (L0,5 oc1,5)x3 L0,5 oc4,5'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-20 19:12:50',
+    'admin',
+    'UPDATE balizamiento',
+    '25620 E-0197.5 Baliza semaforo Panel circular blanco, bandas rojas en el tablero del puente Iso B 2 L2 oc2'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-20 19:23:44',
+    'admin',
+    'UPDATE localizacion',
+    '25650 Gandia 0 Extremo del cabo de Cullera 39º 11.188\' N 00º 10.016\' W'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-20 19:24:03',
+    'admin',
+    'UPDATE localizacion',
+    '25650 Gandia 0 Extremo del cabo de Cullera 39º 11.188\' N 00º 13.016\' W'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-22 19:27:58',
+    'admin',
+    'UPDATE balizamiento',
+    '25560 E-0196.25 Baliza Hormigon pequeña columna cuadrangular NOGpD(4)R 11 (L0,5 oc1,5)x3 L0,5 oc4,5'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-22 19:29:17',
+    'admin',
+    'UPDATE balizamiento',
+    '25560 E-0196.25 Baliza Hormigon pequeña columna cuadrangular NOoGpD(4)R 11 (L0,5 oc1,5)x3 L0,5 oc4,5'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-23 07:47:32',
+    'admin',
+    'DO backup',
+    'nuevo backup'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-23 11:38:39',
+    'admin',
+    'INSERT balizamiento',
+    'batea1'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-23 12:09:59',
+    'admin',
+    'UPDATE localizacion',
+    'batea1 Valencia 0 0 39º 27.150\' N 000º 17.292\' W'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-23 12:10:12',
+    'admin',
+    'UPDATE balizamiento',
+    'batea1 0 0 0GdD(4)A 11 (L0.5+oC0.5)X3+L0.5+Oc4.5'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-23 12:10:47',
+    'admin',
+    'INSERT balizamiento',
+    'batea2'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-23 12:11:16',
+    'admin',
+    'UPDATE balizamiento',
+    'batea2   GdD(4)A 11 (L0.5+oC0.5)X3+L0.5+Oc4.5'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-23 12:11:57',
+    'admin',
+    'UPDATE localizacion',
+    'batea2 0 0 0 39º 26.724\' N 00º 17.526\' W'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-23 12:20:25',
+    'admin',
+    'INSERT documento',
+    'e4a920eb-f9d5-409d-9e46-cc1aae58b239.pdf'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-23 13:01:48',
+    'admin',
+    'UPDATE lampara',
+    '25844 3 3 3 BDL 120 dos. coronas. 0 0 0'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-24 19:15:56',
+    'tecnico',
+    'INSERT observaciones',
+    '25600 asd'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-24 19:18:07',
+    'tecnico',
+    'UPDATE usuarios',
+    'Se le añade permisos de admin'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-24 19:18:18',
+    'tecnico',
+    'INSERT observaciones',
+    '25470 dtfyflkl'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-24 19:19:56',
+    'tecnico',
+    'INSERT observaciones',
+    '25470 '
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-24 19:21:14',
+    'tecnico',
+    'UPDATE observaciones',
+    '25470 asdgsdhdfjkgflkfgyhñl2'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-24 19:21:23',
+    'tecnico',
+    'UPDATE balizamiento',
+    '25470 E-0190.2 Baliza Torre troncopiramidal roja blanca teeeeGpD(2)R 7 L0,5 oc1,5 L0,5 oc4,5'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-24 19:21:28',
+    'tecnico',
+    'UPDATE lampara',
+    '25470 1 0 0 0 0 0 0'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-24 19:22:05',
+    'admin',
+    'DELETE observaciones del aton ',
+    '25600'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-24 19:22:12',
+    'admin',
+    'INSERT mantenimiento',
+    '25600 2023-05-12 dfghdh'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-24 19:22:14',
+    'admin',
+    'DELETE mantenimientos del aton',
+    '25600'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-24 19:23:05',
+    'admin',
+    'UPDATE balizamiento',
+    '25650 E-0198 semaforo Si SCADAGpD(3) 20 L0.255+Oc3.745+L0.255+Oc3.745+L0.255+Oc11.74'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-24 19:23:13',
+    'admin',
+    'UPDATE balizamiento',
+    '25650 E-0198 faro Si SCADAGpD(3) 20 L0.255+Oc3.745+L0.255+Oc3.745+L0.255+Oc11.74'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-24 19:25:00',
+    'admin',
+    'INSERT balizamiento',
+    'prueba'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-24 19:25:28',
+    'admin',
+    'UPDATE localizacion',
+    'prueba 0 0 0 39º 25.500\' N 0º 12.567\' W'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-24 19:25:48',
+    'admin',
+    'UPDATE balizamiento',
+    'prueba 0 0 0GdD(4)R 44 0'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-24 19:46:10',
+    'admin',
+    'DELETE aton ',
+    'prueba'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-24 19:46:25',
+    'admin',
+    'DELETE aton ',
+    'batea2'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-24 20:06:43',
+    'tecnico',
+    'INSERT fotografia',
+    '25545'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-24 20:09:47',
+    'tecnico',
+    'UPDATE usuarios',
+    'Se le añade permisos de admin'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-24 20:10:04',
+    'tecnico',
+    'UPDATE balizamiento',
+    '25460 E-0190 Baliza Torre troncopiramidal verde blanca telkGpD(2)V 7 L0,5 oc1,5 L0,5 oc4,5'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-24 20:10:11',
+    'tecnico',
+    'UPDATE observaciones',
+    '25460 Estructura de poliesterr'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-24 20:11:27',
+    'tecnico',
+    'UPDATE mantenimiento',
+    '25460 2023-05-10 prueba2'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-24 20:11:36',
+    'tecnico',
+    'UPDATE mantenimiento',
+    '25460 2023-05-10 prueba2222'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-24 20:11:49',
+    'tecnico',
+    'UPDATE lampara',
+    '25460 1 0 0 0 0 0 0'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-24 20:12:01',
+    'tecnico',
+    'INSERT fotografia',
+    '25460'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-24 20:12:22',
+    'admin',
+    'DELETE fotografia',
+    '25460'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-24 20:12:33',
+    'admin',
+    'UPDATE balizamiento',
+    '25460 E-0190 Baliza Torre troncopiramidal verde blanca telecontrol GpD(2)V 7 L0,5 oc1,5 L0,5 oc4,5'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-24 20:12:56',
+    'admin',
+    'INSERT balizamiento',
+    'prueba'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-24 20:13:09',
+    'admin',
+    'UPDATE localizacion',
+    'prueba 0 0 0 39º 26.724\' N 000º 17.292\' W'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-24 20:13:16',
+    'admin',
+    'UPDATE balizamiento',
+    'prueba 0 0 0GdD(4)A 0 0'
+  );
+INSERT INTO
+  `logs` (`fecha`, `usuario`, `accion`, `observacion`)
+VALUES
+  (
+    '2023-05-24 20:18:27',
+    'admin',
     'DO backup',
     'nuevo backup'
   );
@@ -25575,7 +26404,7 @@ VALUES
 INSERT INTO
   `mantenimiento` (`id_mantenimiento`, `nif`, `fecha`, `mantenimiento`)
 VALUES
-  (1025, '25460', '0000-00-00', 'prueba2');
+  (1025, '25460', '2023-05-10', 'prueba2222');
 INSERT INTO
   `mantenimiento` (`id_mantenimiento`, `nif`, `fecha`, `mantenimiento`)
 VALUES
@@ -25682,7 +26511,7 @@ VALUES
 INSERT INTO
   `observaciones` (`id_observacion`, `nif`, `observaciones`)
 VALUES
-  (1, '25460', 'Estructura de poliester');
+  (1, '25460', 'Estructura de poliesterr');
 INSERT INTO
   `observaciones` (`id_observacion`, `nif`, `observaciones`)
 VALUES
@@ -26579,11 +27408,71 @@ INSERT INTO
   `observaciones` (`id_observacion`, `nif`, `observaciones`)
 VALUES
   (159, '25530', 'rjkj');
+INSERT INTO
+  `observaciones` (`id_observacion`, `nif`, `observaciones`)
+VALUES
+  (160, '25530', 'hhh');
+INSERT INTO
+  `observaciones` (`id_observacion`, `nif`, `observaciones`)
+VALUES
+  (162, '25470', 'dtfyflkl');
+INSERT INTO
+  `observaciones` (`id_observacion`, `nif`, `observaciones`)
+VALUES
+  (163, '25470', 'asdgsdhdfjkgflkfgyhñl2');
+
+# ------------------------------------------------------------
+# DATA DUMP FOR TABLE: sessions
+# ------------------------------------------------------------
+
+INSERT INTO
+  `sessions` (`session_id`, `expires`, `data`)
+VALUES
+  (
+    'CFj_DSJfV9LBu70YQvwOp2G4LiVxq8CR',
+    1685037406,
+    '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"flash\":{}}'
+  );
+INSERT INTO
+  `sessions` (`session_id`, `expires`, `data`)
+VALUES
+  (
+    'TbOzcKi_ESANyJlTCDXhlKPcW0uPRCEg',
+    1685038582,
+    '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"flash\":{}}'
+  );
+INSERT INTO
+  `sessions` (`session_id`, `expires`, `data`)
+VALUES
+  (
+    'xTXV4-YTT8ae1urEwhjFq7XU4StFI7zC',
+    1685038708,
+    '{\"cookie\":{\"originalMaxAge\":null,\"expires\":null,\"httpOnly\":true,\"path\":\"/\"},\"passport\":{\"user\":1},\"flash\":{}}'
+  );
 
 # ------------------------------------------------------------
 # DATA DUMP FOR TABLE: usuarios
 # ------------------------------------------------------------
-
+  INSERT INTO
+  `usuarios` (
+    `id`,
+    `usuario`,
+    `contrasena`,
+    `email`,
+    `full_name`,
+    `privilegio`,
+    `pictureURL`
+  )
+VALUES
+  (
+    1,
+    'adrian',
+    '$2a$10$rTcE3JD7svuTpPT42FrNdOodYNqfk9H7qd8.Dj3.vZMfZC9/rs.wS',
+    'adeharo@puerto.com',
+    'Adrian de Haro',
+    'admin',
+    '1682779957154.bmp'
+  );
 
 INSERT INTO
   `usuarios` (
@@ -26603,7 +27492,7 @@ VALUES
     'gcasamayor@puerto.com',
     'Guillermo Casamayor',
     'admin',
-    NULL
+    '1682779877537.bmp'
   );
 INSERT INTO
   `usuarios` (
@@ -26622,8 +27511,8 @@ VALUES
     '$2a$10$jBWhSIjUyrKpyrMuzs/l5e5YOxRiKVeZn9IAMTrWY1Seoq/OpfCae',
     'msaez@puerto.com',
     'Marco Antonio Saez',
-    'san',
-    NULL
+    '',
+    '1682779877535.bmp'
   );
 INSERT INTO
   `usuarios` (
@@ -26643,7 +27532,7 @@ VALUES
     'rrubio@puerto.com',
     'Raul Rubio',
     'san',
-    NULL
+    '1682779877537.bmp'
   );
 INSERT INTO
   `usuarios` (
@@ -26683,28 +27572,9 @@ VALUES
     'lokahahksf@lkasjf.es',
     'newuser',
     'san',
-    NULL
+    '1682779877535.bmp'
   );
-  INSERT INTO
-  `usuarios` (
-    `id`,
-    `usuario`,
-    `contrasena`,
-    `email`,
-    `full_name`,
-    `privilegio`,
-    `pictureURL`
-  )
-VALUES
-  (
-    7,
-    'adrian',
-    '$2a$10$rTcE3JD7svuTpPT42FrNdOodYNqfk9H7qd8.Dj3.vZMfZC9/rs.wS',
-    'adeharo@puerto.com',
-    'Adrian de Haro',
-    'admin',
-    '1682779957154.bmp'
-  );
+
 
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
