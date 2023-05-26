@@ -82,23 +82,40 @@ router.post("/add", funciones.isAuthenticated, funciones.hasSanPrivileges, async
         }
     }
 
-    let existe = await db.query("SELECT * from balizamiento where nif= ?", [newBalizamiento.nif]);
-    //console.log(existe.length);
-    if (existe.length == 0) {
-        await db.query("INSERT INTO balizamiento set ?", [newBalizamiento]);
-        await db.query("INSERT INTO localizacion set ?", [newBalizamientoLocalizacion]);
-        await db.query("INSERT INTO lampara set ?", [newBalizamientoLampara]);
-        funciones.insertarLog(req.user.usuario, "INSERT balizamiento", newBalizamiento.nif);
-        req.flash("success", "Baliza insertada correctamente");
-        res.redirect("/aton/list");
-    }
-    else {
-        req.flash("error", "Ya existe un AtoN con el NIF " + newBalizamiento.nif);
-        res.redirect("/aton/list");
-    }
-    //console.log(newBalizamiento);
+    try {
+        let existe = await db.query("SELECT * from balizamiento where nif= ?", [newBalizamiento.nif]);
+        //console.log(existe.length);
+        if (existe.length == 0) {
+            await db.query("INSERT INTO balizamiento set ?", [newBalizamiento]);
+            await db.query("INSERT INTO localizacion set ?", [newBalizamientoLocalizacion]);
+            await db.query("INSERT INTO lampara set ?", [newBalizamientoLampara]);
+            funciones.insertarLog(req.user.usuario, "INSERT balizamiento", newBalizamiento.nif);
+            req.flash("success", "Baliza insertada correctamente");
+            res.redirect("/aton/list");
+        }
+        else {
+            req.flash("error", "Ya existe un AtoN con el NIF " + newBalizamiento.nif);
+            res.redirect("/aton/add");
+        }
+        //console.log(newBalizamiento);
+    } catch (error) {
+        console.error(error.code);
+        switch (error.code) {
+            case "ER_DATA_TOO_LONG":
+                req.flash("error", "El NIF " + newBalizamiento.nif + " es demasiado largo.");
+                break;
+            case "ER_BAD_NULL_ERROR":
+                req.flash("error", "El campo NIF es obligatorio");
+                break;
+            case "ER_TRUNCATED_WRONG_VALUE_FOR_FIELD":
+                req.flash("error", "Hay un campo con valor incorrecto");
+                break;
 
-
+            default:
+                req.flash("error", "Hubo algun error al intentar añadir el nuevo AtoN con NIF  " + newBalizamiento.nif);
+        }
+        res.redirect("/aton/add");
+    }
 });
 
 //CRUD ATON read
@@ -444,14 +461,14 @@ router.post("/mantenimiento/edit/:idMan", funciones.isAuthenticated, funciones.h
         mantenimiento: mantenimientoNuevo,
     };
     try {
-        await db.query("UPDATE mantenimiento set ? WHERE id_mantenimiento = ?", [newObservacion, id_mantenimiento ]);
+        await db.query("UPDATE mantenimiento set ? WHERE id_mantenimiento = ?", [newObservacion, id_mantenimiento]);
         funciones.insertarLog(req.user.usuario, "UPDATE mantenimiento", newObservacion.nif + " " + newObservacion.fecha + " " + newObservacion.mantenimiento);
         req.flash("success", "Mantenimiento modificado correctamente en la baliza " + nif);
         res.redirect("/aton/plantilla/" + nif);
-      } catch (error) {
-          console.error(error);
-          req.flash("error", "Hubo algun error al modificar el mantenimiento al NIF: " + nif);
-          res.redirect("/aton/plantilla/" + nif);
+    } catch (error) {
+        console.error(error);
+        req.flash("error", "Hubo algun error al modificar el mantenimiento al NIF: " + nif);
+        res.redirect("/aton/plantilla/" + nif);
     }
 });
 
