@@ -1,4 +1,5 @@
 drop database if exists sanpfcdaw;
+
 create database sanpfcdaw;
 
 use sanpfcdaw;
@@ -11,9 +12,7 @@ START TRANSACTION;
 SET
   time_zone = "+00:00";
 
-
 /*INICIO informacion ATON*/
-
 CREATE TABLE `balizamiento` (
   `nif` varchar(8) NOT NULL,
   `num_internacional` varchar(12) DEFAULT NULL,
@@ -26,12 +25,12 @@ CREATE TABLE `balizamiento` (
 
 CREATE TABLE `lampara` (
   `nif` varchar(8) NOT NULL,
-  `altura` decimal(5,2) DEFAULT NULL,
-  `elevacion` decimal(5,2) DEFAULT NULL,
-  `alcanceNom` decimal(5,2) DEFAULT NULL,
+  `altura` decimal(5, 2) DEFAULT NULL,
+  `elevacion` decimal(5, 2) DEFAULT NULL,
+  `alcanceNom` decimal(5, 2) DEFAULT NULL,
   `linterna` varchar(200) DEFAULT NULL,
   `candelasCalc` float(12, 2) DEFAULT NULL,
-  `alcanceLum` decimal(5,2) DEFAULT NULL,
+  `alcanceLum` decimal(5, 2) DEFAULT NULL,
   `candelasInst` float(12, 2) DEFAULT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = 'tabla de detalles lampara';
 
@@ -58,10 +57,6 @@ CREATE TABLE `observaciones` (
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = 'tabla de observaciones del balizamiento';
 
 /*FIN ATON*/
-
-
-
-
 /* INVENTARIO */
 CREATE TABLE `inventario` (
   `id` mediumint(9) NOT NULL,
@@ -73,8 +68,7 @@ CREATE TABLE `inventario` (
   `descripcion` varchar(250) DEFAULT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = 'tabla de inventario';
 
-
-/* DESCRIPCION DOCUMENTOS */ 
+/* DESCRIPCION DOCUMENTOS */
 CREATE TABLE `documentos` (
   `id_archivo` varchar(100) NOT NULL,
   `nombre` varchar(100) DEFAULT NULL,
@@ -100,6 +94,27 @@ CREATE TABLE `logs` (
   `observacion` varchar(150) DEFAULT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = 'tabla de logs';
 
+drop table if exists tickets;
+CREATE TABLE `tickets` (
+  `ticket_id` int(11) AUTO_INCREMENT PRIMARY KEY,
+  `nif` varchar(8),
+  `created_by_id` int(11) NOT NULL,
+  `assigned_to_id` int(11) DEFAULT NULL,
+  `resolved_by_id` int(11) DEFAULT NULL,
+  `titulo` VARCHAR(255) NOT NULL,
+  `descripcion` TEXT DEFAULT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `solved_at` TIMESTAMP NULL DEFAULT NULL,
+  FOREIGN KEY (created_by_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+  FOREIGN KEY (assigned_to_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+  FOREIGN KEY (resolved_by_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+  FOREIGN KEY (nif) REFERENCES balizamiento(nif) ON DELETE CASCADE
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = 'tabla de tickets';
+ALTER TABLE
+  `tickets`
+MODIFY
+  `ticket_id` int(11) NOT NULL AUTO_INCREMENT,
+  AUTO_INCREMENT = 1;
 
 --
 ALTER TABLE
@@ -157,12 +172,28 @@ ALTER TABLE
   `inventario`
 MODIFY
   `id` mediumint(9) NOT NULL AUTO_INCREMENT,
-  AUTO_INCREMENT = 1; 
+  AUTO_INCREMENT = 1;
 
-  -- Inserta usuario "admin" con contraseña "admin"
-INSERT INTO `usuarios` (    `id`,    `usuario`,    `contrasena`,    `email`,    `full_name`,    `privilegio`,    `pictureURL`  ) VALUES  (    1,    'admin',    '$2a$10$44RiEqgdwBZhtbd1rN6pfe/CLbTMpc4mGUPDiCgAlle0ISkMuJAC2',    'admin@email.com',    'Admin name',    'admin',    ''  );
-
-
+-- Inserta usuario "admin" con contraseña "admin"
+INSERT INTO
+  `usuarios` (
+    `id`,
+    `usuario`,
+    `contrasena`,
+    `email`,
+    `full_name`,
+    `privilegio`,
+    `pictureURL`
+  )
+VALUES
+  (
+    1,
+    'admin',
+    '$2a$10$44RiEqgdwBZhtbd1rN6pfe/CLbTMpc4mGUPDiCgAlle0ISkMuJAC2',
+    'admin@email.com',
+    'Admin name',
+    'admin',
+    ''
+  );
 
 COMMIT;
-

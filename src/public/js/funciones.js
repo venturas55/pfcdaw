@@ -5,6 +5,19 @@
 let myurl = 'http://localhost:4000';
 //let myurl = 'http://adriandeharo.es:4000';
 
+//FUNCION PARA CERRAR MODALES
+function cierraModal() {
+    var el = document.getElementsByClassName("modal");
+    for (var i = 0; i < el.length; i++) {
+        el[i].style.display = "none";
+    }
+    passcheck = "";
+}
+function cambiarUsuario() {
+    var passcheck = document.getElementById("contrasenaConfirmacion").value;
+    //TODO: verificar el pass con la base de datos
+}
+
 //FUNCION PARA CONFIGURAR LA VARIABLE CON LA QUE SE CENTRARÁ EL MAPA DE LA API DE GOOGLE, COGIENDO EL CENTRO DE LA PROPIA URL
 function centrar() {
     let centerLatLng = {};
@@ -13,19 +26,28 @@ function centrar() {
 
     switch (url[url.length - 1]) {
         case 'valencia':
-            centerLatLng = { lat: 39.438, lng: -0.3172 };
+            centerLatLng = {
+                lat: 39.438,
+                lng: -0.3172
+            };
             presetZoom = 14;
             break;
         case 'sagunto':
-            centerLatLng = { lat: 39.644, lng: -0.2142 };
+            centerLatLng = {
+                lat: 39.644,
+                lng: -0.2142
+            };
             presetZoom = 15;
             break;
         case 'gandia':
-            centerLatLng = { lat: 38.995, lng: -0.15202 };
+            centerLatLng = {
+                lat: 38.995,
+                lng: -0.15202
+            };
             presetZoom = 16;
             break;
         default:
-            centerLatLng = setMarkerLatLng( lat.value,  lng.value) ;
+            centerLatLng = setMarkerLatLng(lat.value, lng.value);
             presetZoom = 18;
     }
 
@@ -60,18 +82,18 @@ function setMarkerLatLng(lat, lng) {
     var lat2 = 0;
     var lng2 = 0;
     if (lat != null && lat.includes("º")) {
-        lat = lat.replaceAll("'", "´");//quito espacios
+        lat = lat.replaceAll("'", "´"); //quito espacios
         lat = lat.replaceAll("´", "´");
         lat = lat.replaceAll("'", "´"); // y reemplazo la coma ' por ´
         lat = lat.replaceAll("°", "º");
 
-        var utmarraylat = lat.split("º");   //separo grados y minutos
+        var utmarraylat = lat.split("º"); //separo grados y minutos
         //console.log(utmarraylat[0] + " - " + utmarraylat[1]);
         //(utmarraylat[0] son grados y  utmarraylat[1] minutos
-        utmarraylat[1] = utmarraylat[1].replace(",", ".");  //DE LOS MINUTOS sustituyo comas por PUNTOS
-        var minutoslatVector = utmarraylat[1].split(".");  //de los minutos separo en las PUNTOS
+        utmarraylat[1] = utmarraylat[1].replace(",", "."); //DE LOS MINUTOS sustituyo comas por PUNTOS
+        var minutoslatVector = utmarraylat[1].split("."); //de los minutos separo en las PUNTOS
         //console.log(minutoslatVector[0] + " - " + minutoslatVector[1]);
-        var minutoslatEntero = parseFloat(minutoslatVector[0]);      //convierto a decimal (la separacion ha de ser un PUNTO)
+        var minutoslatEntero = parseFloat(minutoslatVector[0]); //convierto a decimal (la separacion ha de ser un PUNTO)
         if (minutoslatVector[1].includes("´")) {
             var minutoslat = minutoslatVector[1].split("´")
         } else {
@@ -92,13 +114,13 @@ function setMarkerLatLng(lat, lng) {
         lng = lng.replaceAll("'", "´");
         lng = lng.replaceAll("'", "´");
         lng = lng.replaceAll("°", "º");
-        var utmarraylng = lng.split("º");   //separo grados y minutos
+        var utmarraylng = lng.split("º"); //separo grados y minutos
         //console.log(utmarraylng[0] + " - " + utmarraylng[1]);
         //(utmarraylng[0] son grados y  utmarraylng[1] minutos
-        utmarraylng[1] = utmarraylng[1].replace(",", ".");  //DE LOS MINUTOS sustituyo comas por PUNTOS
-        var minutoslngVector = utmarraylng[1].split(".");  //de los minutos separo en las PUNTOS
+        utmarraylng[1] = utmarraylng[1].replace(",", "."); //DE LOS MINUTOS sustituyo comas por PUNTOS
+        var minutoslngVector = utmarraylng[1].split("."); //de los minutos separo en las PUNTOS
         //console.log(minutoslngVector[0] + " - " + minutoslngVector[1]);
-        var minutoslngEntero = parseFloat(minutoslngVector[0]);      //convierto a decimal (la separacion ha de ser un PUNTO)
+        var minutoslngEntero = parseFloat(minutoslngVector[0]); //convierto a decimal (la separacion ha de ser un PUNTO)
 
         if (minutoslngVector[1].includes("´")) {
             var minutoslng = minutoslngVector[1].split("´")
@@ -116,7 +138,10 @@ function setMarkerLatLng(lat, lng) {
             lng2 = -1 * lng2.toFixed(5);
         //console.log(lng2);
     }
-    return { 'lat': lat2, 'lng': lng2 };
+    return {
+        'lat': lat2,
+        'lng': lng2
+    };
 }
 
 //FUNCION QUE LE PASA UN OBJETO BALIZA Y LE DEVUELVE UNA LETRA QUE REPRESENTA EL COLOR/TIPO
@@ -133,26 +158,19 @@ function getTipo(item) {
         item.cambio = true;
         color = "F";
 
-    }
-    else if (tipo.includes("semaforo")) {
+    } else if (tipo.includes("semaforo")) {
         color = "S";
         item.cambio = true;
-    }
-
-    else if (tipo.includes("peligro")) {
+    } else if (tipo.includes("peligro")) {
         color = "PA";
         item.cambio = true;
-    }
-    else if (tipo.includes("navegable")) {
+    } else if (tipo.includes("navegable")) {
         color = "AN";
         item.cambio = true;
-    }
-    else if (tipo.includes(" odas ") || tipo.includes(" sado ")) {
+    } else if (tipo.includes(" odas ") || tipo.includes(" sado ")) {
         color = "ODAS";
         item.cambio = true;
-    }
-
-    else {
+    } else {
         switch (color) {
             case 'R':
                 item.cambio = true;
@@ -180,16 +198,13 @@ function getTipo(item) {
     if (caracteristica == "l025oc025" && color == "B") {
         color = "CN";
         item.cambio = true;
-    }
-    else if ((caracteristica == "[(l025oc025)x2]l025oc375" || caracteristica == "[(l03oc08)x2]l03oc25") && color == "B") {
+    } else if ((caracteristica == "[(l025oc025)x2]l025oc375" || caracteristica == "[(l03oc08)x2]l03oc25") && color == "B") {
         color = "CE";
         item.cambio = true;
-    }
-    else if (caracteristica == "[(l025oc025)x6]l2oc5" && color == "B") {
+    } else if (caracteristica == "[(l025oc025)x6]l2oc5" && color == "B") {
         color = "CS";
         item.cambio = true;
-    }
-    else if (caracteristica == "[(l025oc025)x5]l025oc375" && color == "B") {
+    } else if (caracteristica == "[(l025oc025)x5]l025oc375" && color == "B") {
         color = "CO";
         item.cambio = true;
     }
@@ -213,20 +228,54 @@ function initMapa(balizas) {
         center: centerLatLng,
     });
 
+
     const markers = Promise.all(balizas.map(async item => {
         const marker = new google.maps.Marker({
             position: setMarkerLatLng(item.latitud, item.longitud),
-            label: { text: item.nif.toString(), className: 'etiquetaGoogle' },
+            label: {
+                text: item.nif.toString(),
+                className: 'etiquetaGoogle'
+            },
             title: item.tipo,
-            icon: { url: myurl + '/img/icon/' + getTipo(item) + '.png', scaledSize: { width: 30, height: 60 } },
+            icon: {
+                url: myurl + '/img/icon/' + getTipo(item) + '.png',
+                scaledSize: {
+                    width: 30,
+                    height: 60
+                }
+            },
             map: map,
         });
+
+        /* PARA USAR UNA VENTANA */
+        /*      const contentString =
+                 '<div id="content">INFO' +
+                 "<div>" +
+                 '<a href="/aton/plantilla/' + item.nif.toString() + '">' + item.nif.toString() + "</a> " +
+                 "</div>" +
+                 "</div>";
+     
+             const infowindow = new google.maps.InfoWindow({
+                 content: contentString,
+                 ariaLabel: "AtoN",
+             }); */
+        /* FIN USAR  VENTANA */
+
         // markers can only be keyboard focusable when they have click listeners
         // open info window when marker is clicked
         marker.addListener("click", () => {
             //console.log(marker.label);
             location.href = '/aton/plantilla/' + marker.label.text;
         });
+
+
+        marker.addListener("click", () => {
+            infowindow.open({
+                anchor: marker,
+                map,
+            });
+        });
+
         return await marker;
     }));
 }

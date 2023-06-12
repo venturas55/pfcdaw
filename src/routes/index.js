@@ -6,7 +6,9 @@ const funciones = require("../lib/funciones.js");
 const { unlink } = require('fs-extra');
 const { access, constants } = require('fs');
 const fs = require('fs');
-const queryListadoAton = "SELECT b.nif,b.num_internacional,b.tipo,b.apariencia,b.periodo,b.caracteristica,lo.puerto,lo.num_local,lo.localizacion,lo.latitud,lo.longitud,la.altura,la.elevacion,la.alcanceNom,la.linterna,la.candelasCalc,la.alcanceLum,la.candelasInst FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif";
+const queryListadoAton = "SELECT b.nif,b.num_internacional,b.tipo,b.apariencia,b.periodo,b.caracteristica,b.telecontrol,b.necesita_pintado,lo.puerto,lo.num_local,lo.localizacion,lo.latitud,lo.longitud,la.altura,la.elevacion,la.alcanceNom,la.linterna,la.candelasCalc,la.alcanceLum,la.candelasInst FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif";
+
+const queryListadoTicketsUsers = "SELECT t.ticket_id,t.nif,t.created_by_id,t.assigned_to_id,t.resolved_by_id,t.titulo,t.descripcion,t.solved_at,t.created_at,u1.usuario as created_by,u2.usuario as assigned_to,u3.usuario as resolved_by FROM tickets t LEFT JOIN usuarios u1 ON t.created_by_id=u1.id  LEFT JOIN usuarios u2 ON t.assigned_to_id=u2.id LEFT JOIN usuarios u3 ON t.resolved_by_id=u3.id";
 
 //MOSTRAR PAGINA INICIAL
 router.get('/', (req, res) => {
@@ -24,9 +26,11 @@ router.get('/plan', (req, res) => {
 });
 
 //MOSTRAR PERFIL  -RUD  
-router.get('/profile', (req, res) => {
-    //console.log(req.user.usuario);
-    res.render('auth/profile');
+router.get('/profile', async(req, res) => {
+    //console.log(req.user.id);
+    const tickets = await db.query('select * from tickets where assigned_to_id=? and solved_at is null', [req.user.id]);
+    //console.log(tickets);
+    res.render('auth/profile', { tickets });
 });
 router.get('/profile/edit', (req, res) => {
     let permisos = { 'tecnicosan': false, 'admin': false };
@@ -37,7 +41,7 @@ router.get('/profile/edit', (req, res) => {
     //console.log(permisos);
     res.render('auth/profileEdit', { permisos });
 });
-router.post('/profile/edit', funciones.isAuthenticated, async (req, res) => {
+router.post('/profile/edit', funciones.isAuthenticated, async(req, res) => {
     const rows = await db.query("SELECT * FROM usuarios WHERE id= ?", [req.body.id]);
     var user = rows[0];
 
@@ -54,17 +58,17 @@ router.post('/profile/edit', funciones.isAuthenticated, async (req, res) => {
         req.flash("success", "Usuario editado correctamente.");
         res.redirect('/profile');
     } else {
-        req.flash("warning", "No dispones de permisos!");
+        req.flash("warning", "No has puesto la contraseña actual correctamente!");
         res.redirect('/noperm');
     }
 });
-router.get("/profile/delete/:id", funciones.isAuthenticated, async (req, res) => {
+router.get("/profile/delete/:id", funciones.isAuthenticated, async(req, res) => {
     console.log(req.params);
     const { id } = req.params;
     const user = await db.query("SELECT * FROM usuarios where id=?", id);
     //borramos foto
     const filePath = path.resolve('src/public/img/profiles/' + user.pictureURL);
-    access(filePath, constants.F_OK, async (err) => {
+    access(filePath, constants.F_OK, async(err) => {
         if (err) {
             console.log("No tiene foto de perfil");
         } else {
@@ -73,18 +77,17 @@ router.get("/profile/delete/:id", funciones.isAuthenticated, async (req, res) =>
         }
     });
     //hacemos logout
-    req.logout(async function (err) {
+    req.logout(async function(err) {
         if (err) {
             return next(err);
         }
         await db.query("DELETE FROM sessions ");
         await db.query("DELETE FROM usuarios WHERE id=?", [id]);
     });
-
     req.flash("success", "Usuario borrado correctamente");
     res.redirect('/');
 });
-router.post('/doAdmin', funciones.isAuthenticated, async (req, res) => {
+router.post('/doAdmin', funciones.isAuthenticated, async(req, res) => {
     const { pass, privilegio } = req.body;
     console.log(pass + " / " + db.config.connectionConfig.masterpass);
     console.log(req.user);
@@ -104,11 +107,11 @@ router.post('/doAdmin', funciones.isAuthenticated, async (req, res) => {
 
 
 //GESTION BACKUPS BBDD
-router.get("/backups", funciones.isAuthenticated, funciones.hasSanPrivileges,async (req, res) => {
+router.get("/backups", funciones.isAuthenticated, funciones.hasSanPrivileges, async(req, res) => {
     var backups = funciones.listadoBackups();
     res.render("documentos/listadoBackups", { backups });
 });
-router.get("/backups/del/:nombre", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
+router.get("/backups/del/:nombre", funciones.isAuthenticated, funciones.isAdmin, async(req, res) => {
     var { nombre } = req.params;
     var file = path.resolve('src/public/dumpSQL', nombre);
     //console.log(file);
@@ -116,7 +119,7 @@ router.get("/backups/del/:nombre", funciones.isAuthenticated, funciones.isAdmin,
     funciones.insertarLog(req.user.usuario, "DELETE backup", nombre);
     res.redirect('/backups');
 });
-router.get("/dumpSQL", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
+router.get("/dumpSQL", funciones.isAuthenticated, funciones.hasSanPrivileges, async(req, res) => {
     funciones.dumpearSQL();
     req.flash("success", "Backup de la BBDD realizado correctamente");
     funciones.insertarLog(req.user.usuario, "DO backup", "nuevo backup");
@@ -124,21 +127,21 @@ router.get("/dumpSQL", funciones.isAuthenticated, funciones.hasSanPrivileges, as
 });
 
 //GESTION LOGS
-router.get("/logs", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
+router.get("/logs", funciones.isAuthenticated, funciones.isAdmin, async(req, res) => {
     var logs = await db.query("select * from logs order by fecha desc");
     res.render("documentos/listadoLogs", { logs });
 });
 
 //GESTION INVENTARIO
-router.get('/inventario',funciones.isAuthenticated, async (req, res) => {
+router.get('/inventario', funciones.isAuthenticated, async(req, res) => {
     const inventario = await db.query("select * from inventario order by fila,columna");
     res.render('inventario/inventario', { inventario });
 });
-router.get('/inventario/add',  funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
+router.get('/inventario/add', funciones.isAuthenticated, funciones.hasSanPrivileges, async(req, res) => {
     res.render('inventario/addItem');
 });
-router.post('/inventario/add', funciones.isAuthenticated, funciones.hasSanPrivileges,  async (req, res) => {
-     var {
+router.post('/inventario/add', funciones.isAuthenticated, funciones.hasSanPrivileges, async(req, res) => {
+    var {
         tipo,
         item,
         descripcion,
@@ -154,22 +157,22 @@ router.post('/inventario/add', funciones.isAuthenticated, funciones.hasSanPrivil
         cantidad,
         fila,
         columna
-    }; 
+    };
 
     console.log(nuevoItem);
     await db.query("insert into inventario set ? ", [nuevoItem]);
-    funciones.insertarLog(req.user.usuario, "INSERT inventario", "Item " + nuevoItem.item +" añadido "   + nuevoItem.cantidad+ " cantidades") ;
+    funciones.insertarLog(req.user.usuario, "INSERT inventario", "Item " + nuevoItem.item + " añadido " + nuevoItem.cantidad + " cantidades");
     req.flash("success", "Item añadido al inventario correctamente");
     res.redirect("/inventario");
 });
-router.get('/inventario/edit/:id', funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
+router.get('/inventario/edit/:id', funciones.isAuthenticated, funciones.hasSanPrivileges, async(req, res) => {
     const { id } = req.params;
     //console.log(id);
     const item = await db.query("select * from inventario where id=?", id);
     //console.log(item[0]);
     res.render('inventario/edit', { item: item[0] });
 });
-router.post('/inventario/edit/:id', funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
+router.post('/inventario/edit/:id', funciones.isAuthenticated, funciones.hasSanPrivileges, async(req, res) => {
     var {
         id,
         tipo,
@@ -194,7 +197,7 @@ router.post('/inventario/edit/:id', funciones.isAuthenticated, funciones.hasSanP
     req.flash("success", "Inventario actualizado correctamente");
     res.redirect("/inventario");
 });
-router.get("/inventario/delete/:id", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
+router.get("/inventario/delete/:id", funciones.isAuthenticated, funciones.isAdmin, async(req, res) => {
     //console.log(req.params.idObs);
     const { id } = req.params;
     await db.query("delete from inventario where id=?", [id]);
@@ -202,52 +205,25 @@ router.get("/inventario/delete/:id", funciones.isAuthenticated, funciones.isAdmi
     res.redirect("/inventario");
 });
 
-
-
 //MOSTRAR ERROR
 router.get('/error', (req, res) => {
-    res.render('error');
+    res.render('estaticas/error');
 });
 router.get('/noperm', (req, res) => {
-    res.render('noPermission');
-});
-
-//MOSTRAR PRUEBA
-router.get("/prueba", (req, res) => {
-    console.log("Ejecutando prueba");
-    funciones.consultaPrueba();
-    req.flash("success", "Prueba ejecutada correctamente en index");
-    //res.render("prueba");
-});
-router.post("/pruebaPost", async (req, res) => {
-    var password = req.masterPass;
-    userpass = req.body.pass;
-    //console.log("==>" + req.masterPass);
-    const validPassword = await funciones.verifyPassword(userpass, password);
-    if (validPassword) {
-        funciones.consultaPrueba();
-        req.flash("success", "Prueba ejecutada correctamente crack");
-        res.redirect("/");
-    } else {
-        req.flash("warning", "Sucedió algun error!");
-        res.redirect("/noperm");
-    }
-
+    res.render('estaticas/noPermission');
 });
 
 //GESTION MAPA
-router.get("/mapa/:nif", async (req, res) => {
+router.get("/mapa/:nif", async(req, res) => {
     const { nif } = req.params;
     const baliza = await db.query(queryListadoAton + ' where b.nif=?', [nif]);
     res.render("mapas/mapa", { layout: 'layoutMapa', baliza: baliza[0] });
 });
-
 //funcion get para mostrar los mapas dinamicos con la api de google maps
 router.get("/mapaGeneral/:valor", (req, res) => {
     //const { valor } = req.params;
     res.render("mapas/mapa", { layout: 'layoutMapa' });
 });
-
 //funcion get para mostrar los mapas estaticos
 router.get("/mapaGeneral2/:valor", (req, res) => {
     const { valor } = req.params;
@@ -264,5 +240,28 @@ router.get("/mapaGeneral2/:valor", (req, res) => {
             break;
     }
 });
-module.exports = router;
 
+//MOSTRAR PRUEBA
+router.get("/prueba", (req, res) => {
+    console.log("Ejecutando prueba");
+    funciones.consultaPrueba();
+    req.flash("success", "Prueba ejecutada correctamente en index");
+    //res.render("prueba");
+});
+router.post("/pruebaPost", async(req, res) => {
+    var password = req.masterPass;
+    userpass = req.body.pass;
+    //console.log("==>" + req.masterPass);
+    const validPassword = await funciones.verifyPassword(userpass, password);
+    if (validPassword) {
+        funciones.consultaPrueba();
+        req.flash("success", "Prueba ejecutada correctamente crack");
+        res.redirect("/");
+    } else {
+        req.flash("warning", "Sucedió algun error!");
+        res.redirect("/noperm");
+    }
+
+});
+
+module.exports = router;

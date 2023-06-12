@@ -1,0 +1,46 @@
+<div class="container p-2  mb-4">
+    <h1 class=" col-md-8 mx-auto text-center">CREAR NUEVO TICKET</h1>
+    <div class="row">
+        <div class="col-md-8 mx-auto p-y4">
+            <div class="card py-4">
+                <div class="card-body py-4">
+                    <h1> Nuevo Ticket </h1>
+                    <form action="/tickets/add" method="POST">
+                        <div class="form-group">
+                            <label for="item">AtoN NIF</label>
+                            <input value="{{nif}}" class="form-control" type="text" name="nif" placeholder="nif" />
+                        </div>
+                        <div class="form-group">
+                            <label for="titulo">Trabajo a realizar</label>
+                            <input class="form-control" type="text" name="titulo" placeholder="titulo" />
+                        </div>
+                        <div class="form-group">
+                            {{!-- <label for="descripcion">Trabajo realizado</label> --}}
+                            <input class="form-control" type="hidden" name="descripcion" placeholder="descripcion" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="assigned_to">Tarea asignada a </label>
+                            <div class="input-group mb-3">
+                                <select class="custom-select form-select form-select-sm" name="assigned_to_id"
+                                    id="input_assigned_to_id" aria-label=".form-select-sm example">
+                                    <option value=""> Selecciona</option>
+                                    {{#each usuarios}}
+                                    <option value="{{this.id}}" {{#when this.id 'eq' ../ticket.assigned_to_id }}
+                                        selected {{/when}}>
+                                        {{this.usuario}} </option>
+                                    {{/each}}
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-block">CREAR TICKET</button>
+                    </form>
+                    <form action="/tickets/list" method="GET">
+                        <button class="btn btn-danger btn-block">Cancelar</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

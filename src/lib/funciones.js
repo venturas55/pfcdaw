@@ -40,21 +40,20 @@ helpers.listadoBackups = (req, res, next) => {
                 }
                 documentos.push(item);
             });
-        }
-        else {
+        } else {
             console.log("No hay files");
         }
     });
     return documentos;
 }
 
-helpers.encryptPass = async (password) => {
+helpers.encryptPass = async(password) => {
     const sal = await bcrypt.genSalt(10);
     password = await bcrypt.hash(password, sal);
     return password;
 };
 
-helpers.verifyPassword = async (password, hashedPassword) => {
+helpers.verifyPassword = async(password, hashedPassword) => {
     try {
         return await bcrypt.compare(password, hashedPassword);
     } catch (e) {
@@ -104,16 +103,22 @@ helpers.isNotAdmin = (req, res, next) => {
     return res.redirect('/noperm');
 }
 
-helpers.insertarLog = async (usuario, accion, observacion) => {
+helpers.insertarLog = async(usuario, accion, observacion) => {
     const log = {
         usuario,
         accion,
         observacion
     }
-    console.log("Insertando log: " + stringify(log));
-    const a = await db.query("insert into logs SET ?", [log]);
-    return a;
-};
+    try {
+        console.log("Insertando log: " + stringify(log));
+        const a = await db.query("insert into logs SET ?", [log]);
+        return a;
+    } catch (err) {
+        console.log(err);
+        return "error";
+    }
+
+}
 
 helpers.dumpearSQL = () => {
     // dump the result straight to a file
@@ -131,7 +136,7 @@ helpers.dumpearSQL = () => {
     });
 }
 
-helpers.consultaPrueba2 = async () => {
+helpers.consultaPrueba2 = async() => {
     let ruta = path.join(__dirname, '..', '..', 'database', 'prueba.sql');
     console.log(ruta);
 
@@ -139,18 +144,18 @@ helpers.consultaPrueba2 = async () => {
 
         input: fs.createReadStream(ruta),
         terminal: false
-       });
-      rl.on('line', function(chunk){
-        db.query(chunk.toString('ascii'), function(err, sets, fields){
-           if(err) console.log(err);
-           console.log("voy");
-           console.log(sets);
-           console.log(fields);
-          });
-      });
-      rl.on('close', function(){
+    });
+    rl.on('line', function(chunk) {
+        db.query(chunk.toString('ascii'), function(err, sets, fields) {
+            if (err) console.log(err);
+            console.log("voy");
+            console.log(sets);
+            console.log(fields);
+        });
+    });
+    rl.on('close', function() {
         console.log("finished");
-      });
+    });
 
 
     /* const connection = mysql.createConnection({
@@ -184,7 +189,7 @@ helpers.consultaPrueba2 = async () => {
 
 }
 
-helpers.consultaPrueba = async () => {
+helpers.consultaPrueba = async() => {
     let ruta = path.join(__dirname, '..', '..', 'database', 'prueba.sql');
     console.log(ruta);
 }

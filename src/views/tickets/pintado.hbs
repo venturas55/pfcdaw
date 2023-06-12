@@ -1,0 +1,40 @@
+<div class="container p-2 mb-4">
+    <div class="row">
+        <h1 class=" col-md-8 mx-auto text-center">PINTADO</h1>
+    </div>
+    <div class="row">
+        <div class="col-md-8 mx-auto py-4">
+            <div class="card py-4">
+                <div class="card-body py-4">
+                    {{!-- <h1> Ticket </h1> --}}
+                    <form action="/tickets/edit/{{aton.pintado_id}}" method="POST">
+                        <div class="form-group">
+                            <label for="ticket_id">ticket ID</label>
+                            <input type="text" value="{{aton.pintado_id}}" class="form-control" type="text"
+                                name="ticket_id" readonly />
+                            {{!-- 'readonly' permite enviar en los parametros del formulario. 'disabled' NO lo
+                            permite!!!! --}}
+                        </div>
+  
+                        <div class="form-group">
+                            <label for="item">AtoN NIF</label>
+                           <a href='/aton/plantilla/{{aton.nif}}'> <input value="{{aton.nif}}" class="form-control" type="text" name="nif" placeholder="nif"
+                                readonly /> </a> 
+                        </div>
+                       
+                        <div class="form-group">
+                            <label for="descripcion">Trabajo realizado</label><input value="{{aton.descripcion}}"
+                                class="form-control" type="text" name="descripcion" placeholder="descripcion" />
+                        </div>
+
+                        <div class="form-group">
+                           <button class="btn btn-primary btn-block">Guardar</button>
+                        </div>
+                    </form>
+                    
+                </div>
+                <a class="btn btn-secondary mx-3" href="/">Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>

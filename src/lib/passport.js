@@ -20,11 +20,16 @@ passport.use(
                 console.log(user);
                 const validPassword = await funciones.verifyPassword(password,user.contrasena);
                 if (validPassword){
+                    req.flash("success", "Bienvenido");
                     done(null, user);
                 }
-                else
+                else{
+                    req.flash("warning", "Contraseña incorrecta");
                     done(null, false);
+
+                }
             } else {
+                req.flash("warning", "El usuario no existe");
                 return done(null, false);
             }
         }

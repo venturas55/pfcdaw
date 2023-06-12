@@ -1,4 +1,4 @@
-<div class="container p-4">
+<div class="container p-4 mb-5">
   <div class="row4">
     <div class="col-md-12 mx-auto">
       <div class="card text-center">
@@ -6,11 +6,27 @@
 
           <h3>Bienvenid@ {{user.usuario}} </h3>
           {{>avatar}}
+          <div class="col-md-6 mx-auto">
+            <form action="/upload/{{user.id}}" method="POST" enctype="multipart/form-data">
+              <input type="hidden" name="user" value="{{user.usuario}}" />
+              <div class="input-group mb-3">
+                <div class="custom-file">
+                  <input type="file" name="imagen" class="custom-file-input" id="inputGroupFile02" />
+                  <label class="custom-file-label" for="inputGroupFile02">Choose
+                    file</label>
+                </div>
+                <div class="input-group-append">
+                  <button type="submit" class="input-group-text">Upload</button>
+                </div>
+              </div>
+
+            </form>
+          </div>
           {{#if user.pictureURL}}
           <a href="/profile/borrarfoto/{{user.id}}/{{user.pictureURL}}" class="btn btn-primary btn-sm">Eliminar foto
             perfil</a>
           {{/if}}
-          
+
           {{#if user.privilegio}}
           <p> Privilegio: {{user.privilegio}}</p>
           {{/if}}

@@ -4,14 +4,12 @@ const path = require('path');
 const db = require("../database"); //db hace referencia a la BBDD
 const funciones = require("../lib/funciones.js");
 const fs = require('fs').promises;
-const queryListadoAton = "SELECT b.nif,b.num_internacional,b.tipo,b.apariencia,b.periodo,b.caracteristica,b.telecontrol,lo.puerto,lo.num_local,lo.localizacion,lo.latitud,lo.longitud,la.altura,la.elevacion,la.alcanceNom,la.linterna,la.candelasCalc,la.alcanceLum,la.candelasInst FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif";
+const queryListadoAton = "SELECT b.nif,b.num_internacional,b.tipo,b.apariencia,b.periodo,b.caracteristica,b.telecontrol,b.necesita_pintado,lo.puerto,lo.num_local,lo.localizacion,lo.latitud,lo.longitud,la.altura,la.elevacion,la.alcanceNom,la.linterna,la.candelasCalc,la.alcanceLum,la.candelasInst FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif";
+const queryListadoTicketsUsers = "SELECT t.ticket_id,t.nif,t.created_by_id,t.assigned_to_id,t.resolved_by_id,t.titulo,t.descripcion,t.solved_at,t.created_at,u1.usuario as created_by,u2.usuario as assigned_to,u3.usuario as resolved_by FROM tickets t LEFT JOIN usuarios u1 ON t.created_by_id=u1.id  LEFT JOIN usuarios u2 ON t.assigned_to_id=u2.id LEFT JOIN usuarios u3 ON t.resolved_by_id=u3.id ";
+var moment = require('moment'); // require
+moment().format();
 
-
-//MOSTRAR PAGINA PRUEBA
-router.get('/prueba', (req, res) => {
-    res.render('prueba');
-});
-
+//console.log(db);
 //CRUD ATON create
 router.get("/add", funciones.isAuthenticated, funciones.hasSanPrivileges, (req, res) => {
     res.render("aton/add");
@@ -84,16 +82,17 @@ router.post("/add", funciones.isAuthenticated, funciones.hasSanPrivileges, async
 
     try {
         let existe = await db.query("SELECT * from balizamiento where nif= ?", [newBalizamiento.nif]);
-        //console.log(existe.length);
+
         if (existe.length == 0) {
             await db.query("INSERT INTO balizamiento set ?", [newBalizamiento]);
             await db.query("INSERT INTO localizacion set ?", [newBalizamientoLocalizacion]);
             await db.query("INSERT INTO lampara set ?", [newBalizamientoLampara]);
-            funciones.insertarLog(req.user.usuario, "INSERT balizamiento", newBalizamiento.nif);
-            req.flash("success", "Baliza insertada correctamente");
+            const msg = funciones.insertarLog(req.user.usuario, "INSERT balizamiento", newBalizamiento.nif);
+            if (msg == 'error')
+                throw (msg)
+            req.flash("success", "AtoN insertado correctamente");
             res.redirect("/aton/list");
-        }
-        else {
+        } else {
             req.flash("error", "Ya existe un AtoN con el NIF " + newBalizamiento.nif);
             res.redirect("/aton/add");
         }
@@ -121,6 +120,14 @@ router.post("/add", funciones.isAuthenticated, funciones.hasSanPrivileges, async
 //CRUD ATON read
 router.get("/list", async (req, res) => {
     const balizas = await db.query(queryListadoAton);
+
+    const tickets = await db.query("select * from tickets where solved_at IS NULL");
+    //console.log(tickets);
+    balizas.forEach((element) => {
+        const hasItem = tickets.some(obj => obj.nif === element.nif);
+        if (hasItem)
+            element.hasTicket = true;
+    });
     res.render("aton/list", { balizas });
 
 });
@@ -135,10 +142,20 @@ router.get("/list/:busqueda", async (req, res) => {
         balizas = await db.query(queryListadoAton + " where b.nif=lo.nif AND lo.puerto like ? order by lo.nif", busqueda);
         //like is case insensitive por defecto. En caso de quererlo sensitivo hay que añadir solo "like binary"
     }
+
+    //Añado la info de los tickets
+    const tickets = await db.query("select * from tickets where solved_at IS NULL");
+    //console.log(tickets);
+    balizas.forEach((element) => {
+        const hasItem = tickets.some(obj => obj.nif === element.nif);
+        if (hasItem)
+            element.hasTicket = true;
+    });
+
     res.render("aton/list", { balizas });
     // NO FUNCIONA CON LA BARRA DELANTE res.render('/links/list');
 });
-router.get("/list/:filtro/:valor", async (req, res) => {
+/* router.get("/list/:filtro/:valor", async (req, res) => {
     var obj = req.params;
     var balizas;
     //Añadimos porcentajes para busqueda SQL que contenga 'busqueda' y lo que sea por delante y por detras
@@ -155,7 +172,7 @@ router.get("/list/:filtro/:valor", async (req, res) => {
     //like is case insensitive por defecto. En caso de quererlo sensitivo hay que añadir solo "like binary"
     res.render("aton/list", { layout: 'layoutList', balizas });
     // NO FUNCIONA CON LA BARRA DELANTE res.render('/links/list');
-});
+}); */
 router.get("/plantilla/:nif", async (req, res) => {
     const { nif } = req.params;
     //const baliza = await db.query('SELECT * FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif where b.nif=?', [nif]);  CON ESTA CONSULTA EL LEFT JOIN NO FUNCIONA BIEN PARA EL HIPOTETICO CASO EN EL QUE EXISTE UN ATON QUE NO ESTA EN ALGUNA DE LAS TRES TABLAS
@@ -163,8 +180,10 @@ router.get("/plantilla/:nif", async (req, res) => {
     //console.log(baliza[0]);
     const observaciones = await db.query('SELECT * FROM observaciones where nif=?', [nif]);
     const mantenimiento = await db.query('SELECT * FROM mantenimiento where nif=? order by fecha DESC', [nif]);
+    const tickets = await db.query(queryListadoTicketsUsers + 'where t.nif=? and solved_at is null', [nif]);
+    //console.log(tickets);
     var fotos = funciones.listadoFotos(nif);
-    res.render("aton/plantilla", { layout: 'layoutPlantilla', baliza: baliza[0], obs: observaciones, mant: mantenimiento, fotos });
+    res.render("aton/plantilla", { layout: 'layoutPlantilla', baliza: baliza[0], obs: observaciones, mant: mantenimiento, fotos, tickets });
     // NO FUNCIONA CON LA BARRA DELANTE res.render('/links/list');
 });
 
@@ -327,6 +346,7 @@ router.get("/delete/:nif", funciones.isAuthenticated, funciones.isAdmin, async (
         await db.query("DELETE FROM localizacion WHERE nif=?", [nif]);
         await db.query("DELETE FROM lampara WHERE nif=?", [nif]);
         await db.query("DELETE FROM balizamiento WHERE nif=?", [nif]);
+        console.log(req.user);
         funciones.insertarLog(req.user.usuario, "DELETE aton ", req.params.nif);
         req.flash("success", "Baliza borrada correctamente");
         res.redirect("/aton/list");
@@ -472,5 +492,40 @@ router.post("/mantenimiento/edit/:idMan", funciones.isAuthenticated, funciones.h
     }
 });
 
+router.get("/pintura/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
+    try {
+        const { nif } = req.params;
+        const baliza = (await db.query('Select * from balizamiento where nif=?', [nif]))[0];
+        baliza.necesita_pintado = !baliza.necesita_pintado;
+        await db.query("UPDATE balizamiento set ? WHERE nif = ?", [baliza, nif]);
+        res.redirect("/aton/plantilla/" + nif);
+    } catch (error) {
+        console.error(error);
+        req.flash("error", "Hubo algun error al anotar pintado");
+        res.redirect("/aton/plantilla/" + nif);
+    }
+});
+router.get("/pintado/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
+    try {
+        const { nif } = req.params;
+        const baliza = (await db.query('Select * from balizamiento where nif=?', [nif]))[0];
+        console.log(baliza);
+        baliza.necesita_pintado = false;
+        await db.query("UPDATE balizamiento set ? WHERE nif = ?", [baliza, nif]);
+        const mant = {
+            nif,
+            'fecha': moment(new Date()).format("YYYY-MM-DD"),
+            'mantenimiento': 'Se repita el aton',
+        };
+        await db.query("INSERT INTO mantenimiento set ?", [mant]);
+        funciones.insertarLog(req.user.usuario, "INSERT mantenimiento", mant.nif + " " + mant.fecha + " " + mant.mantenimiento);
+        req.flash("success", "Pintado en AtoN anotado correctamente");
+        res.redirect("/aton/plantilla/" + nif);
 
+    } catch (error) {
+        console.error(error);
+        req.flash("error", "Hubo algun error al añadir mantenimiento al NIF: " + nif);
+        res.redirect("/aton/plantilla/" + nif);
+    }
+});
 module.exports = router;

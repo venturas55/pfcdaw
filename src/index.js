@@ -7,10 +7,7 @@ const session = require('express-session'); //Lo necesita el flash tb
 const MySQLstore = require('express-mysql-session'); // para poder guardar la sesion en la sql
 const passport = require('passport');
 const { database } = require('./config');
-
-
 //console.log(process.env.DB_HOST);
-
 
 //Inicializacion
 const app = express();
@@ -44,11 +41,11 @@ app.use(passport.initialize()); //iniciar passport
 app.use(passport.session()); //para que sepa donde guardar y como manejar los datos
 //CORS
 app.use((req, res, next) => {
-	res.header('Access-Control-Allow-Origin', '*');
-	res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, 	X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-	Method');
-	res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, 	DELETE');
-	res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
-	next();
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, 	X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-	Method');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, 	DELETE');
+    res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
+    next();
 });
 //Bootstrap
 app.use('/css', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')))
@@ -70,11 +67,12 @@ app.use((req, res, next) => {
 
 //Rutas
 app.use(require('./routes')); //busca automaticamente index.js
-app.use(require('./routes/autenthication')); 
-app.use(require('./routes/fotos')); 
-app.use('/aton',require('./routes/aton')); 
+app.use(require('./routes/authentication'));
+app.use(require('./routes/fotos'));
+app.use('/aton', require('./routes/aton'));
 app.use(require('./routes/documentos'));
-app.use(require('./routes/api')); 
+app.use(require('./routes/api'));
+app.use('/tickets', require('./routes/tickets'));
 
 
 //Public

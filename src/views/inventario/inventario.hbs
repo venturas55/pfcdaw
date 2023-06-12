@@ -1,8 +1,10 @@
 <!-- CUERPO -->
-<div class="container-fluid" style="margin:30px 0px">
+<div class="container-fluid mb-5">
     <!-- id="cuerpo" -->
-        <div class="text-center m-4"> <a class="btn btn-primary" href="/inventario/add">Añadir nuevo Item</a></div>
+       <div class="row text-center ">
+    <div class="m-4"> <a class="btn btn-primary" href="/inventario/add">Añadir nuevo Item</a></div>
     <h1 class="col-2 mx-auto">INVENTARIO</h1>
+    </div>
     <div class="row">
         <div class="col-10 mx-auto">
             <div class="table-responsive">
@@ -10,31 +12,27 @@
                     <tr class="info-color-dark">
                         <th>Tipo</th>
                         <th>ITEM</th>
-                        <th>Descripcion</th>
+                        <th class="d-none d-sm-table-cell">Descripcion</th>
                         <th>Cantidad</th>
-                        <th>Fila</th>
-                        <th>Columna</th>
+                        <th class="d-none d-lg-table-cell">Fila</th>
+                        <th class="d-none d-lg-table-cell">Columna</th>
                     </tr>
-
 
                     {{#each inventario}}
                     <tr>
                         <td>{{ this.tipo }} </td>
                         <td>{{ this.item }} </td>
-                        <td>{{ this.descripcion }} </td>
+                        <td class="d-none d-sm-table-cell">{{ this.descripcion }} </td>
                         <td>{{ this.cantidad }}</td>
-                        <td>{{this.fila}} </td>
-                        <td>{{this.columna}}</td>
+                        <td class="d-none d-lg-table-cell">{{this.fila}} </td>
+                        <td class="d-none d-lg-table-cell">{{this.columna}}</td>
                         <td> <a href="/inventario/edit/{{this.id}}" class="text-primary"><i
                                     class="fa-solid fa-pen-to-square"></i>Edit</a>
                             <a href="/inventario/delete/{{this.id}}" class="text-primary"><i
                                     class="fa-solid fa-trash"></i>Del</a>
                         </td>
                     </tr>
-
                     {{/each}}
-
-
                 </table>
             </div>
         </div>
