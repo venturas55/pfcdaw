@@ -230,7 +230,7 @@ router.get('/cerrado/:id', funciones.isAuthenticated, funciones.hasSanPrivileges
         res.redirect("/");
     }
 });
-//Ruta para borrar un ticket.
+//Ruta ºara borrar un ticket.
 router.get("/delete/:id", funciones.isAuthenticated, funciones.isAdmin, async(req, res) => {
     //console.log(req.params.idObs);
     const {
