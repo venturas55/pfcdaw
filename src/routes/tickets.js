@@ -218,11 +218,12 @@ router.get('/cerrado/:id', funciones.isAuthenticated, funciones.hasSanPrivileges
         const ticket = await db.query(queryListadoTickets + " where ticket_id=?", id);
         const ticketsUsers = await db.query(queryListadoTicketsUsers + " where t.ticket_id=?", id);
         const usuarios = await db.query(" select * from usuarios");
-        res.render('tickets/cerrado', {
+        res.render('tickets/edit', {
             ticket: ticket[0],
             users: ticketsUsers[0],
             usuarios: usuarios
         });
+
     } catch (error) {
         console.error(error);
         req.flash("error", "Hubo algun error al intentar mostrar el ticket" + error);

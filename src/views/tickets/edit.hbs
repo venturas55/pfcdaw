@@ -1,11 +1,76 @@
 <div class="container p-2 mb-4">
-    <div class="row">
-        <h1 class=" col-md-8 mx-auto text-center">Edición del Ticket nº {{ticket.ticket_id}}</h1>
-    </div>
+    {{#if ticket.solved_at}}
     <div class="row">
         <div class="col-md-8 mx-auto py-4">
-            <div class="card py-4">
+            <div class="card pb-4 ">
+                <div class="card-header text-center">
+                    <h2> Información del Ticket nº {{ticket.ticket_id}} </h2>
+                </div>
                 <div class="card-body py-4">
+                    <div class="form-group">
+                        <label for="created_by_id">Creado por</label>
+                        <input type="text" value="{{users.created_by}}" class="form-control" name="created_by_id"
+                            placeholder="created_by_id" disabled />
+                    </div>
+                    <div class="form-group">
+                        <label for="item">AtoN NIF</label>
+                        <a href='/aton/plantilla/{{ticket.nif}}'> <input value="{{ticket.nif}}" class="form-control"
+                                type="text" name="nif" placeholder="nif" readonly /></a>
+                    </div>
+                    <div class="form-group">
+                        <label for="titulo">Trabajo pendiente</label><input value="{{ticket.titulo}}"
+                            class="form-control" type="text" name="titulo" placeholder="titulo" disabled />
+                    </div>
+                    <div class="form-group">
+                        <label for="descripcion">Trabajo realizado</label><input value="{{ticket.descripcion}}"
+                            class="form-control" type="text" name="descripcion" placeholder="descripcion" disabled />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="assigned_to">Tarea asignada a </label>
+                        <div class="input-group mb-3">
+                            <select class="custom-select" name="assigned_to_id" id="input_assigned_to_id"
+                                aria-label=".form-select-sm example" disabled>
+                                <option value=""> Selecciona</option>
+                                {{#each usuarios}}
+                                <option value="{{this.id}}" {{#when this.id 'eq' ../ticket.assigned_to_id }} selected
+                                    {{/when}}>
+                                    {{this.usuario}} </option>
+                                {{/each}}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="resolved_by">Tarea resuelta por</label>
+                        <div class="input-group mb-3">
+                            <select class="custom-select" name="resolved_by_id" id="input_resolved_by_id"
+                                aria-label=".form-select-sm example" disabled>
+                                <option value="">Selecciona</option>
+                                {{#each usuarios}}
+                                <option value="{{this.id}}" {{#when this.id 'eq' ../ticket.resolved_by_id }} selected
+                                    {{/when}}>
+                                    {{this.usuario}} </option>
+                                {{/each}}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                {{!-- {{#if ticket.resolved_by_id}} --}}
+                <a class="btn btn-warning m-2" href="/tickets/delete/{{ticket.ticket_id}}">Borrar</a>
+                <a class="btn btn-secondary m-2" href="/tickets/list">Volver</a>
+                {{!-- {{/if}} --}}
+            </div>
+        </div>
+    </div>
+    {{else}}
+
+    <div class="row">
+        <div class="col-md-8 mx-auto pb-4">
+            <div class="card pb-4">
+                 <div class="card-header text-center">
+                    <h2> Edición del Ticket nº {{ticket.ticket_id}} </h2>
+                </div>
+                <div class="card-body pb-4">
                     {{!-- <h1> Ticket </h1> --}}
                     <form action="/tickets/edit/{{ticket.ticket_id}}" method="POST">
                         <div class="form-group">
@@ -22,8 +87,8 @@
                         </div>
                         <div class="form-group">
                             <label for="item">AtoN NIF</label>
-                           <a href='/aton/plantilla/{{ticket.nif}}'> <input value="{{ticket.nif}}" class="form-control" type="text" name="nif" placeholder="nif"
-                                readonly /> </a> 
+                            <a href='/aton/plantilla/{{ticket.nif}}'> <input value="{{ticket.nif}}" class="form-control"
+                                    type="text" name="nif" placeholder="nif" readonly /> </a>
                         </div>
                         <div class="form-group">
                             <label for="titulo">Trabajo pendiente</label><input value="{{ticket.titulo}}"
@@ -77,4 +142,40 @@
             </div>
         </div>
     </div>
+
+
+    {{/if}}
+
+
+
+
 </div>
+
+
+{{!-- UNA TARJETA DE INFORMACION
+<div class="row">
+    <div class="col-md-8 mx-auto py-4">
+        <div class="card text-white bg-info pb-4 text-center" style="max-width: 600px;">
+            <div class="card-header">
+                <h2> Información del Ticket nº {{ticket.ticket_id}} </h2>
+            </div>
+            <div class="card-body py-4">
+                <ul class="list-group list-group-flush ">
+                    <h4 class="card-title">Ticket ID: {{ticket.ticket_id}}</h4>
+                    <li class="list-group-item">Creado por {{users.created_by}}</li>
+                    <li class="list-group-item">NIF: <a href='/aton/plantilla/{{ticket.nif}}'> {{ticket.nif}} </a>
+                    </li>
+                    <li class="list-group-item">Tarea: {{ticket.titulo}}</li>
+                    <li class="list-group-item">Mantenimiento: {{ticket.descripcion}}</li>
+                    <li class="list-group-item">Asignado a {{ticket.assigned_to_id}}</li>
+                    <li class="list-group-item">Resuelta por {{ticket.usuario}}</li>
+                </ul>
+            </div>
+            <a class="btn btn-warning m-2" href="/tickets/delete/{{ticket.ticket_id}}">Borrar</a>
+            <a class="btn btn-secondary m-2" href="/tickets/list">Volver</a>
+
+        </div>
+
+    </div>
+</div>
+--}}
