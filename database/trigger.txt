@@ -1,9 +1,0 @@
-DELIMITER //
-CREATE TRIGGER copiar_inventario_eliminados
-BEFORE DELETE ON inventario
-FOR EACH ROW
-BEGIN
-  INSERT INTO inventario_eliminados (id, tipo, item,cantidad,fila,columna,descripcion)
-  VALUES (OLD.id, OLD.tipo, OLD.item, OLD.cantidad,OLD.fila,OLD.columna,OLD.descripcion);
-END //
-DELIMITER ;

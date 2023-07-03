@@ -20,7 +20,8 @@ CREATE TABLE `balizamiento` (
   `telecontrol` varchar(200) DEFAULT NULL,
   `apariencia` varchar(50) DEFAULT NULL,
   `periodo` decimal(5, 2) DEFAULT NULL,
-  `caracteristica` varchar(50) NULL
+  `caracteristica` varchar(50) NULL,
+  `necesita_pintado` boolean default 0
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = 'tabla de balizas';
 
 CREATE TABLE `lampara` (
@@ -110,11 +111,14 @@ CREATE TABLE `tickets` (
   FOREIGN KEY (resolved_by_id) REFERENCES usuarios(id) ON DELETE CASCADE,
   FOREIGN KEY (nif) REFERENCES balizamiento(nif) ON DELETE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = 'tabla de tickets';
-ALTER TABLE
-  `tickets`
-MODIFY
-  `ticket_id` int(11) NOT NULL AUTO_INCREMENT,
-  AUTO_INCREMENT = 1;
+
+CREATE TABLE IF NOT EXISTS `sessions` (
+  `session_id` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `expires` int(11) unsigned NOT NULL,
+  `data` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  PRIMARY KEY (`session_id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
+
 
 --
 ALTER TABLE
