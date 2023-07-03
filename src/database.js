@@ -1,4 +1,4 @@
-const mysql = require('mysql');
+const mysql = require('mysql2');
 const { promisify } = require('util');
 const { database } = require('./config'); //traigo el database desde el archivo
 const { stringify } = require('querystring');

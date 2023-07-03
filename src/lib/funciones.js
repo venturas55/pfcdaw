@@ -5,7 +5,7 @@ const db = require("../database");
 const mysqldump = require('mysqldump');
 const { promisify } = require('util');
 const { stringify } = require('querystring');
-const mysql = require('mysql');
+const mysql = require('mysql2');
 var readline = require('readline');
 const helpers = {};
 
