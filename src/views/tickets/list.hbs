@@ -16,22 +16,25 @@
                 CERRADOS
                 {{/if}}
             </h3>
+            <div class="my-2">
+                <input class="form-control" id="myInput" type="text" placeholder="Filtrar por..." autofocus>
+            </div>
             <div class="table-responsive">
-                  {{#if tickets}}
-                <table id="tablainventario" class="table table-sm table-dark rounded table-hover"
-                    style="white-space: nowrap; overflow-x: auto;">
+                {{#if tickets}}
+                <table data-search="true" id="listado" class="table table-sm table-dark rounded table-hover"
+                    style="white-space: nowrap; overflow-x: auto;" >
                     <tr class="info-color-dark">
                         <th>NIF</th>
                         <th>Averia</th>
-                        <th class="d-none d-xl-table-cell">Operaciones</th>
+                        <th class="d-none d-xl-table-cell">Trabajo</th>
                         <th class="d-none d-md-table-cell">Creado por</th>
                         <th class="d-none d-sm-table-cell">Assignado a</th>
                         <th class="d-none d-md-table-cell">Estado</th>
                         <th>Accion</th>
                     </tr>
-                  
+
                     {{#each tickets}}
-                    <tr>
+                    <tr class="fila">
                         <td> <a href="/aton/plantilla/{{ this.nif }} ">{{ this.nif }}</a> </td>
                         <td>{{ this.titulo }} </td>
                         <td class="d-none d-xl-table-cell">{{ this.descripcion }} </td>

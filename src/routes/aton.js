@@ -159,17 +159,16 @@ router.get("/plantilla/:nif", async (req, res) => {
     const { nif } = req.params;
     //const baliza = await db.query('SELECT * FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif where b.nif=?', [nif]);  CON ESTA CONSULTA EL LEFT JOIN NO FUNCIONA BIEN PARA EL HIPOTETICO CASO EN EL QUE EXISTE UN ATON QUE NO ESTA EN ALGUNA DE LAS TRES TABLAS
     const baliza = await db.query(queryListadoAton + ' where b.nif=?', [nif]);
-    console.log(baliza[0]);
-    if(baliza[0]){
-    //console.log(baliza[0]);
-    const observaciones = await db.query('SELECT * FROM observaciones where nif=?', [nif]);
-    const mantenimiento = await db.query('SELECT * FROM mantenimiento where nif=? order by fecha DESC', [nif]);
-    const tickets = await db.query(queryListadoTicketsUsers + 'where t.nif=? and solved_at is null', [nif]);
-    //console.log(tickets);
-    var fotos = funciones.listadoFotos(nif);
-    res.render("aton/plantilla", { layout: 'layoutPlantilla', baliza: baliza[0], obs: observaciones, mant: mantenimiento, fotos, tickets });
-    }else{
-        req.flash("warning", "La baliza indicada con nif " +nif +" no existe!");
+    if (baliza[0]) {
+        //console.log(baliza[0]);
+        const observaciones = await db.query('SELECT * FROM observaciones where nif=?', [nif]);
+        const mantenimiento = await db.query('SELECT * FROM mantenimiento where nif=? order by fecha DESC', [nif]);
+        const tickets = await db.query(queryListadoTicketsUsers + 'where t.nif=? and solved_at is null', [nif]);
+        //console.log(tickets);
+        var fotos = funciones.listadoFotos(nif);
+        res.render("aton/plantilla", { layout: 'layoutPlantilla', baliza: baliza[0], obs: observaciones, mant: mantenimiento, fotos, tickets });
+    } else {
+        req.flash("warning", "La baliza indicada con nif " + nif + " no existe!");
         res.redirect("/error");
     }
 });

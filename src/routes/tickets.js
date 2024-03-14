@@ -14,7 +14,7 @@ router.get('/list', async(req, res) => {
     //const tickets = await db.query("select * from tickets order by created_at");
     try {
         const tickets = await db.query(queryListadoTicketsUsers + " order by t.solved_at asc,t.created_at desc");
-        res.render('tickets/view', {
+        res.render('tickets/list', {
             tickets
         });
     } catch (error) {

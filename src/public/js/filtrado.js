@@ -3,7 +3,7 @@
 $(document).ready(function () {
     $("#myInput").on("keyup", function () {
         var value = $(this).val().toLowerCase();
-        console.log(value);
+        //console.log(value);
         $("#listado .fila").filter(function () {
             $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
         });
@@ -29,7 +29,11 @@ if (!isNull(suma))
 
 async function contar() {
     //var numElem = document.getElementsByClassName("hidden").length;
-    var numElem = await document.querySelectorAll('[style="display: none;"]');
+    var numElem = document.querySelectorAll('[style="display: none;"]');
     //console.log(numElem);
-    document.getElementById("suma").innerHTML = (inicial.length - numElem.length);
+    let suma = document.getElementById("suma");
+    if (!isNull(suma)) {
+        suma.innerHTML = inicial.length;
+        document.getElementById("suma").innerHTML = (inicial.length - numElem.length);
+    }
 }
