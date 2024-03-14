@@ -34,7 +34,7 @@
             <option value="T70">70% de los días</option>
           </select> <span>\{{getTA}}</span>
         </p>
-        <p> ES TODO HORIZONTE <select name="horizonte" v-model="horizonte">
+        <p> ES TODO HORIZONTE <select name="horizonte" v-model="horizonte"> //K2prima
             <option value="" selected>No</option>
             <option value="1">Si</option>
           </select>
@@ -60,6 +60,11 @@
             <p v-if="horizonte"> &Theta;4: <input type="number" v-model="tita4" size="5"></p>
             <p v-if="horizonte"> K: <input type="number" v-model="K" size="5"></p>
             <p v-if="horizonte"> K': <input type="number" v-model="Kprima" size="5"></p>
+            <p v-if="horizonte"> K": <select name="K2prima" v-model="K2prima">
+                <option value="0.8" selected>Catadioptricos inferiores no retrasados</option>
+                <option value="1">Catadioptricos inferiores retrasados</option>
+              </select>
+            </p>
             <p v-if="horizonte"> tau: <input type="number" v-model="Tau" size="5"></p>
 
 
@@ -213,8 +218,6 @@
       </div>
       <i> Calculos basados en la recomendacion E-200 series IALA</i>
     </div>
-
-
   </div>
   <div class="row text-center d-none d-xl-block">
     <div class="col-11 mx-auto">
@@ -515,6 +518,7 @@
       tita4: 62,
       K: 1,
       Kprima: 1,
+      K2prima: 1,
       P: 150,
       V: 24,
       Tc: 'c',
@@ -698,12 +702,12 @@
 
       //0.00158730159xy−0.0173015873x+0.0141269841y+0.146190476
       K3: function () {
-        let factorCorreccion = 0.04/55*47;
-        return ((-0.05 * this.tita2 ** 2 + 0.2 * this.tita1 * this.tita2 - 0.15 * this.tita1 ** 2 + 17.75 * this.tita2 - 1.75 * this.tita1 + 187.5) / 100*factorCorreccion).toFixed(3);
+        let factorCorreccion = 0.04 / 55 * 47;
+        return ((-0.05 * this.tita2 ** 2 + 0.2 * this.tita1 * this.tita2 - 0.15 * this.tita1 ** 2 + 17.75 * this.tita2 - 1.75 * this.tita1 + 187.5) / 100 * factorCorreccion).toFixed(3);
       },
       K4: function () {
-          let factorCorreccion = 0.04;
-        return ((-0.05 * this.tita4 ** 2 + 0.2 * this.tita3 * this.tita4 - 0.15 * this.tita3 ** 2 + 17.75 * this.tita4 - 1.75 * this.tita3 + 187.5) / 100*factorCorreccion).toFixed(3);
+        let factorCorreccion = 0.04;
+        return ((-0.05 * this.tita4 ** 2 + 0.2 * this.tita3 * this.tita4 - 0.15 * this.tita3 ** 2 + 17.75 * this.tita4 - 1.75 * this.tita3 + 187.5) / 100 * factorCorreccion).toFixed(3);
       },
       A: function () {
         //TODO:
@@ -740,6 +744,34 @@
         //TODO:
         return (0.581);
       },
+      TC: function () {
+        //TODO:
+        return (0.74);
+      },
+      L2: function () {
+        //TODO:
+        return (0.74);
+      },
+      L3: function () {
+        //TODO:
+        return (0.74);
+      },
+      L4: function () {
+        //TODO:
+        return (0.74);
+      },
+      R1: function () {
+        //TODO:
+        return (0.74);
+      },
+      R: function () {
+        //TODO:
+        return (0.74);
+      },
+      F: function () {
+        //TODO:
+        return (0.74);
+      },
       getTA: function () {
         return this.obtenerTA(this.zona, this.TA);
       },
@@ -774,13 +806,10 @@
       },
       Iestacionaria: function () {
         if (this.horizonte) {
-          return ((this.L1 * (this.a2 * this.c2 + this.a2_I * this.c2_I + this.a3_I * this.Pf * this.c3_I + this.a3_II * this.Pf * this.c3_II))).toFixed(2);
-
+          return (this.K * [this.b * (this.h2 * this.L2 * this.K2 + this.h3 * this.L3 * this.K3 + this.K2prima * this.h4 * this.L4 * this.K4)]).toFixed(2);
         } else {
-          return this.K * [this.b * (this.h2 * this.L2 * this.K2 + this.h3 * this.L3 * this.K3 + this.K2prima * this.h4 * this.L4 * this.K4)];
-
+          return ((this.L1 * (this.a2 * this.c2 + this.a2_I * this.c2_I + this.a3_I * this.Pf * this.c3_I + this.a3_II * this.Pf * this.c3_II))).toFixed(2);
         }
-
       },
       Ieficaz: function () {
         return (
