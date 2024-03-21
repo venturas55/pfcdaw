@@ -18,6 +18,9 @@ function cambiarUsuario() {
     //TODO: verificar el pass con la base de datos
 }
 
+
+/////############
+//FUNCIONES PARA EL MAPS DE GOOGLE
 //FUNCION PARA CONFIGURAR LA VARIABLE CON LA QUE SE CENTRARÁ EL MAPA DE LA API DE GOOGLE, COGIENDO EL CENTRO DE LA PROPIA URL
 function centrar() {
     let centerLatLng = {};
@@ -54,7 +57,6 @@ function centrar() {
     // console.log(centerLatLng);
     return centerLatLng;
 }
-
 //UN FETCH que se guarda en la variable 'balizas'
 async function fetchData() {
     try {
@@ -74,7 +76,6 @@ async function fetchData() {
 
 }
 //FIN FETCH
-
 
 //FUNCION PARA TRADUCIR COORDENADAS. DEVUELVE UN OBJETO GOOGLE FORMAT CON LAS COORDENADAS
 function setMarkerLatLng(lat, lng) {
@@ -143,7 +144,6 @@ function setMarkerLatLng(lat, lng) {
         'lng': lng2
     };
 }
-
 //FUNCION QUE LE PASA UN OBJETO BALIZA Y LE DEVUELVE UNA LETRA QUE REPRESENTA EL COLOR/TIPO
 function getTipo(item) {
     //var balizaPrueba="25620";
@@ -219,7 +219,6 @@ function getTipo(item) {
 
     return color;
 }
-
 //FUNCION PARA INICIAR EL MAPA
 function initMapa(balizas) {
     //console.log(balizas);
@@ -227,8 +226,6 @@ function initMapa(balizas) {
         zoom: presetZoom,
         center: centerLatLng,
     });
-
-
     const markers = Promise.all(balizas.map(async item => {
         const marker = new google.maps.Marker({
             position: setMarkerLatLng(item.latitud, item.longitud),
@@ -248,17 +245,17 @@ function initMapa(balizas) {
         });
 
         /* PARA USAR UNA VENTANA */
-        /*      const contentString =
-                 '<div id="content">INFO' +
-                 "<div>" +
-                 '<a href="/aton/plantilla/' + item.nif.toString() + '">' + item.nif.toString() + "</a> " +
-                 "</div>" +
-                 "</div>";
-     
-             const infowindow = new google.maps.InfoWindow({
-                 content: contentString,
-                 ariaLabel: "AtoN",
-             }); */
+        /*       const contentString =
+                  '<div id="content">INFO' +
+                  "<div>" +
+                  '<a href="/aton/plantilla/' + item.nif.toString() + '">' + item.nif.toString() + "</a> " +
+                  "</div>" +
+                  "</div>";
+      
+              const infowindow = new google.maps.InfoWindow({
+                  content: contentString,
+                  ariaLabel: "AtoN",
+              }); */
         /* FIN USAR  VENTANA */
 
         // markers can only be keyboard focusable when they have click listeners
@@ -278,4 +275,113 @@ function initMapa(balizas) {
 
         return await marker;
     }));
+}
+
+///////// #################################
+//FUNCIONES PARA EL FILTRADO
+//FUNCION para comprobar si algun objeto del DOM es null
+function isNull(campo) {
+    return !(typeof campo !== 'undefined' && campo !== null);
+}
+//FUNCION SOLO PARA CONTAR FILAS EN VISTA 'balizas/list.hbs'
+async function contar() {
+    //var numElem = document.getElementsByClassName("hidden").length;
+    var numElem = document.querySelectorAll('[style="display: none;"]');
+    //console.log(numElem);
+    let suma = document.getElementById("suma");
+    if (!isNull(suma)) {
+        suma.innerHTML = inicial.length;
+        document.getElementById("suma").innerHTML = (inicial.length - numElem.length);
+    }
+}
+
+////##############
+//FUNCIONES PARA EL PARPADEO
+//Funcion que cambia la 'visibilidad' del elemento circular que simula la luz
+function parpadeoToggle() {
+    let x = document.getElementById("luz");
+    if (x.style.display === "block") {
+        x.style.display = "none";
+    } else {
+        x.style.display = "block";
+    }
+}
+//Funcion que cambia el estado tras un retardo indicado 
+function secuencia() {
+    document.getElementById("luz").style.display = "block";
+    for (let i = 0; i < destellosAcum.length - 1; i++) {
+        setTimeout(parpadeoToggle, destellosAcum[i] * 1000);
+    }
+}
+//Funcion para leer el color de la señal.
+function defineColor() {
+    let apariencia = document.getElementById("aparienciaID");
+    let ap = apariencia.innerText.charAt(apariencia.innerText.length - 1).toUpperCase();
+    //console.log(ap);
+    switch (ap) {
+        case 'R':
+            document.getElementById("luz").style.backgroundColor = "red";
+            break;
+        case 'G':
+        case 'V':
+            document.getElementById("luz").style.backgroundColor = "green";
+            break;
+        case 'B':
+        case 'W':
+            document.getElementById("luz").style.backgroundColor = "rgb(240, 240, 240)";
+            break;
+        case 'A':
+        case 'Y':
+            document.getElementById("luz").style.backgroundColor = "yellow";
+            break;
+    }
+}
+//Funcion que cambia el estado tras un retardo indicado 
+function defineCambiosEstado() {
+    let destellos;
+    let destellosAcum;
+    let caracteristicaMod;
+    let repeticiones;
+    let caracteristica = document.getElementById("caracteristicaID").innerText;
+    if (caracteristica === null)
+        caracteristica = "L0.5 oc1.5 L0.5 oc4.5";
+    caracteristica = caracteristica.toLowerCase();
+    caracteristica = caracteristica.replace(/\ |\(|\[|\[|\)|\]\+/g, '').replace(/,/g, '.').replace(/oc/g, "l").replace(/o/g, "l");
+    //console.log(caracteristica);
+
+    //Tratamos las posibles repeticiones
+    //Si hay X
+    if (caracteristica.search("x") != -1) {
+        repeticiones = caracteristica.charAt(caracteristica.search("x") + 1); //el siguiente digito al simbolo multiplicacion 'x' es el numero de repeticiones
+        let trimado = 'x' + repeticiones;
+        caract = caracteristica.split(trimado);
+        caract[0] = caract[0].repeat(repeticiones);
+        caracteristicaMod = caract[0].concat(caract[1]);
+    } else
+        caracteristicaMod = caracteristica;
+    //console.log(caracteristicaMod)
+
+
+    //Doy por hecho que siempre se alternan L y O empezando por L
+    caracteristicaMod = caracteristicaMod.replace('l', '');
+    //quito la primera L por no generar un item de array al usar el split
+    destellos = caracteristicaMod.split('l');
+    destellosAcum = new Array(destellos.length);
+    destellosAcum.fill(0, 0, destellos.length);
+
+    //Lo parseo a float
+    for (let i = 0; i < destellos.length; i++) {
+        destellos[i] = parseFloat(destellos[i]);
+    }
+    //console.log(destellos);
+
+
+    //Genero un array con los tiempos acumulados, desde 0 para poder aplicar los setInterval.
+    for (let i = 0; i < destellosAcum.length; i++) {
+        for (let j = 0; j <= i; j++) {
+            destellosAcum[i] += parseFloat(destellos[j]);
+        }
+    }
+    console.log(destellosAcum);
+    return destellosAcum;
 }
