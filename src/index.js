@@ -80,5 +80,5 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //Arrancar servidor
 app.listen(app.get('port'), () => {
-    console.log("Running on http://localhost:4000", app.get('port'));
+    console.log("Running on http://localhost:"+ app.get('port'));
 });
