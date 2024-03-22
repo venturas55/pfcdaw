@@ -122,7 +122,7 @@ router.get("/backupsfotos/del/:nombre", funciones.isAuthenticated, funciones.isA
     funciones.insertarLog(req.user.usuario, "DELETE backup fotos", nombre);
     res.redirect('/backupsfotos');
 });
-router.get("/aton/fotos/backup/zip", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
+router.get("/aton/fotos/backup/zip", funciones.isAuthenticated,  funciones.isAdmin, async (req, res) => {
     console.log("Voy backup fotos");
     const dir = path.join(__dirname, '../public/img/imagenes');
     const dirbackups = path.join(__dirname, '../public/dumpFOTOS');
@@ -136,12 +136,12 @@ router.get("/aton/fotos/backup/zip", funciones.isAuthenticated, funciones.hasSan
         res.redirect('/backupsfotos');
     });
 });
-router.post("/aton/fotos/backup/upload", funciones.isAuthenticated, funciones.hasSanPrivileges, uploadFoto2, async (req, res) => {
+router.post("/aton/fotos/backup/upload", funciones.isAuthenticated, funciones.isAdmin, uploadFoto2, async (req, res) => {
     console.log("Subiendo fotos en zip");
     req.flash("success", "backup fotos subido correctamente");
     res.redirect('/backupsfotos');
 });
-router.get("/aton/fotos/backup/unzip/:nombre", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
+router.get("/aton/fotos/backup/unzip/:nombre", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     var { nombre } = req.params;
     const dir = path.join(__dirname, '../public/img/imagenes');
     const backupPath = path.join(__dirname, '../public/dumpFOTOS/');
@@ -156,7 +156,7 @@ router.get("/aton/fotos/backup/unzip/:nombre", funciones.isAuthenticated, funcio
         res.redirect('/backupsfotos');
     });
 });
-router.get("/aton/fotos/clean/folders", async function (req, res) {
+router.get("/aton/fotos/clean/folders", funciones.isAdmin, async function (req, res) {
     let balizas = await db.query("select nif from balizamiento");
     balizas=balizas.map(function (item) { return item.nif});
     let source = path.join(__dirname, "../public/img/imagenes/");
