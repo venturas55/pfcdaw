@@ -157,14 +157,22 @@ router.get("/aton/fotos/backup/unzip/:nombre", funciones.isAuthenticated, funcio
     });
 });
 router.get("/aton/fotos/clean/folders", async function (req, res) {
-    const balizas = await db.query("select nif from balizamiento");
-
+    let balizas = await db.query("select nif from balizamiento");
+    balizas=balizas.map(function (item) { return item.nif});
+    let source = path.join(__dirname, "../public/img/imagenes/");
     let carpetas =await  funciones.listadoCarpetas();
     console.log(carpetas);
-   /*  balizas.forEach(item => {
-        console.log(item.nif);
+    console.log(balizas);
+    carpetas.forEach(item => {
+            if(!balizas.includes(item)){
+                console.log("eliminar "+source+item);
+               fs.rmSync(path.join(source,item), { recursive: true, force: true });
+            }else{
+                //console.log("0k "+item);
+            }
 
-        const dir = path.join(__dirname, '../public/img/imagenes/', item.nif);
+
+      /*    const dir = path.join(__dirname, '../public/img/imagenes/', item.nif);
         fs.access(dir, error => {
             if (error) {
                 console.log("Directory does not exist.")
@@ -172,8 +180,8 @@ router.get("/aton/fotos/clean/folders", async function (req, res) {
             } else {
                 console.log("Directory exists.")
             }
-        });
-    }); */
+        }); */
+    }); 
 });
 
 //GESTION  foto perfil

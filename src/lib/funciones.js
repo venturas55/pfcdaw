@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const path = require('path');
-const fs = require('fs');
+const fs = require('fs-extra');
 const db = require("../database");
 const mysqldump = require('mysqldump');
 const { promisify } = require('util');
@@ -28,16 +28,16 @@ helpers.listadoFotos = (req, res, next) => {
     return fotitos;
 }
 
-helpers.listadoCarpetas = (req, res, next) => {
-    var carpetas = [];
-    var source = path.join(__dirname, "../public/img/imagenes");
+helpers.listadoCarpetas = async (req, res, next) => {
+    var source = path.join(__dirname, "../public/img/imagenes/");
+    let filesAndDirectories = await fs.readdir(source);
+    //console.log(filesAndDirectories);
+    let directories = [];
+    filesAndDirectories.forEach(element => {
+        directories.push(element);
+    })
+    return directories;
 
-    const getDirectories = async source =>
-    (await readdir(source, { withFileTypes: true }))
-      .filter(dirent => dirent.isDirectory())
-      .map(dirent => dirent.name)
-
-    return getDirectories;
 }
 
 helpers.listadoBackups = (req, res, next) => {
