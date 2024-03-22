@@ -106,12 +106,9 @@ router.get("/aton/fotos/:nif/:src/delete", funciones.isAuthenticated, funciones.
     res.redirect("/aton/fotos/" + nif);
 });
 
-
 //BACKUPS DE FOTOS DE ATONS
-router.get("/backupsfotos", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
-
+router.get("/backupsfotos", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     var backups = funciones.listadoBackupsFotos();
-    //console.log(backups);
     res.render("fotos/listadoBackupFotos", { backups });
 });
 router.get("/backupsfotos/del/:nombre", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
@@ -122,11 +119,11 @@ router.get("/backupsfotos/del/:nombre", funciones.isAuthenticated, funciones.isA
     funciones.insertarLog(req.user.usuario, "DELETE backup fotos", nombre);
     res.redirect('/backupsfotos');
 });
-router.get("/aton/fotos/backup/zip", funciones.isAuthenticated,  funciones.isAdmin, async (req, res) => {
+router.get("/aton/fotos/backup/zip", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     console.log("Voy backup fotos");
     const dir = path.join(__dirname, '../public/img/imagenes');
-    const dirbackups = path.join(__dirname, '../public/dumpFOTOS');
-    zl.archiveFolder(dir, dirbackups + "/dumpFOTOSorigin.zip").then(function () {
+    const dirbackups = path.join(__dirname, '../public/dumpFOTOS/');
+    zl.archiveFolder(dir, dirbackups + new Date().getTime() + ".zip").then(function () {
         console.log("done");
         req.flash("success", "Fotos backup realizado correctamente");
         res.redirect('/backupsfotos');
@@ -158,30 +155,30 @@ router.get("/aton/fotos/backup/unzip/:nombre", funciones.isAuthenticated, funcio
 });
 router.get("/aton/fotos/clean/folders", funciones.isAdmin, async function (req, res) {
     let balizas = await db.query("select nif from balizamiento");
-    balizas=balizas.map(function (item) { return item.nif});
+    balizas = balizas.map(function (item) { return item.nif });
     let source = path.join(__dirname, "../public/img/imagenes/");
-    let carpetas =await  funciones.listadoCarpetas();
+    let carpetas = await funciones.listadoCarpetas();
     console.log(carpetas);
     console.log(balizas);
     carpetas.forEach(item => {
-            if(!balizas.includes(item)){
-                console.log("eliminar "+source+item);
-               fs.rmSync(path.join(source,item), { recursive: true, force: true });
-            }else{
-                //console.log("0k "+item);
-            }
+        if (!balizas.includes(item)) {
+            console.log("eliminar " + source + item);
+            fs.rmSync(path.join(source, item), { recursive: true, force: true });
+        } else {
+            //console.log("0k "+item);
+        }
 
 
-      /*    const dir = path.join(__dirname, '../public/img/imagenes/', item.nif);
-        fs.access(dir, error => {
-            if (error) {
-                console.log("Directory does not exist.")
-                fs.mkdirSync(dir, { recursive: true }, error => cb(error, dir));
-            } else {
-                console.log("Directory exists.")
-            }
-        }); */
-    }); 
+        /*    const dir = path.join(__dirname, '../public/img/imagenes/', item.nif);
+          fs.access(dir, error => {
+              if (error) {
+                  console.log("Directory does not exist.")
+                  fs.mkdirSync(dir, { recursive: true }, error => cb(error, dir));
+              } else {
+                  console.log("Directory exists.")
+              }
+          }); */
+    });
 });
 
 //GESTION  foto perfil

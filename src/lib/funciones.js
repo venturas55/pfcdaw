@@ -9,11 +9,6 @@ const mysql = require('mysql2');
 var readline = require('readline');
 const helpers = {};
 
-function createdDate(file) {
-    const { birthtime } = fs.statSync(file)
-    return birthtime
-}
-
 helpers.listadoFotos = (req, res, next) => {
     const nif = req;
     var fotitos = [];
@@ -48,7 +43,7 @@ helpers.listadoBackups = (req, res, next) => {
             files.forEach(file => {
                 var item = {
                     'name': file,
-                    'created_at': createdDate(directorio + "/" + file)
+                    'created_at': (fs.statSync(directorio + "/" + file)).birthtime
                 }
                 documentos.push(item);
             });
@@ -69,14 +64,17 @@ helpers.listadoBackupsFotos = (req, res, next) => {
                 var item = {
                     'name': file,
                     'size': (fs.statSync(path.join(directorio, file)).size / (1024 * 1024)).toFixed(2),
-                    'created_at': createdDate(directorio + "/" + file)
+                    'created_at': fs.statSync(path.join(directorio, file)).birthtime,
                 }
+                //console.log(item.created_at);
                 backups.push(item);
             });
         } else {
             console.log("No hay files");
         }
     });
+    backups.sort((a, b) => a.created_at - b.created_at);
+    //console.log(backups);
     return backups;
 }
 

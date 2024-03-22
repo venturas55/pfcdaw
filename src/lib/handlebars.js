@@ -37,7 +37,6 @@ register('es_ES2', (number, index, total_sec) => [
 helpers.timeagoSpCerrado = timestamp => {
   return format(timestamp, 'es_ES');
 }
-
 helpers.timeagoSp = timestamp => {
   return format(timestamp, 'es_ES2');
 }
@@ -65,7 +64,6 @@ helpers.formatearEn = (fecha) => {
     day = ("0" + timestamp.getDate()).slice(-2);
   return [timestamp.getFullYear(), mnth, day].join("-");
 }
-
 
 helpers.suma = (balizas) => {
   var total = 0;
