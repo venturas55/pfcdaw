@@ -107,7 +107,7 @@ router.get("/aton/fotos/:nif/:src/delete", funciones.isAuthenticated, funciones.
 });
 
 
-//BACKUPS DE FOTOS
+//BACKUPS DE FOTOS DE ATONS
 router.get("/backupsfotos", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
  
     var backups = funciones.listadoBackupsFotos();
@@ -136,13 +136,11 @@ router.get("/aton/fotos/backup/zip",funciones.isAuthenticated, funciones.hasSanP
         res.redirect('/backupsfotos');
     });
 });
-
 router.post("/aton/fotos/backup/upload", funciones.isAuthenticated, funciones.hasSanPrivileges, uploadFoto2, async (req, res) => {
     console.log("Subiendo fotos en zip");
     req.flash("success", "backup fotos subido correctamente");
     res.redirect('/backupsfotos');
 });
-
 router.get("/aton/fotos/backup/unzip/:nombre", funciones.isAuthenticated, funciones.hasSanPrivileges,async (req, res) => {
     var { nombre } = req.params;
     const dir = path.join(__dirname, '../public/img/imagenes');

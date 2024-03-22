@@ -56,7 +56,7 @@ helpers.listadoBackupsFotos = (req, res, next) => {
                 console.log(file);
                 var item = {
                     'name': file,
-                    'size': file,
+                    'size': (fs.statSync( path.join(directorio,file)).size/(1024*1024)).toFixed(2),
                     'created_at': createdDate(directorio + "/" + file)
                 }
                 backups.push(item);
