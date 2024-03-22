@@ -8,6 +8,9 @@ const multer = require('multer');
 //const { access, constants } = require('node:fs');
 const { access, constants } = require('fs');
 const funciones = require("../lib/funciones.js");
+const zl = require("zip-lib");
+
+
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -74,6 +77,20 @@ router.get("/aton/fotos/:nif/:src/delete", funciones.isAuthenticated, funciones.
     req.flash("success", "Fotografia borrada correctamente");
     funciones.insertarLog(req.user.usuario, "DELETE fotografia", nif);
     res.redirect("/aton/fotos/" + nif);
+});
+
+router.get("/aton/fotos/backup/zip", async(req,res)=>{
+    console.log("Voy backup fotos");
+    const dir = path.join(__dirname, '../public/img/imagenes');
+    zl.archiveFolder(dir, dir+"/target.zip").then(function () {
+        console.log("done");
+        req.flash("success", "Fotos backup realizado correctamente");
+        res.redirect('/');
+    }, function (err) {
+        console.log(err);
+        req.flash("error", "Hubo algun error al realizar el backup de fotos");
+        res.redirect('/error');
+    });
 });
 
 //GESTION  foto perfil
