@@ -47,6 +47,27 @@ helpers.listadoBackups = (req, res, next) => {
     return documentos;
 }
 
+helpers.listadoBackupsFotos = (req, res, next) => {
+    var backups = [];
+    var directorio = path.join(__dirname, "../public/dumpFOTOS/");
+    fs.readdir(directorio, (err, files) => {
+        if (files) {
+            files.forEach(file => {
+                console.log(file);
+                var item = {
+                    'name': file,
+                    'size': file,
+                    'created_at': createdDate(directorio + "/" + file)
+                }
+                backups.push(item);
+            });
+        }else {
+            console.log("No hay files");
+        }
+    });
+    return backups;
+}
+
 helpers.encryptPass = async(password) => {
     const sal = await bcrypt.genSalt(10);
     password = await bcrypt.hash(password, sal);

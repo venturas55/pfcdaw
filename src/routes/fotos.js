@@ -40,24 +40,51 @@ const storage = multer.diskStorage({
     }
 });
 
+const storage2 = multer.diskStorage({
+    destination: (req, file, cb) => {
+        const dir = path.join(__dirname, '../public/dumpFOTOS/');
+        console.log("dir " + dir);
+        return cb(null, dir);
+    },
+    filename: (req, file, cb) => {
+        cb(null, new Date().getTime() + path.extname(file.originalname).toLowerCase());
+    }
+});
+
+
 const uploadFoto = multer({
     storage,
     limits: { fileSize: 5000000, },
     fileFilter: (req, file, cb) => {
         const filetypes = /jpeg|jpg|png|bmp|gif/;
         const mimetype = filetypes.test(file.mimetype);
-        console.log(mimetype);
+        console.log(mimetype + "es el 1");
         const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
         if (mimetype && extname) {
             return cb(null, true);
         }
-
         return cb(("Error: Archivo debe ser una imagen valida jpeg,jpg,png,bmp o gif"));
     }
 }).single('imagen');
 
+const uploadFoto2 = multer({
+    storage: storage2,
+    limits: { fileSize: 2000000000, },
+    fileFilter: (req, file, cb) => {
+        const filetypes = /zip/;
+        const mimetype = filetypes.test(file.mimetype);
+        console.log(mimetype + " es el 2");
+        const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+        if (mimetype && extname) {
+            funciones.insertarLog(req.user.usuario, "INSERT zip backup fotos ",file.originalname.toLowerCase());
+            return cb(null, true);
+        }
+        return cb(("Error: Archivo debe ser un *.zip"));
+    }
+}).single('backup');
+
 //GESTION FOTOS DE BALIZAS
-router.post("/aton/upload/:nif",  funciones.isAuthenticated, funciones.hasSanPrivileges,uploadFoto,async (req, res) => {
+router.post("/aton/upload/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, uploadFoto, async (req, res) => {
     console.log("Subiendo foto baliza");
     const { nif } = req.params;
 
@@ -79,17 +106,56 @@ router.get("/aton/fotos/:nif/:src/delete", funciones.isAuthenticated, funciones.
     res.redirect("/aton/fotos/" + nif);
 });
 
-router.get("/aton/fotos/backup/zip", async(req,res)=>{
+
+//BACKUPS DE FOTOS
+router.get("/backupsfotos", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
+ 
+    var backups = funciones.listadoBackupsFotos();
+    console.log(backups);
+    res.render("fotos/listadoBackupFotos", { backups });
+});
+router.get("/backupsfotos/del/:nombre", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
+    var { nombre } = req.params;
+    var file = path.resolve('src/public/dumpFOTOS', nombre);
+    //console.log(file);
+    await fs.unlinkSync(file);
+    funciones.insertarLog(req.user.usuario, "DELETE backup fotos", nombre);
+    res.redirect('/backupsfotos');
+});
+router.get("/aton/fotos/backup/zip",funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     console.log("Voy backup fotos");
     const dir = path.join(__dirname, '../public/img/imagenes');
-    zl.archiveFolder(dir, dir+"/target.zip").then(function () {
+    const dirbackups = path.join(__dirname, '../public/dumpFOTOS');
+    zl.archiveFolder(dir, dirbackups + "/target.zip").then(function () {
         console.log("done");
         req.flash("success", "Fotos backup realizado correctamente");
-        res.redirect('/');
+        res.redirect('/backupsfotos');
     }, function (err) {
         console.log(err);
         req.flash("error", "Hubo algun error al realizar el backup de fotos");
-        res.redirect('/error');
+        res.redirect('/backupsfotos');
+    });
+});
+
+router.post("/aton/fotos/backup/upload", funciones.isAuthenticated, funciones.hasSanPrivileges, uploadFoto2, async (req, res) => {
+    console.log("Subiendo fotos en zip");
+    req.flash("success", "backup fotos subido correctamente");
+    res.redirect('/backupsfotos');
+});
+
+router.get("/aton/fotos/backup/unzip/:nombre", funciones.isAuthenticated, funciones.hasSanPrivileges,async (req, res) => {
+    var { nombre } = req.params;
+    const dir = path.join(__dirname, '../public/img/imagenes');
+    const backupPath = path.join(__dirname, '../public/dumpFOTOS/');
+       //TODO: COMPROBAR EL FORMATO DE DIRECTORIO DEL ZIP
+    zl.extract(backupPath+nombre, dir).then(function () {
+        console.log("done");
+        req.flash("success", "Pack de Fotos descomprimido correctamente");
+        res.redirect('/backupsfotos');
+    }, function (err) {
+        console.log(err);
+        req.flash("error", "Hubo algun error al descomprimir el backup de fotos");
+        res.redirect('/backupsfotos');
     });
 });
 
@@ -139,8 +205,5 @@ router.get("/profile/borrarfoto/:id/:url", funciones.isAuthenticated, async (req
     req.flash("success", "Imagen borrada correctamente");
     res.redirect('/profile');
 });
-
-
-
 
 module.exports = router;

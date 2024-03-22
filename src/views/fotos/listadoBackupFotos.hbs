@@ -1,0 +1,54 @@
+<!-- CUERPO -->
+<div class="container-fluid">
+    <!-- id="cuerpo" -->
+    <div class="text-center m-4"> <a class="btn btn-primary" href="/aton/fotos/backup/zip">Crear dump FOTOS</a></div>
+    <h1 class="text-center">LISTADO FOTOS</h1>
+    <div class="row my-4">
+        <div class="col-11 mx-auto">
+            <table class="table table-bordered table-dark table-hover my-4">
+                <tr>
+                    <th>#</th>
+                    <th>Nombre</th>
+                    <th>Tamaño</th>
+                    <th>Creado</th>
+                    <th>acciones</th>
+                </tr>
+                {{#if backups}}
+                {{#each backups}}
+                <tr>
+                    <td> {{@key}}</td>
+                    <td>
+                        <a href="/dumpFOTOS/{{this.name}}" target="_blank"> {{this.name}} </a>
+                    </td>
+                    <td>
+                        {{this.size}}
+                    </td>
+
+                    <td>{{ timeago this.created_at}}</td>
+                    <td> <a type="submit" href="/backupsfotos/del/{{this.name}}" class="text-primary"><i
+                                class="fa-solid fa-trash"></i>Del</a>
+                        <a type="submit" href="/aton/fotos/backup/unzip/{{this.name}}" class="text-primary"><i
+                                class="fa-solid fa-boxes-packing"></i>Unzip</a>
+                    </td>
+                </tr>
+                {{/each}}
+                {{else}}
+                <tr>No hay ningún backup generado, <a href="/aton/fotos/backup/zip">crea uno</a> !! </tr>
+                {{/if}}
+            </table>
+            <form action="/aton/fotos/backup/upload" method="POST" enctype="multipart/form-data">
+                <div class="input-group mb-3">
+                    <div class="custom-file">
+                        <input type="file" name="backup" class="custom-file-input" id="inputGroupFile02">
+                        <label class="custom-file-label" for="inputGroupFile02">Subir ZIP</label>
+                    </div>
+                    <div class="input-group-append">
+                        <button type="submit" class=" btn btn-primary btn-block">SUBIR PACK FOTOS</button>
+                    </div>
+                </div>
+            </form>
+            <div class="text-center m-4"> <a class="btn btn-primary" href="/aton/fotos/backup/unzip">SUBIR PACK
+                    FOTOS</a></div>
+        </div>
+    </div>
+</div>
