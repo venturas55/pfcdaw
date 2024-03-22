@@ -28,6 +28,18 @@ helpers.listadoFotos = (req, res, next) => {
     return fotitos;
 }
 
+helpers.listadoCarpetas = (req, res, next) => {
+    var carpetas = [];
+    var source = path.join(__dirname, "../public/img/imagenes");
+
+    const getDirectories = async source =>
+    (await readdir(source, { withFileTypes: true }))
+      .filter(dirent => dirent.isDirectory())
+      .map(dirent => dirent.name)
+
+    return getDirectories;
+}
+
 helpers.listadoBackups = (req, res, next) => {
     var documentos = [];
     var directorio = path.join(__dirname, "../public/dumpSQL");
@@ -53,28 +65,28 @@ helpers.listadoBackupsFotos = (req, res, next) => {
     fs.readdir(directorio, (err, files) => {
         if (files) {
             files.forEach(file => {
-                console.log(file);
+                //console.log(file);
                 var item = {
                     'name': file,
-                    'size': (fs.statSync( path.join(directorio,file)).size/(1024*1024)).toFixed(2),
+                    'size': (fs.statSync(path.join(directorio, file)).size / (1024 * 1024)).toFixed(2),
                     'created_at': createdDate(directorio + "/" + file)
                 }
                 backups.push(item);
             });
-        }else {
+        } else {
             console.log("No hay files");
         }
     });
     return backups;
 }
 
-helpers.encryptPass = async(password) => {
+helpers.encryptPass = async (password) => {
     const sal = await bcrypt.genSalt(10);
     password = await bcrypt.hash(password, sal);
     return password;
 };
 
-helpers.verifyPassword = async(password, hashedPassword) => {
+helpers.verifyPassword = async (password, hashedPassword) => {
     try {
         return await bcrypt.compare(password, hashedPassword);
     } catch (e) {
@@ -124,7 +136,7 @@ helpers.isNotAdmin = (req, res, next) => {
     return res.redirect('/noperm');
 }
 
-helpers.insertarLog = async(usuario, accion, observacion) => {
+helpers.insertarLog = async (usuario, accion, observacion) => {
     const log = {
         usuario,
         accion,
@@ -157,7 +169,7 @@ helpers.dumpearSQL = () => {
     });
 }
 
-helpers.consultaPrueba2 = async() => {
+helpers.consultaPrueba = async () => {
     let ruta = path.join(__dirname, '..', '..', 'database', 'prueba.sql');
     console.log(ruta);
 
@@ -166,15 +178,15 @@ helpers.consultaPrueba2 = async() => {
         input: fs.createReadStream(ruta),
         terminal: false
     });
-    rl.on('line', function(chunk) {
-        db.query(chunk.toString('ascii'), function(err, sets, fields) {
+    rl.on('line', function (chunk) {
+        db.query(chunk.toString('ascii'), function (err, sets, fields) {
             if (err) console.log(err);
             console.log("voy");
             console.log(sets);
             console.log(fields);
         });
     });
-    rl.on('close', function() {
+    rl.on('close', function () {
         console.log("finished");
     });
 
@@ -209,11 +221,5 @@ helpers.consultaPrueba2 = async() => {
           }); */
 
 }
-
-helpers.consultaPrueba = async() => {
-    let ruta = path.join(__dirname, '..', '..', 'database', 'prueba.sql');
-    console.log(ruta);
-}
-
 
 module.exports = helpers;

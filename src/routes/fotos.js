@@ -43,7 +43,7 @@ const storage = multer.diskStorage({
 const storage2 = multer.diskStorage({
     destination: (req, file, cb) => {
         const dir = path.join(__dirname, '../public/dumpFOTOS/');
-        console.log("dir " + dir);
+        //console.log("dir " + dir);
         return cb(null, dir);
     },
     filename: (req, file, cb) => {
@@ -73,10 +73,10 @@ const uploadFoto2 = multer({
     fileFilter: (req, file, cb) => {
         const filetypes = /zip/;
         const mimetype = filetypes.test(file.mimetype);
-        console.log(mimetype + " es el 2");
+        //console.log(mimetype + " es el 2");
         const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
         if (mimetype && extname) {
-            funciones.insertarLog(req.user.usuario, "INSERT zip backup fotos ",file.originalname.toLowerCase());
+            funciones.insertarLog(req.user.usuario, "INSERT zip backup fotos ", file.originalname.toLowerCase());
             return cb(null, true);
         }
         return cb(("Error: Archivo debe ser un *.zip"));
@@ -109,9 +109,9 @@ router.get("/aton/fotos/:nif/:src/delete", funciones.isAuthenticated, funciones.
 
 //BACKUPS DE FOTOS DE ATONS
 router.get("/backupsfotos", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
- 
+
     var backups = funciones.listadoBackupsFotos();
-    console.log(backups);
+    //console.log(backups);
     res.render("fotos/listadoBackupFotos", { backups });
 });
 router.get("/backupsfotos/del/:nombre", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
@@ -122,11 +122,11 @@ router.get("/backupsfotos/del/:nombre", funciones.isAuthenticated, funciones.isA
     funciones.insertarLog(req.user.usuario, "DELETE backup fotos", nombre);
     res.redirect('/backupsfotos');
 });
-router.get("/aton/fotos/backup/zip",funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
+router.get("/aton/fotos/backup/zip", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     console.log("Voy backup fotos");
     const dir = path.join(__dirname, '../public/img/imagenes');
     const dirbackups = path.join(__dirname, '../public/dumpFOTOS');
-    zl.archiveFolder(dir, dirbackups + "/target.zip").then(function () {
+    zl.archiveFolder(dir, dirbackups + "/dumpFOTOSorigin.zip").then(function () {
         console.log("done");
         req.flash("success", "Fotos backup realizado correctamente");
         res.redirect('/backupsfotos');
@@ -141,12 +141,12 @@ router.post("/aton/fotos/backup/upload", funciones.isAuthenticated, funciones.ha
     req.flash("success", "backup fotos subido correctamente");
     res.redirect('/backupsfotos');
 });
-router.get("/aton/fotos/backup/unzip/:nombre", funciones.isAuthenticated, funciones.hasSanPrivileges,async (req, res) => {
+router.get("/aton/fotos/backup/unzip/:nombre", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     var { nombre } = req.params;
     const dir = path.join(__dirname, '../public/img/imagenes');
     const backupPath = path.join(__dirname, '../public/dumpFOTOS/');
-       //TODO: COMPROBAR EL FORMATO DE DIRECTORIO DEL ZIP
-    zl.extract(backupPath+nombre, dir).then(function () {
+    //TODO: COMPROBAR EL FORMATO DE DIRECTORIO DEL ZIP
+    zl.extract(backupPath + nombre, dir).then(function () {
         console.log("done");
         req.flash("success", "Pack de Fotos descomprimido correctamente");
         res.redirect('/backupsfotos');
@@ -155,6 +155,25 @@ router.get("/aton/fotos/backup/unzip/:nombre", funciones.isAuthenticated, funcio
         req.flash("error", "Hubo algun error al descomprimir el backup de fotos");
         res.redirect('/backupsfotos');
     });
+});
+router.get("/aton/fotos/clean/folders", async function (req, res) {
+    const balizas = await db.query("select nif from balizamiento");
+
+    let carpetas =await  funciones.listadoCarpetas();
+    console.log(carpetas);
+   /*  balizas.forEach(item => {
+        console.log(item.nif);
+
+        const dir = path.join(__dirname, '../public/img/imagenes/', item.nif);
+        fs.access(dir, error => {
+            if (error) {
+                console.log("Directory does not exist.")
+                fs.mkdirSync(dir, { recursive: true }, error => cb(error, dir));
+            } else {
+                console.log("Directory exists.")
+            }
+        });
+    }); */
 });
 
 //GESTION  foto perfil
