@@ -46,6 +46,6 @@
     "zip-lib": "^1.0.3"
   },
   "devDependencies": {
-    "nodemon": "^2.0.22"
+    "nodemon": "^3.1.0"
   }
 }
