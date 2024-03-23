@@ -40,7 +40,7 @@ const storage = multer.diskStorage({
     }
 });
 
-const storage2 = multer.diskStorage({
+const storageZip = multer.diskStorage({
     destination: (req, file, cb) => {
         const dir = path.join(__dirname, '../public/dumpFOTOS/');
         //console.log("dir " + dir);
@@ -67,8 +67,8 @@ const uploadFoto = multer({
     }
 }).single('imagen');
 
-const uploadFoto2 = multer({
-    storage: storage2,
+const uploadFotosZip = multer({
+    storage: storageZip,
     limits: { fileSize: 2000000000, },
     fileFilter: (req, file, cb) => {
         const filetypes = /zip/;
@@ -133,7 +133,7 @@ router.get("/aton/fotos/backup/zip", funciones.isAuthenticated, funciones.isAdmi
         res.redirect('/backupsfotos');
     });
 });
-router.post("/aton/fotos/backup/upload", funciones.isAuthenticated, funciones.isAdmin, uploadFoto2, async (req, res) => {
+router.post("/aton/fotos/backup/upload", funciones.isAuthenticated, funciones.isAdmin, uploadFotosZip, async (req, res) => {
     console.log("Subiendo fotos en zip");
     req.flash("success", "backup fotos subido correctamente");
     res.redirect('/backupsfotos');
