@@ -1,6 +1,7 @@
-let centerLatLng = centrar();
+let centerLatLng = centrarllmap();
 //console.log(centerLatLng);
 fetchData().then((res) => { initMapa(res) });
+
 
 if (lat.value != "" && lng.value !="") {
     //console.log("es baliza");

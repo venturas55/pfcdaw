@@ -217,12 +217,12 @@ router.get('/noperm', (req, res) => {
 router.get("/mapa/:nif", async(req, res) => {
     const { nif } = req.params;
     const baliza = await db.query(queryListadoAton + ' where b.nif=?', [nif]);
-    res.render("mapas/mapa", { layout: 'layoutMapa', baliza: baliza[0] });
+    res.render("mapas/mapa", { layout: 'layoutMapaLeaflet', baliza: baliza[0] });
 });
 //funcion get para mostrar los mapas dinamicos con la api de google maps
 router.get("/mapaGeneral/:valor", (req, res) => {
     //const { valor } = req.params;
-    res.render("mapas/mapa", { layout: 'layoutMapa' });
+    res.render("mapas/mapa", { layout: 'layoutMapaLeaflet' });
 });
 //funcion get para mostrar los mapas estaticos
 router.get("/mapaGeneral2/:valor", (req, res) => {

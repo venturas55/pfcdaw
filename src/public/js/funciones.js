@@ -5,6 +5,7 @@
 let myurl = 'http://localhost:5001';
 //let myurl = 'http://adriandeharo.es:5001';
 
+
 //FUNCION PARA CERRAR MODALES
 function cierraModal() {
     var el = document.getElementsByClassName("modal");
@@ -27,6 +28,39 @@ function centrar() {
     const url = window.location.href.split('/');
     //console.log(url[url.length-1]);
 
+    switch (url[url.length - 1]) {
+        case 'valencia':
+            centerLatLng = {
+                lat: 39.438,
+                lng: -0.3172
+            };
+            presetZoom = 14;
+            break;
+        case 'sagunto':
+            centerLatLng = {
+                lat: 39.644,
+                lng: -0.2142
+            };
+            presetZoom = 15;
+            break;
+        case 'gandia':
+            centerLatLng = {
+                lat: 38.995,
+                lng: -0.15202
+            };
+            presetZoom = 16;
+            break;
+        default:
+            centerLatLng = setMarkerLatLng(lat.value, lng.value);
+            presetZoom = 18;
+    }
+
+    // console.log(centerLatLng);
+    return centerLatLng;
+}
+function centrarllmap() {
+    let centerLatLng = {};
+    const url = window.location.href.split('/');
     switch (url[url.length - 1]) {
         case 'valencia':
             centerLatLng = {
@@ -222,7 +256,7 @@ function getTipo(item) {
 //FUNCION PARA INICIAR EL MAPA
 function initMapa(balizas) {
     //console.log(balizas);
-    const map = new google.maps.Map(document.getElementById("myMap"), {
+    map = new google.maps.Map(document.getElementById("myMap"), {
         zoom: presetZoom,
         center: centerLatLng,
     });
@@ -276,6 +310,46 @@ function initMapa(balizas) {
         return await marker;
     }));
 }
+
+function initMapaLeafLet(balizas) {
+    map = L.map('myMap').setView(centerLatLng, presetZoom);
+
+    // add the OpenStreetMap tiles
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 18,
+        attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+    }).addTo(map);
+
+    // show the scale bar on the lower left corner
+    L.control.scale({ imperial: true, metric: true }).addTo(map);
+
+    // show a marker on the map
+    balizas.forEach(item => {
+
+        let customIcon = {
+            iconUrl: myurl + '/img/icon/' + getTipo(item) + '.png',
+            iconSize: [20, 40]
+        }
+
+        let myIcon = L.icon(customIcon);
+
+        let iconOptions = {
+            title: item.tipo,
+            //draggable: true,
+            icon: myIcon
+        }
+        let marker = new L.Marker(setMarkerLatLng(item.latitud, item.longitud), iconOptions);
+        marker.bindPopup('<div id="content">' +
+            "<div>NIF:" +
+            '<a href="/aton/plantilla/' + item.nif.toString() + '">' + item.nif.toString() + "</a> Apariencia: " +   item.apariencia +"</div>" +
+            "</div>").openPopup();
+        marker.addTo(map);
+
+    });
+ }
+
+
+
 
 ///////// #################################
 //FUNCIONES PARA EL FILTRADO
