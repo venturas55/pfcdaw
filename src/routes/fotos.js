@@ -158,27 +158,17 @@ router.get("/aton/fotos/clean/folders", funciones.isAdmin, async function (req, 
     balizas = balizas.map(function (item) { return item.nif });
     let source = path.join(__dirname, "../public/img/imagenes/");
     let carpetas = await funciones.listadoCarpetas();
-    console.log(carpetas);
-    console.log(balizas);
+    //console.log(carpetas);
+    //console.log(balizas);
     carpetas.forEach(item => {
         if (!balizas.includes(item)) {
-            console.log("eliminar " + source + item);
+            //console.log("eliminar " + source + item);
             fs.rmSync(path.join(source, item), { recursive: true, force: true });
-        } else {
-            //console.log("0k "+item);
         }
-
-
-        /*    const dir = path.join(__dirname, '../public/img/imagenes/', item.nif);
-          fs.access(dir, error => {
-              if (error) {
-                  console.log("Directory does not exist.")
-                  fs.mkdirSync(dir, { recursive: true }, error => cb(error, dir));
-              } else {
-                  console.log("Directory exists.")
-              }
-          }); */
     });
+    funciones.insertarLog(req.user.usuario, "Limpieza carpeta fotos AtoNs ");
+    req.flash("success", "Directorios de fotos limpiado correctamente");
+    res.redirect('/backupsfotos');
 });
 
 //GESTION  foto perfil
