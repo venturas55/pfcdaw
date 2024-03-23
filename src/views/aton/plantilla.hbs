@@ -220,16 +220,7 @@
                                 class="fa-solid fa-trash"></i>Del</a>
                     </td>
                 </tr>
-                {{!-- <form action="./modBBDDmantenimiento.php" method="post">
 
-                    <tr class='modificarnomostrar'>
-                        <td><input type='date' name='fechaout' value="$i[fecha]" /> </td>
-                        <td><input type='text' name='mantenimientoout' value="{{mantenimiento}}" /></td>
-                        <td>
-                            <input type="submit" value="modificar" class="btn btn-warning btn-lg btn-block disabled" />
-                        </td>
-                    </tr>
-                </form> --}}
                 {{/each}}
                 <form action="/aton/mantenimiento/add" method="POST">
                     <input type="hidden" name="nif" value='{{baliza.nif}}' />
