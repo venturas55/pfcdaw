@@ -41,7 +41,7 @@ router.get('/list/:accion/:id', async(req, res) => {
             ticketsCerrados = true;
             tickets = await db.query(queryListadoTicketsUsers + " where t.assigned_to_id =? AND solved_at is not null order by t.solved_at asc,t.created_at desc", [id]);
         }
-        res.render('tickets/view', {
+        res.render('tickets/list', {
             tickets,
             accion,
             ticketsAbiertos,
