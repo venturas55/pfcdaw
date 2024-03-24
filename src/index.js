@@ -13,7 +13,6 @@ const { database } = require('./config');
 const app = express();
 require('./lib/passport'); //para que se entere de la autentificacion que se ha creado 
 
-
 //Configuracion
 app.set('port', process.env.PORT || 4000);
 app.set('views', path.join(__dirname, 'views'));
@@ -46,11 +45,6 @@ app.use((req, res, next) => {
     res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT');
     next();
 });
-//Bootstrap
-app.use('/css', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')))
-app.use('/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')))
-app.use('/js', express.static(path.join(__dirname, 'node_modules/jquery/dist')))
-
 
 //Variables globales (que podrán ser usadas en cualquier vista)
 app.use((req, res, next) => {
@@ -77,6 +71,15 @@ app.use('/tickets', require('./routes/tickets'));
 //Public
 app.use(express.static(path.join(__dirname, 'public')));
 //app.use(express.static(path.join(__dirname,'..', 'database')));
+
+//Bootstrap
+app.use('/css', express.static(path.join(__dirname, '../node_modules/bootstrap/dist/css')))
+app.use('/js', express.static(path.join(__dirname, '../node_modules/bootstrap/dist/js')))
+app.use('/js', express.static(path.join(__dirname, '../node_modules/@popperjs/core/dist/umd')))
+app.use('/js', express.static(path.join(__dirname, '../node_modules/jquery/dist')))
+
+//Leaflet
+app.use('/leaflet', express.static(path.join(__dirname, '../node_modules','leaflet','dist')))
 
 //Arrancar servidor
 app.listen(app.get('port'), () => {

@@ -4,8 +4,6 @@
 // FARO FA
 let myurl = 'http://localhost:5001';
 //let myurl = 'http://adriandeharo.es:5001';
-
-
 //FUNCION PARA CERRAR MODALES
 function cierraModal() {
     var el = document.getElementsByClassName("modal");
