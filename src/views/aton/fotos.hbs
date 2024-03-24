@@ -4,13 +4,8 @@
             <form action="/aton/upload/{{nif}}" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="nif" value="{{nif}}">
                 <div class="input-group mb-3">
-                    <div class="custom-file">
-                        <input type="file" name="imagen" class="custom-file-input" id="inputGroupFile02">
-                        <label class="custom-file-label" for="inputGroupFile02">Subir nueva imagen</label>
-                    </div>
-                    <div class="input-group-append">
-                        <button type="submit" class=" btn btn-primary btn-block">Subir</button>
-                    </div>
+                    <input type="file" class="form-control" id="inputGroupFile02" name="imagen">
+                    <button type="submit" class=" btn btn-primary btn-block">Subir</button>
                 </div>
             </form>
         </div>
@@ -19,20 +14,21 @@
             <a href="/aton/plantilla/{{nif}}" class="btn btn-primary btn-block"> Volver atras</a>
         </div>
     </div>
-    <div class="row ">
-        <div class="card-columns">
-            {{#each fotos}}
-            <div class="card m-4" style="max-width: 18rem;">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {{#each fotos}}
+        <div class="col">
+            <div class="card m-2">
                 <a href="/img/imagenes/{{../nif}}/{{this}}" target="_blank">
-                    <img src="/img/imagenes/{{../nif}}/{{this}}" alt="Una imagen" class="card-img-top">
+                    <img src="/img/imagenes/{{../nif}}/{{this}}" alt="Una imagen" class="card-img-top rounded">
                 </a>
-                <div class="card-body">
-                    <a href="/img/imagenes/{{../nif}}/{{this}}" target="_blank" class="btn btn-primary btn-block"> Ver
+                <div class="card-body text-center">
+                    <a href="/img/imagenes/{{../nif}}/{{this}}" target="_blank" class="btn btn-primary btn-block mx-3"> Ver
                         Foto</a>
-                    <a href="/aton/fotos/{{../nif}}/{{this}}/delete" class="btn btn-danger btn-block"> Delete</a>
+                    <a href="/aton/fotos/{{../nif}}/{{this}}/delete" class="btn btn-danger btn-block mx-3">
+                        Delete</a>
                 </div>
             </div>
-            {{/each}}
         </div>
+        {{/each}}
     </div>
 </div>

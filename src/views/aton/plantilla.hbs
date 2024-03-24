@@ -44,19 +44,10 @@
                 <img src="/img/imagenes/{{../baliza.nif}}/{{this}}" alt="/img/imagenes/{{../baliza.nif}}/{{this}}">
                 {{/each}}
             </div>
-            <form action="/aton/upload/{{baliza.nif}}" method="POST" enctype="multipart/form-data">
-                <input type="hidden" name="nif" value="{{baliza.nif}}">
-                <div class="input-group mb-3">
-                    <div class="custom-file">
-                        <input type="file" name="imagen" class="custom-file-input" id="inputGroupFile02">
-                        <label class="custom-file-label" for="inputGroupFile02">Subir imagen</label>
-                    </div>
-                    <div class="input-group-append">
-                        <button type="submit" class=" btn btn-primary btn-block">Subir</button>
-                    </div>
-                </div>
-            </form>
-            <a href="/aton/fotos/{{baliza.nif}}" class="btn btn-primary btn-block"> GALERIA DE FOTOS</a>
+            <div class="input-group">
+                <a href="/aton/fotos/{{baliza.nif}}" class="btn btn-primary btn-block mx-auto mt-2"> GALERIA DE
+                    FOTOS</a>
+            </div>
         </div>
         {{!-- Caracteristicas --}}
         <div class="col-lg-4 col-md-5 col-sm-6 col-xs-12 ">
@@ -91,8 +82,10 @@
                     <td id="caracteristicaID">{{baliza.telecontrol}}</td>
                 </tr>
             </table>
-            <a class="btn btn-primary btn-xs btn-block" href="/aton/editCaracteristicas/{{baliza.nif}}"
-                class="btn btn-primary btn-lg btn-block"> ACTUALIZAR CARACTERISTICAS</a>
+            <div class="input-group">
+                <a class="btn btn-primary btn-xs btn-block mx-auto" href="/aton/editCaracteristicas/{{baliza.nif}}">
+                    ACTUALIZAR CARACTERISTICAS</a>
+            </div>
         </div>
         {{!-- Localizacion --}}
         <div class="col-lg-3 col-md-5 col-sm-6 col-xs-12 ">
@@ -123,11 +116,15 @@
                     <td>{{baliza.longitud}}</td>
                 </tr>
             </table>
-            <a class="btn btn-primary btn-xs btn-block" href="/aton/editLocalizacion/{{baliza.nif}}">ACTUALIZAR
-                LOCALIZACION </a>
-            <a class="btn btn-primary btn-xs btn-block" href="/mapa/{{baliza.nif}}">VER UBICACION <i
-                    class="fa-solid fa-map"></i>
-            </a>
+            <div class="input-group">
+                <a class="btn btn-primary btn-xs btn-block mx-auto mb-2"
+                    href="/aton/editLocalizacion/{{baliza.nif}}">ACTUALIZAR
+                    LOCALIZACION </a>
+
+                <a class="btn btn-primary btn-xs btn-block mx-auto" href="/mapa/{{baliza.nif}}">VER UBICACION <i
+                        class="fa-solid fa-map"></i>
+                </a>
+            </div>
         </div>
         {{!-- Lampara --}}
         <div class="col-lg-3 col-md-12 col-sm-6 col-xs-12 ">
@@ -162,9 +159,10 @@
                     <td>{{baliza.candelasInst}}</td>
                 </tr>
             </table>
-            <a class="btn btn-primary btn-xs btn-block" href="/aton/editLampara/{{baliza.nif}}"
-                class="btn btn-primary btn-lg btn-block">ACTUALIZAR LAMPARA
-            </a>
+            <div class="input-group">
+                <a class="btn btn-primary btn-xs btn-block mx-auto" href="/aton/editLampara/{{baliza.nif}}">ACTUALIZAR
+                    LAMPARA</a>
+            </div>
         </div>
     </div>
     {{!-- Observaciones --}}
@@ -238,7 +236,6 @@
         <div class="col-sm-12">
             <button onclick="document.getElementById('myModalBorrado').style.display = 'block';"
                 class="btn btn-danger">BORRAR ATON</button>
-
         </div>
     </div>
 </div>

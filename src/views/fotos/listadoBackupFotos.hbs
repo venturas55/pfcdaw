@@ -38,21 +38,10 @@
             </table>
             <div class="col-12 col-md-6  mx-auto">
                 <form action="/aton/fotos/backup/upload" method="POST" enctype="multipart/form-data">
-
                     <div class="input-group mb-3">
-                        <label class="input-group-text" for="inputGroupFile01">Subir ZIP</label>
                         <input type="file" class="form-control" id="inputGroupFile01" name="backup">
+                        <button type="submit" class=" btn btn-primary btn-block">SUBIR PACK FOTOS</button>
                     </div>
-
-                    {{!-- <div class="input-group mb-3">
-                        <div class="custom-file">
-                            <input type="file" name="backup" class="custom-file-input" id="inputGroupFile02">
-                            <label class="custom-file-label" for="inputGroupFile02">Subir ZIP</label>
-                        </div>
-                        <div class="input-group-append">
-                            <button type="submit" class=" btn btn-primary btn-block">SUBIR PACK FOTOS</button>
-                        </div>
-                    </div> --}}
                 </form>
             </div>
             <div class="text-center m-4"> <a class="btn btn-primary" href=" /aton/fotos/clean/folders">CLEAN FOTOS</a>
