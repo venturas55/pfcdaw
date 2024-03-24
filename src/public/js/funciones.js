@@ -38,50 +38,17 @@ function centrar() {
             break;
         case 'sagunto':
             centerLatLng = {
-                lat: 39.644,
+                lat: 39.642,
                 lng: -0.2142
             };
-            presetZoom = 15;
+            presetZoom = 14.4;
             break;
         case 'gandia':
             centerLatLng = {
                 lat: 38.995,
                 lng: -0.15202
             };
-            presetZoom = 16;
-            break;
-        default:
-            centerLatLng = setMarkerLatLng(lat.value, lng.value);
-            presetZoom = 18;
-    }
-
-    // console.log(centerLatLng);
-    return centerLatLng;
-}
-function centrarllmap() {
-    let centerLatLng = {};
-    const url = window.location.href.split('/');
-    switch (url[url.length - 1]) {
-        case 'valencia':
-            centerLatLng = {
-                lat: 39.438,
-                lng: -0.3172
-            };
-            presetZoom = 14;
-            break;
-        case 'sagunto':
-            centerLatLng = {
-                lat: 39.644,
-                lng: -0.2142
-            };
-            presetZoom = 15;
-            break;
-        case 'gandia':
-            centerLatLng = {
-                lat: 38.995,
-                lng: -0.15202
-            };
-            presetZoom = 16;
+            presetZoom = 16.5;
             break;
         default:
             centerLatLng = setMarkerLatLng(lat.value, lng.value);
@@ -328,20 +295,21 @@ function initMapaLeafLet(balizas) {
 
         let customIcon = {
             iconUrl: myurl + '/img/icon/' + getTipo(item) + '.png',
-            iconSize: [20, 40]
+            iconSize: [20, 40],
         }
 
         let myIcon = L.icon(customIcon);
 
         let iconOptions = {
             title: item.tipo,
-            //draggable: true,
+            draggable: true,
             icon: myIcon
         }
         let marker = new L.Marker(setMarkerLatLng(item.latitud, item.longitud), iconOptions);
         marker.bindPopup('<div id="content">' +
             "<div>NIF:" +
             '<a href="/aton/plantilla/' + item.nif.toString() + '">' + item.nif.toString() + "</a> Apariencia: " +   item.apariencia +"</div>" +
+            //'<div> Coordenadas: ' + item.longitud + " "+ item.latitud+ '</div>' +
             "</div>").openPopup();
         marker.addTo(map);
 

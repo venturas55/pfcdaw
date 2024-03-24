@@ -10,6 +10,9 @@ const queryListadoAton = "SELECT b.nif,b.num_internacional,b.tipo,b.apariencia,b
 
 const queryListadoTicketsUsers = "SELECT t.ticket_id,t.nif,t.created_by_id,t.assigned_to_id,t.resolved_by_id,t.titulo,t.descripcion,t.solved_at,t.created_at,u1.usuario as created_by,u2.usuario as assigned_to,u3.usuario as resolved_by FROM tickets t LEFT JOIN usuarios u1 ON t.created_by_id=u1.id  LEFT JOIN usuarios u2 ON t.assigned_to_id=u2.id LEFT JOIN usuarios u3 ON t.resolved_by_id=u3.id";
 
+const selectedLayout ='layoutMapa';  //  layoutMapa   o    layoutMapaLeaflet
+//const selectedLayout ='layoutMapaLeaflet';
+
 //MOSTRAR PAGINA INICIAL
 router.get('/', (req, res) => {
     res.render('index');
@@ -217,12 +220,12 @@ router.get('/noperm', (req, res) => {
 router.get("/mapa/:nif", async(req, res) => {
     const { nif } = req.params;
     const baliza = await db.query(queryListadoAton + ' where b.nif=?', [nif]);
-    res.render("mapas/mapa", { layout: 'layoutMapaLeaflet', baliza: baliza[0] });
+    res.render("mapas/mapa", { layout: selectedLayout, baliza: baliza[0] });
 });
 //funcion get para mostrar los mapas dinamicos con la api de google maps
 router.get("/mapaGeneral/:valor", (req, res) => {
     //const { valor } = req.params;
-    res.render("mapas/mapa", { layout: 'layoutMapaLeaflet' });
+    res.render("mapas/mapa", { layout: selectedLayout });
 });
 //funcion get para mostrar los mapas estaticos
 router.get("/mapaGeneral2/:valor", (req, res) => {
