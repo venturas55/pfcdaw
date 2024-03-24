@@ -10,8 +10,8 @@ const queryListadoAton = "SELECT b.nif,b.num_internacional,b.tipo,b.apariencia,b
 
 const queryListadoTicketsUsers = "SELECT t.ticket_id,t.nif,t.created_by_id,t.assigned_to_id,t.resolved_by_id,t.titulo,t.descripcion,t.solved_at,t.created_at,u1.usuario as created_by,u2.usuario as assigned_to,u3.usuario as resolved_by FROM tickets t LEFT JOIN usuarios u1 ON t.created_by_id=u1.id  LEFT JOIN usuarios u2 ON t.assigned_to_id=u2.id LEFT JOIN usuarios u3 ON t.resolved_by_id=u3.id";
 
-const selectedLayout ='layoutMapa';  //  layoutMapa   o    layoutMapaLeaflet
-//const selectedLayout ='layoutMapaLeaflet';
+//var selectedLayout ='layoutMapa';  //  layoutMapa   o    layoutMapaLeaflet
+var selectedLayout = 'layoutMapaLeaflet';
 
 //MOSTRAR PAGINA INICIAL
 router.get('/', (req, res) => {
@@ -29,7 +29,7 @@ router.get('/plan', (req, res) => {
 });
 
 //MOSTRAR PERFIL  -RUD  
-router.get('/profile', async(req, res) => {
+router.get('/profile', async (req, res) => {
     //console.log(req.user.id);
     const tickets = await db.query('select * from tickets where assigned_to_id=? and solved_at is null', [req.user.id]);
     //console.log(tickets);
@@ -44,7 +44,7 @@ router.get('/profile/edit', (req, res) => {
     //console.log(permisos);
     res.render('auth/profileEdit', { permisos });
 });
-router.post('/profile/edit', funciones.isAuthenticated, async(req, res) => {
+router.post('/profile/edit', funciones.isAuthenticated, async (req, res) => {
     const rows = await db.query("SELECT * FROM usuarios WHERE id= ?", [req.body.id]);
     var user = rows[0];
 
@@ -65,13 +65,13 @@ router.post('/profile/edit', funciones.isAuthenticated, async(req, res) => {
         res.redirect('/noperm');
     }
 });
-router.get("/profile/delete/:id", funciones.isAuthenticated, async(req, res) => {
+router.get("/profile/delete/:id", funciones.isAuthenticated, async (req, res) => {
     console.log(req.params);
     const { id } = req.params;
     const user = await db.query("SELECT * FROM usuarios where id=?", id);
     //borramos foto
     const filePath = path.resolve('src/public/img/profiles/' + user.pictureURL);
-    access(filePath, constants.F_OK, async(err) => {
+    access(filePath, constants.F_OK, async (err) => {
         if (err) {
             console.log("No tiene foto de perfil");
         } else {
@@ -80,7 +80,7 @@ router.get("/profile/delete/:id", funciones.isAuthenticated, async(req, res) => 
         }
     });
     //hacemos logout
-    req.logout(async function(err) {
+    req.logout(async function (err) {
         if (err) {
             return next(err);
         }
@@ -90,7 +90,7 @@ router.get("/profile/delete/:id", funciones.isAuthenticated, async(req, res) => 
     req.flash("success", "Usuario borrado correctamente");
     res.redirect('/');
 });
-router.post('/doAdmin', funciones.isAuthenticated, async(req, res) => {
+router.post('/doAdmin', funciones.isAuthenticated, async (req, res) => {
     const { pass, privilegio } = req.body;
     console.log(pass + " / " + db.config.connectionConfig.masterpass);
     console.log(req.user);
@@ -110,11 +110,11 @@ router.post('/doAdmin', funciones.isAuthenticated, async(req, res) => {
 
 
 //GESTION BACKUPS BBDD
-router.get("/backups", funciones.isAuthenticated, funciones.hasSanPrivileges, async(req, res) => {
+router.get("/backups", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     var backups = funciones.listadoBackups();
     res.render("documentos/listadoBackups", { backups });
 });
-router.get("/backups/del/:nombre", funciones.isAuthenticated, funciones.isAdmin, async(req, res) => {
+router.get("/backups/del/:nombre", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     var { nombre } = req.params;
     var file = path.resolve('src/public/dumpSQL', nombre);
     //console.log(file);
@@ -122,7 +122,7 @@ router.get("/backups/del/:nombre", funciones.isAuthenticated, funciones.isAdmin,
     funciones.insertarLog(req.user.usuario, "DELETE backup", nombre);
     res.redirect('/backups');
 });
-router.get("/dumpSQL", funciones.isAuthenticated, funciones.hasSanPrivileges, async(req, res) => {
+router.get("/dumpSQL", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     funciones.dumpearSQL();
     req.flash("success", "Backup de la BBDD realizado correctamente");
     funciones.insertarLog(req.user.usuario, "DO backup", "nuevo backup");
@@ -130,20 +130,20 @@ router.get("/dumpSQL", funciones.isAuthenticated, funciones.hasSanPrivileges, as
 });
 
 //GESTION LOGS
-router.get("/logs", funciones.isAuthenticated, funciones.isAdmin, async(req, res) => {
+router.get("/logs", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     var logs = await db.query("select * from logs order by fecha desc");
     res.render("documentos/listadoLogs", { logs });
 });
 
 //GESTION INVENTARIO
-router.get('/inventario', funciones.isAuthenticated, async(req, res) => {
+router.get('/inventario', funciones.isAuthenticated, async (req, res) => {
     const inventario = await db.query("select * from inventario order by fila,columna");
     res.render('inventario/inventario', { inventario });
 });
-router.get('/inventario/add', funciones.isAuthenticated, funciones.hasSanPrivileges, async(req, res) => {
+router.get('/inventario/add', funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     res.render('inventario/addItem');
 });
-router.post('/inventario/add', funciones.isAuthenticated, funciones.hasSanPrivileges, async(req, res) => {
+router.post('/inventario/add', funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     var {
         tipo,
         item,
@@ -168,14 +168,14 @@ router.post('/inventario/add', funciones.isAuthenticated, funciones.hasSanPrivil
     req.flash("success", "Item añadido al inventario correctamente");
     res.redirect("/inventario");
 });
-router.get('/inventario/edit/:id', funciones.isAuthenticated, funciones.hasSanPrivileges, async(req, res) => {
+router.get('/inventario/edit/:id', funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     const { id } = req.params;
     //console.log(id);
     const item = await db.query("select * from inventario where id=?", id);
     //console.log(item[0]);
     res.render('inventario/edit', { item: item[0] });
 });
-router.post('/inventario/edit/:id', funciones.isAuthenticated, funciones.hasSanPrivileges, async(req, res) => {
+router.post('/inventario/edit/:id', funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     var {
         id,
         tipo,
@@ -200,7 +200,7 @@ router.post('/inventario/edit/:id', funciones.isAuthenticated, funciones.hasSanP
     req.flash("success", "Inventario actualizado correctamente");
     res.redirect("/inventario");
 });
-router.get("/inventario/delete/:id", funciones.isAuthenticated, funciones.isAdmin, async(req, res) => {
+router.get("/inventario/delete/:id", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     //console.log(req.params.idObs);
     const { id } = req.params;
     await db.query("delete from inventario where id=?", [id]);
@@ -217,7 +217,7 @@ router.get('/noperm', (req, res) => {
 });
 
 //GESTION MAPA
-router.get("/mapa/:nif", async(req, res) => {
+router.get("/mapa/:nif", async (req, res) => {
     const { nif } = req.params;
     const baliza = await db.query(queryListadoAton + ' where b.nif=?', [nif]);
     res.render("mapas/mapa", { layout: selectedLayout, baliza: baliza[0] });
@@ -243,6 +243,16 @@ router.get("/mapaGeneral2/:valor", (req, res) => {
             break;
     }
 });
+//funcion get para alternar entre los dos layouts google y leaflet
+router.get('/changelayout', (req, res) => {
+    if (selectedLayout == 'layoutMapaLeaflet') {
+        selectedLayout = 'layoutMapa';
+    } else {
+        selectedLayout = 'layoutMapaLeaflet';
+    }
+    //TODO: refresh wherever page you are in when run this from navbar.
+    res.redirect("/mapaGeneral/valencia");
+});
 
 //MOSTRAR PRUEBA
 router.get("/prueba", (req, res) => {
@@ -251,7 +261,7 @@ router.get("/prueba", (req, res) => {
     req.flash("success", "Prueba ejecutada correctamente en index");
     //res.render("prueba");
 });
-router.post("/pruebaPost", async(req, res) => {
+router.post("/pruebaPost", async (req, res) => {
     var password = req.masterPass;
     userpass = req.body.pass;
     //console.log("==>" + req.masterPass);
