@@ -8,7 +8,7 @@
       <tr>
         <th></th>
         <th>NIF</th>
-        <th class="d-none d-sm-table-cell">Puerto</th>
+        <th class="d-none d-sm-table-cell" style="max-width: 80px;">Puerto</th>
         <th>Tipo</th>
         <th class="d-none d-sm-table-cell">Apariencia</th>
         <th class="d-none d-xl-table-cell">Linterna</th>
@@ -16,11 +16,11 @@
       {{#each balizas}}
       <tr class="fila" onclick="location.href='/aton/plantilla/{{nif}}';">
         <td> {{#if hasTicket}}<i class="fa fa-exclamation-triangle blink_me" aria-hidden="true"></i> {{/if}}{{#if necesita_pintado}}<i class="fa fa-thin fa-paint-roller" aria-hidden="true"></i> {{/if}}</td>
-        <td>{{nif}}</td>
-        <td class="d-none d-sm-table-cell">{{puerto}}</td>
-        <td>{{tipo}} </td>
-        <td class="d-none d-sm-table-cell">{{apariencia}}</td>
-        <td class="d-none d-xl-table-cell">{{linterna}} </td>
+        <td style="max-width: 60px;" class=" d-inline-block text-truncate">{{nif}}</td>
+        <td class="d-none d-sm-table-cell d-inline-block text-truncate"  style="max-width: 150px;">{{puerto}}</td>
+        <td class="d-inline-block text-truncate"> {{tipo}}  </td>
+        <td style="max-width: 100px;" class="d-none d-sm-table-cell">{{apariencia}}</td>
+        <td style="max-width: 200px;"  class="d-none d-xl-table-cell d-inline-block text-truncate"> {{linterna}}  </td>
       </tr>
       {{/each}}
     </table>
