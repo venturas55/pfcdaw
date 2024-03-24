@@ -1,13 +1,13 @@
 <div class="container-fluid mb-5">
     <!-- id="cuerpo" -->
     <div class="row text-center my-2">
-        <div class="col-md-10 mx-auto">
-            <h1>SISTEMA DE TICKETS</h1>
+        <div class="col-md-11 mx-auto">
+            <h1>SISTEMA DE TICKETS <i class="fa fa-ticket" aria-hidden="true"></i></h1>
             <div> <a class="btn btn-primary" href="/tickets/add">Abrir Nuevo Ticket</a></div>
         </div>
     </div>
     <div class="row mb-2">
-        <div class="col-md-10 col-xl-11 mx-auto">
+        <div class="col-md-11 col-xl-11 mx-auto">
             <h3>TICKETS
                 {{#if ticketsAbiertos}}
                 ABIERTOS
@@ -21,8 +21,8 @@
             </div>
             <div class="table-responsive">
                 {{#if tickets}}
-                <table data-search="true" id="listado" class="table table-sm table-dark rounded table-hover"
-                    style="white-space: nowrap; overflow-x: auto;" >
+                <table data-search="true" id="listado" class="table table-sm table-dark rounded table-hover listado"
+                    style="white-space: nowrap; overflow-x: auto;">
                     <tr class="info-color-dark">
                         <th>NIF</th>
                         <th>Averia</th>
@@ -51,10 +51,10 @@
                         <td>
                             {{#if this.solved_at}}
                             <a href="/tickets/cerrado/{{this.ticket_id}}" class="text-primary"><i
-                                    class="fa-solid fa-eye"></i>View</a>
+                                    class="fa fa-eye"></i>View</a>
                             {{else}}
                             <a href="/tickets/edit/{{this.ticket_id}}" class="text-primary"><i
-                                    class="fa-solid fa-pen-to-square"></i>Edit</a>
+                                    class="fa fa-pencil"></i>Edit</a>
                             {{/if}}
 
                         </td>

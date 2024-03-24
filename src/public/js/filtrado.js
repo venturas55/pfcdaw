@@ -3,7 +3,7 @@
 $("#myInput").on("keyup", function () {
     var value = $(this).val().toLowerCase();
     //console.log(value);
-    $("#listado .fila").filter(function () {
+    $(".listado .fila").filter(function () {
         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
     });
 });
