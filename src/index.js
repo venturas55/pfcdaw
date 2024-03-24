@@ -78,6 +78,11 @@ app.use('/js', express.static(path.join(__dirname, '../node_modules/bootstrap/di
 app.use('/js', express.static(path.join(__dirname, '../node_modules/@popperjs/core/dist/umd')))
 app.use('/js', express.static(path.join(__dirname, '../node_modules/jquery/dist')))
 
+//VUE
+/* const history = require('connect-history-api-fallback');
+app.use(history());
+app.use('/js', express.static(path.join(__dirname, '../node_modules/vue'))) */
+
 //Fontawesome
 app.use('/css', express.static(path.join(__dirname, '../node_modules/font-awesome/css')))
 app.use('/fonts', express.static(path.join(__dirname, '../node_modules/font-awesome/fonts')))
