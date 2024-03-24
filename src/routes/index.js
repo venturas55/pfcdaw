@@ -109,7 +109,7 @@ router.post('/doAdmin', funciones.isAuthenticated, async (req, res) => {
 
 
 //GESTION BACKUPS BBDD
-router.get("/backups", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
+router.get("/backups", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     var backups = funciones.listadoBackups();
     res.render("documentos/listadoBackups", { backups });
 });
@@ -121,7 +121,7 @@ router.get("/backups/del/:nombre", funciones.isAuthenticated, funciones.isAdmin,
     funciones.insertarLog(req.user.usuario, "DELETE backup", nombre);
     res.redirect('/backups');
 });
-router.get("/dumpSQL", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
+router.get("/dumpSQL", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     funciones.dumpearSQL();
     req.flash("success", "Backup de la BBDD realizado correctamente");
     funciones.insertarLog(req.user.usuario, "DO backup", "nuevo backup");
@@ -243,7 +243,7 @@ router.get("/mapaGeneral2/:valor", (req, res) => {
     }
 });
 //funcion get para alternar entre los dos layouts google y leaflet
-router.get('/changelayout', (req, res) => {
+router.get('/changelayout', funciones.isAdmin, (req, res) => {
     if (selectedLayout == 'layoutMapaLeaflet') {
         selectedLayout = 'layoutMapa';
     } else {
@@ -254,13 +254,13 @@ router.get('/changelayout', (req, res) => {
 });
 
 //MOSTRAR PRUEBA
-router.get("/prueba", (req, res) => {
+router.get("/prueba", funciones.isAdmin, (req, res) => {
     console.log("Ejecutando prueba");
     funciones.consultaPrueba();
     req.flash("success", "Prueba ejecutada correctamente en index");
     //res.render("prueba");
 });
-router.post("/pruebaPost", async (req, res) => {
+router.post("/pruebaPost",funciones.isAdmin,  async (req, res) => {
     var password = req.masterPass;
     userpass = req.body.pass;
     //console.log("==>" + req.masterPass);

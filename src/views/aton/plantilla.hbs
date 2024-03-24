@@ -173,10 +173,10 @@
                 {{#each obs}}
                 <tr>
                     <td>{{this.observaciones}}</td>
-                    <td> <a href="/aton/observaciones/edit/{{this.id_observacion}}" class="text-primary"><i
-                                class="fa-solid fa-pen-to-square"></i>Edit</a>
+                    <td style="width: 100px;"> <a href="/aton/observaciones/edit/{{this.id_observacion}}"
+                            class="text-primary"><i class="fa fa-pencil"></i>Edit</a>
                         <a type="submit" href="/aton/observaciones/delete/{{this.id_observacion}}"
-                            class="text-primary"><i class="fa-solid fa-trash"></i>Del</a>
+                            class="text-primary"><i class="fa fa-trash"></i>Del</a>
                     </td>
                 </tr>
                 {{/each}}
@@ -204,18 +204,18 @@
                 <tr>
 
                     {{!-- <td>{{timeago fecha}}</td> asi haciendo uso del timeago--}}
-                    <td> {{formatearSp fecha}}</td>
+                    <td style="width: 100px;"> {{formatearSp fecha}}</td>
                     <td>{{mantenimiento}}</td>
                     {{!-- <td> <a href="" class="btn btn-primary btn-xs btn-block"><i
                                 class="fa-solid fa-pen-to-square">borrar</i> </a> </td> --}}
-                    <td>
+                    <td style="width: 100px;">
                         <input type="hidden" name="nif" value='{{baliza.nif}}' />
                         <input type="hidden" name="fecha" value='{{fecha}}' />
                         <input type="hidden" name="mantenimiento" value='{{mantenimiento}}' />
                         <a href="/aton/mantenimiento/edit/{{this.id_mantenimiento}}" class="text-primary"><i
-                                class="fa-solid fa-pen-to-square"></i>Edit</a>
+                                class="fa fa-pencil"></i>Edit</a>
                         <a href="/aton/mantenimiento/delete/{{this.id_mantenimiento}}" class="text-primary"><i
-                                class="fa-solid fa-trash"></i>Del</a>
+                                class="fa fa-trash"></i>Del</a>
                     </td>
                 </tr>
 
@@ -224,7 +224,7 @@
                     <input type="hidden" name="nif" value='{{baliza.nif}}' />
                     <tr>
                         <td><input type="date" name="fecha" required /></td>
-                        <td><input type="text" name="mantenimiento" required /></td>
+                        <td><input type="text" name="mantenimiento" required style="width: 100%;"/></td>
                         <td> <input type="submit" value="añadir" class="btn btn-primary btn-xs btn-block" /></td>
                     </tr>
                 </form>
