@@ -33,6 +33,7 @@
     "express-mysql-session": "^2.1.8",
     "express-session": "^1.17.3",
     "express-validator": "^7.0.1",
+    "font-awesome": "^4.7.0",
     "fs-extra": "^11.1.1",
     "jquery": "^3.7.0",
     "leaflet": "^1.9.4",

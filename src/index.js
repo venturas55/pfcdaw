@@ -78,6 +78,10 @@ app.use('/js', express.static(path.join(__dirname, '../node_modules/bootstrap/di
 app.use('/js', express.static(path.join(__dirname, '../node_modules/@popperjs/core/dist/umd')))
 app.use('/js', express.static(path.join(__dirname, '../node_modules/jquery/dist')))
 
+//Fontawesome
+app.use('/css', express.static(path.join(__dirname, '../node_modules/font-awesome/css')))
+app.use('/fonts', express.static(path.join(__dirname, '../node_modules/font-awesome/fonts')))
+
 //Leaflet
 app.use('/leaflet', express.static(path.join(__dirname, '../node_modules','leaflet','dist')))
 
