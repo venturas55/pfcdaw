@@ -795,7 +795,7 @@
             //fprimax = 2 * 0.686 * D - (this.Icalculo * vis ** D) * this.getBaseLog(Math.E,vis);
             fprimax = -[((0.05 ** -(D / vis)) * 2 * 3430000 * 2 * 10 ** -6 * D) + ((3430000 * 2 * 10 ** -6) * (D ** 2) * this.getBaseLog(Math.E, 0.05) * (0.05 ** -(D / vis)) * (-1 / vis))]
             D = D - fx / fprimax;
-            console.log(fx + " " + fprimax + " " + fx / fprimax + " " + D);
+            //console.log(fx + " " + fprimax + " " + fx / fprimax + " " + D);
           } while (fx / fprimax > 0.01);
         }
 
