@@ -167,6 +167,18 @@ helpers.dumpearSQL = () => {
     });
 }
 
+helpers.makeid =() => {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; //abcdefghijklmnopqrstuvwxyz
+    const charactersLength = characters.length;
+    let counter = 0;
+    while (counter < 6) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      counter += 1;
+    }
+    return result;
+}
+
 helpers.consultaPrueba = async () => {
     let ruta = path.join(__dirname, '..', '..', 'database', 'prueba.sql');
     console.log(ruta);

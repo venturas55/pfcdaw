@@ -6,6 +6,7 @@ const funciones = require("../lib/funciones.js");
 const { unlink } = require('fs-extra');
 const { access, constants } = require('fs');
 const fs = require('fs');
+const nodemailer = require('nodemailer');
 const queryListadoAton = "SELECT b.nif,b.num_internacional,b.tipo,b.apariencia,b.periodo,b.caracteristica,b.telecontrol,b.necesita_pintado,lo.puerto,lo.num_local,lo.localizacion,lo.latitud,lo.longitud,la.altura,la.elevacion,la.alcanceNom,la.linterna,la.candelasCalc,la.alcanceLum,la.candelasInst FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif";
 const queryListadoTicketsUsers = "SELECT t.ticket_id,t.nif,t.created_by_id,t.assigned_to_id,t.resolved_by_id,t.titulo,t.descripcion,t.solved_at,t.created_at,u1.usuario as created_by,u2.usuario as assigned_to,u3.usuario as resolved_by FROM tickets t LEFT JOIN usuarios u1 ON t.created_by_id=u1.id  LEFT JOIN usuarios u2 ON t.assigned_to_id=u2.id LEFT JOIN usuarios u3 ON t.resolved_by_id=u3.id";
 
@@ -104,6 +105,47 @@ router.post('/doAdmin', funciones.isAuthenticated, async (req, res) => {
         res.redirect('/profile');
     } else {
         res.redirect('/noperm');
+    }
+});
+router.post('/profile/email/recordarpass', (req, res) => {
+    try {
+        //console.log(req.user);
+        var transporter = nodemailer.createTransport({
+            service: 'ovh',
+            host: "smtp.mail.ovh.net",
+            secure: true,
+            port: 465,
+
+            auth: {
+                user: process.env.EMAIL_ACCOUNT,
+                pass: process.env.EMAIL_PASS,
+            }
+        });
+
+        //let poolConfig = "smtps://username:password@smtp.example.com/?pool=true";
+
+        var mailOptions = {
+            from: 'BBDD SAN',
+            to: req.user.email,
+            subject: 'Restablecer contraseña BBDD SAN',
+            text: 'Aqui iria un codigo para resetear'
+        };
+        console.log(mailOptions);
+
+       var code = transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.error("Error:");
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+                console.log(info);
+                return info;
+            }
+        });
+
+     
+    } catch (err) {
+        console.log(err);
     }
 });
 
@@ -260,7 +302,7 @@ router.get("/prueba", funciones.isAdmin, (req, res) => {
     req.flash("success", "Prueba ejecutada correctamente en index");
     //res.render("prueba");
 });
-router.post("/pruebaPost",funciones.isAdmin,  async (req, res) => {
+router.post("/pruebaPost", funciones.isAdmin, async (req, res) => {
     var password = req.masterPass;
     userpass = req.body.pass;
     //console.log("==>" + req.masterPass);
