@@ -167,7 +167,7 @@ helpers.dumpearSQL = () => {
     });
 }
 
-helpers.makeid =() => {
+helpers.getCode =() => {
     let result = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; //abcdefghijklmnopqrstuvwxyz
     const charactersLength = characters.length;

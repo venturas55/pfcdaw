@@ -107,7 +107,7 @@ router.post('/doAdmin', funciones.isAuthenticated, async (req, res) => {
         res.redirect('/noperm');
     }
 });
-router.post('/profile/email/recordarpass', (req, res) => {
+router.post('/profile/email/recordarpass', funciones.isAuthenticated,(req, res) => {
     try {
         //console.log(req.user);
         var transporter = nodemailer.createTransport({
@@ -128,7 +128,7 @@ router.post('/profile/email/recordarpass', (req, res) => {
             from: 'BBDD SAN',
             to: req.user.email,
             subject: 'Restablecer contraseña BBDD SAN',
-            text: 'Aqui iria un codigo para resetear'
+            text: 'Aqui iria un codigo para resetear: ' + funciones.getCode + " usalo en...." ,
         };
         console.log(mailOptions);
 
@@ -285,7 +285,7 @@ router.get("/mapaGeneral2/:valor", (req, res) => {
     }
 });
 //funcion get para alternar entre los dos layouts google y leaflet
-router.get('/changelayout', funciones.isAdmin, (req, res) => {
+router.get('/changelayout', funciones.isAuthenticated, funciones.isAdmin, (req, res) => {
     if (selectedLayout == 'layoutMapaLeaflet') {
         selectedLayout = 'layoutMapa';
     } else {
