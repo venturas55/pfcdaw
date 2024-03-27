@@ -180,14 +180,20 @@ router.get('/profile/email/verifypass/:user_id/:code', async (req, res) => {
     console.log(token);
     //  localhost:5001/profile/email/verifypass/1/1ZEFGJ      hashedtoken
     //console.log(code + " == " + token.hashedtoken);
-    const validToken = await funciones.verifyPassword(code, token.hashedtoken)
-    console.log(validToken);
-    if (validToken) {
-        req.flash("success", "Token proporcionado correcto");
-        res.redirect("/profile/recoverysetpass/" + user_id);
-    }
-    else {
-        req.flash("danger", "Token proporcionado incorrecto");
+    if (token) {
+
+        const validToken = await funciones.verifyPassword(code, token.hashedtoken)
+        console.log(validToken);
+        if (validToken) {
+            req.flash("success", "Token proporcionado correcto");
+            res.redirect("/profile/recoverysetpass/" + user_id);
+        }
+        else {
+            req.flash("danger", "Token proporcionado incorrecto");
+            res.redirect("/error");
+        }
+    } else {
+        req.flash("danger", "Token proporcionado expirado"); //TODO: NO REDIRECIONA
         res.redirect("/error");
     }
 });
