@@ -94,6 +94,8 @@ Donde ‘db_user’ y ‘db_pass’ serán las credenciales de acceso a tu base 
                                             DB_USER=usuario
                                             DB_PASS=contraseñapropia
                                             DB_NAME=nombrebasedatos
+                                            EMAIL_ACCOUNT=nombrebasedatos
+                                            EMAIL_PASS=nombrebasedatos
     npm install
 
 2.- INSTALACION BASE DE DATOS
@@ -123,4 +125,16 @@ update nodejs
 -------------------
 npm install -g n
 n <version-number>    or      n lts
+
+----------------
+Se ha añadido una tabla nueva a la base de datos para implementar la recuperación de contraseña. La tabla que almacena tokens con fecha de expiracion es la siguiente.
+
+CREATE TABLE `tokens` (
+  `user_id` int(11) NOT NULL,
+  `hashedtoken` varchar(200) PRIMARY KEY,
+  `expires` DATETIME NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+   FOREIGN KEY (user_id) REFERENCES usuarios(id) ON DELETE CASCADE
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = 'tabla de tokens';
+
+Además se han añadido dos variables de entorno más EMAIL_ACCOUNT y EMAIL_PASS para configurar la cuenta desde la que se enviarán los correos para recuperar la contraseña.
 
