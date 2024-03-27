@@ -119,6 +119,12 @@ CREATE TABLE IF NOT EXISTS `sessions` (
   PRIMARY KEY (`session_id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 
+CREATE TABLE `tokens` (
+  `user_id` int(11) NOT NULL,
+  `hashedtoken` varchar(200) PRIMARY KEY,
+  `expires` DATETIME NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+   FOREIGN KEY (user_id) REFERENCES usuarios(id) ON DELETE CASCADE
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = 'tabla de tokens';
 
 --
 ALTER TABLE

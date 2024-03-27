@@ -63,13 +63,7 @@
             </button>
           </form>
 
-          <form action="/profile/email/recordarpass" method="POST" enctype="multipart/form-data">
-            {{!-- <p>Recuperar contraseña</p> --}} //TODO: 
-            <button type="submit" class="btn btn-primary input-group-text">Recuperar contraseña</button>
-
-          </form>
-
-          <a href="/profile" class="btn btn-danger btn-sm m-4"> Cancelar cambios </a>
+            <a href="/profile" class="btn btn-danger btn-sm m-4"> Cancelar cambios </a>
 
           {{#if (esAdmin user.privilegio)}}
           <a onclick="document.getElementById('modalAdmin').style.display = 'block';document.getElementById('privilegio').value = 'san';"

@@ -6,10 +6,10 @@ const funciones = require("../lib/funciones.js");
 const { unlink } = require('fs-extra');
 const { access, constants } = require('fs');
 const fs = require('fs');
+const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 const queryListadoAton = "SELECT b.nif,b.num_internacional,b.tipo,b.apariencia,b.periodo,b.caracteristica,b.telecontrol,b.necesita_pintado,lo.puerto,lo.num_local,lo.localizacion,lo.latitud,lo.longitud,la.altura,la.elevacion,la.alcanceNom,la.linterna,la.candelasCalc,la.alcanceLum,la.candelasInst FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif";
 const queryListadoTicketsUsers = "SELECT t.ticket_id,t.nif,t.created_by_id,t.assigned_to_id,t.resolved_by_id,t.titulo,t.descripcion,t.solved_at,t.created_at,u1.usuario as created_by,u2.usuario as assigned_to,u3.usuario as resolved_by FROM tickets t LEFT JOIN usuarios u1 ON t.created_by_id=u1.id  LEFT JOIN usuarios u2 ON t.assigned_to_id=u2.id LEFT JOIN usuarios u3 ON t.resolved_by_id=u3.id";
-
 //var selectedLayout ='layoutMapa';  //  layoutMapa   o    layoutMapaLeaflet
 var selectedLayout = 'layoutMapaLeaflet';
 
@@ -107,10 +107,33 @@ router.post('/doAdmin', funciones.isAuthenticated, async (req, res) => {
         res.redirect('/noperm');
     }
 });
-router.post('/profile/email/recordarpass', funciones.isAuthenticated,(req, res) => {
-    try {
-        //console.log(req.user);
-        var transporter = nodemailer.createTransport({
+router.get('/profile/email/recordarpass/', async (req, res) => {
+    res.render('auth/recoverypass');
+});
+router.post('/profile/email/recordarpass/', async (req, res) => { //:email
+    const email = req.body.email;
+    const usuario = req.body.usuario;
+    // console.log(email + " " + usuario);
+    var rows = await db.query("SELECT * FROM usuarios WHERE usuario=? AND email= ?", [usuario, email]);
+    if (rows.length > 0) {
+        var user = rows[0];
+        const user_id = user.id;
+
+
+        var token = funciones.getCode();
+        const hash = await funciones.encryptPass(token);
+        //console.log(hash);
+        var hasAnyToken = await db.query("SELECT * FROM tokens WHERE user_id=?", [user_id]);
+        if (hasAnyToken.length > 0) {
+            rows = await db.query("UPDATE tokens set hashedtoken=? , expires =NOW()+ interval 5 minute where user_id=?", [hash, user_id,]);
+        } else {
+            rows = await db.query("INSERT INTO tokens (user_id,hashedtoken, expires) VALUES (?,?, NOW()+ interval 5 minute)", [user_id, hash]);
+        }
+
+        //var exito = await funciones.sendRecoveryMail(email,token); NOFUNCIONA 
+        //console.log(email + " " + token);
+        //console.log(process.env.EMAIL_ACCOUNT + " " + process.env.EMAIL_PASS);
+        const transporter = nodemailer.createTransport({
             service: 'ovh',
             host: "smtp.mail.ovh.net",
             secure: true,
@@ -122,31 +145,64 @@ router.post('/profile/email/recordarpass', funciones.isAuthenticated,(req, res) 
             }
         });
 
-        //let poolConfig = "smtps://username:password@smtp.example.com/?pool=true";
-
         var mailOptions = {
-            from: 'BBDD SAN',
-            to: req.user.email,
+            from: "BBDD SAN",
+            to: email,
             subject: 'Restablecer contraseña BBDD SAN',
-            text: 'Aqui iria un codigo para resetear: ' + funciones.getCode + " usalo en...." ,
+            text: 'Has olvidado tu contraseña. Haz click en el siguiente vinculo http://localhost:5001/profile/email/verifypass/' + user_id + '/' + token + " para reestablecer una nueva contraseña.",
         };
-        console.log(mailOptions);
+        //console.log(mailOptions);
 
-       var code = transporter.sendMail(mailOptions, function (error, info) {
+        transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
                 console.error("Error:");
                 console.log(error);
+                req.flash("danger", "Error al enviar el eMail para restablecer contraseña")
+                res.redirect("/error");
+
             } else {
                 console.log('Email sent: ' + info.response);
-                console.log(info);
-                return info;
+                req.flash("success", "Se ha enviado un token a la dirección de correo asociada para restablecer contraseña.");
+                res.redirect("/");
             }
         });
-
-     
-    } catch (err) {
-        console.log(err);
+    } else {
+        req.flash("danger", "El usuario y/o el correo no corresponden con ningún usuario.")
+        res.redirect("/error");
     }
+
+});
+
+router.get('/profile/email/verifypass/:user_id/:code', async (req, res) => {
+    const { user_id, code } = req.params;
+    await db.query("DELETE FROM tokens WHERE expires < NOW()");
+    var [token] = await db.query("SELECT * FROM tokens WHERE user_id=? ", [user_id]);
+    console.log(token);
+    //  localhost:5001/profile/email/verifypass/1/1ZEFGJ      hashedtoken
+    //console.log(code + " == " + token.hashedtoken);
+    const validToken = await funciones.verifyPassword(code, token.hashedtoken)
+    console.log(validToken);
+    if (validToken) {
+        req.flash("success", "Token proporcionado correcto");
+        res.redirect("/profile/recoverysetpass/" + user_id);
+    }
+    else {
+        req.flash("danger", "Token proporcionado incorrecto");
+        res.redirect("/error");
+    }
+});
+router.get('/profile/recoverysetpass/:id', async (req, res) => {
+    const { id } = req.params;
+    res.render("auth/recoverysetnewpass", { id });
+});
+
+router.post('/profile/recoverysetpass', async (req, res) => {
+    const { password, id } = req.body;
+    //console.log(password + " "+ id);
+    var encryptedPass = await funciones.encryptPass(password);
+    const result = await db.query("UPDATE usuarios set contrasena=? where id=?", [encryptedPass, id]);
+    req.flash("success", "Contraseña actualizada correctamente");
+    res.redirect("/");
 });
 
 
