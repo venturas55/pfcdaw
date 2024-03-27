@@ -94,8 +94,8 @@ Donde ‘db_user’ y ‘db_pass’ serán las credenciales de acceso a tu base 
                                             DB_USER=usuario
                                             DB_PASS=contraseñapropia
                                             DB_NAME=nombrebasedatos
-                                            EMAIL_ACCOUNT=nombrebasedatos
-                                            EMAIL_PASS=nombrebasedatos
+                                            EMAIL_ACCOUNT=correo@electronico.es
+                                            EMAIL_PASS=contraseñadelacuentacorreo
     npm install
 
 2.- INSTALACION BASE DE DATOS
