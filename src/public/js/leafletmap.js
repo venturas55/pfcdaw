@@ -31,7 +31,7 @@ fetchData().then((balizas) => {
 
     marker.on('dragstart', function (event) {
       item.pos0 = event.target.getLatLng();
-      console.log(marker);
+      //console.log(marker);
       //marker.setLatLng(new L.LatLng(position.lat, position.lng), { draggable: 'true' });
     });
 
@@ -40,18 +40,19 @@ fetchData().then((balizas) => {
       var position = marker.getLatLng();
       marker.setLatLng(new L.LatLng(position.lat, position.lng), { draggable: 'true' });
       map.panTo(new L.LatLng(position.lat, position.lng));
-      console.log(item.pos0);
-      console.log(position);
+      //console.log(item.pos0);
+      //console.log(position);
+      var textposition=getMarkerLatLng(position);
       popup
         .setLatLng(position)
         .setContent('   <div class="card-body"> <h4>Desplazar señal aqui? </h4>' +
           ' <form action="/aton/editLocalizacionFromMap/' + item.nif + '" method="POST">' +
           '<input value="' + item.nif + '" class="form-control" type="hidden" name="nif" />' +
           '<div class="form-group mb-2"><label for="latitud">LATITUD</label>' +
-          '<input value="' + position.lat + '" class="form-control" type="text" name="latitud" /> </div>' +
+          '<input value="' + textposition.lat + '" class="form-control" type="text" name="latitud" /> </div>' +
           '<div class="form-group mb-2">' +
           '<label for="longitud">LONGITUD</label>' +
-          '<input value="' + position.lng + '" class="form-control" type="text" name="longitud" /> </div>' +
+          '<input value="' + textposition.lng + '" class="form-control" type="text" name="longitud" /> </div>' +
           '<div class="form-group mb-2 text-center">' +
           '    <button class="btn btn-success btn-block">SI</button>' +
           ' </div>' +

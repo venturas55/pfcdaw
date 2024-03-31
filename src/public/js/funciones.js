@@ -84,8 +84,6 @@ function setMarkerLatLng(lat, lng) {
     var lat2 = 0;
     var lng2 = 0;
     if (lat != null && lat.includes("º")) {
-        lat = lat.replaceAll("'", "´"); //quito espacios
-        lat = lat.replaceAll("´", "´");
         lat = lat.replaceAll("'", "´"); // y reemplazo la coma ' por ´
         lat = lat.replaceAll("°", "º");
 
@@ -113,7 +111,6 @@ function setMarkerLatLng(lat, lng) {
     }
 
     if (lng != null && lng.includes("º")) {
-        lng = lng.replaceAll("'", "´");
         lng = lng.replaceAll("'", "´");
         lng = lng.replaceAll("°", "º");
         var utmarraylng = lng.split("º"); //separo grados y minutos
@@ -147,69 +144,23 @@ function setMarkerLatLng(lat, lng) {
 }
 //FUNCION PARA TRADUCIR COORDENADAS DE UN OBJETO GOOGLE FORMAT PASA A COORDENADAS WEB.
 function getMarkerLatLng({lat, lng}) {
-    //console.log(lat + " " + lng)
-    var lat2 = 0;
-    var lng2 = 0;
-    if (lat != null && lat.includes("º")) {
-        lat = lat.replaceAll("'", "´"); //quito espacios
-        lat = lat.replaceAll("´", "´");
-        lat = lat.replaceAll("'", "´"); // y reemplazo la coma ' por ´
-        lat = lat.replaceAll("°", "º");
+    console.log(lat + " " + lng)
+    var lattext = "";
+    var lngtext = "";
+    var latabs=Math.abs(lat);
+    var lngabs=Math.abs(lng);
 
-        var utmarraylat = lat.split("º"); //separo grados y minutos
-        //console.log(utmarraylat[0] + " - " + utmarraylat[1]);
-        //(utmarraylat[0] son grados y  utmarraylat[1] minutos
-        utmarraylat[1] = utmarraylat[1].replace(",", "."); //DE LOS MINUTOS sustituyo comas por PUNTOS
-        var minutoslatVector = utmarraylat[1].split("."); //de los minutos separo en las PUNTOS
-        //console.log(minutoslatVector[0] + " - " + minutoslatVector[1]);
-        var minutoslatEntero = parseFloat(minutoslatVector[0]); //convierto a decimal (la separacion ha de ser un PUNTO)
-        if (minutoslatVector[1].includes("´")) {
-            var minutoslat = minutoslatVector[1].split("´")
-        } else {
-            var minutoslat = minutoslatVector[1].split(" ")
-        }
-        //console.log(minutoslat[0] + " - " + minutoslat[1]);
-        var minutoslatDecimal = parseFloat(minutoslat[0]);
-        lat2 = parseFloat(utmarraylat[0]) + (minutoslatEntero + minutoslatDecimal / 1000) / 60;
-            
-        if (minutoslat[1].trim() == 'N')
-            lat2 = 1 * lat2.toFixed(5);
-        else if (minutoslat[1].trim() == 'S')
-            lat2 = -1 * lat2.toFixed(5);
-        //console.log(lat2);
-    }
-
-    if (lng != null && lng.includes("º")) {
-        lng = lng.replaceAll("'", "´");
-        lng = lng.replaceAll("'", "´");
-        lng = lng.replaceAll("°", "º");
-        var utmarraylng = lng.split("º"); //separo grados y minutos
-        //console.log(utmarraylng[0] + " - " + utmarraylng[1]);
-        //(utmarraylng[0] son grados y  utmarraylng[1] minutos
-        utmarraylng[1] = utmarraylng[1].replace(",", "."); //DE LOS MINUTOS sustituyo comas por PUNTOS
-        var minutoslngVector = utmarraylng[1].split("."); //de los minutos separo en las PUNTOS
-        //console.log(minutoslngVector[0] + " - " + minutoslngVector[1]);
-        var minutoslngEntero = parseFloat(minutoslngVector[0]); //convierto a decimal (la separacion ha de ser un PUNTO)
-
-        if (minutoslngVector[1].includes("´")) {
-            var minutoslng = minutoslngVector[1].split("´")
-        } else {
-            var minutoslng = minutoslngVector[1].split(" ")
-        }
+    lattext = Math.trunc(latabs)+"º "+ ((latabs-Math.trunc(latabs))*60).toFixed(3)+"´";
+    lat>0?lattext+="N":lattext+="S";
 
 
-        //console.log(minutoslng[0] + " - " + minutoslng[1]);
-        var minutoslngDecimal = parseFloat(minutoslng[0]);
-        lng2 = parseFloat(utmarraylng[0]) + (minutoslngEntero + minutoslngDecimal / 1000) / 60;
-        if (minutoslng[1].trim() == 'E')
-            lng2 = 1 * lng2.toFixed(7);
-        else if (minutoslng[1].trim() == 'W')
-            lng2 = -1 * lng2.toFixed(7);
-        //console.log(lng2);
-    }
+    lngtext  = Math.trunc(lngabs)+"º "+ ((lngabs-Math.trunc(lngabs))*60).toFixed(3)+"´";
+    lng>0?lngtext+="E":lngtext+="W";
+    
+    
     return {
-        'lat': lat2,
-        'lng': lng2
+        'lat': lattext,
+        'lng': lngtext
     };
 }
 
