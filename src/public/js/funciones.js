@@ -164,13 +164,6 @@ function getMarkerLatLng({lat, lng}) {
     };
 }
 
-function prueba(ev){
-    console.log("Application is running on: "+  getUrl());
-    console.log('prueba:');
-    console.log(ev.target.parentElement.parentElement.getElementsByTagName('input')[0].value);
-    ev.target.setLatLng(new L.LatLng(0,0), { draggable: 'true' });
-}
-
 //FUNCION QUE LE PASA UN OBJETO BALIZA Y LE DEVUELVE UNA LETRA QUE REPRESENTA EL COLOR/TIPO
 function getTipo(item) {
     //var balizaPrueba="25620";
