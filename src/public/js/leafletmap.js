@@ -1,5 +1,5 @@
 // initialize Leaflet
-console.log("leaflet initialization");
+//console.log("leaflet initialization");
 let centerLatLng = centrar();
 //console.log(centerLatLng);
 
@@ -15,6 +15,7 @@ fetchData().then((balizas) => {
   // show the scale bar on the lower left corner
   L.control.scale({ imperial: true, metric: true }).addTo(map);
   // show a marker on the map
+  markers = [];
   balizas.forEach(item => {
     let customIcon = {
       iconUrl: myurl + '/img/icon/' + getTipo(item) + '.png',
@@ -27,20 +28,70 @@ fetchData().then((balizas) => {
       icon: myIcon
     }
     let marker = new L.Marker(setMarkerLatLng(item.latitud, item.longitud), iconOptions);
-    marker.bindPopup('<div id="content">' +
+
+    marker.on('dragstart', function (event) {
+      item.pos0 = event.target.getLatLng();
+      console.log(marker);
+      //marker.setLatLng(new L.LatLng(position.lat, position.lng), { draggable: 'true' });
+    });
+
+    marker.on('dragend', function (event) {
+      var marker = event.target;
+      var position = marker.getLatLng();
+      marker.setLatLng(new L.LatLng(position.lat, position.lng), { draggable: 'true' });
+      map.panTo(new L.LatLng(position.lat, position.lng));
+      console.log(item.pos0);
+      console.log(position);
+      popup
+        .setLatLng(position)
+        .setContent('   <div class="card-body"> <h4>Desplazar señal aqui? </h4>' +
+          ' <form action="/aton/editLocalizacionFromMap/' + item.nif + '" method="POST">' +
+          '<input value="' + item.nif + '" class="form-control" type="hidden" name="nif" />' +
+          '<div class="form-group mb-2"><label for="latitud">LATITUD</label>' +
+          '<input value="' + position.lat + '" class="form-control" type="text" name="latitud" /> </div>' +
+          '<div class="form-group mb-2">' +
+          '<label for="longitud">LONGITUD</label>' +
+          '<input value="' + position.lng + '" class="form-control" type="text" name="longitud" /> </div>' +
+          '<div class="form-group mb-2 text-center">' +
+          '    <button class="btn btn-success btn-block">SI</button>' +
+          ' </div>' +
+          ' </form>' +
+          '    <div class="form-group mb-2 text-center">' +
+          '       <button onclick="prueba(event)" class="btn btn-danger btn-block">NO</button>' +
+          '   </div>' +
+          '</div>')
+        .openOn(map);
+      markers.push(marker);
+    });
+
+    marker.bindTooltip('<div>' +
       "<div>NIF:" +
-      '<a href="/aton/plantilla/' + item.nif.toString() + '">' + item.nif.toString() + "</a> Apariencia: " + item.apariencia + "</div>" +
-      //'<div> Coordenadas: ' + item.longitud + " "+ item.latitud+ '</div>' +
-      "</div>").openPopup();
+      '<p>' + item.nif.toString() + "</p> Apariencia: " + item.apariencia + "</div>" +
+      '<img class="avatar avatar-s" src="/img/imagenes/' + item.nif.toString() + '/' + item.nif.toString() + '.jpg"/>' +
+      "</div>", {
+      opapcity: 0.8,
+      direction: 'top',
+      sticky: true,
+    })
+      .bindPopup('<div>' +
+        "<div>NIF:" +
+        '<a href="/aton/plantilla/' + item.nif.toString() + '">' + item.nif.toString() + "</a> Apariencia: " + item.apariencia + "</div>" +
+        //'<div> Coordenadas: ' + item.longitud + " "+ item.latitud+ '</div>' +
+        "</div>").openPopup();
+
     marker.addTo(map);
+
   });
   map.on('click', onMapClick);
 });
 
 var popup = L.popup();
 function onMapClick(e) {
+  var coordenadas = e.latlng.toString().split("(")[1];
+  var latitud = coordenadas.split(",")[0];
+  var longitud = coordenadas.split(",")[1].split(")")[0];
   popup
     .setLatLng(e.latlng)
-    .setContent("You clicked the map at " + e.latlng.toString())
+    .setContent("Coordenadas " + latitud + "  " + longitud)
     .openOn(map);
 }

@@ -20,13 +20,6 @@ export function validatePassMatch(object) {
     return passmatchSchema.safeParse(object);
 }
 
-
-
 export function validatePartialPassMatch(object) {
     return passmatchSchema.partial().safeParse(object);
 }
-
-
-
-
-

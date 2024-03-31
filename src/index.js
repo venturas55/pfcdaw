@@ -54,6 +54,7 @@ app.use((req, res, next) => {
     app.locals.error = req.flash('error');
     app.locals.message = req.flash('message');
     app.locals.user = req.user;
+    app.locals.puerto = app.get('port') ;
     next();
 });
 

@@ -2,8 +2,10 @@
 // CARDINAL CN CS CE CO
 // ESPECIAL ME
 // FARO FA
-let myurl = 'http://localhost:5001';
-//let myurl = 'http://adriandeharo.es:5001';
+var puerto = document.getElementById("puerto").getAttribute("puerto");
+//console.log(puerto);
+let myurl = 'http://localhost:'+puerto;
+//let myurl = 'http://adriandeharo.es:'+puerto;
 //FUNCION PARA CERRAR MODALES
 function cierraModal() {
     var el = document.getElementsByClassName("modal");
@@ -104,6 +106,73 @@ function setMarkerLatLng(lat, lng) {
         lat2 = parseFloat(utmarraylat[0]) + (minutoslatEntero + minutoslatDecimal / 1000) / 60;
         //console.log(minutoslatVector);
         if (minutoslat[1].trim() == 'N')
+            lat2 = 1 * lat2.toFixed(6);
+        else if (minutoslat[1].trim() == 'S')
+            lat2 = -1 * lat2.toFixed(6);
+        //console.log(lat2);
+    }
+
+    if (lng != null && lng.includes("º")) {
+        lng = lng.replaceAll("'", "´");
+        lng = lng.replaceAll("'", "´");
+        lng = lng.replaceAll("°", "º");
+        var utmarraylng = lng.split("º"); //separo grados y minutos
+        //console.log(utmarraylng[0] + " - " + utmarraylng[1]);
+        //(utmarraylng[0] son grados y  utmarraylng[1] minutos
+        utmarraylng[1] = utmarraylng[1].replace(",", "."); //DE LOS MINUTOS sustituyo comas por PUNTOS
+        var minutoslngVector = utmarraylng[1].split("."); //de los minutos separo en las PUNTOS
+        //console.log(minutoslngVector[0] + " - " + minutoslngVector[1]);
+        var minutoslngEntero = parseFloat(minutoslngVector[0]); //convierto a decimal (la separacion ha de ser un PUNTO)
+
+        if (minutoslngVector[1].includes("´")) {
+            var minutoslng = minutoslngVector[1].split("´")
+        } else {
+            var minutoslng = minutoslngVector[1].split(" ")
+        }
+
+
+        //console.log(minutoslng[0] + " - " + minutoslng[1]);
+        var minutoslngDecimal = parseFloat(minutoslng[0]);
+        lng2 = parseFloat(utmarraylng[0]) + (minutoslngEntero + minutoslngDecimal / 1000) / 60;
+        if (minutoslng[1].trim() == 'E')
+            lng2 = 1 * lng2.toFixed(6);
+        else if (minutoslng[1].trim() == 'W')
+            lng2 = -1 * lng2.toFixed(6);
+        //console.log(lng2);
+    }
+    return {
+        'lat': lat2,
+        'lng': lng2
+    };
+}
+//FUNCION PARA TRADUCIR COORDENADAS DE UN OBJETO GOOGLE FORMAT PASA A COORDENADAS WEB.
+function getMarkerLatLng({lat, lng}) {
+    //console.log(lat + " " + lng)
+    var lat2 = 0;
+    var lng2 = 0;
+    if (lat != null && lat.includes("º")) {
+        lat = lat.replaceAll("'", "´"); //quito espacios
+        lat = lat.replaceAll("´", "´");
+        lat = lat.replaceAll("'", "´"); // y reemplazo la coma ' por ´
+        lat = lat.replaceAll("°", "º");
+
+        var utmarraylat = lat.split("º"); //separo grados y minutos
+        //console.log(utmarraylat[0] + " - " + utmarraylat[1]);
+        //(utmarraylat[0] son grados y  utmarraylat[1] minutos
+        utmarraylat[1] = utmarraylat[1].replace(",", "."); //DE LOS MINUTOS sustituyo comas por PUNTOS
+        var minutoslatVector = utmarraylat[1].split("."); //de los minutos separo en las PUNTOS
+        //console.log(minutoslatVector[0] + " - " + minutoslatVector[1]);
+        var minutoslatEntero = parseFloat(minutoslatVector[0]); //convierto a decimal (la separacion ha de ser un PUNTO)
+        if (minutoslatVector[1].includes("´")) {
+            var minutoslat = minutoslatVector[1].split("´")
+        } else {
+            var minutoslat = minutoslatVector[1].split(" ")
+        }
+        //console.log(minutoslat[0] + " - " + minutoslat[1]);
+        var minutoslatDecimal = parseFloat(minutoslat[0]);
+        lat2 = parseFloat(utmarraylat[0]) + (minutoslatEntero + minutoslatDecimal / 1000) / 60;
+            
+        if (minutoslat[1].trim() == 'N')
             lat2 = 1 * lat2.toFixed(5);
         else if (minutoslat[1].trim() == 'S')
             lat2 = -1 * lat2.toFixed(5);
@@ -133,9 +202,9 @@ function setMarkerLatLng(lat, lng) {
         var minutoslngDecimal = parseFloat(minutoslng[0]);
         lng2 = parseFloat(utmarraylng[0]) + (minutoslngEntero + minutoslngDecimal / 1000) / 60;
         if (minutoslng[1].trim() == 'E')
-            lng2 = 1 * lng2.toFixed(5);
+            lng2 = 1 * lng2.toFixed(7);
         else if (minutoslng[1].trim() == 'W')
-            lng2 = -1 * lng2.toFixed(5);
+            lng2 = -1 * lng2.toFixed(7);
         //console.log(lng2);
     }
     return {
@@ -143,6 +212,14 @@ function setMarkerLatLng(lat, lng) {
         'lng': lng2
     };
 }
+
+function prueba(ev){
+    console.log("Application is running on: "+  getUrl());
+    console.log('prueba:');
+    console.log(ev.target.parentElement.parentElement.getElementsByTagName('input')[0].value);
+    ev.target.setLatLng(new L.LatLng(0,0), { draggable: 'true' });
+}
+
 //FUNCION QUE LE PASA UN OBJETO BALIZA Y LE DEVUELVE UNA LETRA QUE REPRESENTA EL COLOR/TIPO
 function getTipo(item) {
     //var balizaPrueba="25620";

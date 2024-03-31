@@ -281,6 +281,31 @@ router.post("/editLocalizacion/:nif", funciones.isAuthenticated, funciones.hasSa
     }
 
 });
+router.post("/editLocalizacionFromMap/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
+    const nifviejo = req.params.nif;
+    var {
+        latitud,
+        longitud,
+    } = req.body;
+    try {
+        var [baliza] = await db.query("SELECT * FROM localizacion WHERE nif=?", [nifviejo]);
+        
+        //TODO: convert data to  39º 26.901´N format
+        
+        baliza.latitud = latitud;
+        baliza.longitud = longitud;
+        await db.query("UPDATE localizacion set ? WHERE nif = ?", [baliza, nifviejo]);
+        funciones.insertarLog(req.user.usuario, "UPDATE localizacion", newBaliza.nif + " "+ newBaliza.latitud + " " + newBaliza.longitud);
+        req.flash("success", "Localizacion de baliza modificada correctamente");
+        res.redirect("/mapa/" + nifviejo);
+
+    } catch (error) {
+        console.error(error);
+        req.flash("error", "Hubo algun error al modificar la localización del aton con NIF " + nifviejo);
+        res.redirect("/mapaGeneral/valencia");
+    }
+
+});
 router.post("/editLampara/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     const nifviejo = req.params.nif;
     var {
