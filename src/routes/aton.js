@@ -281,7 +281,7 @@ router.post("/editLocalizacion/:nif", funciones.isAuthenticated, funciones.hasSa
     }
 
 });
-router.post("/editLocalizacionFromMap/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
+router.post("/editLocalizacionFromMap/:nif", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     const nifviejo = req.params.nif;
     var {
         latitud,
