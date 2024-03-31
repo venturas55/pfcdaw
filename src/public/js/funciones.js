@@ -4,7 +4,7 @@
 // FARO FA
 var puerto = document.getElementById("puerto").getAttribute("puerto");
 //console.log(puerto);
-let myurl = 'http://localhost:'+puerto;
+let myurl = 'http://localhost:' + puerto;
 //let myurl = 'http://adriandeharo.es:'+puerto;
 //FUNCION PARA CERRAR MODALES
 function cierraModal() {
@@ -54,6 +54,7 @@ function centrar() {
             centerLatLng = setMarkerLatLng(lat.value, lng.value);
             presetZoom = 18;
     }
+
 
     // console.log(centerLatLng);
     return centerLatLng;
@@ -143,21 +144,21 @@ function setMarkerLatLng(lat, lng) {
     };
 }
 //FUNCION PARA TRADUCIR COORDENADAS DE UN OBJETO GOOGLE FORMAT PASA A COORDENADAS WEB.
-function getMarkerLatLng({lat, lng}) {
+function getMarkerLatLng({ lat, lng }) {
     console.log(lat + " " + lng)
     var lattext = "";
     var lngtext = "";
-    var latabs=Math.abs(lat);
-    var lngabs=Math.abs(lng);
+    var latabs = Math.abs(lat);
+    var lngabs = Math.abs(lng);
 
-    lattext = Math.trunc(latabs)+"º "+ ((latabs-Math.trunc(latabs))*60).toFixed(3)+"´";
-    lat>0?lattext+="N":lattext+="S";
+    lattext = Math.trunc(latabs) + "º " + ((latabs - Math.trunc(latabs)) * 60).toFixed(3) + "´";
+    lat > 0 ? lattext += "N" : lattext += "S";
 
 
-    lngtext  = Math.trunc(lngabs)+"º "+ ((lngabs-Math.trunc(lngabs))*60).toFixed(3)+"´";
-    lng>0?lngtext+="E":lngtext+="W";
-    
-    
+    lngtext = Math.trunc(lngabs) + "º " + ((lngabs - Math.trunc(lngabs)) * 60).toFixed(3) + "´";
+    lng > 0 ? lngtext += "E" : lngtext += "W";
+
+
     return {
         'lat': lattext,
         'lng': lngtext
