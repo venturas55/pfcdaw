@@ -94,15 +94,22 @@ function setMarkerLatLng(lat, lng) {
         utmarraylat[1] = utmarraylat[1].replace(",", "."); //DE LOS MINUTOS sustituyo comas por PUNTOS
         var minutoslatVector = utmarraylat[1].split("."); //de los minutos separo en las PUNTOS
         //console.log(minutoslatVector[0] + " - " + minutoslatVector[1]);
-        var minutoslatEntero = parseFloat(minutoslatVector[0]); //convierto a decimal (la separacion ha de ser un PUNTO)
-        if (minutoslatVector[1].includes("´")) {
-            var minutoslat = minutoslatVector[1].split("´")
+
+        if (minutoslatVector.length > 1) {
+            var minutoslatEntero = parseFloat(minutoslatVector[0]); //convierto a decimal (la separacion ha de ser un PUNTO)
+
+            if (minutoslatVector[1].includes("´")) {
+                var minutoslat = minutoslatVector[1].split("´")
+            } else {
+                var minutoslat = minutoslatVector[1].split(" ")
+            }
+            //console.log(minutoslat[0] + " - " + minutoslat[1]);
+            var minutoslatDecimal = parseFloat(minutoslat[0]);
+            lat2 = parseFloat(utmarraylat[0]) + (minutoslatEntero + minutoslatDecimal / 1000) / 60;
         } else {
-            var minutoslat = minutoslatVector[1].split(" ")
+            var minutoslat = minutoslatVector[0].trim().split(" ");
+            lat2 = parseFloat(utmarraylat[0]) + parseFloat(minutoslat[0])  / 60;
         }
-        //console.log(minutoslat[0] + " - " + minutoslat[1]);
-        var minutoslatDecimal = parseFloat(minutoslat[0]);
-        lat2 = parseFloat(utmarraylat[0]) + (minutoslatEntero + minutoslatDecimal / 1000) / 60;
         //console.log(minutoslatVector);
         if (minutoslat[1].trim() == 'N')
             lat2 = 1 * lat2.toFixed(6);
@@ -120,18 +127,25 @@ function setMarkerLatLng(lat, lng) {
         utmarraylng[1] = utmarraylng[1].replace(",", "."); //DE LOS MINUTOS sustituyo comas por PUNTOS
         var minutoslngVector = utmarraylng[1].split("."); //de los minutos separo en las PUNTOS
         //console.log(minutoslngVector[0] + " - " + minutoslngVector[1]);
-        var minutoslngEntero = parseFloat(minutoslngVector[0]); //convierto a decimal (la separacion ha de ser un PUNTO)
 
-        if (minutoslngVector[1].includes("´")) {
-            var minutoslng = minutoslngVector[1].split("´")
+        if (minutoslngVector.length > 1) {
+
+            var minutoslngEntero = parseFloat(minutoslngVector[0]); //convierto a decimal (la separacion ha de ser un PUNTO)
+
+            if (minutoslngVector[1].includes("´")) {
+                var minutoslng = minutoslngVector[1].split("´")
+            } else {
+                var minutoslng = minutoslngVector[1].split(" ")
+            }
+            //console.log(minutoslng[0] + " - " + minutoslng[1]);
+            var minutoslngDecimal = parseFloat(minutoslng[0]);
+            lng2 = parseFloat(utmarraylng[0]) + (minutoslngEntero + minutoslngDecimal / 1000) / 60;
         } else {
-            var minutoslng = minutoslngVector[1].split(" ")
+            var minutoslng = minutoslngVector[0].trim().split(" ");
+            lng2 = parseFloat(utmarraylng[0]) + parseFloat(minutoslng[0])  / 60;
         }
 
 
-        //console.log(minutoslng[0] + " - " + minutoslng[1]);
-        var minutoslngDecimal = parseFloat(minutoslng[0]);
-        lng2 = parseFloat(utmarraylng[0]) + (minutoslngEntero + minutoslngDecimal / 1000) / 60;
         if (minutoslng[1].trim() == 'E')
             lng2 = 1 * lng2.toFixed(6);
         else if (minutoslng[1].trim() == 'W')
