@@ -4,7 +4,7 @@
   </div>
   {{#if balizas}}
   <div class="table-responsive py-4">
-    <table id="listado" class="listado mx-auto w-100 table-hover" data-search="true">
+    <table id="listado" class="listado mx-auto w-100 table table-hover table-dark" data-search="true">
       <tr>
         <th></th>
         <th>NIF</th>
@@ -14,14 +14,14 @@
         <th class="d-none d-xl-table-cell">Linterna</th>
       </tr>
       {{#each balizas}}
-      <tr class="fila" onclick="location.href='/aton/plantilla/{{nif}}';">
+      <tr class="fila pinchable" onclick="location.href='/aton/plantilla/{{nif}}';">
         <td class="text-end" style="min-width: 40px;"> {{#if necesita_pintado}}<i class="fa fa-paint-brush blink_me" aria-hidden="true"></i>
           {{/if}}{{#if hasTicket}}<i class="fa fa-exclamation-triangle blink_me" aria-hidden="true"></i> {{/if}}</td>
-        <td style="width: 70px;" class=" d-inline-block text-truncate">{{nif}}</td>
-        <td class="d-none d-sm-table-cell d-inline-block text-truncate" style="max-width: 150px;">{{puerto}}</td>
-        <td class="d-inline-block text-truncate"> {{tipo}} </td>
-        <td class="d-none d-sm-table-cell d-inline-block text-truncate" style="max-width: 100px;">{{apariencia}}</td>
-        <td class="d-none d-xl-table-cell d-inline-block text-truncate" style="max-width: 200px;"> {{linterna}} </td>
+        <td style="width: 80px;" class="  text-truncate">{{nif}}</td>
+        <td class="d-none d-sm-table-cell  text-truncate" style="max-width: 150px;">{{puerto}}</td>
+        <td class="text-truncate"> {{tipo}} </td>
+        <td class="d-none d-sm-table-cell  text-truncate" style="max-width: 100px;">{{apariencia}}</td>
+        <td class="d-none d-xl-table-cell  text-truncate" style="max-width: 200px;"> {{linterna}} </td>
       </tr>
       {{/each}}
     </table>

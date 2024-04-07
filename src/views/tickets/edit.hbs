@@ -14,8 +14,8 @@
                     </div>
                     <div class="form-group">
                         <label for="item">AtoN NIF</label>
-                        <a href='/aton/plantilla/{{ticket.nif}}'> <input value="{{ticket.nif}}" class="form-control"
-                                type="text" name="nif" placeholder="nif" readonly /></a>
+                        <input value="{{ticket.nif}}" class="pinchable" type="text" name="nif" placeholder="nif"
+                            readonly />
                     </div>
                     <div class="form-group">
                         <label for="titulo">Trabajo pendiente</label><input value="{{ticket.titulo}}"
@@ -67,7 +67,7 @@
     <div class="row">
         <div class="col-md-8 mx-auto pb-4">
             <div class="card pb-4">
-                 <div class="card-header text-center">
+                <div class="card-header text-center">
                     <h2> Edición del Ticket nº {{ticket.ticket_id}} </h2>
                 </div>
                 <div class="card-body pb-4">
@@ -87,8 +87,9 @@
                         </div>
                         <div class="form-group">
                             <label for="item">AtoN NIF</label>
-                            <a href='/aton/plantilla/{{ticket.nif}}'> <input value="{{ticket.nif}}" class="form-control"
-                                    type="text" name="nif" placeholder="nif" readonly /> </a>
+                            <a href='/aton/plantilla/{{ticket.nif}}'> <input value="{{ticket.nif}}"
+                                    class="form-control pinchable" type="text" name="nif" placeholder="nif" readonly />
+                            </a>
                         </div>
                         <div class="form-group">
                             <label for="titulo">Trabajo pendiente</label><input value="{{ticket.titulo}}"

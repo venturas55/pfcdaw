@@ -71,6 +71,8 @@
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="/logs">Ver logs</a>
                         <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/inventario">Inventario</a>
+                        <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="/profile">Perfil</a>
                         <a class="dropdown-item" href="/logout">Logout</a>
                     </ul>
@@ -86,23 +88,14 @@
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="/plan">Plan Inspeccion</a>
                         <a class="dropdown-item" href="/calculos">Calculos</a>
-                        <a class="dropdown-item" href="/inventario">Inventario</a>
-                        {{!-- <div class="dropdown-divider"></div> --}}
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" target="_blank" href="https://portalaton.puertos.es/">Portal AtoN</a>
+                        <a class="dropdown-item" target="_blank" href="https://portalapv.valenciaport.com/">Portal
+                            APV</a>
                     </ul>
                 </li>
 
-                {{#if user}}
-                <li class="nav-item">
-                    <a class="nav-link" href="/logout" tabindex="-1" aria-disabled="true">Logout</a>
-                </li>
-                {{else}}
-                <li class="nav-item">
-                    <a class="nav-link" href="/signin" tabindex="-1" aria-disabled="true">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/signup" tabindex="-1" aria-disabled="true">Sign up</a>
-                </li>
-                {{/if}}
+
                 <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0)" onclick="history.back();" tabindex="-1"
                         aria-disabled="true">Volver</a>
@@ -132,7 +125,22 @@
                 {{/if}}
             </ul>
         </div>
-
+        <div class="">
+            <ul class="navbar-nav ml-auto mx-4">
+                {{#if user}}
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout" tabindex="-1" aria-disabled="true">Logout</a>
+                </li>
+                {{else}}
+                <li class="nav-item">
+                    <a class="nav-link" href="/signin" tabindex="-1" aria-disabled="true">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/signup" tabindex="-1" aria-disabled="true">Sign up</a>
+                </li>
+                {{/if}}
+            </ul>
+        </div>
         <div class="d-none d-sm-block">
             <a href="http://www.valenciaport.com" target="_blank"> <img src="/img/logo-APV.svg" alt="APV logo"></a>
         </div>
