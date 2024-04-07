@@ -11,7 +11,11 @@ const queryListadoAton = "SELECT b.nif,b.num_internacional,b.tipo,b.apariencia,b
 router.get('/api/balizas', async (req, res) => {
     const balizas = await pool.query(queryListadoAton);
     for (var i = 0; i < balizas.length; i++) {
-        balizas[i].pictureUrl = await funciones.getUrlPictureAtoN(balizas[i].nif);
+        var archivos = await funciones.getUrlPictureAtoN(balizas[i].nif);
+        if (archivos)
+            balizas[i].pictureUrl = archivos;
+        else
+            balizas[i].pictureUrl = ["N/A"];
     }
     res.send(balizas);
 });

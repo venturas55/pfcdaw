@@ -73,7 +73,7 @@ fetchData().then((balizas) => {
     marker.bindTooltip('<div>' +
       "<div>NIF:" +
       '<p>' + item.nif.toString() + "</p> Apariencia: " + item.apariencia + "</div>" +
-      '<img class="avatar avatar-s" src="/img/imagenes/' + item.nif.toString() + '/' + item.nif.toString() + '.jpg"/>' +
+      '<img class="avatar avatar-s" src="/img/imagenes/' + item.nif.toString() + '/' + item.pictureUrl[0] + '"/>' +
       "</div>", {
       opapcity: 0.8,
       direction: 'top',
