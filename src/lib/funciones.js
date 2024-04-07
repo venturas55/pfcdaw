@@ -23,6 +23,15 @@ helpers.listadoFotos = (req, res, next) => {
     return fotitos;
 }
 
+helpers.getUrlPictureAtoN = async (nif) => {
+    let files;
+    var directorio = path.join(__dirname, "../public/img/imagenes", nif);
+    if(fs.existsSync(directorio)){
+        files = fs.readdirSync(directorio)
+    }
+    return files;
+}
+
 helpers.listadoCarpetas = async (req, res, next) => {
     var source = path.join(__dirname, "../public/img/imagenes/");
     let filesAndDirectories = await fs.readdir(source);
