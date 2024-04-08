@@ -295,7 +295,7 @@ router.post("/editLocalizacionFromMap/:nif", funciones.isAuthenticated, funcione
         baliza.latitud = latitud;
         baliza.longitud = longitud;
         await db.query("UPDATE localizacion set ? WHERE nif = ?", [baliza, nifviejo]);
-        funciones.insertarLog(req.user.usuario, "UPDATE localizacion", newBaliza.nif + " "+ newBaliza.latitud + " " + newBaliza.longitud);
+        funciones.insertarLog(req.user.usuario, "UPDATE localizacion", baliza.nif + " "+ baliza.latitud + " " + baliza.longitud);
         req.flash("success", "Localizacion de baliza modificada correctamente");
         res.redirect("/mapa/" + nifviejo);
 
