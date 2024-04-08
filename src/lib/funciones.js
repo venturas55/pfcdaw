@@ -23,7 +23,7 @@ helpers.listadoFotos = (req, res, next) => {
     return fotitos;
 }
 
-helpers.getUrlPictureAtoN = async (nif) => {
+helpers.getUrlPictureAtoN = (nif) => {
     let files;
     var directorio = path.join(__dirname, "../public/img/imagenes", nif);
     if(fs.existsSync(directorio)){
