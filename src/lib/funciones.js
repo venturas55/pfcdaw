@@ -199,14 +199,17 @@ helpers.runSQLrecovery =  (file) => {
     });
     let total = "";
     rl.on('line', function (chunk) {
-        total += chunk.toString();
-        console.log("> " + chunk);
+
+        //Para evitar ejecucion de comentarios en la query
+        if(chunk.toString('ascii').charAt(0) != '/')
+            total += chunk.toString('ascii');
+        //console.log("> " + chunk);
 
         /* db.query(chunk.toString('ascii'), function (err, sets, fields) {
             if (err) console.log(err);
         }); */
         if (chunk.toString('ascii').charAt(chunk.length - 1) == ';') {
-            console.log(">> " + total);
+            //console.log(">> " + total);
             db.query(total, function (err, sets, fields) { if (err) console.log(err); });
             total = "";
         }
@@ -214,9 +217,6 @@ helpers.runSQLrecovery =  (file) => {
     rl.on('close', function () {
         console.log("finished");
     });
-
-
-
 }
 
 helpers.getCode = () => {
