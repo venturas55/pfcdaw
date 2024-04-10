@@ -231,4 +231,62 @@ helpers.getCode = () => {
     return result;
 }
 
+helpers.sendRecoveryMail = async (email, token) => (req, res) => {
+
+
+}
+
+helpers.consultaPrueba = async () => {
+    let ruta = path.join(__dirname, '..', '..', 'database', 'prueba.sql');
+    console.log(ruta);
+
+    var rl = readline.createInterface({
+
+        input: fs.createReadStream(ruta),
+        terminal: false
+    });
+    rl.on('line', function (chunk) {
+        db.query(chunk.toString('ascii'), function (err, sets, fields) {
+            if (err) console.log(err);
+            console.log("voy");
+            console.log(sets);
+            console.log(fields);
+        });
+    });
+    rl.on('close', function () {
+        console.log("finished");
+    });
+
+
+    /* const connection = mysql.createConnection({
+        host: db.config.connectionConfig.host,
+        user: db.config.connectionConfig.user,
+        password: db.config.connectionConfig.password,
+        database: db.config.connectionConfig.database,
+        multipleStatements: true
+    });
+
+    const connectionQueryPromise = promisify(connection.query.bind(connection));
+    let ruta = path.join(__dirname, '..', '..', 'database', 'prueba.sql');
+    console.log(ruta);
+
+    const dbImportScript = fs.readFileSync(ruta);
+    console.log(dbImportScript);
+    await connectionQueryPromise(dbImportScript);
+ */
+
+    /*     //console.log(database);
+        db.query('source "../../database/poblarDDBB.sql"', function (error, results, fields) {
+            if (error){
+                throw error;
+    
+            } else{
+                console.log("hecho");
+                console.log(results);
+            }
+            // connected!
+          }); */
+
+}
+
 module.exports = helpers;

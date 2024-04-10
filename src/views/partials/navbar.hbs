@@ -58,7 +58,7 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Panel Adm
+                        Gestion
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="/aton/add ">Crear nuevo AtoN</a>
@@ -75,6 +75,25 @@
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="/profile">Perfil</a>
                         <a class="dropdown-item" href="/logout">Logout</a>
+                    </ul>
+                </li>
+                {{/if}}
+                               {{#if user}}
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Panel Adm
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/aton/add ">Crear nuevo AtoN</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/backups">Backups BBDD</a>
+                        <a class="dropdown-item" href="/backupsfotos">Backup fotos</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/logs">Ver logs</a>
+                        <div class="dropdown-divider"></div>
+                         <a class="dropdown-item" href="/aton/transform">Conversión coordenadas</a>
                     </ul>
                 </li>
                 {{/if}}

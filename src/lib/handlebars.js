@@ -1,4 +1,4 @@
-const { format,register  } = require('timeago.js');
+const { format, register } = require('timeago.js');
 const helpers = {};
 register('es_ES', (number, index, total_sec) => [
   ['ahora', 'ahorita'],
@@ -46,12 +46,12 @@ helpers.timeago = (fecha) => {
 }
 
 helpers.formatearSp = (fecha) => {
-  if(fecha!=null){
+  if (fecha != null) {
     var timestamp = new Date(fecha);
     mnth = ("0" + (timestamp.getMonth() + 1)).slice(-2),
       day = ("0" + timestamp.getDate()).slice(-2);
     return [day, mnth, timestamp.getFullYear()].join("/");
-  }else{
+  } else {
     return null;
   }
 
@@ -63,6 +63,22 @@ helpers.formatearEn = (fecha) => {
   mnth = ("0" + (timestamp.getMonth() + 1)).slice(-2),
     day = ("0" + timestamp.getDate()).slice(-2);
   return [timestamp.getFullYear(), mnth, day].join("-");
+}
+
+helpers.getLatIALAformat = (lat) => {
+  var lattext = "";
+  var latabs = Math.abs(lat);
+  lattext = Math.trunc(latabs) + "º " + ((latabs - Math.trunc(latabs)) * 60).toFixed(3) + "´";
+  lat > 0 ? lattext += "N" : lattext += "S";
+  return lattext;
+}
+
+helpers.getLngIALAformat = (lng) => {
+  var lngtext = "";
+  var lngabs = Math.abs(lng);
+  lngtext = Math.trunc(lngabs) + "º " + ((lngabs - Math.trunc(lngabs)) * 60).toFixed(3) + "´";
+  lng > 0 ? lngtext += "E" : lngtext += "W";
+  return lngtext;
 }
 
 helpers.suma = (balizas) => {
@@ -80,18 +96,18 @@ helpers.esAdmin = (value) => {
 helpers.esTecnico = (value) => {
   return (value == "san");
 }
-helpers.when =(operand_1, operator, operand_2, options)=> {
+helpers.when = (operand_1, operator, operand_2, options) => {
   var operators = {
-    'eq': function(l,r) { return l == r; },
-    'noteq': function(l,r) { return l != r; },
-    'gt': function(l,r) { return Number(l) > Number(r); },
-    'or': function(l,r) { return l || r; },
-    'and': function(l,r) { return l && r; },
-    '%': function(l,r) { return (l % r) === 0; }
-   }
-   , result = operators[operator](operand_1,operand_2);
- 
-   if (result) return options.fn(this);
-   else  return options.inverse(this);
+    'eq': function (l, r) { return l == r; },
+    'noteq': function (l, r) { return l != r; },
+    'gt': function (l, r) { return Number(l) > Number(r); },
+    'or': function (l, r) { return l || r; },
+    'and': function (l, r) { return l && r; },
+    '%': function (l, r) { return (l % r) === 0; }
+  }
+    , result = operators[operator](operand_1, operand_2);
+
+  if (result) return options.fn(this);
+  else return options.inverse(this);
 }
 module.exports = helpers;

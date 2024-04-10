@@ -4,10 +4,87 @@ const path = require('path');
 const db = require("../database"); //db hace referencia a la BBDD
 const funciones = require("../lib/funciones.js");
 const fs = require('fs').promises;
-const queryListadoAton = "SELECT b.nif,b.num_internacional,b.tipo,b.apariencia,b.periodo,b.caracteristica,b.telecontrol,b.necesita_pintado,lo.puerto,lo.num_local,lo.localizacion,lo.latitud,lo.longitud,la.altura,la.elevacion,la.alcanceNom,la.linterna,la.candelasCalc,la.alcanceLum,la.candelasInst FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif";
+const queryListadoAton = "SELECT lo.coordenadas,b.nif,b.num_internacional,b.tipo,b.apariencia,b.periodo,b.caracteristica,b.telecontrol,b.necesita_pintado,lo.puerto,lo.num_local,lo.localizacion,lo.latitud,lo.longitud,la.altura,la.elevacion,la.alcanceNom,la.linterna,la.candelasCalc,la.alcanceLum,la.candelasInst FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif";
 const queryListadoTicketsUsers = "SELECT t.ticket_id,t.nif,t.created_by_id,t.assigned_to_id,t.resolved_by_id,t.titulo,t.descripcion,t.solved_at,t.created_at,u1.usuario as created_by,u2.usuario as assigned_to,u3.usuario as resolved_by FROM tickets t LEFT JOIN usuarios u1 ON t.created_by_id=u1.id  LEFT JOIN usuarios u2 ON t.assigned_to_id=u2.id LEFT JOIN usuarios u3 ON t.resolved_by_id=u3.id ";
 var moment = require('moment'); // require
 moment().format();
+
+getPointfromLatLng =  (lat, lng) => {
+    var lat2 = 0;
+    var lng2 = 0;
+    if (lat != null && lat.includes("º")) {
+        lat = lat.replaceAll("'", "´"); // y reemplazo la coma ' por ´
+        lat = lat.replaceAll("°", "º");
+
+        var utmarraylat = lat.split("º"); //separo grados y minutos
+        //console.log(utmarraylat[0] + " - " + utmarraylat[1]);
+        //(utmarraylat[0] son grados y  utmarraylat[1] minutos
+        utmarraylat[1] = utmarraylat[1].replace(",", "."); //DE LOS MINUTOS sustituyo comas por PUNTOS
+        var minutoslatVector = utmarraylat[1].split("."); //de los minutos separo en las PUNTOS
+        //console.log(minutoslatVector[0] + " - " + minutoslatVector[1]);
+
+        if (minutoslatVector.length > 1) {
+            var minutoslatEntero = parseFloat(minutoslatVector[0]); //convierto a decimal (la separacion ha de ser un PUNTO)
+
+            if (minutoslatVector[1].includes("´")) {
+                var minutoslat = minutoslatVector[1].split("´")
+            } else {
+                var minutoslat = minutoslatVector[1].split(" ")
+            }
+            //console.log(minutoslat[0] + " - " + minutoslat[1]);
+            var minutoslatDecimal = parseFloat(minutoslat[0]);
+            lat2 = parseFloat(utmarraylat[0]) + (minutoslatEntero + minutoslatDecimal / 1000) / 60;
+        } else {
+            var minutoslat = minutoslatVector[0].trim().split(" ");
+            lat2 = parseFloat(utmarraylat[0]) + parseFloat(minutoslat[0]) / 60;
+        }
+        //console.log(minutoslatVector);
+        if (minutoslat[1].trim() == 'N')
+            lat2 = 1 * lat2.toFixed(6);
+        else if (minutoslat[1].trim() == 'S')
+            lat2 = -1 * lat2.toFixed(6);
+        //console.log(lat2);
+    }
+
+    if (lng != null && lng.includes("º")) {
+        lng = lng.replaceAll("'", "´");
+        lng = lng.replaceAll("°", "º");
+        var utmarraylng = lng.split("º"); //separo grados y minutos
+        //console.log(utmarraylng[0] + " - " + utmarraylng[1]);
+        //(utmarraylng[0] son grados y  utmarraylng[1] minutos
+        utmarraylng[1] = utmarraylng[1].replace(",", "."); //DE LOS MINUTOS sustituyo comas por PUNTOS
+        var minutoslngVector = utmarraylng[1].split("."); //de los minutos separo en las PUNTOS
+        //console.log(minutoslngVector[0] + " - " + minutoslngVector[1]);
+
+        if (minutoslngVector.length > 1) {
+
+            var minutoslngEntero = parseFloat(minutoslngVector[0]); //convierto a decimal (la separacion ha de ser un PUNTO)
+
+            if (minutoslngVector[1].includes("´")) {
+                var minutoslng = minutoslngVector[1].split("´")
+            } else {
+                var minutoslng = minutoslngVector[1].split(" ")
+            }
+            //console.log(minutoslng[0] + " - " + minutoslng[1]);
+            var minutoslngDecimal = parseFloat(minutoslng[0]);
+            lng2 = parseFloat(utmarraylng[0]) + (minutoslngEntero + minutoslngDecimal / 1000) / 60;
+        } else {
+            var minutoslng = minutoslngVector[0].trim().split(" ");
+            lng2 = parseFloat(utmarraylng[0]) + parseFloat(minutoslng[0]) / 60;
+        }
+
+
+        if (minutoslng[1].trim() == 'E')
+            lng2 = 1 * lng2.toFixed(6);
+        else if (minutoslng[1].trim() == 'W')
+            lng2 = -1 * lng2.toFixed(6);
+        //console.log(lng2);
+    }
+    return {
+        'lat': lat2,
+        'lng': lng2
+    };
+}
 
 //console.log(db);
 //CRUD ATON create
@@ -168,7 +245,7 @@ router.get("/plantilla/:nif", async (req, res) => {
         var fotos = funciones.listadoFotos(nif);
         res.render("aton/plantilla", { layout: 'layoutPlantilla', baliza: baliza[0], obs: observaciones, mant: mantenimiento, fotos, tickets });
     } else {
-        req.flash("warning", "La baliza indicada con nif " + nif + " no existe!");
+        req.flash("warning", "La baliza indicada con nif " + nif + " no existe!!");
         res.redirect("/error");
     }
 });
@@ -269,6 +346,7 @@ router.post("/editLocalizacion/:nif", funciones.isAuthenticated, funciones.hasSa
             await db.query("INSERT into localizacion set ? ", [newBaliza]);
         } else {
             await db.query("UPDATE localizacion set ? WHERE nif = ?", [newBaliza, nifviejo]);
+            await db.query("UPDATE localizacion set coordenadas= point(?,?) WHERE nif = ?", [latitud,longitud, nifviejo]); 
         }
         funciones.insertarLog(req.user.usuario, "UPDATE localizacion", newBaliza.nif + " " + newBaliza.puerto + " " + newBaliza.num_local + " " + newBaliza.localizacion + " " + newBaliza.latitud + " " + newBaliza.longitud);
         req.flash("success", "Localizacion de baliza modificada correctamente");
@@ -305,6 +383,43 @@ router.post("/editLocalizacionFromMap/:nif", funciones.isAuthenticated, funcione
         res.redirect("/mapaGeneral/valencia");
     }
 
+});
+/* router.get("/transform/:nif", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
+    const nif = req.params.nif;
+
+    try {
+        var [baliza] = await db.query("SELECT * FROM localizacion WHERE nif=?", [nif]);
+        var punto = getPointfromLatLng(baliza.latitud ,baliza.longitud);
+
+        baliza.coordenadas ='POINT('+ punto.lat + ","+punto.lng  + ')';
+        console.log( baliza.coordenadas);
+
+        await db.query("UPDATE localizacion set coordenadas= point(?,?) WHERE nif = ?", [punto.lat,punto.lng, nif]);
+        req.flash("success", "Localizacion de baliza transformada correctamente");
+        res.redirect("/aton/plantilla/" + nif);
+
+    } catch (error) {
+        console.error(error);
+        req.flash("error", "Hubo algun error al modificar la localización del aton con NIF " + nif);
+        res.redirect("/aton/plantilla/" + nif);
+    }
+
+}); */
+router.get("/transform", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
+    const nif = req.params.nif;
+    try {
+        var baliza = await db.query("SELECT * FROM localizacion", [nif]);
+        for(var i = 0; i < baliza.length; i++) {
+            var punto = getPointfromLatLng(baliza[i].latitud ,baliza[i].longitud);
+            await db.query("UPDATE localizacion set coordenadas= point(?,?) WHERE nif = ?", [punto.lat,punto.lng, baliza[i].nif]);
+        }
+        req.flash("success", "Localizacion de balizas transformadas correctamente");
+        res.redirect("/");
+    } catch (error) {
+        console.error(error);
+        req.flash("error", "Hubo algun error al modificar la localización del aton con NIF " + nif);
+        res.redirect("/error");
+    }
 });
 router.post("/editLampara/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     const nifviejo = req.params.nif;
