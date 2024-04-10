@@ -6,10 +6,39 @@ const funciones = require("../lib/funciones.js");
 const { unlink } = require('fs-extra');
 const { access, constants } = require('fs');
 const fs = require('fs');
+const multer = require('multer');
 const queryListadoAton = "SELECT b.nif,b.num_internacional,b.tipo,b.apariencia,b.periodo,b.caracteristica,b.telecontrol,b.necesita_pintado,lo.puerto,lo.num_local,lo.localizacion,lo.latitud,lo.longitud,la.altura,la.elevacion,la.alcanceNom,la.linterna,la.candelasCalc,la.alcanceLum,la.candelasInst FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif";
 const queryListadoTicketsUsers = "SELECT t.ticket_id,t.nif,t.created_by_id,t.assigned_to_id,t.resolved_by_id,t.titulo,t.descripcion,t.solved_at,t.created_at,u1.usuario as created_by,u2.usuario as assigned_to,u3.usuario as resolved_by FROM tickets t LEFT JOIN usuarios u1 ON t.created_by_id=u1.id  LEFT JOIN usuarios u2 ON t.assigned_to_id=u2.id LEFT JOIN usuarios u3 ON t.resolved_by_id=u3.id";
 //var selectedLayout ='layoutMapa';  //  layoutMapa   o    layoutMapaLeaflet
 var selectedLayout = 'layoutMapaLeaflet';
+
+const storageBBDD = multer.diskStorage({
+    destination: (req, file, cb) => {
+        const dir = path.join(__dirname, '../public/dumpSQL/');
+        console.log("dir " + dir);
+        return cb(null, dir);
+    },
+    filename: (req, file, cb) => {
+       // cb(null, new Date().getTime() + path.extname(file.originalname).toLowerCase());
+        cb(null, file.originalname.toLowerCase());
+    }
+});
+
+const uploadFotosBBDD = multer({
+    storage: storageBBDD,
+    limits: { fileSize: 20000000, }, //20MB
+    fileFilter: (req, file, cb) => {
+        const filetypes = /sql/;
+        const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+        console.log(path.extname(file.originalname).toLowerCase() +" antes if" + extname);
+        if (extname) {
+            console.log("en if");
+            //funciones.insertarLog(req.user.usuario, "INSERT sql backup  ", file.originalname.toLowerCase());
+            return cb(null, true);
+        }
+        return cb(("Error: Archivo debe ser un *.sql"));
+    }
+}).single('backupsql');
 
 //MOSTRAR PAGINA INICIAL
 router.get('/', (req, res) => {
@@ -126,11 +155,27 @@ router.get("/dbbackups/del/:nombre", funciones.isAuthenticated, funciones.isAdmi
     funciones.insertarLog(req.user.usuario, "DELETE backup", nombre);
     res.redirect('/dbbackups/list');
 });
-router.get("/dbbackups/runSQL", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
-    funciones.runSQL();
-    //req.flash("success", "Informacion backup de la BBDD volcado correctamente");
+router.get("/dbbackups/runSQL/:file", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
+    var { file } = req.params;
+    //SI EL BACKUP SQL TIENE EL COMETNARIO   ==>    /*!40101 SET NAMES utf8 */;  
+    //ENTONCES PETA, DA ERROR
+
+   /*  code: 'ER_WRONG_VALUE_FOR_VAR',
+    errno: 1231,
+    sqlState: '42000',
+    sqlMessage: "Variable 'sql_mode' can't be set to the value of 'NULL'", */
+    //   sql: '/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;'  
+
+
+    funciones.runSQLrecovery(file);
+    req.flash("success", "Informacion backup de la BBDD volcado correctamente");
     //funciones.insertarLog(req.user.usuario, "RUN backup", "volcado de nueva info");
-    //res.redirect("backups");
+    res.redirect("/dbbackups/list");
+});
+router.post("/dbbackups/upload", funciones.isAuthenticated, funciones.isAdmin, uploadFotosBBDD, async (req, res) => {
+    console.log("Subiendo BACKUP sql");
+    req.flash("success", "backup sql subido correctamente");
+    res.redirect('dbbackups/list');
 });
 
 //GESTION LOGS

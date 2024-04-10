@@ -3,9 +3,7 @@ const path = require('path');
 const fs = require('fs-extra');
 const db = require("../database");
 const mysqldump = require('mysqldump');
-const { promisify } = require('util');
 const { stringify } = require('querystring');
-const mysql = require('mysql2');
 var readline = require('readline');
 const helpers = {};
 
@@ -192,25 +190,8 @@ helpers.dumpearSQL = (operacion) => {
     });
 }
 
-helpers.getCode = () => {
-    let result = '';
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; //abcdefghijklmnopqrstuvwxyz
-    const charactersLength = characters.length;
-    let counter = 0;
-    while (counter < 6) {
-        result += characters.charAt(Math.floor(Math.random() * charactersLength));
-        counter += 1;
-    }
-    return result;
-}
-
-helpers.sendRecoveryMail = async (email, token) => (req, res) => {
-
-
-}
-
-helpers.runSQL = async () => {
-    let ruta = path.join(__dirname, '..', '..', 'database', 'prueba.sql');
+helpers.runSQLrecovery =  (file) => {
+    let ruta = path.join(__dirname,'..','public', 'dumpSQL',  file);
 
     var rl = readline.createInterface({
         input: fs.createReadStream(ruta),
@@ -236,6 +217,18 @@ helpers.runSQL = async () => {
 
 
 
+}
+
+helpers.getCode = () => {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; //abcdefghijklmnopqrstuvwxyz
+    const charactersLength = characters.length;
+    let counter = 0;
+    while (counter < 6) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        counter += 1;
+    }
+    return result;
 }
 
 module.exports = helpers;

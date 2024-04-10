@@ -69,7 +69,7 @@ const uploadFoto = multer({
 
 const uploadFotosZip = multer({
     storage: storageZip,
-    limits: { fileSize: 2000000000, },
+    limits: { fileSize: 200000000, }, //200MB
     fileFilter: (req, file, cb) => {
         const filetypes = /zip/;
         const mimetype = filetypes.test(file.mimetype);

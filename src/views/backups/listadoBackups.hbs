@@ -50,6 +50,8 @@
                     <td>{{ timeago this.created_at}}</td>
                     <td> <a type="submit" href="/dbbackups/del/{{this.name}}" class="text-primary"><i
                                 class="fa fa-trash"></i>Del</a>
+                                <a type="submit" href="/dbbackups/runSQL/{{this.name}}" class="text-primary"><i
+                                class="fa fa-file-archive-o"></i>Load</a>
                     </td>
                 </tr>
                 {{/each}}
@@ -57,6 +59,14 @@
                 <tr>No hay ningún backup generado, crea uno!! </tr>
                 {{/if}}
             </table>
+            <div class="col-12 col-md-6  mx-auto">
+                <form action="/dbbackups/upload" method="POST" enctype="multipart/form-data">
+                    <div class="input-group mb-3">
+                        <input type="file" class="form-control" id="inputGroupFile01" name="backupsql">
+                        <button type="submit" class=" btn btn-primary btn-block">SUBIR BACKUP</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
     <div class="text-center m-4"> <a class="btn btn-primary" href="/dbbackups/runSQL">Recuperar backup</a></div>
