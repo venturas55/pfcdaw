@@ -107,23 +107,30 @@ router.post('/doAdmin', funciones.isAuthenticated, async (req, res) => {
 });
 
 //GESTION BACKUPS BBDD
-router.get("/backups", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
+router.get("/dbbackups/list", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     var backups = funciones.listadoBackups();
-    res.render("documentos/listadoBackups", { backups });
+    res.render("backups/listadoBackups", { backups });
 });
-router.get("/backups/del/:nombre", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
+router.post("/dbbackups/create/:operacion", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
+    var { operacion } = req.params;
+    funciones.dumpearSQL(operacion);
+    req.flash("success", "Backup de la BBDD realizado correctamente");
+    funciones.insertarLog(req.user.usuario, "DO backup", "nuevo backup "+operacion);
+    res.redirect("/dbbackups/list");
+});
+router.get("/dbbackups/del/:nombre", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     var { nombre } = req.params;
     var file = path.resolve('src/public/dumpSQL', nombre);
     //console.log(file);
     await fs.unlinkSync(file);
     funciones.insertarLog(req.user.usuario, "DELETE backup", nombre);
-    res.redirect('/backups');
+    res.redirect('/dbbackups/list');
 });
-router.get("/dumpSQL", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
-    funciones.dumpearSQL();
-    req.flash("success", "Backup de la BBDD realizado correctamente");
-    funciones.insertarLog(req.user.usuario, "DO backup", "nuevo backup");
-    res.redirect("backups");
+router.get("/dbbackups/runSQL", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
+    funciones.runSQL();
+    //req.flash("success", "Informacion backup de la BBDD volcado correctamente");
+    //funciones.insertarLog(req.user.usuario, "RUN backup", "volcado de nueva info");
+    //res.redirect("backups");
 });
 
 //GESTION LOGS

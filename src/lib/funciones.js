@@ -26,7 +26,7 @@ helpers.listadoFotos = (req, res, next) => {
 helpers.getUrlPictureAtoN = (nif) => {
     let files;
     var directorio = path.join(__dirname, "../public/img/imagenes", nif);
-    if(fs.existsSync(directorio)){
+    if (fs.existsSync(directorio)) {
         files = fs.readdirSync(directorio)
     }
     return files;
@@ -160,11 +160,24 @@ helpers.insertarLog = async (usuario, accion, observacion) => {
 
 }
 
-helpers.dumpearSQL = () => {
+helpers.dumpearSQL = (operacion) => {
     // dump the result straight to a file
     console.log("===============================");
     console.log(db.config.connectionConfig);
-
+    var tables = [];
+    switch (operacion) {
+        case 'balizamiento':
+            tables.push("balizamiento", "localizacion", "lampara");
+            break;
+        case 'mantenimiento':
+            tables.push("mantenimiento", "observaciones");
+            break;
+        case 'completo':
+            tables.push("balizamiento", "localizacion", "lampara", "mantenimiento", "observaciones", "tickets", "inventario", "logs", "usuarios");
+            break;
+        default:
+            break;
+    }
     mysqldump({
         connection: {
             host: db.config.connectionConfig.host,
@@ -172,7 +185,10 @@ helpers.dumpearSQL = () => {
             password: db.config.connectionConfig.password,
             database: db.config.connectionConfig.database,
         },
-        dumpToFile: './src/public/dumpSQL/dumpSAN' + Date.now() + '.sql',
+        dumpToFile: './src/public/dumpSQL/dumpSAN' + '-' + operacion + '-' + Date.now() + '.sql',
+        dump: {
+            tables,
+        }
     });
 }
 
@@ -193,56 +209,32 @@ helpers.sendRecoveryMail = async (email, token) => (req, res) => {
 
 }
 
-helpers.consultaPrueba = async () => {
+helpers.runSQL = async () => {
     let ruta = path.join(__dirname, '..', '..', 'database', 'prueba.sql');
-    console.log(ruta);
 
     var rl = readline.createInterface({
-
         input: fs.createReadStream(ruta),
         terminal: false
     });
+    let total = "";
     rl.on('line', function (chunk) {
-        db.query(chunk.toString('ascii'), function (err, sets, fields) {
+        total += chunk.toString();
+        console.log("> " + chunk);
+
+        /* db.query(chunk.toString('ascii'), function (err, sets, fields) {
             if (err) console.log(err);
-            console.log("voy");
-            console.log(sets);
-            console.log(fields);
-        });
+        }); */
+        if (chunk.toString('ascii').charAt(chunk.length - 1) == ';') {
+            console.log(">> " + total);
+            db.query(total, function (err, sets, fields) { if (err) console.log(err); });
+            total = "";
+        }
     });
     rl.on('close', function () {
         console.log("finished");
     });
 
 
-    /* const connection = mysql.createConnection({
-        host: db.config.connectionConfig.host,
-        user: db.config.connectionConfig.user,
-        password: db.config.connectionConfig.password,
-        database: db.config.connectionConfig.database,
-        multipleStatements: true
-    });
-
-    const connectionQueryPromise = promisify(connection.query.bind(connection));
-    let ruta = path.join(__dirname, '..', '..', 'database', 'prueba.sql');
-    console.log(ruta);
-
-    const dbImportScript = fs.readFileSync(ruta);
-    console.log(dbImportScript);
-    await connectionQueryPromise(dbImportScript);
- */
-
-    /*     //console.log(database);
-        db.query('source "../../database/poblarDDBB.sql"', function (error, results, fields) {
-            if (error){
-                throw error;
-    
-            } else{
-                console.log("hecho");
-                console.log(results);
-            }
-            // connected!
-          }); */
 
 }
 
