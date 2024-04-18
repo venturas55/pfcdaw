@@ -4,11 +4,14 @@ services:
   mysqldb:
     image: mysql
     env_file: ./.env
+    # entrypoint: ./db/sanDDBBtotal.sql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=$DB_PASS
       - MYSQL_DATABASE=$DB_NAME
     volumes:
-      - my-db:/home/ventu/docker/bbdd/mysql
+      - my-db:/docker/bbdd/mysql
     ports:
       - $MYSQL_LOCAL_PORT:$MYSQL_DOCKER_PORT
   
@@ -19,7 +22,7 @@ services:
     links:
       - mysqldb
     ports:
-      - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
+      - $PORT:$NODE_DOCKER_PORT
 
 volumes:
   my-db:
