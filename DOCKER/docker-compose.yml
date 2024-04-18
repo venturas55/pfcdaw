@@ -4,7 +4,7 @@ services:
   mysqldb:
     image: mysql
     env_file: ./.env
-    # entrypoint: ./db/sanDDBBtotal.sql
+    # entrypoint: ./db/dumpSAN-completo.sql
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
