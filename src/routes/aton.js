@@ -196,6 +196,7 @@ router.post("/add", funciones.isAuthenticated, funciones.hasSanPrivileges, async
 
 //CRUD ATON read
 router.get("/list", async (req, res) => {
+    var numPintado=0;
     const balizas = await db.query(queryListadoAton);
 
     const tickets = await db.query("select * from tickets where solved_at IS NULL");
@@ -204,8 +205,11 @@ router.get("/list", async (req, res) => {
         const hasItem = tickets.some(obj => obj.nif === element.nif);
         if (hasItem)
             element.hasTicket = true;
+        if(element.necesita_pintado)
+            numPintado++;
     });
-    res.render("aton/list", { balizas });
+    const numtickets = tickets.length;
+    res.render("aton/list", { balizas,numtickets,numPintado });
 
 });
 router.get("/list/:busqueda", async (req, res) => {
