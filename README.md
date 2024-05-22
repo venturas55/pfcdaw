@@ -138,3 +138,6 @@ CREATE TABLE `tokens` (
 
 Además se han añadido dos variables de entorno más EMAIL_ACCOUNT y EMAIL_PASS para configurar la cuenta desde la que se enviarán los correos para recuperar la contraseña.
 
+
+ACTUALIZACIONES:
+Se ha de añadir en la BBDD una columna nueva a la tabla localizacion. La columna es experiemntal y es de tipo POINT para almacenar las coordenadas.
