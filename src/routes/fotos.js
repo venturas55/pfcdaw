@@ -56,14 +56,14 @@ const uploadFoto = multer({
     storage,
     limits: { fileSize: 5000000, },
     fileFilter: (req, file, cb) => {
-        const filetypes = /jpeg|jpg|png|bmp|gif/;
+        const filetypes = /jpeg|jpg|jfif|png|bmp|gif/;
         const mimetype = filetypes.test(file.mimetype);
         console.log(mimetype + "es el 1");
         const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
         if (mimetype && extname) {
             return cb(null, true);
         }
-        return cb(("Error: Archivo debe ser una imagen valida jpeg,jpg,png,bmp o gif"));
+        return cb(("Error: Archivo debe ser una imagen valida jpeg,jpg,jfif,png,bmp o gif"));
     }
 }).single('imagen');
 
