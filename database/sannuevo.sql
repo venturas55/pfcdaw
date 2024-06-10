@@ -41,7 +41,8 @@ CREATE TABLE `localizacion` (
   `num_local` decimal(5, 0) DEFAULT NULL,
   `localizacion` varchar(70) DEFAULT NULL,
   `latitud` varchar(15) DEFAULT NULL,
-  `longitud` varchar(15) DEFAULT NULL
+  `longitud` varchar(15) DEFAULT NULL,
+  `coordenadas` point default NULL
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = 'tabla de localizacion del balizamiento';
 
 CREATE TABLE `mantenimiento` (

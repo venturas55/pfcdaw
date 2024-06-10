@@ -44,6 +44,7 @@ CREATE TABLE IF NOT EXISTS `localizacion` (
   `localizacion` varchar(70) DEFAULT NULL,
   `latitud` varchar(15) DEFAULT NULL,
   `longitud` varchar(15) DEFAULT NULL,
+  `coordenadas` point default NULL,
   PRIMARY KEY (`nif`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'tabla de localizacion del balizamiento';
 
