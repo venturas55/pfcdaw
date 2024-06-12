@@ -67,6 +67,8 @@ app.use('/aton', require('./routes/aton'));
 app.use(require('./routes/documentos'));
 app.use(require('./routes/api'));
 app.use('/tickets', require('./routes/tickets'));
+app.use('/mantenimientopreventivo', require('./routes/preventivos'));
+
 
 
 //Public

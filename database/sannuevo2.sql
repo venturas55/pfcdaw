@@ -78,7 +78,6 @@ CREATE TABLE IF NOT EXISTS `inventario` (
   PRIMARY KEY (`id`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 79 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'tabla de inventario';
 
-
 /* DESCRIPCION DOCUMENTOS */
 CREATE TABLE `documentos` (
   `id_archivo` varchar(100) NOT NULL,
@@ -107,6 +106,7 @@ CREATE TABLE IF NOT EXISTS `logs` (
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'tabla de logs';
 
 drop table if exists tickets;
+
 CREATE TABLE IF NOT EXISTS `tickets` (
   `ticket_id` int(11) NOT NULL AUTO_INCREMENT,
   `nif` varchar(8) DEFAULT NULL,
@@ -139,8 +139,52 @@ CREATE TABLE `tokens` (
   `user_id` int(11) NOT NULL,
   `hashedtoken` varchar(200) PRIMARY KEY,
   `expires` DATETIME NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-   FOREIGN KEY (user_id) REFERENCES usuarios(id) ON DELETE CASCADE
+  FOREIGN KEY (user_id) REFERENCES usuarios(id) ON DELETE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = 'tabla de tokens';
+DROP TABLE IF EXISTS preventivos;
+CREATE TABLE IF NOT EXISTS `preventivos` (
+  `preventivo_id` int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `nif` varchar(8) DEFAULT NULL,
+  `estructura_estado` BOOLEAN default null,
+  `estructura_marca_tope` BOOLEAN default null,
+  `estructura_engrase` BOOLEAN default null,
+  `estructura_golpes` BOOLEAN default null,
+  `estructura_flotador` BOOLEAN default null,
+  `estructura_limpieza_interior` BOOLEAN default null,
+  `estructura_limpieza_exterior` BOOLEAN default null,
+  `estructura_cuadro_interior` BOOLEAN default null,
+  `estructura_cuadro_exterior` BOOLEAN default null,
+  `linterna_ldr1` BOOLEAN default null,
+  `linterna_ldr2` BOOLEAN default null,
+  `linterna_optica` BOOLEAN default null,
+  `linterna_estanqueidad_tornillos` BOOLEAN default null,
+  `linterna_estanqueidad_humedades` BOOLEAN default null,
+  `telecontrol_monitoreo` BOOLEAN default null,
+  `telecontrol_gps` BOOLEAN default null,
+  `telecontrol_tipo` ENUM(
+    'Radio-Moscad',
+    'radioUHF',
+    'AIS',
+    'GSM',
+    'Satelital'
+  ) default null,
+  `alimentacion_panelFV` BOOLEAN default null,
+  `alimentacion_red` BOOLEAN default null,
+  `alimentacion_baterias` BOOLEAN default null,
+  `alimentacion_ah` int default null,
+  `alimentacion_vcc` float default null,
+  `alimentacion_grupo` BOOLEAN default null,
+  `alimentacion_cableado` BOOLEAN default null,
+  `estructura_observaciones` varchar(250) default null,
+  `linterna_observaciones` varchar(250) default null,
+  `telecontrol_observaciones` varchar(250) default null,
+  `alimentacion_observaciones` varchar(250) default null,
+  `observaciones_generales` varchar(250) default null,
+  `created_at` timestamp DEFAULT current_timestamp(),
+  `created_by_id` int(11) DEFAULT NULL,
+  CONSTRAINT `preventivo_ibfk_1` FOREIGN KEY (`created_by_id`) REFERENCES `usuarios` (`id`),
+  CONSTRAINT `preventivo_ibfk_2` FOREIGN KEY (`nif`) REFERENCES `balizamiento` (`nif`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'tabla de preventivos';
 
 -- Inserta usuario "admin" con contraseña "admin"
 INSERT INTO
