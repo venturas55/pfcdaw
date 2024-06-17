@@ -171,8 +171,8 @@ CREATE TABLE IF NOT EXISTS `preventivos` (
   `alimentacion_panelFV` BOOLEAN default null,
   `alimentacion_red` BOOLEAN default null,
   `alimentacion_baterias` BOOLEAN default null,
-  `alimentacion_ah` int default null,
-  `alimentacion_vcc` float default null,
+  `alimentacion_ah` int default 0,
+  `alimentacion_vcc` float default 0,
   `alimentacion_grupo` BOOLEAN default null,
   `alimentacion_cableado` BOOLEAN default null,
   `estructura_observaciones` varchar(250) default null,
@@ -181,6 +181,7 @@ CREATE TABLE IF NOT EXISTS `preventivos` (
   `alimentacion_observaciones` varchar(250) default null,
   `observaciones_generales` varchar(250) default null,
   `created_at` timestamp DEFAULT current_timestamp(),
+  `solved_at` timestamp DEFAULT NULL,
   `created_by_id` int(11) DEFAULT NULL,
   CONSTRAINT `preventivo_ibfk_1` FOREIGN KEY (`created_by_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `preventivo_ibfk_2` FOREIGN KEY (`nif`) REFERENCES `balizamiento` (`nif`)

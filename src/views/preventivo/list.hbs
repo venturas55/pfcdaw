@@ -8,7 +8,7 @@
     </div>
     <div class="row mb-2">
         <div class="col-md-11 col-xl-11 mx-auto">
-            <h3>TICKETS
+            <h3>PREVENTIVOS
                 {{#if ticketsAbiertos}}
                 ABIERTOS
                 {{/if}}
@@ -25,21 +25,17 @@
                     style="white-space: nowrap; overflow-x: auto;">
                     <tr class="info-color-dark">
                         <th>NIF</th>
-                        <th>Averia</th>
-                        <th class="d-none d-xl-table-cell">Trabajo</th>
                         <th class="d-none d-md-table-cell">Creado por</th>
-                        <th class="d-none d-sm-table-cell">Assignado a</th>
-                        <th class="d-none d-md-table-cell">Estado</th>
+                        <th class="d-none d-md-table-cell">Fecha inicio</th>
+                        <th class="d-none d-md-table-cell">Status</th>
                         <th>Accion</th>
                     </tr>
 
                     {{#each tickets}}
                     <tr class="fila">
                         <td> <a href="/aton/plantilla/{{ this.nif }} ">{{ this.nif }}</a> </td>
-                        <td>{{ this.titulo }} </td>
-                        <td class="d-none d-xl-table-cell">{{ this.descripcion }} </td>
                         <td class="d-none d-md-table-cell">{{ this.created_by }} </td>
-                        <td class="d-none d-sm-table-cell">{{ this.assigned_to }} </td>
+                        <td class="d-none d-md-table-cell">{{ timeagoSpCerrado this.created_at }} </td>
 
                         {{#if this.solved_at}}
                         <td class="d-none d-md-table-cell">cerrado {{ timeagoSpCerrado this.solved_at }} por
@@ -50,10 +46,10 @@
 
                         <td>
                             {{#if this.solved_at}}
-                            <a href="/tickets/cerrado/{{this.ticket_id}}" class="text-primary"><i
+                            <a href="/mantenimientopreventivo/cerrado/{{this.preventivo_id}}" class="text-primary"><i
                                     class="fa fa-eye"></i>View</a>
                             {{else}}
-                            <a href="/tickets/edit/{{this.ticket_id}}" class="text-primary"><i
+                            <a href="/mantenimientopreventivo/edit/{{this.preventivo_id}}" class="text-primary"><i
                                     class="fa fa-pencil"></i>Edit</a>
                             {{/if}}
 
@@ -61,7 +57,7 @@
                     </tr>
                     {{/each}}
                     {{else}}
-                    <p>No hay tickets </p>
+                    <p>No hay mantenimientos preventivos </p>
                     {{/if}}
                 </table>
             </div>

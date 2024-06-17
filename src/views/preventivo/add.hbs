@@ -5,6 +5,7 @@
             <div class="card py-4">
                 <div class="card-body py-4">
                     <form action="/mantenimientopreventivo/add" method="POST">
+                    <input class="form-control" type="hidden" name="created_by_id" placeholder="created_by_id" value="{{user.id}}" />
                         <div class="form-group">
                             <label for="item">AtoN NIF</label>
                             <input class="form-control" type="text" name="nif" placeholder="nif" size="6" />
@@ -26,7 +27,7 @@
 
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="estructura_estado"
-                                        id="estructura_estado3" value="na" />
+                                        id="estructura_estado3" value="null" />
                                     <label class="form-check-label" for="estructura_estado3">N/A</label>
                                 </div>
                             </div>
@@ -49,7 +50,7 @@
 
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="estructura_marca_tope"
-                                        id="estructura_marca_tope3" value="na" />
+                                        id="estructura_marca_tope3" value="null" />
                                     <label class="form-check-label" for="estructura_marca_tope3">N/A</label>
                                 </div>
                             </div>
@@ -71,7 +72,7 @@
 
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="estructura_engrase"
-                                        id="estructura_engrase3" value="na" />
+                                        id="estructura_engrase3" value="null" />
                                     <label class="form-check-label" for="estructura_engrase3">N/A</label>
                                 </div>
                             </div>
@@ -93,7 +94,7 @@
 
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="estructura_golpes"
-                                        id="estructura_golpes3" value="na" />
+                                        id="estructura_golpes3" value="null" />
                                     <label class="form-check-label" for="estructura_golpes3">N/A</label>
                                 </div>
                             </div>
@@ -114,7 +115,7 @@
 
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="estructura_flotador"
-                                        id="estructura_flotador3" value="na" />
+                                        id="estructura_flotador3" value="null" />
                                     <label class="form-check-label" for="estructura_flotador3">N/A</label>
                                 </div>
                             </div>
@@ -136,7 +137,7 @@
 
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="estructura_limpieza_interior"
-                                        id="estructura_limpieza_interior3" value="na" />
+                                        id="estructura_limpieza_interior3" value="null" />
                                     <label class="form-check-label" for="estructura_limpieza_interior3">N/A</label>
                                 </div>
                             </div>
@@ -158,7 +159,7 @@
 
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="estructura_limpieza_exterior"
-                                        id="estructura_limpieza_exterior3" value="na" />
+                                        id="estructura_limpieza_exterior3" value="null" />
                                     <label class="form-check-label" for="estructura_limpieza_exterior3">N/A</label>
                                 </div>
                             </div>
@@ -180,7 +181,7 @@
 
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="estructura_cuadro_interior"
-                                        id="estructura_cuadro_interior3" value="na" />
+                                        id="estructura_cuadro_interior3" value="null" />
                                     <label class="form-check-label" for="estructura_cuadro_interior3">N/A</label>
                                 </div>
                             </div>
@@ -201,7 +202,7 @@
 
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="estructura_cuadro_exterior"
-                                        id="estructura_cuadro_exterior3" value="na" />
+                                        id="estructura_cuadro_exterior3" value="null" />
                                     <label class="form-check-label" for="estructura_cuadro_exterior2">N/A</label>
                                 </div>
                             </div>
@@ -229,7 +230,7 @@
 
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="linterna_ldr1"
-                                        id="linterna_ldr13" value="na" />
+                                        id="linterna_ldr13" value="null" />
                                     <label class="form-check-label" for="linterna_ldr13">N/A</label>
                                 </div>
                             </div>
@@ -251,7 +252,7 @@
 
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="linterna_ldr2"
-                                        id="linterna_ldr23" value="na" />
+                                        id="linterna_ldr23" value="null" />
                                     <label class="form-check-label" for="linterna_ldr23">N/A</label>
                                 </div>
                             </div>
@@ -271,7 +272,7 @@
 
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="linterna_optica"
-                                        id="linterna_optica3" value="na" />
+                                        id="linterna_optica3" value="null" />
                                     <label class="form-check-label" for="linterna_optica3">N/A</label>
                                 </div>
                             </div>
@@ -291,7 +292,7 @@
 
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="linterna_estanqueidad_tornillos"
-                                        id="linterna_estanqueidad_tornillos3" value="na" />
+                                        id="linterna_estanqueidad_tornillos3" value="null" />
                                     <label class="form-check-label" for="linterna_estanqueidad_tornillos3">N/A</label>
                                 </div>
                             </div>
@@ -311,7 +312,7 @@
 
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="linterna_estanqueidad_humedades"
-                                        id="linterna_estanqueidad_humedades3" value="na" />
+                                        id="linterna_estanqueidad_humedades3" value="null" />
                                     <label class="form-check-label" for="linterna_estanqueidad_humedades3">N/A</label>
                                 </div>
                             </div>
@@ -339,7 +340,7 @@
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="telecontrol_monitoreo"
-                                        id="telecontrol_monitoreo3" value="na" />
+                                        id="telecontrol_monitoreo3" value="null" />
                                     <label class="form-check-label" for="telecontrol_monitoreo3">N/A</label>
                                 </div>
                             </div>
@@ -359,7 +360,7 @@
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="telecontrol_gps"
-                                        id="telecontrol_gps3" value="na" />
+                                        id="telecontrol_gps3" value="null" />
                                     <label class="form-check-label" for="telecontrol_gps2">N/A</label>
                                 </div>
                             </div>
@@ -391,7 +392,7 @@
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="alimentacion_panelFV"
-                                        id="alimentacion_panelFV3" value="na" />
+                                        id="alimentacion_panelFV3" value="null" />
                                     <label class="form-check-label" for="alimentacion_panelFV3">N/A</label>
                                 </div>
                             </div>
@@ -411,17 +412,17 @@
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="alimentacion_red"
-                                        id="alimentacion_red3" value="na" />
+                                        id="alimentacion_red3" value="null" />
                                     <label class="form-check-label" for="alimentacion_red3">N/A</label>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="titulo">Capacidad en Ah</label>
-                                <input type="number" name="alimentacion_ah" min="0" step="1">
+                                <input type="number" name="alimentacion_ah" min="0" step="1" value="0">
                             </div>
                                          <div class="form-group">
                                 <label for="titulo">Voltaje en V</label>
-                                <input type="number" name="alimentacion_vcc" min="0" max="20" step="0.01">
+                                <input type="number" name="alimentacion_vcc" min="0" max="20" step="0.01" value="0">
                             </div>
 
 
@@ -440,7 +441,7 @@
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="alimentacion_baterias"
-                                        id="alimentacion_baterias3" value="na" />
+                                        id="alimentacion_baterias3" value="null" />
                                     <label class="form-check-label" for="alimentacion_baterias3">N/A</label>
                                 </div>
                             </div>
@@ -460,7 +461,7 @@
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="alimentacion_grupo"
-                                        id="alimentacion_grupo3" value="na" />
+                                        id="alimentacion_grupo3" value="null" />
                                     <label class="form-check-label" for="alimentacion_grupo3">N/A</label>
                                 </div>
                             </div>
@@ -480,7 +481,7 @@
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="alimentacion_cableado"
-                                        id="alimentacion_cableado3" value="na" />
+                                        id="alimentacion_cableado3" value="null" />
                                     <label class="form-check-label" for="alimentacion_cableado3">N/A</label>
                                 </div>
                             </div>

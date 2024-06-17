@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require("../database.js"); //db hace referencia a la BBDD
 const funciones = require("../lib/funciones.js");
-const queryListadoTicketsUsers = "SELECT t.ticket_id,t.nif,t.created_by_id,t.assigned_to_id,t.resolved_by_id,t.titulo,t.descripcion,t.solved_at,t.created_at,u1.usuario as created_by,u2.usuario as assigned_to,u3.usuario as resolved_by FROM tickets t LEFT JOIN usuarios u1 ON t.created_by_id=u1.id  LEFT JOIN usuarios u2 ON t.assigned_to_id=u2.id LEFT JOIN usuarios u3 ON t.resolved_by_id=u3.id";
+const queryListadoPreventivosUsers = 'SELECT p.preventivo_id,p.nif,p.estructura_estado,p.estructura_marca_tope,p.estructura_engrase,p.estructura_golpes,p.estructura_limpieza_interior,p.estructura_limpieza_exterior,p.estructura_cuadro_interior,p.estructura_cuadro_exterior,p.estructura_observaciones,p.linterna_ldr1,p.linterna_ldr2,p.linterna_optica,p.linterna_estanqueidad_tornillos,p.linterna_estanqueidad_humedades,p.linterna_observaciones,p.telecontrol_monitoreo,p.telecontrol_gps,p.telecontrol_tipo,p.telecontrol_observaciones,p.alimentacion_panelFV,p.alimentacion_red,p.alimentacion_baterias,p.alimentacion_ah,p.alimentacion_vcc,p.alimentacion_grupo,p.alimentacion_cableado,p.alimentacion_observaciones,p.observaciones_generales,p.created_at,p.created_by_id,u1.usuario as created_by FROM preventivos p LEFT JOIN usuarios u1 ON p.created_by_id=u1.id';
 var moment = require('moment'); // require
 moment().format();
 
@@ -11,7 +11,8 @@ moment().format();
 router.get('/list', async (req, res) => {
     //const tickets = await db.query("select * from tickets order by created_at");
     try {
-        const tickets = await db.query(queryListadoTicketsUsers + " order by t.solved_at asc,t.created_at desc");
+        const tickets = await db.query(queryListadoPreventivosUsers + " order by p.created_at asc");
+        console.log(tickets);
         res.render('preventivo/list', {
             tickets
         });
@@ -62,12 +63,12 @@ router.get('/edit/:id', funciones.isAuthenticated, funciones.hasSanPrivileges, a
     } = req.params;
     //console.log(id);
     try {
-        const ticket = await db.query(queryListadoTickets + " where ticket_id=?", id);
-        const ticketsUsers = await db.query(queryListadoTicketsUsers + " where t.ticket_id=?", id);
+        const ticket = await db.query(queryListadoPreventivosUsers + " where preventivo_id=?", id);
+        const ticketsUsers = await db.query(queryListadoPreventivosUsers + " where p.preventivo_id=?", id);
         const usuarios = await db.query(" select * from usuarios");
         //console.log(ticketsUsers[0]);
         //console.log(ticket[0]);
-        res.render('tickets/edit', {
+        res.render('preventivo/edit', {
             ticket: ticket[0],
             users: ticketsUsers[0],
             usuarios: usuarios
@@ -75,7 +76,7 @@ router.get('/edit/:id', funciones.isAuthenticated, funciones.hasSanPrivileges, a
     } catch (error) {
         console.error(error);
         req.flash("error", "Hubo algun error al intentar mostrar el ticket" + error);
-        res.redirect("/tickets/list");
+        res.redirect("/mantenimientopreventivo/list");
     }
 });
 // Ruta POST para editar un preventivo
