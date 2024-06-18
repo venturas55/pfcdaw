@@ -1,10 +1,10 @@
 <div class="container p-2 mb-4">
-    {{#if ticket.solved_at}}
+    {{#if preventivo.solved_at}}
     <div class="row">
         <div class="col-md-8 mx-auto py-4">
             <div class="card pb-4 ">
                 <div class="card-header text-center">
-                    <h2> Información del Preventivo nº {{ticket.preventivo_id}} </h2>
+                    <h2> Información del Preventivo nº {{preventivo.preventivo_id}} </h2>
                 </div>
                 <div class="card-body py-4">
                     <div class="form-group">
@@ -14,15 +14,15 @@
                     </div>
                     <div class="form-group">
                         <label for="item">AtoN NIF</label>
-                        <input value="{{ticket.nif}}" class="pinchable" type="text" name="nif" placeholder="nif"
+                        <input value="{{preventivo.nif}}" class="pinchable" type="text" name="nif" placeholder="nif"
                             readonly />
                     </div>
                     <div class="form-group">
-                        <label for="titulo">Trabajo pendiente</label><input value="{{ticket.titulo}}"
+                        <label for="titulo">Trabajo pendiente</label><input value="{{preventivo.titulo}}"
                             class="form-control" type="text" name="titulo" placeholder="titulo" disabled />
                     </div>
                     <div class="form-group">
-                        <label for="descripcion">Trabajo realizado</label><input value="{{ticket.descripcion}}"
+                        <label for="descripcion">Trabajo realizado</label><input value="{{preventivo.descripcion}}"
                             class="form-control" type="text" name="descripcion" placeholder="descripcion" disabled />
                     </div>
 
@@ -33,8 +33,8 @@
                                 aria-label=".form-select-sm example" disabled>
                                 <option value=""> Selecciona</option>
                                 {{#each usuarios}}
-                                <option value="{{this.id}}" {{#when this.id 'eq' ../ticket.assigned_to_id }} selected
-                                    {{/when}}>
+                                <option value="{{this.id}}" {{#when this.id 'eq' ../preventivo.assigned_to_id }}
+                                    selected {{/when}}>
                                     {{this.usuario}} </option>
                                 {{/each}}
                             </select>
@@ -47,17 +47,18 @@
                                 aria-label=".form-select-sm example" disabled>
                                 <option value="">Selecciona</option>
                                 {{#each usuarios}}
-                                <option value="{{this.id}}" {{#when this.id 'eq' ../ticket.resolved_by_id }} selected
-                                    {{/when}}>
+                                <option value="{{this.id}}" {{#when this.id 'eq' ../preventivo.resolved_by_id }}
+                                    selected {{/when}}>
                                     {{this.usuario}} </option>
                                 {{/each}}
                             </select>
                         </div>
                     </div>
                 </div>
-                {{!-- {{#if ticket.resolved_by_id}} --}}
-                <a class="btn btn-warning m-2" href="/tickets/delete/{{ticket.ticket_id}}">Borrar</a>
-                <a class="btn btn-secondary m-2" href="/tickets/list">Volver</a>
+                {{!-- {{#if preventivo.resolved_by_id}} --}}
+                <a class="btn btn-warning m-2"
+                    href="/mantenimientopreventivo/delete/{{preventivo.preventivo_id}}">Borrar</a>
+                <a class="btn btn-secondary m-2" href="/mantenimientopreventivo/list">Volver</a>
                 {{!-- {{/if}} --}}
             </div>
         </div>
@@ -68,517 +69,26 @@
         <div class="col-md-8 mx-auto pb-4">
             <div class="card pb-4">
                 <div class="card-header text-center">
-                    <h2> Edición del Preventivo nº {{ticket.preventivo_id}} </h2>
+                    <h2> Edición del Preventivo del AtoN {{preventivo.nif}} </h2>
                 </div>
                 <div class="card-body pb-4">
-                    {{!-- <h1> Ticket </h1> --}}
-                    <form action="/tickets/edit/{{ticket.preventivo_id}}" method="POST">
-                        <div class="estructura">
-                            {{#if ticket.estructura_estado}}
-                            <p> estructura SI</p>
-                            {{else}}
-                            <p>estrucura no</p>
-                            {{/if}}
-                            <div class="form-group">
-                                <label for="titulo">Estado</label>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="estructura_estado"
-                                        id="estructura_estado1" value="1" checked />
-                                    <label class="form-check-label" for="estructura_estado1">OK</label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="estructura_estado"
-                                        id="estructura_estado2" value="0" />
-                                    <label class="form-check-label" for="estructura_estado2">KO</label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="estructura_estado"
-                                        id="estructura_estado3" value="na" />
-                                    <label class="form-check-label" for="estructura_estado3">N/A</label>
-                                </div>
-                            </div>
-
-
-
-                            <div class="form-group">
-                                <label for="titulo">Marca de Tope</label>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="estructura_marca_tope"
-                                        id="estructura_marca_tope1" value="1" checked />
-                                    <label class="form-check-label" for="estructura_marca_tope1">OK</label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="estructura_marca_tope"
-                                        id="estructura_marca_tope2" value="0" />
-                                    <label class="form-check-label" for="estructura_marca_tope2">KO</label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="estructura_marca_tope"
-                                        id="estructura_marca_tope3" value="na" />
-                                    <label class="form-check-label" for="estructura_marca_tope3">N/A</label>
-                                </div>
-                            </div>
-
-
-                            <div class="form-group">
-                                <label for="titulo">Engrase</label>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="estructura_engrase"
-                                        id="estructura_engrase1" value="1" checked />
-                                    <label class="form-check-label" for="estructura_engrase1">OK</label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="estructura_engrase"
-                                        id="estructura_engrase2" value="0" />
-                                    <label class="form-check-label" for="estructura_engrase2">KO</label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="estructura_engrase"
-                                        id="estructura_engrase3" value="na" />
-                                    <label class="form-check-label" for="estructura_engrase3">N/A</label>
-                                </div>
-                            </div>
-
-
-                            <div class="form-group">
-                                <label for="titulo">Golpes</label>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="estructura_golpes"
-                                        id="estructura_golpes1" value="1" checked />
-                                    <label class="form-check-label" for="estructura_golpes1">OK</label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="estructura_golpes"
-                                        id="estructura_golpes2" value="0" />
-                                    <label class="form-check-label" for="estructura_golpes2">KO</label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="estructura_golpes"
-                                        id="estructura_golpes3" value="na" />
-                                    <label class="form-check-label" for="estructura_golpes3">N/A</label>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="titulo">Flotador</label>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="estructura_flotador"
-                                        id="estructura_flotador1" value="1" checked />
-                                    <label class="form-check-label" for="estructura_flotador1">OK</label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="estructura_flotador"
-                                        id="estructura_flotador2" value="0" />
-                                    <label class="form-check-label" for="estructura_flotador2">KO</label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="estructura_flotador"
-                                        id="estructura_flotador3" value="na" />
-                                    <label class="form-check-label" for="estructura_flotador3">N/A</label>
-                                </div>
-                            </div>
-
-
-                            <div class="form-group">
-                                <label for="titulo">Limpieza Interior</label>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="estructura_limpieza_interior"
-                                        id="estructura_limpieza_interior1" value="1" checked />
-                                    <label class="form-check-label" for="estructura_limpieza_interior1">OK</label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="estructura_limpieza_interior"
-                                        id="estructura_limpieza_interior2" value="0" />
-                                    <label class="form-check-label" for="estructura_limpieza_interior2">KO</label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="estructura_limpieza_interior"
-                                        id="estructura_limpieza_interior3" value="na" />
-                                    <label class="form-check-label" for="estructura_limpieza_interior3">N/A</label>
-                                </div>
-                            </div>
-
-
-                            <div class="form-group">
-                                <label for="titulo">Limpieza Exterior</label>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="estructura_limpieza_exterior"
-                                        id="estructura_limpieza_exterior1" value="1" checked />
-                                    <label class="form-check-label" for="estructura_limpieza_exterior1">OK</label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="estructura_limpieza_exterior"
-                                        id="estructura_limpieza_exterior2" value="0" />
-                                    <label class="form-check-label" for="estructura_limpieza_exterior2">KO</label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="estructura_limpieza_exterior"
-                                        id="estructura_limpieza_exterior3" value="na" />
-                                    <label class="form-check-label" for="estructura_limpieza_exterior3">N/A</label>
-                                </div>
-                            </div>
-
-
-                            <div class="form-group">
-                                <label for="titulo">cuadro Electrico Interior</label>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="estructura_cuadro_interior"
-                                        id="estructura_cuadro_interior1" value="1" checked />
-                                    <label class="form-check-label" for="estructura_cuadro_interior1">OK</label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="estructura_cuadro_interior"
-                                        id="estructura_cuadro_interior2" value="0" />
-                                    <label class="form-check-label" for="estructura_cuadro_interior2">KO</label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="estructura_cuadro_interior"
-                                        id="estructura_cuadro_interior3" value="na" />
-                                    <label class="form-check-label" for="estructura_cuadro_interior3">N/A</label>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="titulo">cuadro Electrico Exterior</label>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="estructura_cuadro_exterior"
-                                        id="estructura_cuadro_exterior1" value="1" checked />
-                                    <label class="form-check-label" for="estructura_cuadro_exterior1">OK</label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="estructura_cuadro_exterior"
-                                        id="estructura_cuadro_exterior2" value="0" />
-                                    <label class="form-check-label" for="estructura_cuadro_exterior2">KO</label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="estructura_cuadro_exterior"
-                                        id="estructura_cuadro_exterior3" value="na" />
-                                    <label class="form-check-label" for="estructura_cuadro_exterior2">N/A</label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="item">Observaciones Sobre la estructura</label>
-                                <textarea class="form-control" rows="4" cols="50" name="estructura_observaciones"
-                                    placeholder="...">
-                                </textarea>
-                            </div>
-                        </div>
-                        <div class="linterna">
-                            <div class="form-group">
-                                <label for="titulo">Encendido LDR1</label>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="linterna_ldr1"
-                                        id="linterna_ldr11" value="1" checked />
-                                    <label class="form-check-label" for="linterna_ldr11">OK</label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="linterna_ldr1"
-                                        id="linterna_ldr12" value="0" />
-                                    <label class="form-check-label" for="linterna_ldr12">KO</label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="linterna_ldr1"
-                                        id="linterna_ldr13" value="na" />
-                                    <label class="form-check-label" for="linterna_ldr13">N/A</label>
-                                </div>
-                            </div>
-
-
-                            <div class="form-group">
-                                <label for="titulo">Encendido LDR2</label>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="linterna_ldr2"
-                                        id="linterna_ldr21" value="1" checked />
-                                    <label class="form-check-label" for="linterna_ldr21">OK</label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="linterna_ldr2"
-                                        id="linterna_ldr22" value="0" />
-                                    <label class="form-check-label" for="linterna_ldr22">KO</label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="linterna_ldr2"
-                                        id="linterna_ldr23" value="na" />
-                                    <label class="form-check-label" for="linterna_ldr23">N/A</label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="titulo">Optica</label>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="linterna_optica"
-                                        id="linterna_optica1" value="1" checked />
-                                    <label class="form-check-label" for="linterna_optica1">OK</label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="linterna_optica"
-                                        id="linterna_optica2" value="0" />
-                                    <label class="form-check-label" for="linterna_optica2">KO</label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="linterna_optica"
-                                        id="linterna_optica3" value="na" />
-                                    <label class="form-check-label" for="linterna_optica3">N/A</label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="titulo">Estanqueidad Tornillos</label>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="linterna_estanqueidad_tornillos"
-                                        id="linterna_estanqueidad_tornillos1" value="1" checked />
-                                    <label class="form-check-label" for="linterna_estanqueidad_tornillos1">OK</label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="linterna_estanqueidad_tornillos"
-                                        id="linterna_estanqueidad_tornillos2" value="0" />
-                                    <label class="form-check-label" for="linterna_estanqueidad_tornillos2">KO</label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="linterna_estanqueidad_tornillos"
-                                        id="linterna_estanqueidad_tornillos3" value="na" />
-                                    <label class="form-check-label" for="linterna_estanqueidad_tornillos3">N/A</label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="titulo">Estanqueidad humedades</label>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="linterna_estanqueidad_humedades"
-                                        id="linterna_estanqueidad_humedades1" value="1" checked />
-                                    <label class="form-check-label" for="linterna_estanqueidad_humedades1">OK</label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="linterna_estanqueidad_humedades"
-                                        id="linterna_estanqueidad_humedades2" value="0" />
-                                    <label class="form-check-label" for="linterna_estanqueidad_humedades2">KO</label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="linterna_estanqueidad_humedades"
-                                        id="linterna_estanqueidad_humedades3" value="na" />
-                                    <label class="form-check-label" for="linterna_estanqueidad_humedades3">N/A</label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="item">Observaciones Sobre la linterna</label>
-                                <textarea class="form-control" rows="4" cols="50" name="linterna_observaciones"
-                                    placeholder="...">
-                                </textarea>
-                            </div>
-
-                        </div>
-                        <div class="telecontrol">
-                            <div class="form-group">
-                                <label for="titulo">telecontrol_monitoreo</label>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="telecontrol_monitoreo"
-                                        id="telecontrol_monitoreo1" value="1" checked />
-                                    <label class="form-check-label" for="telecontrol_monitoreo1">OK</label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="telecontrol_monitoreo"
-                                        id="telecontrol_monitoreo2" value="0" />
-                                    <label class="form-check-label" for="telecontrol_monitoreo2">KO</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="telecontrol_monitoreo"
-                                        id="telecontrol_monitoreo3" value="na" />
-                                    <label class="form-check-label" for="telecontrol_monitoreo3">N/A</label>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="titulo">GPS</label>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="telecontrol_gps"
-                                        id="telecontrol_gps1" value="1" checked />
-                                    <label class="form-check-label" for="telecontrol_gps1">OK</label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="telecontrol_gps"
-                                        id="telecontrol_gps2" value="0" />
-                                    <label class="form-check-label" for="telecontrol_gps2">KO</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="telecontrol_gps"
-                                        id="telecontrol_gps3" value="na" />
-                                    <label class="form-check-label" for="telecontrol_gps2">N/A</label>
-                                </div>
-                            </div>
-
-
-
-                            <div class="form-group">
-                                <label for="item">Observaciones Sobre Telecontrol</label>
-                                <textarea class="form-control" rows="4" cols="50" name="telecontrol_observaciones"
-                                    placeholder="...">
-                                </textarea>
-                            </div>
-
-
-                        </div>
-                        <div class="alimentacion">
-                            <div class="form-group">
-                                <label for="titulo">Panel fotovoltaico</label>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="alimentacion_panelFV"
-                                        id="alimentacion_panelFV1" value="1" checked />
-                                    <label class="form-check-label" for="alimentacion_panelFV1">OK</label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="alimentacion_panelFV"
-                                        id="alimentacion_panelFV2" value="0" />
-                                    <label class="form-check-label" for="alimentacion_panelFV2">KO</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="alimentacion_panelFV"
-                                        id="alimentacion_panelFV3" value="na" />
-                                    <label class="form-check-label" for="alimentacion_panelFV3">N/A</label>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="titulo">Red</label>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="alimentacion_red"
-                                        id="alimentacion_red1" value="1" checked />
-                                    <label class="form-check-label" for="alimentacion_red1">OK</label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="alimentacion_red"
-                                        id="alimentacion_red2" value="0" />
-                                    <label class="form-check-label" for="alimentacion_red2">KO</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="alimentacion_red"
-                                        id="alimentacion_red3" value="na" />
-                                    <label class="form-check-label" for="alimentacion_red3">N/A</label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="titulo">Capacidad en Ah</label>
-                                <input type="number" name="alimentacion_ah" min="0" step="1" value="0">
-                            </div>
-                            <div class="form-group">
-                                <label for="titulo">Voltaje en V</label>
-                                <input type="number" name="alimentacion_vcc" min="0" max="20" step="0.01" value="0">
-                            </div>
-
-
-                            <div class="form-group">
-                                <label for="titulo">Baterias</label>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="alimentacion_baterias"
-                                        id="alimentacion_baterias1" value="1" checked />
-                                    <label class="form-check-label" for="alimentacion_baterias1">OK</label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="alimentacion_baterias"
-                                        id="alimentacion_baterias2" value="0" />
-                                    <label class="form-check-label" for="alimentacion_baterias2">KO</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="alimentacion_baterias"
-                                        id="alimentacion_baterias3" value="na" />
-                                    <label class="form-check-label" for="alimentacion_baterias3">N/A</label>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="titulo">Grupo Electrogeno</label>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="alimentacion_grupo"
-                                        id="alimentacion_grupo1" value="1" checked />
-                                    <label class="form-check-label" for="alimentacion_grupo1">OK</label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="alimentacion_grupo"
-                                        id="alimentacion_grupo2" value="0" />
-                                    <label class="form-check-label" for="alimentacion_grupo2">KO</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="alimentacion_grupo"
-                                        id="alimentacion_grupo3" value="na" />
-                                    <label class="form-check-label" for="alimentacion_grupo3">N/A</label>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="titulo">Estado cableado</label>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="alimentacion_cableado"
-                                        id="alimentacion_cableado1" value="1" checked />
-                                    <label class="form-check-label" for="alimentacion_cableado1">OK</label>
-                                </div>
-
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="alimentacion_cableado"
-                                        id="alimentacion_cableado2" value="0" />
-                                    <label class="form-check-label" for="alimentacion_cableado2">KO</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="alimentacion_cableado"
-                                        id="alimentacion_cableado3" value="na" />
-                                    <label class="form-check-label" for="alimentacion_cableado3">N/A</label>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="item">Observaciones Sobre Alimentacion</label>
-                                <textarea class="form-control" rows="4" cols="50" name="alimentacion_observaciones"
-                                    placeholder="...">
-                                </textarea>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="item">Observaciones Generales</label>
-                            <textarea class="form-control" rows="4" cols="50" name="observaciones_generales">
-                            </textarea>
-                        </div>
+                    {{!-- <h1> preventivo </h1> --}}
+                    <form action="/mantenimientopreventivo/edit/{{preventivo.preventivo_id}}" method="POST">
+                        <input type="hidden" name="nif" value="{{preventivo.nif}}" />
+                        <input type="hidden" name="preventivo_id" value="{{preventivo.preventivo_id}}" />
+                        {{>preventivo}}
                         <button class="btn btn-primary btn-block">Guardar</button>
                 </div>
                 </form>
-                {{#if ticket.resolved_by_id}}
-                <form action="/tickets/cerrar/{{ticket.ticket_id}}" method="POST">
+                {{#if preventivo.resolved_by_id}}
+                <form action="/mantenimientopreventivo/cerrar/{{preventivo.preventivo_id}}" method="POST">
                     <div class="form-group">
-                        <button class="btn btn-warning btn-block ">Cerrar Ticket</button>
+                        <button class="btn btn-warning btn-block ">Cerrar preventivo</button>
                     </div>
                 </form>
                 {{/if}}
             </div>
-            <a class="btn btn-secondary mx-3" href="/tickets/list">Cancelar</a>
+            <a class="btn btn-secondary mx-3" href="/mantenimientopreventivo/list">Cancelar</a>
         </div>
     </div>
 </div>
