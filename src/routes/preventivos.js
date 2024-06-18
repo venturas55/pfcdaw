@@ -76,18 +76,12 @@ router.get('/edit/:id', funciones.isAuthenticated, funciones.hasSanPrivileges, a
 });
 // Ruta POST para editar un preventivo
 router.post('/edit/:id', funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
-    //console.log(editedItem);
-    //reemplazo vacios por null
-/*     for (let key in editedItem) {
-        if (editedItem.hasOwnProperty(key) && editedItem[key] === '') {
-            editedItem[key] = null;
-        }
-    } */
-    console.log(req.body);
+
+    //console.log(req.body);
 
     try {
         const item = await db.query("update preventivos set ? where preventivo_id=?", [req.body, req.body.preventivo_id]);
-        //console.log(item);
+        console.log(item);
         funciones.insertarLog(req.user.usuario, "UPDATE preventivo ", "Info actualizada " + req.body.preventivo_id);
         req.flash("success", "Preventivo actualizado correctamente");
         res.redirect("/mantenimientopreventivo/edit/" + req.body.preventivo_id);

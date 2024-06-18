@@ -78,7 +78,7 @@
                     </ul>
                 </li>
                 {{/if}}
-                               {{#if user}}
+                {{#if user}}
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
@@ -88,12 +88,15 @@
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="/aton/add ">Crear nuevo AtoN</a>
                         <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/mantenimientopreventivo/list">Preventivos</a>
+                        <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="/dbbackups/list">Backups BBDD</a>
                         <a class="dropdown-item" href="/backupsfotos">Backup fotos</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="/logs">Ver logs</a>
                         <div class="dropdown-divider"></div>
-                         <a class="dropdown-item" href="/aton/transform">Conversión coordenadas</a>
+                        <a class="dropdown-item" href="/aton/transform">Conversión coordenadas</a>
+
                     </ul>
                 </li>
                 {{/if}}
@@ -118,11 +121,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="javascript:void(0)" onclick="history.back();" tabindex="-1"
                         aria-disabled="true">Volver</a>
-                </li>
-
-                      <li class="nav-item">
-                    <a class="nav-link" href="/mantenimientopreventivo/list" tabindex="-1"
-                        aria-disabled="true">Pruebas</a>
                 </li>
 
                 {{#if user}}
