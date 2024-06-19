@@ -201,16 +201,21 @@ router.get("/list", async (req, res) => {
     const balizas = await db.query(queryListadoAton);
 
     const tickets = await db.query("select * from tickets where solved_at IS NULL");
+    const preventivos = await db.query("select * from preventivos where solved_at IS NULL");
     //console.log(tickets);
     balizas.forEach((element) => {
         const hasItem = tickets.some(obj => obj.nif === element.nif);
+        const hasPreventivo = preventivos.some(obj => obj.nif === element.nif);
         if (hasItem)
             element.hasTicket = true;
+        if (hasPreventivo)
+            element.hasPreventivo = true;
         if(element.necesita_pintado)
             numPintado++;
     });
-    const numtickets = tickets.length;
-    res.render("aton/list", { balizas,numtickets,numPintado });
+    const numTickets = tickets.length;
+    const numPreventivos = preventivos.length;
+    res.render("aton/list", { balizas,numTickets,numPintado,preventivos ,numPreventivos });
 
 });
 router.get("/list/:busqueda", async (req, res) => {

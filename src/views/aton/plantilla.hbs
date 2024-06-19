@@ -4,7 +4,8 @@
         <div class="text-center">
             <a class="btn btn-outline-danger btn-sm" href="/tickets/add/{{baliza.nif}}">CREAR TICKET</a>
             <a class="btn btn-outline-secondary btn-sm" href="/aton/pintura/{{baliza.nif}}">PINTADO</a>
-            <a class="btn btn-outline-secondary btn-sm" href="/mantenimientopreventivo/add/{{baliza.nif}}">INICIAR PREVENTIVO</a>
+            <a class="btn btn-outline-secondary btn-sm" href="/mantenimientopreventivo/add/{{baliza.nif}}">INICIAR
+                PREVENTIVO</a>
             {{#if baliza.necesita_pintado}}
             <button onclick="document.getElementById('myModalPintado').style.display = 'block';"
                 class="btn btn-danger  float-right"> <i class="fa fa-paint-brush"></i> </button>
@@ -32,7 +33,7 @@
         </div>
     </div>
     {{/if}}
-        {{#if preventivos}}
+    {{#if preventivos}}
     <div class="row mb-2 mx-4">
         <div class="col-md-6 mx-auto">
             <table class="table table-responsive-sm rounded table-warning table-sm table-striped mx-auto">
@@ -43,7 +44,8 @@
                 <tr class="text-center">
                     <td>
                         <span> Id:{{this.preventivo_id}} - </span> <span class="d-none d-sm-inline">
-                            Última modificacion por  {{this.created_by}} el dia {{formatearSp this.created_at}}</span> <a href="/mantenimientopreventivo/edit/{{this.preventivo_id}}" class="text-primary"><i
+                            Última modificacion por {{this.created_by}} el dia {{formatearSp this.created_at}}</span> <a
+                            href="/mantenimientopreventivo/edit/{{this.preventivo_id}}" class="text-primary"><i
                                 class="fa fa-pen-to-square"></i>Edit</a></th>
                     </td>
                 </tr>
@@ -104,7 +106,8 @@
                 </tr>
             </table>
             <div class="input-group">
-                <a class="btn btn-outline-primary btn-xs btn-block mx-auto" href="/aton/editCaracteristicas/{{baliza.nif}}">
+                <a class="btn btn-outline-primary btn-xs btn-block mx-auto"
+                    href="/aton/editCaracteristicas/{{baliza.nif}}">
                     ACTUALIZAR CARACTERISTICAS</a>
             </div>
         </div>
@@ -136,7 +139,7 @@
                     <th>Longitud</th>
                     <td>{{baliza.longitud}}</td>
                 </tr>
-                    <tr>
+                <tr>
                     <th>Coordenadas</th>
                     <td>{{getLatIALAformat baliza.coordenadas.x}} / {{getLngIALAformat baliza.coordenadas.y}}</td>
                 </tr>
@@ -185,7 +188,8 @@
                 </tr>
             </table>
             <div class="input-group">
-                <a class="btn btn-outline-primary btn-xs btn-block mx-auto" href="/aton/editLampara/{{baliza.nif}}">ACTUALIZAR
+                <a class="btn btn-outline-primary btn-xs btn-block mx-auto"
+                    href="/aton/editLampara/{{baliza.nif}}">ACTUALIZAR
                     LAMPARA</a>
             </div>
         </div>
@@ -199,8 +203,14 @@
                 <tr>
                     <td>{{this.observaciones}}</td>
                     <td class="text-center" style="width: 150px;">
-                        <a href="/aton/observaciones/edit/{{this.id_observacion}}" class="text-primary"><i class="fa fa-pencil"></i>Edit</a>
-                        <a type="submit" href="/aton/observaciones/delete/{{this.id_observacion}}" class="text-primary "><i class="fa fa-trash"></i>Del</a>
+                        <div>
+                            <a href="/aton/observaciones/edit/{{this.id_observacion}}" class="text-light"><i
+                                    class="fa fa-pencil"></i>Edit</a>
+                        </div>
+                        <div>
+                            <a type="submit" href="/aton/observaciones/delete/{{this.id_observacion}}"
+                                class="text-light "><i class="fa fa-trash"></i>Del</a>
+                        </div>
                     </td>
                 </tr>
                 {{/each}}
@@ -208,7 +218,8 @@
                     <input type="hidden" name="nif" value="{{baliza.nif}}">
                     <tr>
                         <td class="w-90"><input type="text" name="observaciones" class="w-100" required /></td>
-                        <td class="text-center" style="width: 200px;"> <input type="submit" value="añadir" class="btn btn-primary btn-xs btn-block " /></td>
+                        <td class="text-center" style="width: 200px;"> <input type="submit" value="añadir"
+                                class="btn btn-primary btn-xs btn-block " /></td>
                     </tr>
                 </form>
             </table>
@@ -236,10 +247,14 @@
                         <input type="hidden" name="nif" value='{{baliza.nif}}' />
                         <input type="hidden" name="fecha" value='{{fecha}}' />
                         <input type="hidden" name="mantenimiento" value='{{mantenimiento}}' />
-                        <a href="/aton/mantenimiento/edit/{{this.id_mantenimiento}}" class="text-primary"><i
-                                class="fa fa-pencil"></i>Edit</a>
-                        <a href="/aton/mantenimiento/delete/{{this.id_mantenimiento}}" class="text-primary"><i
-                                class="fa fa-trash"></i>Del</a>
+                        <div>
+                            <a href="/aton/mantenimiento/edit/{{this.id_mantenimiento}}" class="text-light"><i
+                                    class="fa fa-pencil"></i>Edit</a>
+                        </div>
+                        <div>
+                            <a href="/aton/mantenimiento/delete/{{this.id_mantenimiento}}" class="text-light"><i
+                                    class="fa fa-trash"></i>Del</a>
+                        </div>
                     </td>
                 </tr>
 
@@ -248,8 +263,9 @@
                     <input type="hidden" name="nif" value='{{baliza.nif}}' />
                     <tr>
                         <td class="text-center"><input type="date" name="fecha" required /></td>
-                        <td ><input type="text" name="mantenimiento" required style="width: 100%;"/></td>
-                        <td class="text-center"> <input type="submit" value="añadir" class="btn btn-primary btn-xs btn-block" /></td>
+                        <td><input type="text" name="mantenimiento" required style="width: 100%;" /></td>
+                        <td class="text-center"> <input type="submit" value="añadir"
+                                class="btn btn-primary btn-xs btn-block" /></td>
                     </tr>
                 </form>
             </table>
