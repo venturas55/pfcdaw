@@ -9,16 +9,13 @@
                             value="{{user.id}}" />
                         <div class="form-group">
                             <label for="item">AtoN NIF</label>
-                            <input class="form-control" type="text" name="nif" placeholder="nif" size="6" value="{{nif}}" />
+                            <input class="form-control" type="text" name="nif" placeholder="nif" size="6"
+                                value="{{nif}}" />
                         </div>
                         {{>preventivo}}
-
                         <button class="btn btn-primary btn-block">GRABAR PREVENTIVO</button>
                     </form>
-                    <form action="/mantenimientopreventivo/list" method="GET">
-                        <button class="btn btn-danger btn-block">Cancelar</button>
-                    </form>
-
+                    <button class="btn btn-danger btn-block">Cancelar</button>
                 </div>
             </div>
         </div>

@@ -57,7 +57,7 @@
                 </div>
                 {{!-- {{#if ticket.resolved_by_id}} --}}
                 <a class="btn btn-warning m-2" href="/tickets/delete/{{ticket.ticket_id}}">Borrar</a>
-                <a class="btn btn-secondary m-2" href="/tickets/list">Volver</a>
+                <a class="btn btn-secondary m-2"   onclick="history.back();">Volver</a>
                 {{!-- {{/if}} --}}
             </div>
         </div>
@@ -138,44 +138,9 @@
                     </form>
                     {{/if}}
                 </div>
-                <a class="btn btn-secondary mx-3" href="/tickets/list">Cancelar</a>
+                <a class="btn btn-secondary mx-3"   onclick="history.back();">Cancelar</a>
             </div>
         </div>
     </div>
-
-
     {{/if}}
-
-
-
-
 </div>
-
-
-{{!-- UNA TARJETA DE INFORMACION
-<div class="row">
-    <div class="col-md-8 mx-auto py-4">
-        <div class="card text-white bg-info pb-4 text-center" style="max-width: 600px;">
-            <div class="card-header">
-                <h2> Información del Ticket nº {{ticket.ticket_id}} </h2>
-            </div>
-            <div class="card-body py-4">
-                <ul class="list-group list-group-flush ">
-                    <h4 class="card-title">Ticket ID: {{ticket.ticket_id}}</h4>
-                    <li class="list-group-item">Creado por {{users.created_by}}</li>
-                    <li class="list-group-item">NIF: <a href='/aton/plantilla/{{ticket.nif}}'> {{ticket.nif}} </a>
-                    </li>
-                    <li class="list-group-item">Tarea: {{ticket.titulo}}</li>
-                    <li class="list-group-item">Mantenimiento: {{ticket.descripcion}}</li>
-                    <li class="list-group-item">Asignado a {{ticket.assigned_to_id}}</li>
-                    <li class="list-group-item">Resuelta por {{ticket.usuario}}</li>
-                </ul>
-            </div>
-            <a class="btn btn-warning m-2" href="/tickets/delete/{{ticket.ticket_id}}">Borrar</a>
-            <a class="btn btn-secondary m-2" href="/tickets/list">Volver</a>
-
-        </div>
-
-    </div>
-</div>
---}}

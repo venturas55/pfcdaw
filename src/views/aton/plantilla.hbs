@@ -2,9 +2,9 @@
     {{!-- TICKETS --}}
     <div class="row my-2 mx-4">
         <div class="text-center">
-            <a class="btn btn-secondary" href="/tickets/add/{{baliza.nif}}">CREAR TICKET</a>
-            <a class="btn btn-secondary" href="/aton/pintura/{{baliza.nif}}">PINTADO</a>
-            <a class="btn btn-secondary" href="/mantenimientopreventivo/add/{{baliza.nif}}">INICIAR PREVENTIVO</a>
+            <a class="btn btn-outline-danger btn-sm" href="/tickets/add/{{baliza.nif}}">CREAR TICKET</a>
+            <a class="btn btn-outline-secondary btn-sm" href="/aton/pintura/{{baliza.nif}}">PINTADO</a>
+            <a class="btn btn-outline-secondary btn-sm" href="/mantenimientopreventivo/add/{{baliza.nif}}">INICIAR PREVENTIVO</a>
             {{#if baliza.necesita_pintado}}
             <button onclick="document.getElementById('myModalPintado').style.display = 'block';"
                 class="btn btn-danger  float-right"> <i class="fa fa-paint-brush"></i> </button>
@@ -16,7 +16,7 @@
         <div class="col-md-6 mx-auto">
             <table class="table table-responsive-sm rounded table-danger table-sm table-striped mx-auto">
                 <tr>
-                    <th class="text-center">El AtoN {{baliza.nif}} tiene los siguientes tickets activos</th>
+                    <th class="text-center">El AtoN {{baliza.nif}} tiene tickets activos</th>
                 </tr>
                 {{#each tickets}}
                 <tr class="text-center">
@@ -35,9 +35,9 @@
         {{#if preventivos}}
     <div class="row mb-2 mx-4">
         <div class="col-md-6 mx-auto">
-            <table class="table table-responsive-sm rounded table-danger table-sm table-striped mx-auto">
+            <table class="table table-responsive-sm rounded table-warning table-sm table-striped mx-auto">
                 <tr>
-                    <th class="text-center">El AtoN {{baliza.nif}} tiene los siguientes preventivos activos</th>
+                    <th class="text-center">El AtoN {{baliza.nif}} tiene preventivos iniciados</th>
                 </tr>
                 {{#each preventivos}}
                 <tr class="text-center">
@@ -104,7 +104,7 @@
                 </tr>
             </table>
             <div class="input-group">
-                <a class="btn btn-primary btn-xs btn-block mx-auto" href="/aton/editCaracteristicas/{{baliza.nif}}">
+                <a class="btn btn-outline-primary btn-xs btn-block mx-auto" href="/aton/editCaracteristicas/{{baliza.nif}}">
                     ACTUALIZAR CARACTERISTICAS</a>
             </div>
         </div>
@@ -142,11 +142,11 @@
                 </tr>
             </table>
             <div class="input-group">
-                <a class="btn btn-primary btn-xs btn-block mx-auto mb-2"
+                <a class="btn btn-outline-primary btn-xs btn-block mx-auto mb-2"
                     href="/aton/editLocalizacion/{{baliza.nif}}">ACTUALIZAR
                     LOCALIZACION </a>
 
-                <a class="btn btn-primary btn-xs btn-block mx-auto" href="/mapa/{{baliza.nif}}">VER UBICACION <i
+                <a class="btn btn-outline-primary btn-xs btn-block mx-auto" href="/mapa/{{baliza.nif}}">VER UBICACION <i
                         class="fa fa-map-marker"></i>
                 </a>
             </div>
@@ -185,7 +185,7 @@
                 </tr>
             </table>
             <div class="input-group">
-                <a class="btn btn-primary btn-xs btn-block mx-auto" href="/aton/editLampara/{{baliza.nif}}">ACTUALIZAR
+                <a class="btn btn-outline-primary btn-xs btn-block mx-auto" href="/aton/editLampara/{{baliza.nif}}">ACTUALIZAR
                     LAMPARA</a>
             </div>
         </div>
@@ -259,7 +259,7 @@
     <div class="row mx-1 mb-5">
         <div class="col-sm-12">
             <button onclick="document.getElementById('myModalBorrado').style.display = 'block';"
-                class="btn btn-danger">BORRAR ATON</button>
+                class="btn btn-outline-danger">ELIMINAR ATON</button>
         </div>
     </div>
 </div>
