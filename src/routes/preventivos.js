@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require("../database.js"); //db hace referencia a la BBDD
 const funciones = require("../lib/funciones.js");
-const queryListadoPreventivosUsers = 'SELECT p.preventivo_id,p.nif,p.estructura_estado,p.estructura_marca_tope,p.estructura_engrase,p.estructura_golpes,p.estructura_limpieza_interior,p.estructura_limpieza_exterior,p.estructura_cuadro_interior,p.estructura_cuadro_exterior,p.estructura_observaciones,p.linterna_ldr1,p.linterna_ldr2,p.linterna_optica,p.linterna_estanqueidad_tornillos,p.linterna_estanqueidad_humedades,p.linterna_observaciones,p.telecontrol_monitoreo,p.telecontrol_gps,p.telecontrol_tipo,p.telecontrol_observaciones,p.alimentacion_panelFV,p.alimentacion_red,p.alimentacion_baterias,p.alimentacion_ah,p.alimentacion_vcc,p.alimentacion_grupo,p.alimentacion_cableado,p.alimentacion_observaciones,p.observaciones_generales,p.created_at,p.created_by_id,u1.usuario as created_by FROM preventivos p LEFT JOIN usuarios u1 ON p.created_by_id=u1.id';
+const queryListadoPreventivosUsers = 'SELECT p.preventivo_id,p.nif,p.estructura_estado,p.estructura_marca_tope,p.estructura_engrase,p.estructura_golpes,p.estructura_limpieza_interior,p.estructura_limpieza_exterior,p.estructura_cuadro_interior,p.estructura_cuadro_exterior,p.estructura_observaciones,p.linterna_ldr1,p.linterna_ldr2,p.linterna_optica,p.linterna_estanqueidad_tornillos,p.linterna_estanqueidad_humedades,p.linterna_observaciones,p.telecontrol_monitoreo,p.telecontrol_gps,p.telecontrol_tipo,p.telecontrol_observaciones,p.alimentacion_panelFV,p.alimentacion_red,p.alimentacion_baterias,p.alimentacion_ah,p.alimentacion_vcc,p.alimentacion_grupo,p.alimentacion_cableado,p.alimentacion_observaciones,p.observaciones_generales,p.created_at,p.solved_at,p.created_by_id,u1.usuario as created_by FROM preventivos p LEFT JOIN usuarios u1 ON p.created_by_id=u1.id';
 var moment = require('moment'); // require
 moment().format();
 
@@ -22,12 +22,27 @@ router.get('/list', async (req, res) => {
         res.redirect("/");
     }
 });
-
 // Ruta para crear un nuevo preventivo (formulario)
 router.get('/add', funciones.isAuthenticated, async (req, res) => {
     try {
         //const usuarios = await db.query("select * from usuarios");
         res.render('preventivo/add');
+    } catch (error) {
+        console.error(error);
+        req.flash("error", "Hubo algun error al intentar añadir el mantenimiento preventivo:" + error);
+        res.redirect("/mantenimientopreventivo/list");
+    }
+});
+// Ruta para crear un nuevo preventivo (formulario)
+router.get('/add/:nif', funciones.isAuthenticated, async (req, res) => {
+    const {
+        nif
+    } = req.params;
+
+    console.log(nif);
+    try {
+        //const usuarios = await db.query("select * from usuarios");
+        res.render('preventivo/add', { nif });
     } catch (error) {
         console.error(error);
         req.flash("error", "Hubo algun error al intentar añadir el mantenimiento preventivo:" + error);

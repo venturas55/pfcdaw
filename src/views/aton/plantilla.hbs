@@ -4,6 +4,7 @@
         <div class="text-center">
             <a class="btn btn-secondary" href="/tickets/add/{{baliza.nif}}">CREAR TICKET</a>
             <a class="btn btn-secondary" href="/aton/pintura/{{baliza.nif}}">PINTADO</a>
+            <a class="btn btn-secondary" href="/mantenimientopreventivo/add/{{baliza.nif}}">INICIAR PREVENTIVO</a>
             {{#if baliza.necesita_pintado}}
             <button onclick="document.getElementById('myModalPintado').style.display = 'block';"
                 class="btn btn-danger  float-right"> <i class="fa fa-paint-brush"></i> </button>
@@ -23,6 +24,26 @@
                         <span> Id:{{this.ticket_id}} - '{{this.titulo}}'</span> <span class="d-none d-sm-inline">
                             asignado a {{this.assigned_to}} el dia {{formatearSp
                             this.created_at}}</span> <a href="/tickets/edit/{{this.ticket_id}}" class="text-primary"><i
+                                class="fa fa-pen-to-square"></i>Edit</a></th>
+                    </td>
+                </tr>
+                {{/each}}
+            </table>
+        </div>
+    </div>
+    {{/if}}
+        {{#if preventivos}}
+    <div class="row mb-2 mx-4">
+        <div class="col-md-6 mx-auto">
+            <table class="table table-responsive-sm rounded table-danger table-sm table-striped mx-auto">
+                <tr>
+                    <th class="text-center">El AtoN {{baliza.nif}} tiene los siguientes preventivos activos</th>
+                </tr>
+                {{#each preventivos}}
+                <tr class="text-center">
+                    <td>
+                        <span> Id:{{this.preventivo_id}} - </span> <span class="d-none d-sm-inline">
+                            Última modificacion por  {{this.created_by}} el dia {{formatearSp this.created_at}}</span> <a href="/mantenimientopreventivo/edit/{{this.preventivo_id}}" class="text-primary"><i
                                 class="fa fa-pen-to-square"></i>Edit</a></th>
                     </td>
                 </tr>
