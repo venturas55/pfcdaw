@@ -8,18 +8,18 @@ const db = require("../database"); //db hace referencia a la BBDD
 var selectedLayout = 'layoutMapaLeaflet';
 
 //GESTION MAPAS
-router.get("/mapa/:nif", async (req, res) => {
+router.get("/mapa/:nif",cors(), async (req, res) => {
     const { nif } = req.params;
     const baliza = await db.query(queryListadoAton + ' where b.nif=?', [nif]);
     res.render("mapas/mapa", { layout: selectedLayout, baliza: baliza[0] });
 });
 //funcion get para mostrar los mapas dinamicos con la api de google maps
-router.get("/mapaGeneral/:valor", (req, res) => {
+router.get("/mapaGeneral/:valor",cors(), (req, res) => {
     //const { valor } = req.params;
     res.render("mapas/mapa", { layout: selectedLayout });
 });
 //funcion get para mostrar los mapas estaticos
-router.get("/mapaGeneral2/:valor", (req, res) => {
+router.get("/mapaGeneral2/:valor",cors(), (req, res) => {
     const { valor } = req.params;
     //console.log("Mapa " + valor);
     switch (valor) {
@@ -35,7 +35,7 @@ router.get("/mapaGeneral2/:valor", (req, res) => {
     }
 });
 //funcion get para alternar entre los dos layouts google y leaflet
-router.get('/changelayout', funciones.isAuthenticated, funciones.isAdmin, (req, res) => {
+router.get('/changelayout', cors(),funciones.isAuthenticated, funciones.isAdmin, (req, res) => {
     if (selectedLayout == 'layoutMapaLeaflet') {
         selectedLayout = 'layoutMapa';
     } else {
