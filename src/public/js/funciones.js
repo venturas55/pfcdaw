@@ -265,9 +265,11 @@ function initMapa(balizas) {
     map = new google.maps.Map(document.getElementById("myMap"), {
         zoom: presetZoom,
         center: centerLatLng,
+        mapId: "MAP_GOOGLE"
     });
-    const markers = Promise.all(balizas.map(async item => {
+  /*   const markers = Promise.all(balizas.map(async item => {
         const marker = new google.maps.Marker({
+            map: map,
             position: setMarkerLatLng(item.latitud, item.longitud),
             label: {
                 text: item.nif.toString(),
@@ -281,7 +283,7 @@ function initMapa(balizas) {
                     height: 60
                 }
             },
-            map: map,
+            
         });
 
         /* PARA USAR UNA VENTANA */
@@ -297,7 +299,7 @@ function initMapa(balizas) {
                   ariaLabel: "AtoN",
               }); */
         /* FIN USAR  VENTANA */
-
+/*
         // markers can only be keyboard focusable when they have click listeners
         // open info window when marker is clicked
         marker.addListener("click", () => {
@@ -314,7 +316,7 @@ function initMapa(balizas) {
         });
 
         return await marker;
-    }));
+    })); */
 }
 
 ///////// #################################
