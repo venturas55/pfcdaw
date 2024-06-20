@@ -23,6 +23,11 @@ function cambiarUsuario() {
 /////############
 //FUNCIONES PARA EL MAPS DE GOOGLE
 //FUNCION PARA CONFIGURAR LA VARIABLE CON LA QUE SE CENTRARÁ EL MAPA DE LA API DE GOOGLE, COGIENDO EL CENTRO DE LA PROPIA URL
+//En el presente proyecto se denomina a:
+//       coordendas WGS al formato por ejemplo 39º 52.417'N
+//       coordendas UTM al formato por ejemplo 39º 52' 25" N
+//       coordendas DECIMAL al formato por ejemplo 39.873617
+
 function centrar() {
     let centerLatLng = {};
     const url = window.location.href.split('/');

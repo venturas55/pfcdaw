@@ -3,10 +3,10 @@
 </div>
 <div class="mt-2 column d-flex justify-content-center">
     <div class="input-group-sm mx-4">
-        <input type="text" id="latmarkerWGS"> <input type="text" id="lngmarkerWGS">
+        <input type="text" id="latmarkerWGS" onkeyup="actualizarCoordenadaWGS2DEC()" value="39º 26.651´N"> <input type="text" id="lngmarkerWGS" value="00º 17.500´ W" onkeyup="actualizarCoordenadaWGS2DEC()">
     </div>
     <div class="input-group-sm mb-5">
-        <input type="text" id="latmarker" value="39.442097"> <input type="text" id="lngmarker" value="-0.28204"> <button
+        <input type="text" id="latmarker" value="39.442097" onkeyup="actualizarCoordenadaDEC2WGS()" > <input type="text" id="lngmarker" value="-0.28204" onkeyup="actualizarCoordenadaDEC2WGS()" > <button
             onclick="drawPin()" class="btn btn-outline-secondary btn-sm">Draw New Pin</button>
     </div>
 </div>

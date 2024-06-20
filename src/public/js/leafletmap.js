@@ -130,3 +130,29 @@ function onMapClick(e) {
     .setContent("Coordenadas " + latitud + "  " + longitud)
     .openOn(map);
 }
+
+function actualizarCoordenadaWGS2DEC(){
+  var latWGS=document.getElementById("latmarkerWGS").value;
+  var lngWGS=document.getElementById("lngmarkerWGS").value;
+  var lat=document.getElementById("latmarker");
+  var lng=document.getElementById("lngmarker");
+  var punto=setMarkerLatLng(latWGS, lngWGS);
+  //console.log(punto.lat);
+
+  lat.value=punto.lat;
+  lng.value=punto.lng;
+
+}
+
+function actualizarCoordenadaDEC2WGS(){
+  var latWGS=document.getElementById("latmarkerWGS");
+  var lngWGS=document.getElementById("lngmarkerWGS");
+  var lat=document.getElementById("latmarker").value;
+  var lng=document.getElementById("lngmarker").value;
+  var punto=getMarkerLatLng({lat, lng});
+  //console.log(punto.lat);
+
+  latWGS.value=punto.lat;
+  lngWGS.value=punto.lng;
+
+}
