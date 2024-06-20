@@ -7,6 +7,7 @@ const session = require('express-session'); //Lo necesita el flash tb
 const MySQLstore = require('express-mysql-session'); // para poder guardar la sesion en la sql
 const passport = require('passport');
 const { database } = require('./config');
+var cors = require('cors')
 //console.log(process.env.DB_HOST);
 
 //Inicializacion
@@ -26,12 +27,14 @@ app.engine('.hbs', exphbs.engine({ //con esto se configura el app.engine
 app.set('view engine', '.hbs'); //Para utilizar el app.engine
 
 //Middleware
+app.use(cors());
+
 app.use(session({
     secret: 'mysesion',
     resave: false,
     saveUninitialized: false,
     store: new MySQLstore(database)
-}))
+}));
 app.use(flash()); // Para poder usar el middleware de enviar mensajes popups
 app.use(morgan('dev')); //Para que muestre mensajes relacionados con el desarrollo por consola
 app.use(express.urlencoded({ extended: false })); //aceptar los datos desde los formularios sin aceptar imagenes ni nada raro
