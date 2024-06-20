@@ -42,6 +42,7 @@ app.use(express.json()); //Para enviar y recibir jsons.
 app.use(passport.initialize()); //iniciar passport
 app.use(passport.session()); //para que sepa donde guardar y como manejar los datos
 //CORS
+//TODO: aun no funciona el CORS, cada vez que se actualiza el proyecto hay que poner el fetch del dominio a mano adriandeharo.es en funciones.js
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');

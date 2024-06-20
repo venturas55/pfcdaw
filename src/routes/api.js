@@ -8,7 +8,7 @@ const queryListadoAton = "SELECT b.nif,b.num_internacional,b.tipo,b.apariencia,b
 
 
 //Devuelve el listado de todas las balizas introducidas
-router.get('/api/balizas', cors(),async (req, res) => {
+router.get('/api/balizas', async (req, res) => {
     const balizas = await pool.query(queryListadoAton);
     for (var i = 0; i < balizas.length; i++) {
         var archivos = await funciones.getUrlPictureAtoN(balizas[i].nif);
@@ -21,7 +21,7 @@ router.get('/api/balizas', cors(),async (req, res) => {
 });
 
 //Devuelve las caracteristicas de la baliza introducida 
-router.get('/api/baliza/:nif', cors(),async (req, res) => {
+router.get('/api/baliza/:nif', async (req, res) => {
     const { nif } = req.params;
     //console.log(nif);
     //console.log(json.nif);
@@ -33,7 +33,7 @@ router.get('/api/baliza/:nif', cors(),async (req, res) => {
 });
 
 //Devuelve los mantenimientos de la baliza introducida 
-router.get('/api/mantenimiento/:nif', cors(),async (req, res) => {
+router.get('/api/mantenimiento/:nif', async (req, res) => {
     const { nif } = req.params;
     console.log(nif);
     //const q = await pool.query('SELECT * FROM observaciones where nif=?',[nif]);
@@ -42,7 +42,7 @@ router.get('/api/mantenimiento/:nif', cors(),async (req, res) => {
 });
 
 //Devuelve las observaciones de la baliza introducida 
-router.get('/api/observaciones/:nif',cors(), async (req, res) => {
+router.get('/api/observaciones/:nif', async (req, res) => {
     const { nif } = req.params;
     console.log(nif);
     const q = await pool.query('SELECT * FROM observaciones where nif=?', [nif]);
@@ -51,7 +51,7 @@ router.get('/api/observaciones/:nif',cors(), async (req, res) => {
 });
 
 //Devuelve el listado de todos los usuarios
-router.get('/api/usuarios',cors(), async (req, res) => {
+router.get('/api/usuarios', async (req, res) => {
     const balizas = await pool.query('SELECT full_name,usuario,email, privilegio FROM usuarios');
     //const observaciones = await pool.query('SELECT * FROM observaciones where nif=?',[nif]);
     //const mantenimiento = await pool.query('SELECT * FROM mantenimiento where nif=? order by fecha DESC',[nif]);
