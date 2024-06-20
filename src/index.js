@@ -27,7 +27,26 @@ app.engine('.hbs', exphbs.engine({ //con esto se configura el app.engine
 app.set('view engine', '.hbs'); //Para utilizar el app.engine
 
 //Middleware
-app.use(cors());
+app.use(cors({
+    origin:(origin,callback)=>{
+        const ACCEPTED_ORIGINS=[
+            "http://localhost:"+app.get('port'),
+            "http://san.adriandeharo.es:"+app.get('port'),
+            "https://localhost:"+app.get('port'),
+            "https://san.adriandeharo.es:"+app.get('port'),
+        ]
+        if(ACCEPTED_ORIGINS.includes(origin)){
+            return callback(null,true);
+        }
+        if(!origin){
+            return callback(null,true);
+        }
+
+        return callback(new Error("CORS no aceptado en la app"));
+    }
+}
+
+));
 
 app.use(session({
     secret: 'mysesion',
@@ -43,12 +62,12 @@ app.use(passport.initialize()); //iniciar passport
 app.use(passport.session()); //para que sepa donde guardar y como manejar los datos
 //CORS
 //TODO: aun no funciona el CORS, cada vez que se actualiza el proyecto hay que poner el fetch del dominio a mano adriandeharo.es en funciones.js
-app.use((req, res, next) => {
+/* app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
     res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT');
     next();
-});
+}); */
 
 //Variables globales (que podrán ser usadas en cualquier vista)
 app.use((req, res, next) => {
