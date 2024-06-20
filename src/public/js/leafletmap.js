@@ -2,7 +2,8 @@
 //console.log("leaflet initialization");
 let centerLatLng = centrar();
 //console.log(centerLatLng);
-let posicionInicial={lat:1,lng:1};
+let posicionInicial = { lat: 1, lng: 1 };
+let map;
 
 fetchData().then((balizas) => {
   map = L.map('myMap').setView(centerLatLng, presetZoom);
@@ -33,7 +34,6 @@ fetchData().then((balizas) => {
     marker.on('dragstart', function (event) {
       console.log(posicionInicial);
       posicionInicial = event.target.getLatLng();
-
       //console.log(marker);
       //marker.setLatLng(new L.LatLng(position.lat, position.lng), { draggable: 'true' });
     });
@@ -61,8 +61,8 @@ fetchData().then((balizas) => {
           ' </div>' +
           ' </form>' +
           '    <div class="form-group mb-2 text-center">' +
-         // `       <button onclick="document.getElementsByClassName('leaflet-popup-close-button')[0].click();map.setView({lat:39.446534,lng:-0.306931});" class="btn btn-danger btn-block">NO</button>` +
-         `       <button onclick="document.getElementsByClassName('leaflet-popup-close-button')[0].click();thismarker.setLatLng(posicionInicial);map.setView(posicionInicial);" class="btn btn-danger btn-block">NO</button>` +
+          // `       <button onclick="document.getElementsByClassName('leaflet-popup-close-button')[0].click();map.setView({lat:39.446534,lng:-0.306931});" class="btn btn-danger btn-block">NO</button>` +
+          `       <button onclick="document.getElementsByClassName('leaflet-popup-close-button')[0].click();thismarker.setLatLng(posicionInicial);map.setView(posicionInicial);" class="btn btn-danger btn-block">NO</button>` +
           '   </div>' +
           '</div>')
         .openOn(map);
@@ -92,6 +92,35 @@ fetchData().then((balizas) => {
 });
 
 var popup = L.popup();
+
+function drawPin() {
+  console.log("Drawing pin");
+  console.log(map);
+
+  let iconOptions = {
+    title: "Nuevo punto de estudio",
+    draggable: true,
+  }
+
+  let marker = new L.Marker({ "lat": document.getElementById("latmarker").value, "lng": document.getElementById("lngmarker").value }, iconOptions);
+/*   marker.on('dragstart', function (event) {
+    console.log(posicionInicial);
+    posicionInicial = event.target.getLatLng();
+  }); */
+
+  marker.on('dragend', function (event) {
+    thismarker = event.target;
+    var position = thismarker.getLatLng();
+    thismarker.setLatLng(new L.LatLng(position.lat, position.lng), { draggable: 'true' });
+    map.panTo(new L.LatLng(position.lat, position.lng));
+    console.log(position);
+    document.getElementById("latmarker").value = position.lat;
+    document.getElementById("lngmarker").value = position.lng;
+  });
+  marker.addTo(map);
+  map.panTo(new L.LatLng(document.getElementById("latmarker").value, document.getElementById("lngmarker").value));
+}
+
 function onMapClick(e) {
   var coordenadas = e.latlng.toString().split("(")[1];
   var latitud = coordenadas.split(",")[0];

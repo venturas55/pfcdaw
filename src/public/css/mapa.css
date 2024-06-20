@@ -1,9 +1,9 @@
 #myMap {
-  height: 88%;
+  border-radius: 15px;
 }
-#puerto{
+/* #puerto{
   visibility:visible; 
-}
+} */
 
 html,
 body {
