@@ -66,6 +66,9 @@ app.use(require('./routes/fotos'));
 app.use('/aton', require('./routes/aton'));
 app.use(require('./routes/documentos'));
 app.use(require('./routes/api'));
+app.use(require('./routes/inventario'));
+app.use(require('./routes/backups'));
+app.use(require('./routes/mapas'));
 app.use('/tickets', require('./routes/tickets'));
 app.use('/mantenimientopreventivo', require('./routes/preventivos'));
 

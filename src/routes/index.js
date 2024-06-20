@@ -5,40 +5,6 @@ const db = require("../database"); //db hace referencia a la BBDD
 const funciones = require("../lib/funciones.js");
 const { unlink } = require('fs-extra');
 const { access, constants } = require('fs');
-const fs = require('fs');
-const multer = require('multer');
-const queryListadoAton = "SELECT b.nif,b.num_internacional,b.tipo,b.apariencia,b.periodo,b.caracteristica,b.telecontrol,b.necesita_pintado,lo.puerto,lo.num_local,lo.localizacion,lo.latitud,lo.longitud,la.altura,la.elevacion,la.alcanceNom,la.linterna,la.candelasCalc,la.alcanceLum,la.candelasInst FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif";
-const queryListadoTicketsUsers = "SELECT t.ticket_id,t.nif,t.created_by_id,t.assigned_to_id,t.resolved_by_id,t.titulo,t.descripcion,t.solved_at,t.created_at,u1.usuario as created_by,u2.usuario as assigned_to,u3.usuario as resolved_by FROM tickets t LEFT JOIN usuarios u1 ON t.created_by_id=u1.id  LEFT JOIN usuarios u2 ON t.assigned_to_id=u2.id LEFT JOIN usuarios u3 ON t.resolved_by_id=u3.id";
-//var selectedLayout ='layoutMapa';  //  layoutMapa   o    layoutMapaLeaflet
-var selectedLayout = 'layoutMapaLeaflet';
-
-const storageBBDD = multer.diskStorage({
-    destination: (req, file, cb) => {
-        const dir = path.join(__dirname, '../public/dumpSQL/');
-        console.log("dir " + dir);
-        return cb(null, dir);
-    },
-    filename: (req, file, cb) => {
-       // cb(null, new Date().getTime() + path.extname(file.originalname).toLowerCase());
-        cb(null, file.originalname.toLowerCase());
-    }
-});
-
-const uploadFotosBBDD = multer({
-    storage: storageBBDD,
-    limits: { fileSize: 20000000, }, //20MB
-    fileFilter: (req, file, cb) => {
-        const filetypes = /sql/;
-        const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-        console.log(path.extname(file.originalname).toLowerCase() +" antes if" + extname);
-        if (extname) {
-            console.log("en if");
-            //funciones.insertarLog(req.user.usuario, "INSERT sql backup  ", file.originalname.toLowerCase());
-            return cb(null, true);
-        }
-        return cb(("Error: Archivo debe ser un *.sql"));
-    }
-}).single('backupsql');
 
 //MOSTRAR PAGINA INICIAL
 router.get('/', (req, res) => {
@@ -135,126 +101,10 @@ router.post('/doAdmin', funciones.isAuthenticated, async (req, res) => {
     }
 });
 
-//GESTION BACKUPS BBDD
-router.get("/dbbackups/list", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
-    var backups = funciones.listadoBackups();
-    res.render("backups/listadoBackups", { backups });
-});
-router.post("/dbbackups/create/:operacion", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
-    var { operacion } = req.params;
-    funciones.dumpearSQL(operacion);
-    req.flash("success", "Backup de la BBDD realizado correctamente");
-    funciones.insertarLog(req.user.usuario, "DO backup", "nuevo backup "+operacion);
-    res.redirect("/dbbackups/list");
-});
-router.get("/dbbackups/del/:nombre", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
-    var { nombre } = req.params;
-    var file = path.resolve('src/public/dumpSQL', nombre);
-    //console.log(file);
-    await fs.unlinkSync(file);
-    funciones.insertarLog(req.user.usuario, "DELETE backup", nombre);
-    res.redirect('/dbbackups/list');
-});
-router.get("/dbbackups/runSQL/:file", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
-    var { file } = req.params;
-    //SI EL BACKUP SQL TIENE EL COMETNARIO   ==>    /*!40101 SET NAMES utf8 */;  
-    //ENTONCES PETA, DA ERROR
-
-   /*  code: 'ER_WRONG_VALUE_FOR_VAR',
-    errno: 1231,
-    sqlState: '42000',
-    sqlMessage: "Variable 'sql_mode' can't be set to the value of 'NULL'", */
-    //   sql: '/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;'  
-
-
-    funciones.runSQLrecovery(file);
-    req.flash("success", "Informacion backup de la BBDD volcado correctamente");
-    //funciones.insertarLog(req.user.usuario, "RUN backup", "volcado de nueva info");
-    res.redirect("/dbbackups/list");
-});
-router.post("/dbbackups/upload", funciones.isAuthenticated, funciones.isAdmin, uploadFotosBBDD, async (req, res) => {
-    console.log("Subiendo BACKUP sql");
-    req.flash("success", "backup sql subido correctamente");
-    res.redirect('dbbackups/list');
-});
-
 //GESTION LOGS
 router.get("/logs", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     var logs = await db.query("select * from logs order by fecha desc");
     res.render("documentos/listadoLogs", { logs });
-});
-
-//GESTION INVENTARIO
-router.get('/inventario', funciones.isAuthenticated, async (req, res) => {
-    const inventario = await db.query("select * from inventario order by fila,columna");
-    res.render('inventario/inventario', { inventario });
-});
-router.get('/inventario/add', funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
-    res.render('inventario/addItem');
-});
-router.post('/inventario/add', funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
-    var {
-        tipo,
-        item,
-        descripcion,
-        cantidad,
-        fila,
-        columna
-    } = req.body;
-
-    const nuevoItem = {
-        tipo,
-        item,
-        descripcion,
-        cantidad,
-        fila,
-        columna
-    };
-
-    console.log(nuevoItem);
-    await db.query("insert into inventario set ? ", [nuevoItem]);
-    funciones.insertarLog(req.user.usuario, "INSERT inventario", "Item " + nuevoItem.item + " añadido " + nuevoItem.cantidad + " cantidades");
-    req.flash("success", "Item añadido al inventario correctamente");
-    res.redirect("/inventario");
-});
-router.get('/inventario/edit/:id', funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
-    const { id } = req.params;
-    //console.log(id);
-    const item = await db.query("select * from inventario where id=?", id);
-    //console.log(item[0]);
-    res.render('inventario/edit', { item: item[0] });
-});
-router.post('/inventario/edit/:id', funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
-    var {
-        id,
-        tipo,
-        item,
-        descripcion,
-        cantidad,
-        fila,
-        columna
-    } = req.body;
-
-    const nuevoItem = {
-        id,
-        tipo,
-        item,
-        descripcion,
-        cantidad,
-        fila,
-        columna
-    };
-    await db.query("update inventario set ? where id=?", [nuevoItem, id]);
-    funciones.insertarLog(req.user.usuario, "UPDATE inventario", "Info actualizada " + nuevoItem.item + " " + nuevoItem.cantidad);
-    req.flash("success", "Inventario actualizado correctamente");
-    res.redirect("/inventario");
-});
-router.get("/inventario/delete/:id", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
-    //console.log(req.params.idObs);
-    const { id } = req.params;
-    await db.query("delete from inventario where id=?", [id]);
-    req.flash("success", "Item eliminado correctamente.");
-    res.redirect("/inventario");
 });
 
 //MOSTRAR ERROR
@@ -263,44 +113,6 @@ router.get('/error', (req, res) => {
 });
 router.get('/noperm', (req, res) => {
     res.render('estaticas/noPermission');
-});
-
-//GESTION MAPA
-router.get("/mapa/:nif", async (req, res) => {
-    const { nif } = req.params;
-    const baliza = await db.query(queryListadoAton + ' where b.nif=?', [nif]);
-    res.render("mapas/mapa", { layout: selectedLayout, baliza: baliza[0] });
-});
-//funcion get para mostrar los mapas dinamicos con la api de google maps
-router.get("/mapaGeneral/:valor", (req, res) => {
-    //const { valor } = req.params;
-    res.render("mapas/mapa", { layout: selectedLayout });
-});
-//funcion get para mostrar los mapas estaticos
-router.get("/mapaGeneral2/:valor", (req, res) => {
-    const { valor } = req.params;
-    //console.log("Mapa " + valor);
-    switch (valor) {
-        case "valencia":
-            res.render("mapas/mapaValencia", { layout: 'layoutMapaEstatico' });
-            break;
-        case 'sagunto':
-            res.render("mapas/mapaSagunto", { layout: 'layoutMapaEstatico' });
-            break;
-        case "gandia":
-            res.render("mapas/mapaGandia", { layout: 'layoutMapaEstatico' });
-            break;
-    }
-});
-//funcion get para alternar entre los dos layouts google y leaflet
-router.get('/changelayout', funciones.isAuthenticated, funciones.isAdmin, (req, res) => {
-    if (selectedLayout == 'layoutMapaLeaflet') {
-        selectedLayout = 'layoutMapa';
-    } else {
-        selectedLayout = 'layoutMapaLeaflet';
-    }
-    //TODO: refresh wherever page you are in when run this from navbar.
-    res.redirect("/mapaGeneral/valencia");
 });
 
 //MOSTRAR PRUEBA
