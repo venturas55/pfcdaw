@@ -69,6 +69,7 @@ app.use(require('./routes/api'));
 app.use(require('./routes/inventario'));
 app.use(require('./routes/backups'));
 app.use(require('./routes/mapas'));
+app.use(require('./routes/profile'));
 app.use('/tickets', require('./routes/tickets'));
 app.use('/mantenimientopreventivo', require('./routes/preventivos'));
 

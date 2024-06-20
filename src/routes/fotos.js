@@ -120,7 +120,6 @@ router.get("/backupsfotos/del/:nombre", funciones.isAuthenticated, funciones.isA
     res.redirect('/backupsfotos');
 });
 router.get("/aton/fotos/backup/zip", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
-    console.log("Voy backup fotos");
     const dir = path.join(__dirname, '../public/img/imagenes');
     const dirbackups = path.join(__dirname, '../public/dumpFOTOS/');
     zl.archiveFolder(dir, dirbackups + new Date().getTime() + ".zip").then(function () {

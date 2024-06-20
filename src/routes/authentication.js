@@ -105,7 +105,6 @@ router.post('/profile/email/recordarpass/', async (req, res) => { //:email
     }
 
 });
-
 router.get('/profile/email/verifypass/:user_id/:code', async (req, res) => {
     const { user_id, code } = req.params;
     await db.query("DELETE FROM tokens WHERE expires < NOW()");
@@ -134,7 +133,6 @@ router.get('/profile/recoverysetpass/:id', async (req, res) => {
     const { id } = req.params;
     res.render("auth/recoverysetnewpass", { id });
 });
-
 router.post('/profile/recoverysetpass', async (req, res) => {
     const { password, id } = req.body;
     //console.log(password + " "+ id);
