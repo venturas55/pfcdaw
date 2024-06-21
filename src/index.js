@@ -28,20 +28,19 @@ app.set('view engine', '.hbs'); //Para utilizar el app.engine
 
 //Middleware
 app.use(cors({
-    origin:(origin,callback)=>{
-        const ACCEPTED_ORIGINS=[
-            "http://localhost:"+app.get('port'),
-            "http://san.adriandeharo.es:"+app.get('port'),
-            "https://localhost:"+app.get('port'),
-            "https://san.adriandeharo.es:"+app.get('port'),
+    origin: (origin, callback) => {
+        const ACCEPTED_ORIGINS = [
+            "http://localhost:" + app.get('port'),
+            "http://san.adriandeharo.es:" + app.get('port'),
+            "https://localhost:" + app.get('port'),
+            "https://san.adriandeharo.es:" + app.get('port'),
         ]
-        if(ACCEPTED_ORIGINS.includes(origin)){
-            return callback(null,true);
+        if (ACCEPTED_ORIGINS.includes(origin)) {
+            return callback(null, true);
         }
-        if(!origin){
-            return callback(null,true);
+        if (!origin) {
+            return callback(null, true);
         }
-
         return callback(new Error("CORS no aceptado en la app"));
     }
 }
@@ -77,7 +76,7 @@ app.use((req, res, next) => {
     app.locals.error = req.flash('error');
     app.locals.message = req.flash('message');
     app.locals.user = req.user;
-    app.locals.puerto = app.get('port') ;
+    app.locals.puerto = app.get('port');
     next();
 });
 
@@ -118,9 +117,9 @@ app.use('/css', express.static(path.join(__dirname, '../node_modules/font-awesom
 app.use('/fonts', express.static(path.join(__dirname, '../node_modules/font-awesome/fonts')))
 
 //Leaflet
-app.use('/leaflet', express.static(path.join(__dirname, '../node_modules','leaflet','dist')))
+app.use('/leaflet', express.static(path.join(__dirname, '../node_modules', 'leaflet', 'dist')))
 
 //Arrancar servidor
 app.listen(app.get('port'), () => {
-    console.log("Running on http://localhost:"+ app.get('port'));
+    console.log("Running on http://localhost:" + app.get('port'));
 });

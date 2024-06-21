@@ -218,6 +218,7 @@ router.get('/cerrado/:id', funciones.isAuthenticated, funciones.hasSanPrivileges
         const ticket = await db.query(queryListadoTickets + " where ticket_id=?", id);
         const ticketsUsers = await db.query(queryListadoTicketsUsers + " where t.ticket_id=?", id);
         const usuarios = await db.query(" select * from usuarios");
+        console.log(ticketsUsers);
         res.render('tickets/edit', {
             ticket: ticket[0],
             users: ticketsUsers[0],

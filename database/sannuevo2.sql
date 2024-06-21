@@ -247,8 +247,8 @@ CREATE TABLE IF NOT EXISTS `preventivos` (
     'ko',
     'na'
   )  default null,
-  `alimentacion_ah` int default 0,
-  `alimentacion_vcc` float default 0,
+  `alimentacion_ah` int default null,
+  `alimentacion_vcc` float default null,
   `alimentacion_grupo` ENUM(
     'ok',
     'ko',
@@ -267,6 +267,7 @@ CREATE TABLE IF NOT EXISTS `preventivos` (
   `created_at` timestamp DEFAULT current_timestamp(),
   `solved_at` timestamp DEFAULT NULL,
   `created_by_id` int(11) DEFAULT NULL,
+  `completado` BOOLEAN DEFAULT false,
   CONSTRAINT `preventivo_ibfk_1` FOREIGN KEY (`created_by_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `preventivo_ibfk_2` FOREIGN KEY (`nif`) REFERENCES `balizamiento` (`nif`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'tabla de preventivos';

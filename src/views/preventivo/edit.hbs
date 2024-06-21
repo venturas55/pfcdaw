@@ -6,55 +6,8 @@
                 <div class="card-header text-center">
                     <h2> Información del Preventivo nº {{preventivo.preventivo_id}} </h2>
                 </div>
-                <div class="card-body py-4">
-                    <div class="form-group">
-                        <label for="created_by_id">Creado por</label>
-                        <input type="text" value="{{users.created_by}}" class="form-control" name="created_by_id"
-                            placeholder="created_by_id" disabled />
-                    </div>
-                    <div class="form-group">
-                        <label for="item">AtoN NIF</label>
-                        <input value="{{preventivo.nif}}" class="pinchable" type="text" name="nif" placeholder="nif"
-                            readonly />
-                    </div>
-                    <div class="form-group">
-                        <label for="titulo">Trabajo pendiente</label><input value="{{preventivo.titulo}}"
-                            class="form-control" type="text" name="titulo" placeholder="titulo" disabled />
-                    </div>
-                    <div class="form-group">
-                        <label for="descripcion">Trabajo realizado</label><input value="{{preventivo.descripcion}}"
-                            class="form-control" type="text" name="descripcion" placeholder="descripcion" disabled />
-                    </div>
+                {{>preventivoDisabled}}
 
-                    <div class="form-group">
-                        <label for="assigned_to">Tarea asignada a </label>
-                        <div class="input-group mb-3">
-                            <select class="custom-select" name="assigned_to_id" id="input_assigned_to_id"
-                                aria-label=".form-select-sm example" disabled>
-                                <option value=""> Selecciona</option>
-                                {{#each usuarios}}
-                                <option value="{{this.id}}" {{#when this.id 'eq' ../preventivo.assigned_to_id }}
-                                    selected {{/when}}>
-                                    {{this.usuario}} </option>
-                                {{/each}}
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="resolved_by">Tarea resuelta por</label>
-                        <div class="input-group mb-3">
-                            <select class="custom-select" name="resolved_by_id" id="input_resolved_by_id"
-                                aria-label=".form-select-sm example" disabled>
-                                <option value="">Selecciona</option>
-                                {{#each usuarios}}
-                                <option value="{{this.id}}" {{#when this.id 'eq' ../preventivo.resolved_by_id }}
-                                    selected {{/when}}>
-                                    {{this.usuario}} </option>
-                                {{/each}}
-                            </select>
-                        </div>
-                    </div>
-                </div>
                 {{!-- {{#if preventivo.resolved_by_id}} --}}
                 <a class="btn btn-warning m-2"
                     href="/mantenimientopreventivo/delete/{{preventivo.preventivo_id}}">Borrar</a>
@@ -77,21 +30,18 @@
                         <input type="hidden" name="nif" value="{{preventivo.nif}}" />
                         <input type="hidden" name="preventivo_id" value="{{preventivo.preventivo_id}}" />
                         {{>preventivo}}
-                        <button class="btn btn-primary btn-block">Guardar</button>
-                </div>
-                </form>
-                {{#if preventivo.resolved_by_id}}
-                <form action="/mantenimientopreventivo/cerrar/{{preventivo.preventivo_id}}" method="POST">
-                    <div class="form-group">
-                        <button class="btn btn-warning btn-block ">Cerrar preventivo</button>
-                    </div>
-                </form>
-                {{/if}}
-            <a class="btn btn-secondary mx-3"  onclick="history.back();">Cancelar</a>
+                        <button class="btn btn-primary btn-block w-100" type="submit" name="accion" value="Guardar">Guardar</button>
+   {{!--                  </form>
 
+                    <form action="/mantenimientopreventivo/cerrar/{{preventivo.preventivo_id}}" method="POST"> --}}
+                        <div class="form-group">
+                            <button class="btn btn-warning btn-block mt-3 w-100" type="submit" name="accion" value="Cerrar">Cerrar Preventivo</button>
+                        </div>
+                    </form>
+                </div>
+                <a class="btn btn-secondary mx-3" onclick="history.back();">Cancelar</a>
             </div>
         </div>
     </div>
-</div>
-{{/if}}
+    {{/if}}
 </div>
