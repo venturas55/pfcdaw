@@ -27,7 +27,7 @@ app.engine('.hbs', exphbs.engine({ //con esto se configura el app.engine
 app.set('view engine', '.hbs'); //Para utilizar el app.engine
 
 //Middleware
-app.use(cors({
+app.use(cors(/* {
     origin: (origin, callback) => {
         const ACCEPTED_ORIGINS = [
             "http://localhost:" + app.get('port'),
@@ -43,7 +43,7 @@ app.use(cors({
         }
         return callback(new Error("CORS no aceptado en la app"));
     }
-}
+} */
 
 ));
 
