@@ -57,6 +57,7 @@ router.post('/add', funciones.isAuthenticated, async (req, res) => {
     if (req.body.alimentacion_vcc == "")
         req.body.alimentacion_vcc = 0;
     //console.log(req.body);
+    req.body.solved_at=null;
     try {
         //TODO:    telecontrol_tipo
         const awns = await db.query("insert into preventivos set ? ", [req.body]);
