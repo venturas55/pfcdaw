@@ -2,40 +2,39 @@
     {{#if preventivo.solved_at}}
     <div class="row">
         <div class="col-md-8 mx-auto py-4">
-            <div class="card pb-4 ">
+            <div class="card pb-4">
                 <div class="card-header text-center">
-                    <h2> Información del Preventivo nº {{preventivo.preventivo_id}} </h2>
+                    <h2> Información del Preventivo {{preventivo.preventivo_id}} del AtoN {{preventivo.nif}} </h2>
                 </div>
-                {{>preventivoDisabled}}
-
-                {{!-- {{#if preventivo.resolved_by_id}} --}}
+                <div class="card-body pb-2">
+                    {{>preventivoDisabled}}
+                </div>
                 <a class="btn btn-warning m-2"
                     href="/mantenimientopreventivo/delete/{{preventivo.preventivo_id}}">Borrar</a>
                 <a class="btn btn-secondary m-2" href="/mantenimientopreventivo/list">Volver</a>
-                {{!-- {{/if}} --}}
             </div>
         </div>
     </div>
     {{else}}
-
     <div class="row">
-        <div class="col-md-8 mx-auto pb-4">
+        <div class="col-md-8 mx-auto py-4">
             <div class="card pb-4">
                 <div class="card-header text-center">
-                    <h2> Edición del Preventivo del AtoN {{preventivo.nif}} </h2>
+                    <h2> Edición del Preventivo {{preventivo.preventivo_id}} del AtoN {{preventivo.nif}} </h2>
                 </div>
-                <div class="card-body pb-4">
-                    {{!-- <h1> preventivo </h1> --}}
+                <div class="card-body pb-2">
                     <form action="/mantenimientopreventivo/edit/{{preventivo.preventivo_id}}" method="POST">
                         <input type="hidden" name="nif" value="{{preventivo.nif}}" />
                         <input type="hidden" name="preventivo_id" value="{{preventivo.preventivo_id}}" />
                         {{>preventivo}}
-                        <button class="btn btn-primary btn-block w-100" type="submit" name="accion" value="Guardar">Guardar</button>
-   {{!--                  </form>
-
+                        <button class="btn btn-primary btn-block w-100" type="submit" name="accion"
+                            value="Guardar">Guardar</button>
+                        {{!--
+                    </form>
                     <form action="/mantenimientopreventivo/cerrar/{{preventivo.preventivo_id}}" method="POST"> --}}
                         <div class="form-group">
-                            <button class="btn btn-warning btn-block mt-3 w-100" type="submit" name="accion" value="Cerrar">Cerrar Preventivo</button>
+                            <button class="btn btn-warning btn-block mt-3 w-100" type="submit" name="accion"
+                                value="Cerrar">Cerrar Preventivo</button>
                         </div>
                     </form>
                 </div>

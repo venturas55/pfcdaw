@@ -1,4 +1,4 @@
-<div class="estructura">
+<div class="border border-primary rounded estructura p-2 m-2">
     <p> Cerrado {{timeagoSpCerrado preventivo.solved_at}}</p>
     <div class="form-group">
         <label for="titulo">Estado</label>
@@ -35,7 +35,7 @@
             <label class="form-check-label" for="estructura_marca_tope1">OK</label>
         </div>
         {{/when}}{{#when preventivo.estructura_marca_tope 'eq' 'ko' }}
-        <div class="form-check form-check-inline">
+        <div class="form-check form-check-inline bg-danger">
             <input class="form-check-input" type="radio" name="estructura_marca_tope" id="estructura_marca_tope2"
                 value="ko" checked />
             <label class="form-check-label" for="estructura_marca_tope2">KO</label>
@@ -59,7 +59,7 @@
             <label class="form-check-label" for="estructura_engrase1">OK</label>
         </div>
         {{/when}}{{#when preventivo.estructura_engrase 'eq' 'ko' }}
-        <div class="form-check form-check-inline">
+        <div class="form-check form-check-inline bg-danger">
             <input class="form-check-input" type="radio" name="estructura_engrase" id="estructura_engrase2" value="ko"
                 checked />
             <label class="form-check-label" for="estructura_engrase2">KO</label>
@@ -83,7 +83,7 @@
             <label class="form-check-label" for="estructura_golpes1">OK</label>
         </div>{{/when}}
         {{#when preventivo.estructura_golpes 'eq' 'ko' }}
-        <div class="form-check form-check-inline bg-danger">
+        <div class="form-check form-check-inline  bg-danger">
             <input class="form-check-input" type="radio" name="estructura_golpes" id="estructura_golpes2" value="ko"
                 checked />
             <label class="form-check-label" for="estructura_golpes2">KO</label>
@@ -98,122 +98,119 @@
 
     <div class="form-group">
         <label for="titulo">Flotador</label>
+        {{#when preventivo.estructura_flotador 'eq' 'ok' }}
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="estructura_flotador" id="estructura_flotador1" value="ok"
-                {{#when preventivo.estructura_flotador 'eq' 'ok' }} checked {{/when}} />
+                checked />
             <label class="form-check-label" for="estructura_flotador1">OK</label>
         </div>
-
-        <div class="form-check form-check-inline">
+        {{/when}}
+        {{#when preventivo.estructura_flotador 'eq' 'ko' }}
+        <div class="form-check form-check-inline bg-danger">
             <input class="form-check-input" type="radio" name="estructura_flotador" id="estructura_flotador2" value="ko"
-                {{#when preventivo.estructura_flotador 'eq' 'ko' }} checked {{/when}} />
+                checked />
             <label class="form-check-label" for="estructura_flotador2">KO</label>
         </div>
-
+        {{/when}}
+        {{#when preventivo.estructura_flotador 'eq' 'na' }}
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="estructura_flotador" id="estructura_flotador3" value="na"
-                {{#when preventivo.estructura_flotador 'eq' 'na' }} checked {{/when}} />
+                checked />
             <label class="form-check-label" for="estructura_flotador3">N/A</label>
         </div>
+        {{/when}}
     </div>
 
 
     <div class="form-group">
-        <label for="titulo">Limpieza Interior</label>
+        <label for="titulo">Limpieza Interior</label>{{#when preventivo.estructura_limpieza_interior 'eq' 'ok'
+        }}
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="estructura_limpieza_interior"
-                id="estructura_limpieza_interior1" value="ok" {{#when preventivo.estructura_limpieza_interior 'eq' 'ok'
-                }} checked {{/when}} />
+                id="estructura_limpieza_interior1" value="ok" checked />
             <label class="form-check-label" for="estructura_limpieza_interior1">OK</label>
         </div>
-
+        {{/when}}{{#when preventivo.estructura_limpieza_interior 'eq' 'ko'
+        }}
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="estructura_limpieza_interior"
-                id="estructura_limpieza_interior2" value="ko" {{#when preventivo.estructura_limpieza_interior 'eq' 'ko'
-                }} checked {{/when}} />
+                id="estructura_limpieza_interior2" value="ko" checked />
             <label class="form-check-label" for="estructura_limpieza_interior2">KO</label>
         </div>
-
+        {{/when}} {{#when preventivo.estructura_limpieza_interior 'eq' 'na' }}
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="estructura_limpieza_interior"
-                id="estructura_limpieza_interior3" value="na" {{#when preventivo.estructura_limpieza_interior 'eq' 'na'
-                }} checked {{/when}} />
+                id="estructura_limpieza_interior3" value="na" checked />
             <label class="form-check-label" for="estructura_limpieza_interior3">N/A</label>
-        </div>
+        </div>{{/when}}
     </div>
 
 
     <div class="form-group">
-        <label for="titulo">Limpieza Exterior</label>
+        <label for="titulo">Limpieza Exterior</label> {{#when preventivo.estructura_limpieza_exterior 'eq' 'ok' }}
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="estructura_limpieza_exterior"
-                id="estructura_limpieza_exterior1" value="ok" {{#when preventivo.estructura_limpieza_exterior 'eq' 'ok'
-                }} checked {{/when}} />
+                id="estructura_limpieza_exterior1" value="ok" checked />
             <label class="form-check-label" for="estructura_limpieza_exterior1">OK</label>
         </div>
-
-        <div class="form-check form-check-inline">
+        {{/when}}{{#when preventivo.estructura_limpieza_exterior 'eq' 'ko' }}
+        <div class="form-check form-check-inline bg-danger">
             <input class="form-check-input" type="radio" name="estructura_limpieza_exterior"
-                id="estructura_limpieza_exterior2" value="ko" {{#when preventivo.estructura_limpieza_exterior 'eq' 'ko'
-                }} checked {{/when}} />
+                id="estructura_limpieza_exterior2" value="ko" checked />
             <label class="form-check-label" for="estructura_limpieza_exterior2">KO</label>
         </div>
-
+        {{/when}}{{#when preventivo.estructura_limpieza_exterior 'eq' 'na' }}
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="estructura_limpieza_exterior"
-                id="estructura_limpieza_exterior3" value="na" {{#when preventivo.estructura_limpieza_exterior 'eq' 'na'
-                }} checked {{/when}} />
+                id="estructura_limpieza_exterior3" value="na" checked />
             <label class="form-check-label" for="estructura_limpieza_exterior3">N/A</label>
-        </div>
+        </div>{{/when}}
     </div>
 
 
     <div class="form-group">
-        <label for="titulo">cuadro Electrico Interior</label>
+        <label for="titulo">cuadro Electrico Interior</label>{{#when preventivo.estructura_cuadro_interior 'eq' 'ok' }}
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="estructura_cuadro_interior"
-                id="estructura_cuadro_interior1" value="ok" {{#when preventivo.estructura_cuadro_interior 'eq' 'ok' }}
-                checked {{/when}} />
+                id="estructura_cuadro_interior1" value="ok" checked />
             <label class="form-check-label" for="estructura_cuadro_interior1">OK</label>
         </div>
-
-        <div class="form-check form-check-inline">
+        {{/when}}{{#when preventivo.estructura_cuadro_interior 'eq' 'ko' }}
+        <div class="form-check form-check-inline bg-danger">
             <input class="form-check-input" type="radio" name="estructura_cuadro_interior"
-                id="estructura_cuadro_interior2" value="ko" {{#when preventivo.estructura_cuadro_interior 'eq' 'ko' }}
-                checked {{/when}} />
+                id="estructura_cuadro_interior2" value="ko" checked />
             <label class="form-check-label" for="estructura_cuadro_interior2">KO</label>
         </div>
-
+        {{/when}}{{#when preventivo.estructura_cuadro_interior 'eq' 'na' }}
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="estructura_cuadro_interior"
-                id="estructura_cuadro_interior3" value="na" {{#when preventivo.estructura_cuadro_interior 'eq' 'na' }}
-                checked {{/when}} />
+                id="estructura_cuadro_interior3" value="na" checked />
             <label class="form-check-label" for="estructura_cuadro_interior3">N/A</label>
-        </div>
+        </div>{{/when}}
     </div>
 
     <div class="form-group">
         <label for="titulo">cuadro Electrico Exterior</label>
+        {{#when preventivo.estructura_cuadro_exterior 'eq' 'ok' }}
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="estructura_cuadro_exterior"
-                id="estructura_cuadro_exterior1" value="ok" {{#when preventivo.estructura_cuadro_exterior 'eq' 'ok' }}
-                checked {{/when}} />
+                id="estructura_cuadro_exterior1" value="ok" checked />
             <label class="form-check-label" for="estructura_cuadro_exterior1">OK</label>
         </div>
-
-        <div class="form-check form-check-inline">
+        {{/when}}
+        {{#when preventivo.estructura_cuadro_exterior 'eq' 'ko' }}
+        <div class="form-check form-check-inline bg-danger">
             <input class="form-check-input" type="radio" name="estructura_cuadro_exterior"
-                id="estructura_cuadro_exterior2" value="ko" {{#when preventivo.estructura_cuadro_exterior 'eq' 'ko' }}
-                checked {{/when}} />
+                id="estructura_cuadro_exterior2" value="ko" checked />
             <label class="form-check-label" for="estructura_cuadro_exterior2">KO</label>
         </div>
-
+        {{/when}}
+        {{#when preventivo.estructura_cuadro_exterior 'eq' 'na' }}
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="estructura_cuadro_exterior"
-                id="estructura_cuadro_exterior3" value="na" {{#when preventivo.estructura_cuadro_exterior 'eq' 'na' }}
-                checked {{/when}} />
+                id="estructura_cuadro_exterior3" value="na" checked />
             <label class="form-check-label" for="estructura_cuadro_exterior2">N/A</label>
-        </div>
+        </div>{{/when}}
     </div>
     <div class="form-group">
         <label for="item">Observaciones Sobre la estructura</label>
@@ -221,161 +218,171 @@
             name="estructura_observaciones">{{preventivo.estructura_observaciones}}</textarea>
     </div>
 </div>
-<div class="linterna">
+<div class="border border-primary rounded linterna p-2 m-2">
     <div class="form-group">
-        <label for="titulo">Encendido LDR1</label>
+        <label for="titulo">Encendido LDR1</label>{{#when
+        preventivo.linterna_ldr1 'eq' 'ok' }}
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="linterna_ldr1" id="linterna_ldr11" value="ok" {{#when
-                preventivo.linterna_ldr1 'eq' 'ok' }} checked {{/when}} />
+            <input class="form-check-input" type="radio" name="linterna_ldr1" id="linterna_ldr11" value="ok" checked />
             <label class="form-check-label" for="linterna_ldr11">OK</label>
         </div>
-
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="linterna_ldr1" id="linterna_ldr12" value="ko" {{#when
-                preventivo.linterna_ldr1 'eq' 'ko' }} checked {{/when}} />
+        {{/when}} {{#when
+        preventivo.linterna_ldr1 'eq' 'ko' }}
+        <div class="form-check form-check-inline bg-danger">
+            <input class="form-check-input" type="radio" name="linterna_ldr1" id="linterna_ldr12" value="ko" checked />
             <label class="form-check-label" for="linterna_ldr12">KO</label>
         </div>
-
+        {{/when}}{{#when
+        preventivo.linterna_ldr1 'eq' 'na' }}
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="linterna_ldr1" id="linterna_ldr13" value="na" {{#when
-                preventivo.linterna_ldr1 'eq' 'na' }} checked {{/when}} />
+            <input class="form-check-input" type="radio" name="linterna_ldr1" id="linterna_ldr13" value="na" checked />
             <label class="form-check-label" for="linterna_ldr13">N/A</label>
-        </div>
+        </div>{{/when}}
     </div>
-
 
     <div class="form-group">
         <label for="titulo">Encendido LDR2</label>
+        {{#when preventivo.linterna_ldr2 'eq' 'ok' }}
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="linterna_ldr2" id="linterna_ldr21" value="ok" {{#when
-                preventivo.linterna_ldr2 'eq' 'ok' }} checked {{/when}} />
+            <input class="form-check-input" type="radio" name="linterna_ldr2" id="linterna_ldr21" value="ok" checked />
             <label class="form-check-label" for="linterna_ldr21">OK</label>
         </div>
-
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="linterna_ldr2" id="linterna_ldr22" value="ko" {{#when
-                preventivo.linterna_ldr2 'eq' 'ko' }} checked {{/when}} />
+        {{/when}}{{#when
+        preventivo.linterna_ldr2 'eq' 'ko' }}
+        <div class="form-check form-check-inline bg-danger">
+            <input class="form-check-input" type="radio" name="linterna_ldr2" id="linterna_ldr22" value="ko" checked />
             <label class="form-check-label" for="linterna_ldr22">KO</label>
         </div>
-
+        {{/when}} {{#when
+        preventivo.linterna_ldr2 'eq' 'na' }}
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="linterna_ldr2" id="linterna_ldr23" value="na" {{#when
-                preventivo.linterna_ldr2 'eq' 'na' }} checked {{/when}} />
+            <input class="form-check-input" type="radio" name="linterna_ldr2" id="linterna_ldr23" value="na" checked />
             <label class="form-check-label" for="linterna_ldr23">N/A</label>
-        </div>
+        </div>{{/when}}
     </div>
+
     <div class="form-group">
-        <label for="titulo">Optica</label>
+        <label for="titulo">Optica</label>{{#when
+        preventivo.linterna_optica 'eq' 'ok' }}
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="linterna_optica" id="linterna_optica1" value="ok" {{#when
-                preventivo.linterna_optica 'eq' 'ok' }} checked {{/when}} />
+            <input class="form-check-input" type="radio" name="linterna_optica" id="linterna_optica1" value="ok"
+                checked />
             <label class="form-check-label" for="linterna_optica1">OK</label>
         </div>
-
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="linterna_optica" id="linterna_optica2" value="ko" {{#when
-                preventivo.linterna_optica 'eq' 'ko' }} checked {{/when}} />
+        {{/when}}{{#when
+        preventivo.linterna_optica 'eq' 'ko' }}
+        <div class="form-check form-check-inline bg-danger">
+            <input class="form-check-input" type="radio" name="linterna_optica" id="linterna_optica2" value="ko"
+                checked />
             <label class="form-check-label" for="linterna_optica2">KO</label>
         </div>
-
+        {{/when}}{{#when
+        preventivo.linterna_optica 'eq' 'na' }}
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="linterna_optica" id="linterna_optica3" value="na" {{#when
-                preventivo.linterna_optica 'eq' 'na' }} checked {{/when}} />
+            <input class="form-check-input" type="radio" name="linterna_optica" id="linterna_optica3" value="na"
+                checked />
             <label class="form-check-label" for="linterna_optica3">N/A</label>
-        </div>
+        </div> {{/when}}
     </div>
     <div class="form-group">
         <label for="titulo">Estanqueidad Tornillos</label>
-        <div class="form-check form-check-inline">
+        <div class="form-check form-check-inline">{{#when
+            preventivo.linterna_estanqueidad_tornillos 'eq' 'ok' }}
             <input class="form-check-input" type="radio" name="linterna_estanqueidad_tornillos"
-                id="linterna_estanqueidad_tornillos1" value="ok" {{#when
-                preventivo.linterna_estanqueidad_tornillos 'eq' 'ok' }} checked {{/when}} />
+                id="linterna_estanqueidad_tornillos1" value="ok" checked />
             <label class="form-check-label" for="linterna_estanqueidad_tornillos1">OK</label>
         </div>
-
-        <div class="form-check form-check-inline">
+        {{/when}} {{#when
+        preventivo.linterna_estanqueidad_tornillos 'eq' 'ko' }}
+        <div class="form-check form-check-inline bg-danger">
             <input class="form-check-input" type="radio" name="linterna_estanqueidad_tornillos"
-                id="linterna_estanqueidad_tornillos2" value="ko" {{#when
-                preventivo.linterna_estanqueidad_tornillos 'eq' 'ko' }} checked {{/when}} />
+                id="linterna_estanqueidad_tornillos2" value="ko" checked />
             <label class="form-check-label" for="linterna_estanqueidad_tornillos2">KO</label>
         </div>
-
+        {{/when}}{{#when
+        preventivo.linterna_estanqueidad_tornillos 'eq' 'na' }}
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="linterna_estanqueidad_tornillos"
-                id="linterna_estanqueidad_tornillos3" value="na" {{#when
-                preventivo.linterna_estanqueidad_tornillos 'eq' 'na' }} checked {{/when}} />
+                id="linterna_estanqueidad_tornillos3" value="na" checked />
             <label class="form-check-label" for="linterna_estanqueidad_tornillos3">N/A</label>
-        </div>
+        </div>{{/when}}
     </div>
+
     <div class="form-group">
-        <label for="titulo">Estanqueidad humedades</label>
+        <label for="titulo">Estanqueidad humedades</label> {{#when
+        preventivo.linterna_estanqueidad_humedades 'eq' 'ok' }}
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="linterna_estanqueidad_humedades"
-                id="linterna_estanqueidad_humedades1" value="ok" {{#when
-                preventivo.linterna_estanqueidad_humedades 'eq' 'ok' }} checked {{/when}} />
+                id="linterna_estanqueidad_humedades1" value="ok" checked />
             <label class="form-check-label" for="linterna_estanqueidad_humedades1">OK</label>
         </div>
-
-        <div class="form-check form-check-inline">
+        {{/when}}{{#when
+        preventivo.linterna_estanqueidad_humedades 'eq' 'ko' }}
+        <div class="form-check form-check-inline bg-danger">
             <input class="form-check-input" type="radio" name="linterna_estanqueidad_humedades"
-                id="linterna_estanqueidad_humedades2" value="ko" {{#when
-                preventivo.linterna_estanqueidad_humedades 'eq' 'ko' }} checked {{/when}} />
+                id="linterna_estanqueidad_humedades2" value="ko" checked />
             <label class="form-check-label" for="linterna_estanqueidad_humedades2">KO</label>
         </div>
-
+        {{/when}}{{#when
+        preventivo.linterna_estanqueidad_humedades 'eq' 'na' }}
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="linterna_estanqueidad_humedades"
-                id="linterna_estanqueidad_humedades3" value="na" {{#when
-                preventivo.linterna_estanqueidad_humedades 'eq' 'na' }} checked {{/when}} />
+                id="linterna_estanqueidad_humedades3" value="na" checked />
             <label class="form-check-label" for="linterna_estanqueidad_humedades3">N/A</label>
-        </div>
+        </div>{{/when}}
     </div>
     <div class="form-group">
         <label for="item">Observaciones Sobre la linterna</label>
         <textarea readonly class="form-control"
             name="linterna_observaciones">{{preventivo.linterna_observaciones}}</textarea>
     </div>
-
 </div>
-<div class="telecontrol">
+</div>
+
+
+<div class="border border-primary rounded telecontrol p-2 m-2">
     <div class="form-group">
-        <label for="titulo">telecontrol_monitoreo</label>
+        <label for="titulo">telecontrol_monitoreo</label>{{#when preventivo.telecontrol_monitoreo 'eq' 'ok' }}
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="telecontrol_monitoreo" id="telecontrol_monitoreo1"
-                value="ok" {{#when preventivo.telecontrol_monitoreo 'eq' 'ok' }} checked {{/when}} />
+                value="ok" checked />
             <label class="form-check-label" for="telecontrol_monitoreo1">OK</label>
         </div>
-
-        <div class="form-check form-check-inline">
+        {{/when}}{{#when preventivo.telecontrol_monitoreo 'eq' 'ko' }}
+        <div class="form-check form-check-inline bg-danger">
             <input class="form-check-input" type="radio" name="telecontrol_monitoreo" id="telecontrol_monitoreo2"
-                value="ko" {{#when preventivo.telecontrol_monitoreo 'eq' 'ko' }} checked {{/when}} />
+                value="ko" checked />
             <label class="form-check-label" for="telecontrol_monitoreo2">KO</label>
         </div>
+        {{/when}} {{#when preventivo.telecontrol_monitoreo 'eq' 'na' }}
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="telecontrol_monitoreo" id="telecontrol_monitoreo3"
-                value="na" {{#when preventivo.telecontrol_monitoreo 'eq' 'na' }} checked {{/when}} />
+                value="na" checked />
             <label class="form-check-label" for="telecontrol_monitoreo3">N/A</label>
-        </div>
+        </div>{{/when}}
     </div>
 
     <div class="form-group">
-        <label for="titulo">GPS</label>
+        <label for="titulo">GPS</label>{{#when
+        preventivo.telecontrol_gps 'eq' 'ok' }}
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="telecontrol_gps" id="telecontrol_gps1" value="ok" {{#when
-                preventivo.telecontrol_gps 'eq' 'ok' }} checked {{/when}} />
+            <input class="form-check-input" type="radio" name="telecontrol_gps" id="telecontrol_gps1" value="ok"
+                checked />
             <label class="form-check-label" for="telecontrol_gps1">OK</label>
         </div>
-
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="telecontrol_gps" id="telecontrol_gps2" value="ko" {{#when
-                preventivo.telecontrol_gps 'eq' 'ko' }} checked {{/when}} />
+        {{/when}} {{#when
+        preventivo.telecontrol_gps 'eq' 'ko' }}
+        <div class="form-check form-check-inline bg-danger">
+            <input class="form-check-input" type="radio" name="telecontrol_gps" id="telecontrol_gps2" value="ko"
+                checked />
             <label class="form-check-label" for="telecontrol_gps2">KO</label>
-        </div>
+        </div> {{/when}} {{#when
+        preventivo.telecontrol_gps 'eq' 'na' }}
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="telecontrol_gps" id="telecontrol_gps3" value="na" {{#when
-                preventivo.telecontrol_gps 'eq' 'na' }} checked {{/when}} />
+            <input class="form-check-input" type="radio" name="telecontrol_gps" id="telecontrol_gps3" value="na"
+                checked />
             <label class="form-check-label" for="telecontrol_gps2">N/A</label>
-        </div>
+        </div> {{/when}}
     </div>
 
 
@@ -388,115 +395,117 @@
 
 
 </div>
-<div class="alimentacion">
+<div class="border border-primary rounded alimentacion p-2 m-2">
     <div class="form-group">
-        <label for="titulo">Panel fotovoltaico</label>
+        <label for="titulo">Panel fotovoltaico</label>{{#when preventivo.alimentacion_panelFV 'eq' 'ok' }}
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="alimentacion_panelFV" id="alimentacion_panelFV1"
-                value="ok" {{#when preventivo.alimentacion_panelFV 'eq' 'ok' }} checked {{/when}} />
+                value="ok" checked />
             <label class="form-check-label" for="alimentacion_panelFV1">OK</label>
         </div>
-
-        <div class="form-check form-check-inline">
+        {{/when}} {{#when preventivo.alimentacion_panelFV 'eq' 'ko' }}
+        <div class="form-check form-check-inline bg-danger">
             <input class="form-check-input" type="radio" name="alimentacion_panelFV" id="alimentacion_panelFV2"
-                value="ko" {{#when preventivo.alimentacion_panelFV 'eq' 'ko' }} checked {{/when}} />
+                value="ko" checked />
             <label class="form-check-label" for="alimentacion_panelFV2">KO</label>
-        </div>
+        </div>{{/when}} {{#when preventivo.alimentacion_panelFV 'eq' 'na' }}
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="alimentacion_panelFV" id="alimentacion_panelFV3"
-                value="na" {{#when preventivo.alimentacion_panelFV 'eq' 'na' }} checked {{/when}} />
+                value="na" checked />
             <label class="form-check-label" for="alimentacion_panelFV3">N/A</label>
-        </div>
+        </div>{{/when}}
     </div>
 
     <div class="form-group">
-        <label for="titulo">Red</label>
+        <label for="titulo">Red</label> {{#when preventivo.alimentacion_red 'eq' 'ok' }}
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="alimentacion_red" id="alimentacion_red1" value="ok"
-                {{#when preventivo.alimentacion_red 'eq' 'ok' }} checked {{/when}} />
+                checked />
             <label class="form-check-label" for="alimentacion_red1">OK</label>
         </div>
-
-        <div class="form-check form-check-inline">
+        {{/when}} {{#when preventivo.alimentacion_red 'eq' 'ko' }}
+        <div class="form-check form-check-inline bg-danger">
             <input class="form-check-input" type="radio" name="alimentacion_red" id="alimentacion_red2" value="ko"
-                {{#when preventivo.alimentacion_red 'eq' 'ko' }} checked {{/when}} />
+                checked />
             <label class="form-check-label" for="alimentacion_red2">KO</label>
-        </div>
+        </div>{{/when}} {{#when preventivo.alimentacion_red 'eq' 'na' }}
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="alimentacion_red" id="alimentacion_red3" value="na"
-                {{#when preventivo.alimentacion_red 'eq' 'na' }} checked {{/when}} />
+                checked />
             <label class="form-check-label" for="alimentacion_red3">N/A</label>
-        </div>
+        </div>{{/when}}
     </div>
     <div class="form-group">
-        <label for="titulo">Capacidad en Ah</label>
-        <input type="number" name="alimentacion_ah" min="0" step="1" value="{{preventivo.alimentacion_ah}}">
+        <label for="titulo">Capacidad {{preventivo.alimentacion_ah}} Ah</label>
+
     </div>
     <div class="form-group">
-        <label for="titulo">Voltaje en V</label>
-        <input type="number" name="alimentacion_vcc" min="0" max="20" step="0.01"
-            value="{{preventivo.alimentacion_vcc}}">
+        <label for="titulo">Voltaje {{preventivo.alimentacion_vcc}} V</label>
+
     </div>
 
 
     <div class="form-group">
-        <label for="titulo">Baterias</label>
+        <label for="titulo">Baterias</label>{{#when preventivo.alimentacion_baterias 'eq' 'ok' }}
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="alimentacion_baterias" id="alimentacion_baterias1"
-                value="ok" {{#when preventivo.alimentacion_baterias 'eq' 'ok' }} checked {{/when}} />
+                value="ok" checked />
             <label class="form-check-label" for="alimentacion_baterias1">OK</label>
         </div>
-
-        <div class="form-check form-check-inline">
+        {{/when}}{{#when preventivo.alimentacion_baterias 'eq' 'ko' }}
+        <div class="form-check form-check-inline bg-danger">
             <input class="form-check-input" type="radio" name="alimentacion_baterias" id="alimentacion_baterias2"
-                value="ko" {{#when preventivo.alimentacion_baterias 'eq' 'ko' }} checked {{/when}} />
+                value="ko" checked />
             <label class="form-check-label" for="alimentacion_baterias2">KO</label>
         </div>
+        {{/when}} {{#when preventivo.alimentacion_baterias 'eq' 'na' }}
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="alimentacion_baterias" id="alimentacion_baterias3"
-                value="na" {{#when preventivo.alimentacion_baterias 'eq' 'na' }} checked {{/when}} />
+                value="na" checked />
             <label class="form-check-label" for="alimentacion_baterias3">N/A</label>
-        </div>
+        </div>{{/when}}
     </div>
 
     <div class="form-group">
-        <label for="titulo">Grupo Electrogeno</label>
+        <label for="titulo">Grupo Electrogeno</label> {{#when preventivo.alimentacion_grupo 'eq' 'ok' }}
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="alimentacion_grupo" id="alimentacion_grupo1" value="ok"
-                {{#when preventivo.alimentacion_grupo 'eq' 'ok' }} checked {{/when}} />
+                checked />
             <label class="form-check-label" for="alimentacion_grupo1">OK</label>
         </div>
-
-        <div class="form-check form-check-inline">
+        {{/when}} {{#when preventivo.alimentacion_grupo 'eq' 'ko' }}
+        <div class="form-check form-check-inline bg-danger">
             <input class="form-check-input" type="radio" name="alimentacion_grupo" id="alimentacion_grupo2" value="ko"
-                {{#when preventivo.alimentacion_grupo 'eq' 'ko' }} checked {{/when}} />
+                checked />
             <label class="form-check-label" for="alimentacion_grupo2">KO</label>
         </div>
+        {{/when}}{{#when preventivo.alimentacion_grupo 'eq' 'na' }}
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="alimentacion_grupo" id="alimentacion_grupo3" value="na"
-                {{#when preventivo.alimentacion_grupo 'eq' 'na' }} checked {{/when}} />
+                checked />
             <label class="form-check-label" for="alimentacion_grupo3">N/A</label>
-        </div>
+        </div>{{/when}}
     </div>
 
     <div class="form-group">
-        <label for="titulo">Estado cableado</label>
+        <label for="titulo">Estado cableado</label>{{#when preventivo.alimentacion_cableado 'eq' 'ok' }}
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="alimentacion_cableado" id="alimentacion_cableado1"
-                value="ok" {{#when preventivo.alimentacion_cableado 'eq' 'ok' }} checked {{/when}} />
+                value="ok" checked />
             <label class="form-check-label" for="alimentacion_cableado1">OK</label>
         </div>
-
-        <div class="form-check form-check-inline">
+        {{/when}}{{#when preventivo.alimentacion_cableado 'eq' 'ko' }}
+        <div class="form-check form-check-inline bg-danger">
             <input class="form-check-input" type="radio" name="alimentacion_cableado" id="alimentacion_cableado2"
-                value="ko" {{#when preventivo.alimentacion_cableado 'eq' 'ko' }} checked {{/when}} />
+                value="ko" checked />
             <label class="form-check-label" for="alimentacion_cableado2">KO</label>
         </div>
+        {{/when}}{{#when preventivo.alimentacion_cableado 'eq' 'na' }}
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="alimentacion_cableado" id="alimentacion_cableado3"
-                value="na" {{#when preventivo.alimentacion_cableado 'eq' 'na' }} checked {{/when}} />
+                value="na" checked />
             <label class="form-check-label" for="alimentacion_cableado3">N/A</label>
-        </div>
+        </div>{{/when}}
     </div>
 
     <div class="form-group">
@@ -505,7 +514,7 @@
             name="alimentacion_observaciones">{{preventivo.alimentacion_observaciones}}</textarea>
     </div>
 </div>
-<div class="form-group">
+<div class="border border-primary rounded form-group p-2 m-2">
     <label for="item">Observaciones Generales</label>
     <textarea readonly class="form-control" rows="4" cols="50"
         name="observaciones_generales">{{preventivo.observaciones_generales}}</textarea>

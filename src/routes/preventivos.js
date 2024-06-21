@@ -129,7 +129,7 @@ router.post('/edit/:id', funciones.isAuthenticated, funciones.hasSanPrivileges, 
             funciones.insertarLog(req.user.usuario, "UPDATED and CLOSED preventivo cerrado por ", req.body.solved_by);
 
         }else{
-            req.flash("warning", "Acaba de rellenar todos los campos del preventivo");
+            req.flash("warning", "Tienes que completar todos los campos del preventivo");
             res.redirect("/mantenimientopreventivo/edit/" + req.body.preventivo_id);
         }
 
