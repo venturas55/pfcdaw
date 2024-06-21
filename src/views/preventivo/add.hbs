@@ -1,22 +1,26 @@
 <div class="container p-2  mb-4">
-    <h1 class=" col-md-8 mx-auto text-center">CREAR NUEVO MANTENIMIENTO PREVENTIVO</h1>
     <div class="row">
-        <div class="col-md-8 mx-auto p-y4">
-            <div class="card py-4">
-                <div class="card-body py-4">
+        <div class="col-md-8 mx-auto py-4">
+            <div class="card pb-4">
+                <div class="card-header text-center">
+                    <h2> Crear un nuevo Preventivo</h2>
+                </div>
+                <div class="card-body pb-2">
                     <form action="/mantenimientopreventivo/add" method="POST">
                         <input class="form-control" type="hidden" name="created_by_id" placeholder="created_by_id"
                             value="{{user.id}}" />
                         <div class="form-group">
                             <label for="item">AtoN NIF</label>
-                            <input class="form-control" type="text" name="nif" placeholder="nif" size="6"
+                            <input class="form-control" type="text" name="nif" placeholder="nif" 
                                 value="{{nif}}" />
                         </div>
                         {{>preventivo}}
-                        <button class="btn btn-primary btn-block">GRABAR PREVENTIVO</button>
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-block mt-3 w-100">GRABAR PREVENTIVO</button>
+                        </div>
                     </form>
-                    <button class="btn btn-danger btn-block">Cancelar</button>
                 </div>
+                <a class="btn btn-secondary mx-3" onclick="history.back();">Cancelar</a>
             </div>
         </div>
     </div>
