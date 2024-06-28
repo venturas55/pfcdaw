@@ -57,7 +57,9 @@ router.post('/add', funciones.isAuthenticated, async (req, res) => {
     if (req.body.alimentacion_vcc == "")
         req.body.alimentacion_vcc = 0;
     //console.log(req.body);
-    req.body.solved_at=null;
+
+    //TODO:     se guarda solved_at como 0000-00-00 y no como NULL!!
+    req.body.solved_at=null; // igual se graba como 0000-00-00. EN LOCAL FUNCIONA EN LA NUBE NO
     try {
         //TODO:    telecontrol_tipo
         const awns = await db.query("insert into preventivos set ? ", [req.body]);

@@ -58,7 +58,7 @@ const uploadFoto = multer({
     fileFilter: (req, file, cb) => {
         const filetypes = /jpeg|jpg|jfif|png|bmp|gif/;
         const mimetype = filetypes.test(file.mimetype);
-        console.log(mimetype + "es el 1");
+        //console.log(mimetype + "es el 1");
         const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
         if (mimetype && extname) {
             return cb(null, true);

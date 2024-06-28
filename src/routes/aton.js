@@ -10,7 +10,7 @@ const queryListadoPreventivosUsers = 'SELECT p.preventivo_id,p.nif,p.estructura_
 var moment = require('moment'); // require
 moment().format();
 
-getPointfromLatLng =  (lat, lng) => {
+getPointfromLatLng = (lat, lng) => {
     var lat2 = 0;
     var lng2 = 0;
     if (lat != null && lat.includes("º")) {
@@ -197,7 +197,7 @@ router.post("/add", funciones.isAuthenticated, funciones.hasSanPrivileges, async
 
 //CRUD ATON read
 router.get("/list", async (req, res) => {
-    var numPintado=0;
+    var numPintado = 0;
     const balizas = await db.query(queryListadoAton);
 
     const tickets = await db.query("select * from tickets where solved_at IS NULL");
@@ -210,12 +210,12 @@ router.get("/list", async (req, res) => {
             element.hasTicket = true;
         if (hasPreventivo)
             element.hasPreventivo = true;
-        if(element.necesita_pintado)
+        if (element.necesita_pintado)
             numPintado++;
     });
     const numTickets = tickets.length;
     const numPreventivos = preventivos.length;
-    res.render("aton/list", { balizas,numTickets,numPintado,preventivos ,numPreventivos });
+    res.render("aton/list", { balizas, numTickets, numPintado, preventivos, numPreventivos });
 
 });
 router.get("/list/:busqueda", async (req, res) => {
@@ -257,7 +257,7 @@ router.get("/plantilla/:nif", async (req, res) => {
         const preventivos = await db.query(queryListadoPreventivosUsers + 'where p.nif=? ', [nif]);
         //console.log(tickets);
         var fotos = funciones.listadoFotos(nif);
-        res.render("aton/plantilla", { layout: 'layoutPlantilla', baliza: baliza[0], obs: observaciones, mant: mantenimiento, fotos, tickets ,preventivos});
+        res.render("aton/plantilla", { layout: 'layoutPlantilla', baliza: baliza[0], obs: observaciones, mant: mantenimiento, fotos, tickets, preventivos });
     } else {
         req.flash("warning", "La baliza indicada con nif " + nif + " no existe!!");
         res.redirect("/error");
@@ -310,7 +310,7 @@ router.post("/editCaracteristicas/:nif", funciones.isAuthenticated, funciones.ha
     } = req.body;
     periodo = parseInt(periodo);
     const newBaliza = {
-        nif: nifviejo,
+        nif,
         num_internacional,
         tipo,
         telecontrol,
@@ -324,9 +324,44 @@ router.post("/editCaracteristicas/:nif", funciones.isAuthenticated, funciones.ha
             newBaliza,
             nifviejo,
         ]);
+        //En caso de que se modifique el nif
+        if (nifviejo != newBaliza.nif) {
+            await db.query("UPDATE localizacion set nif= ? WHERE nif = ?", [
+                newBaliza.nif,
+                nifviejo,
+            ]);
+            await db.query("UPDATE lampara set nif= ? WHERE nif = ?", [
+                newBaliza.nif,
+                nifviejo,
+            ]);
+            await db.query("UPDATE observaciones set nif= ? WHERE nif = ?", [
+                newBaliza.nif,
+                nifviejo,
+            ]);
+            await db.query("UPDATE mantenimiento set nif= ? WHERE nif = ?", [
+                newBaliza.nif,
+                nifviejo,
+            ]);
+            await db.query("UPDATE tickets set nif= ? WHERE nif = ?", [
+                newBaliza.nif,
+                nifviejo,
+            ]);
+            await db.query("UPDATE preventivos set nif= ? WHERE nif = ?", [
+                newBaliza.nif,
+                nifviejo,
+            ]);
+
+        }
+
+        //cambiar de nombre la carpeta de fotos
+
+        oldName = path.join(__dirname, '../public/img/imagenes/', nifviejo);
+        newName = path.join(__dirname, '../public/img/imagenes/', nif);
+        await fs.rename(oldName, newName);
+
         funciones.insertarLog(req.user.usuario, "UPDATE balizamiento", newBaliza.nif + " " + newBaliza.num_internacional + " " + newBaliza.tipo + " " + newBaliza.telecontrol + newBaliza.apariencia + " " + newBaliza.periodo + " " + newBaliza.caracteristica);
         req.flash("success", "Baliza modificada correctamente");
-        res.redirect("/aton/plantilla/" + nifviejo);
+        res.redirect("/aton/plantilla/" + newBaliza.nif);
 
     } catch (error) {
         console.error(error);
@@ -360,7 +395,7 @@ router.post("/editLocalizacion/:nif", funciones.isAuthenticated, funciones.hasSa
             await db.query("INSERT into localizacion set ? ", [newBaliza]);
         } else {
             await db.query("UPDATE localizacion set ? WHERE nif = ?", [newBaliza, nifviejo]);
-            await db.query("UPDATE localizacion set coordenadas= point(?,?) WHERE nif = ?", [latitud,longitud, nifviejo]); 
+            await db.query("UPDATE localizacion set coordenadas= point(?,?) WHERE nif = ?", [latitud, longitud, nifviejo]);
         }
         funciones.insertarLog(req.user.usuario, "UPDATE localizacion", newBaliza.nif + " " + newBaliza.puerto + " " + newBaliza.num_local + " " + newBaliza.localizacion + " " + newBaliza.latitud + " " + newBaliza.longitud);
         req.flash("success", "Localizacion de baliza modificada correctamente");
@@ -381,13 +416,13 @@ router.post("/editLocalizacionFromMap/:nif", funciones.isAuthenticated, funcione
     } = req.body;
     try {
         var [baliza] = await db.query("SELECT * FROM localizacion WHERE nif=?", [nifviejo]);
-        
+
         //TODO: convert data to  39º 26.901´N format
-        
+
         baliza.latitud = latitud;
         baliza.longitud = longitud;
         await db.query("UPDATE localizacion set ? WHERE nif = ?", [baliza, nifviejo]);
-        funciones.insertarLog(req.user.usuario, "UPDATE localizacion", baliza.nif + " "+ baliza.latitud + " " + baliza.longitud);
+        funciones.insertarLog(req.user.usuario, "UPDATE localizacion", baliza.nif + " " + baliza.latitud + " " + baliza.longitud);
         req.flash("success", "Localizacion de baliza modificada correctamente");
         res.redirect("/mapa/" + nifviejo);
 
@@ -423,9 +458,9 @@ router.get("/transform", funciones.isAuthenticated, funciones.isAdmin, async (re
     const nif = req.params.nif;
     try {
         var baliza = await db.query("SELECT * FROM localizacion", [nif]);
-        for(var i = 0; i < baliza.length; i++) {
-            var punto = getPointfromLatLng(baliza[i].latitud ,baliza[i].longitud);
-            await db.query("UPDATE localizacion set coordenadas= point(?,?) WHERE nif = ?", [punto.lat,punto.lng, baliza[i].nif]);
+        for (var i = 0; i < baliza.length; i++) {
+            var punto = getPointfromLatLng(baliza[i].latitud, baliza[i].longitud);
+            await db.query("UPDATE localizacion set coordenadas= point(?,?) WHERE nif = ?", [punto.lat, punto.lng, baliza[i].nif]);
         }
         req.flash("success", "Localizacion de balizas transformadas correctamente");
         res.redirect("/");

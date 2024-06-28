@@ -5,6 +5,11 @@
             <div class="card">
                 <div class="card-body">
                     <form action="/aton/editCaracteristicas/{{baliza.nif}}" method="POST">
+                                  <div class="form-group mb-2">
+                            <label for="nif">NIF</label>
+                            <input value="{{baliza.nif}}" class="form-control" type="text"
+                                name="nif" placeholder="nif" autofocus />
+                        </div>
                         <div class="form-group mb-2">
                             <label for="num_internacional">NUM_INTERNACIONAL</label>
                             <input value="{{baliza.num_internacional}}" class="form-control" type="text"
