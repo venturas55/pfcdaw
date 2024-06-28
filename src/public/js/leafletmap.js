@@ -41,6 +41,7 @@ fetchData().then((balizas) => {
     marker.on('dragend', function (event) {
       thismarker = event.target;
       var position = thismarker.getLatLng();
+      console.log(position);
       thismarker.setLatLng(new L.LatLng(position.lat, position.lng), { draggable: 'true' });
       map.panTo(new L.LatLng(position.lat, position.lng));
       //console.log(item.pos0);
@@ -56,6 +57,8 @@ fetchData().then((balizas) => {
           '<div class="form-group mb-2">' +
           '<label for="longitud">LONGITUD</label>' +
           '<input value="' + textposition.lng + '" class="form-control" type="text" name="longitud" /> </div>' +
+          '<input value="' + position.lat + '" class="form-control" type="hidden" name="lat" /> ' +
+          '<input value="' + position.lng + '" class="form-control" type="hidden" name="lng" /> ' +
           '<div class="form-group mb-2 text-center">' +
           '    <button class="btn btn-success btn-block">SI</button>' +
           ' </div>' +

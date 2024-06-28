@@ -409,26 +409,32 @@ router.post("/editLocalizacion/:nif", funciones.isAuthenticated, funciones.hasSa
 
 });
 router.post("/editLocalizacionFromMap/:nif", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
-    const nifviejo = req.params.nif;
+    const nif = req.params.nif;
     var {
         latitud,
         longitud,
+        lng,lat
     } = req.body;
     try {
-        var [baliza] = await db.query("SELECT * FROM localizacion WHERE nif=?", [nifviejo]);
+     /*    var [baliza] = await db.query("SELECT * FROM localizacion WHERE nif=?", [nif]);
 
         //TODO: convert data to  39º 26.901´N format
 
         baliza.latitud = latitud;
-        baliza.longitud = longitud;
-        await db.query("UPDATE localizacion set ? WHERE nif = ?", [baliza, nifviejo]);
-        funciones.insertarLog(req.user.usuario, "UPDATE localizacion", baliza.nif + " " + baliza.latitud + " " + baliza.longitud);
+        baliza.longitud = longitud; */
+
+        await db.query("UPDATE localizacion set latitud = ?, longitud= ? WHERE nif = ?", [latitud,longitud, nif]);
+//        baliza.coordenadas= 'point('+lng+','+lat+')';
+        await db.query("UPDATE localizacion set coordenadas=point(?,?)  WHERE nif = ?", [lat,lng, nif]);
+
+
+        funciones.insertarLog(req.user.usuario, "UPDATE localizacion", nif + " " + latitud + " " + longitud);
         req.flash("success", "Localizacion de baliza modificada correctamente");
-        res.redirect("/mapa/" + nifviejo);
+        res.redirect("/mapa/" + nif);
 
     } catch (error) {
         console.error(error);
-        req.flash("error", "Hubo algun error al modificar la localización del aton con NIF " + nifviejo);
+        req.flash("error", "Hubo algun error al modificar la localización del aton con NIF " + nif);
         res.redirect("/mapaGeneral/valencia");
     }
 

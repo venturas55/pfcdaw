@@ -164,7 +164,7 @@ function setMarkerLatLng(lat, lng) {
 }
 //FUNCION PARA TRADUCIR COORDENADAS DE UN OBJETO GOOGLE FORMAT PASA A COORDENADAS WEB.
 function getMarkerLatLng({ lat, lng }) {
-    console.log(lat + " " + lng)
+    //console.log(lat + " " + lng)
     var lattext = "";
     var lngtext = "";
     var latabs = Math.abs(lat);
