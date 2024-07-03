@@ -26,6 +26,7 @@
                     style="white-space: nowrap; overflow-x: auto;">
                     <tr class="info-color-dark">
                         <th>NIF</th>
+                        <th>Fecha</th>
                         <th class="d-none d-md-table-cell">Creado por</th>
                         {{!-- <th class="d-none d-md-table-cell">Fecha inicio</th> --}}
                         <th class="d-none d-md-table-cell">Status</th>
@@ -35,6 +36,7 @@
                     {{#each preventivos}}
                     <tr class="fila">
                         <td> <a href="/aton/plantilla/{{ this.nif }} ">{{ this.nif }}</a> </td>
+                        <td>{{formatearSp this.fecha}}</td>
                         <td class="d-none d-md-table-cell">{{ this.created_by }} </td>
                         {{!-- <td class="d-none d-md-table-cell">{{ timeagoSpCerrado this.created_at }} </td> --}}
 

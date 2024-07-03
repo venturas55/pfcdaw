@@ -141,6 +141,7 @@ CREATE TABLE `tokens` (
   `expires` DATETIME NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   FOREIGN KEY (user_id) REFERENCES usuarios(id) ON DELETE CASCADE
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = 'tabla de tokens';
+
 DROP TABLE IF EXISTS preventivos;
 CREATE TABLE IF NOT EXISTS `preventivos` (
   `preventivo_id` int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -266,6 +267,7 @@ CREATE TABLE IF NOT EXISTS `preventivos` (
   `observaciones_generales` varchar(250) default null,
   `created_at` timestamp DEFAULT current_timestamp(),
   `solved_at` timestamp DEFAULT NULL,
+  `fecha` timestamp DEFAULT NULL,
   `created_by_id` int(11) DEFAULT NULL,
   `completado` BOOLEAN DEFAULT false,
   CONSTRAINT `preventivo_ibfk_1` FOREIGN KEY (`created_by_id`) REFERENCES `usuarios` (`id`),
