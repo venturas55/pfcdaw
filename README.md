@@ -87,8 +87,8 @@ Donde ‘db_user’ y ‘db_pass’ serán las credenciales de acceso a tu base 
 
 
 
-
-       #  RESUMEN NUEVA INSTALACION PUNTOS CLAVE
+============================================================
+#  RESUMEN NUEVA INSTALACION PUNTOS CLAVE
 ============================================================
 
 ## 1.- INSTALACION NODEJS/EXPRESS SERVER:
