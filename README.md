@@ -135,6 +135,7 @@ Copiar imagenes de las balizas en .\src\public\img
 update nodejs
 -------------------
 npm install -g n
+
 n <version-number>    or      n lts
 
 ----------------
