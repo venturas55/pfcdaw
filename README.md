@@ -101,7 +101,8 @@ Donde ‘db_user’ y ‘db_pass’ serán las credenciales de acceso a tu base 
                                             DB_NAME=nombrebasedatos
                                             EMAIL_ACCOUNT=correo@electronico.es
                                             EMAIL_PASS=contraseñadelacuentacorreo
-    npm install
+    Instalar las dependencias ejecutando
+    - npm install
 
 ## 2.- INSTALACION BASE DE DATOS
 Acceder a consola de mysql mediante
@@ -111,12 +112,15 @@ Acceder a consola de mysql mediante
 Para crear la estructura de tablas usar el archivo ubicado en ./database/sanEstructura.sql
 
 Ejemplos
+
 source /home/ubuntu/san/database/sanEstructura.sql
 source D:\DEVELOPMENT\01DAW\3 PFC\serpis\prueba instalacion\pfcdaw\database\sanEstructura.sql
 source D:\DEVELOPMENT\01DAW\3 PFC\serpis\pfcdaw\database\sanEstructura.sql
 
 Para poblarla de datos usar el backup disponible o uno de prueba ubicado en ./database/poblarDDBB.sql
+
 Ejemplos
+
 source D:\DEVELOPMENT\01DAW\3 PFC\serpis\pfcdaw\database\poblarDDBB.sql
 source D:\DEVELOPMENT\01DAW\3 PFC\serpis\pfcdaw\database\poblarDDBB.sql
 source /home/ubuntu/san/database/poblarDDBB.sql
@@ -128,16 +132,16 @@ Copiar imagenes de las balizas en .\src\public\img
 
 ===========================================
 
-npm i express express-handlebars express-session mysql express-mysql-session morgan bcryptjs passport passport-local timeago.js connect-flash express-validator multer fs-extra dotenv uuidv4 mysqldump
-
-is some modules needs highers version of nodejs, then you will find usefull how to
-
 update nodejs
 -------------------
 npm install -g n
 n <version-number>    or      n lts
 
 ----------------
+
+=====
+# ACTUALIZACIONES
+=====
 Se ha añadido una tabla nueva a la base de datos para implementar la recuperación de contraseña. La tabla que almacena tokens con fecha de expiracion es la siguiente.
 
 CREATE TABLE `tokens` (
