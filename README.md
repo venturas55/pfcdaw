@@ -141,6 +141,13 @@ n <version-number>    or      n lts
 ----------------
 
 =====
+# DOCKERIZACION
+=====
+
+Ver readme ubicado en ./DOCKER
+
+
+=====
 # ACTUALIZACIONES
 =====
 Se ha añadido una tabla nueva a la base de datos para implementar la recuperación de contraseña. La tabla que almacena tokens con fecha de expiracion es la siguiente.
