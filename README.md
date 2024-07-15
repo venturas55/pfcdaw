@@ -74,10 +74,14 @@ source C:\...ruta...\pfcdaw\database\sannuevo.sql
 Si se deseara poblar la base de datos con datos de prueba se podría ejecutar 
 source C:\...ruta...\pfcdaw\database\poblarDDBB.sql
 Una vez creada la base de datos habría que crear el archivo ‘.env’ que servirá para configurar la conexión con la base de datos. El contenido del ‘,env’ será:
-                        DB_HOST=localhost
-                        DB_USER=db_user
-                        DB_PASS=db_pass
-                        DB_NAME=sanpfcdaw
+
+                        - DB_HOST=localhost
+                        - DB_USER=db_user
+                        - DB_PASS=db_pass
+                        - DB_NAME=sanpfcdaw
+                        - PORT=nodejs_app_port
+                        - EMAIL_ACCOUNT=email@account.es
+                        - EMAIL_PASS= password_of_mailaccount
 
 Donde ‘db_user’ y ‘db_pass’ serán las credenciales de acceso a tu base de datos MariaDB. El nombre de la base de datos en caso de usar el archivo ubicado en la ruta ./pfcdaw/database/sannuevo.sql sería sanpfcdaw.
 
@@ -86,7 +90,8 @@ Donde ‘db_user’ y ‘db_pass’ serán las credenciales de acceso a tu base 
 
          RESUMEN NUEVA INSTALACION PUNTOS CLAVE
 ============================================================
-1.- INSTALACION NODEJS/EXPRESS SERVER:
+
+# 1.- INSTALACION NODEJS/EXPRESS SERVER:
     git clone https://github.com/venturas55/pfcdaw
     cd pfcdaw
     crear .env con datos con las variables 
@@ -98,20 +103,26 @@ Donde ‘db_user’ y ‘db_pass’ serán las credenciales de acceso a tu base 
                                             EMAIL_PASS=contraseñadelacuentacorreo
     npm install
 
-2.- INSTALACION BASE DE DATOS
-Para crear la estructura de tablas con un usuario
-mysql -u root -p 
-source D:\DEVELOPMENT\01DAW\3 PFC\serpis\prueba instalacion\pfcdaw\database\sannuevo.sql
-source D:\DEVELOPMENT\01DAW\3 PFC\serpis\pfcdaw\database\sannuevo.sql
-source /home/ubuntu/san/database/sannuevo.sql
+# 2.- INSTALACION BASE DE DATOS
+Acceder a consola de mysql mediante
 
+- mysql -u root -p 
 
-Para poblarla de datos:
+Para crear la estructura de tablas usar el archivo ubicado en ./database/sanEstructura.sql
+
+Ejemplos
+source /home/ubuntu/san/database/sanEstructura.sql
+source D:\DEVELOPMENT\01DAW\3 PFC\serpis\prueba instalacion\pfcdaw\database\sanEstructura.sql
+source D:\DEVELOPMENT\01DAW\3 PFC\serpis\pfcdaw\database\sanEstructura.sql
+
+Para poblarla de datos usar el backup disponible o uno de prueba ubicado en ./database/poblarDDBB.sql
+Ejemplos
 source D:\DEVELOPMENT\01DAW\3 PFC\serpis\pfcdaw\database\poblarDDBB.sql
 source D:\DEVELOPMENT\01DAW\3 PFC\serpis\pfcdaw\database\poblarDDBB.sql
-source /home/ubuntu/san/database/sannuevo.sql
+source /home/ubuntu/san/database/poblarDDBB.sql
 
-3.- COPIAR IMAGENES
+
+# 3.- COPIAR IMAGENES
 Copiar imagenes de las balizas en .\src\public\img
 
 
