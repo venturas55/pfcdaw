@@ -88,10 +88,10 @@ Donde ‘db_user’ y ‘db_pass’ serán las credenciales de acceso a tu base 
 
 
 
-         RESUMEN NUEVA INSTALACION PUNTOS CLAVE
+       #  RESUMEN NUEVA INSTALACION PUNTOS CLAVE
 ============================================================
 
-# 1.- INSTALACION NODEJS/EXPRESS SERVER:
+## 1.- INSTALACION NODEJS/EXPRESS SERVER:
     git clone https://github.com/venturas55/pfcdaw
     cd pfcdaw
     crear .env con datos con las variables 
@@ -103,7 +103,7 @@ Donde ‘db_user’ y ‘db_pass’ serán las credenciales de acceso a tu base 
                                             EMAIL_PASS=contraseñadelacuentacorreo
     npm install
 
-# 2.- INSTALACION BASE DE DATOS
+## 2.- INSTALACION BASE DE DATOS
 Acceder a consola de mysql mediante
 
 - mysql -u root -p 
@@ -122,7 +122,7 @@ source D:\DEVELOPMENT\01DAW\3 PFC\serpis\pfcdaw\database\poblarDDBB.sql
 source /home/ubuntu/san/database/poblarDDBB.sql
 
 
-# 3.- COPIAR IMAGENES
+## 3.- COPIAR IMAGENES
 Copiar imagenes de las balizas en .\src\public\img
 
 
