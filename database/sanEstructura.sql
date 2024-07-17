@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS `balizamiento` (
   `apariencia` varchar(50) DEFAULT NULL,
   `periodo` decimal(5, 2) DEFAULT NULL,
   `caracteristica` varchar(50) DEFAULT NULL,
-  `necesita_pintado` tinyint(1) DEFAULT 0,
+  `necesita_pintado` tinyint(1) DEFAULT 0, //TODO:
   PRIMARY KEY (`nif`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'tabla de balizas';
 
