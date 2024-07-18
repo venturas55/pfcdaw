@@ -2,11 +2,13 @@
 // CARDINAL CN CS CE CO
 // ESPECIAL ME
 // FARO FA
+var direccion = document.getElementById("direccion").getAttribute("direccion");
 var puerto = document.getElementById("puerto").getAttribute("puerto");
 //console.log(puerto);
 //let myurl = 'http://localhost:' + puerto;
-let myurl = 'http://adriandeharo.es:'+puerto;
+//let myurl = 'http://adriandeharo.es:'+puerto;
 //let myurl = 'https://san.valenciaport.com';
+let myurl = direccion+":"+puerto;
 //FUNCION PARA CERRAR MODALES
 function cierraModal() {
     var el = document.getElementsByClassName("modal");
