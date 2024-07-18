@@ -4,8 +4,8 @@
 // FARO FA
 var puerto = document.getElementById("puerto").getAttribute("puerto");
 //console.log(puerto);
-let myurl = 'http://localhost:' + puerto;
-//let myurl = 'http://adriandeharo.es:'+puerto;
+//let myurl = 'http://localhost:' + puerto;
+let myurl = 'http://adriandeharo.es:'+puerto;
 //let myurl = 'https://san.valenciaport.com';
 //FUNCION PARA CERRAR MODALES
 function cierraModal() {
