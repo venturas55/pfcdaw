@@ -8,6 +8,7 @@ const MySQLstore = require('express-mysql-session'); // para poder guardar la se
 const passport = require('passport');
 const { database } = require('./config');
 var cors = require('cors')
+var os = require('os');
 //console.log(process.env.DB_HOST);
 
 //Inicializacion
@@ -68,6 +69,25 @@ app.use(passport.session()); //para que sepa donde guardar y como manejar los da
     next();
 }); */
 
+// DIRECCION DEL SERVIDOR
+const nets = os.networkInterfaces();
+var resultados=[];
+for (const name of Object.keys(nets)) {
+    for (const net of nets[name]) {
+        // Skip over non-IPv4 and internal (i.e. 127.0.0.1) addresses
+        // 'IPv4' is in Node <= 17, from 18 it's a number 4 or 6
+        const familyV4Value = typeof net.family === 'string' ? 'IPv4' : 4
+        if (net.family === familyV4Value && !net.internal) {
+            resultados.push(net.address);
+        }
+    }
+}
+console.log(resultados);
+
+
+
+
+
 //Variables globales (que podrán ser usadas en cualquier vista)
 app.use((req, res, next) => {
     app.locals.signupMessage = req.flash('signupMessage');
@@ -76,6 +96,7 @@ app.use((req, res, next) => {
     app.locals.error = req.flash('error');
     app.locals.message = req.flash('message');
     app.locals.user = req.user;
+    app.locals.direcciones = resultados[0];
     app.locals.puerto = app.get('port');
     next();
 });
