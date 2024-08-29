@@ -225,11 +225,11 @@
       <i> Calculos basados en la recomendacion E-200 series IALA</i>
     </div>
   </div>
-  <div class="row" id="autonomia">
-    <div class="col-12 calculos mx-auto">
+  <div class="row text-center">
+    <div class="col-12 calculos mx-auto" id="autonomia">
       <h1> IV. AUTONOMIA FOTOVOLTAICA</h1>
       <div class="d-flex flex-row">
-        <div class="d-flex flex-column">
+        <div class="col-3 d-flex flex-column ">
           <p> ZONA DE ESTUDIO <select name="zona" v-model="zona">
               <option value="ACORUÑA">A Coruña</option>
               <option value="ALAVA">Alava</option>
@@ -342,16 +342,16 @@
 
         </div>
 
-        <div>
+        <div class="col-9">
           <canvas id="myChart"></canvas>
 
-          <p>RADIACION: <span> \{{coeficienteradiacion}} </span></p>
+          {{!-- <p>RADIACION: <span> \{{coeficienteradiacion}} </span></p>
           <p> LATITUDINCLINACION <span> \{{coeficientelatitudinclinacion}} </span></p>
           <p> VALORES RADIACION PUNTO kWh/m2<span> \{{valoresRadiacion}} </span></p>
           <p> ENERGIA GANADA<span> \{{energiaGanada}} </span></p>
           <p> ENERGIA CONSUMIDA<span> \{{energiaConsumida}} </span></p>
-          <p> CONSUMIDA<span> \{{consumoAh}} </span></p>diasSinSol
-          <p> DIAS SIN SOL<span> \{{diasSinSol}} </span></p>
+          <p> CONSUMIDA<span> \{{consumoAh}} </span></p>diasSinSol --}}
+          <p> DIAS SIN SOL<span> \{{diasSinSol}} </span> </p>
         </div>
       </div>
 
@@ -1003,11 +1003,11 @@
       },
       drawGraph: function () {
         const ctx = document.getElementById('myChart');
-
+        var labels = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Nov', 'Dic'];
         new Chart(ctx, {
           type: 'bar',
           data: {
-            labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'nov', 'Dic'],
+            labels,
             datasets: [{
               label: 'Consumo',
               data: this.energiaConsumida,
@@ -1020,16 +1020,38 @@
               label: 'Bateria Ah Disponible',
               data: this.consumoAh,
               backgroundColor: "blue"
-            }]
+            }, {
+              label: 'dias autonomia sin sol',
+              data: this.diasSinSol,
+              backgroundColor: "#f7f2bb",
+              yAxisID: "y2"
+            }
+            ]
           },
           options: {
             scales: {
               y: {
                 beginAtZero: true,
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Energia Ah'
+                }
+              },
+              y2: {
+                min: 0,
+                max: 30,
+                position: 'right',
+                grid: {
+                  drawOnChartArea: false, // only want the grid lines for one axis to show up
+                },
+                             scaleLabel: {
+                  display: true,
+                  labelString: 'dias'
+                }
 
               },
               x: {
-                //stacked: true,
+                stacked: false,
               }
             }
           }
@@ -1107,12 +1129,10 @@
       diasSinSol: function () {
         var valores = [];
         for (var i = 0; i < 12; i++) {
-                  valores.push((this.consumoAh[i]/(this.energiaConsumida[i]/ 30.4375)).toFixed(1));
+          valores.push(parseInt(this.consumoAh[i] / (this.energiaConsumida[i] / 30.4375)));
         }
         return valores;
       },
-
-
       valorPrueba: function () {
         return parseFloat((
           24 * this.consumofijo / this.ciclotrabajo))
