@@ -183,7 +183,7 @@
             <div class="col-9">
               <canvas id="myChart"></canvas>
 
-      {{!--         <p>RADIACION: <span> \{{coeficienteradiacion}} </span></p>
+              {{!-- <p>RADIACION: <span> \{{coeficienteradiacion}} </span></p>
               <p> LATITUDINCLINACION <span> \{{coeficientelatitudinclinacion}} </span></p> --}}
               <p> VALORES RADIACION PUNTO kWh/m2<span> \{{valoresRadiacion}} </span></p>
               <p> ENERGIA GANADA<span> \{{energiaGanada}} </span></p>
@@ -379,13 +379,16 @@
     </div>
   </div>
 
-  <div class="text-center my-3">
-    <a href="https://www.iala-aism.org/" target="_blank">
-      <img src="/img/iala-mbsback.jpg" class="rounded" alt="aaaa">
-    </a>
+  <div class="d-flex justify-content-evenly my-3">
+    <div> <a href="https://www.iala-aism.org/" target="_blank"> <img src="/img/iala.png" class="rounded avatar-s"
+          alt="icono iala"> </a></div>
+    <div> <a class="dropdown-item" target="_blank" href="https://portalaton.puertos.es/"><img src="/img/oppe.jpeg"
+          class="rounded avatar-s" alt="icono apv"></a></div>
+    <div> <a class="dropdown-item" target="_blank" href="https://portalapv.valenciaport.com/"><img
+          src="/img/icon-menu-autoridad.svg" class="rounded avatar-s" alt="icono apv"></a></div>
+
   </div>
 </div>
-
 <script>
 
   var app = new Vue({
