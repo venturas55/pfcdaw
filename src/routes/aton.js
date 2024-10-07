@@ -413,19 +413,19 @@ router.post("/editLocalizacionFromMap/:nif", funciones.isAuthenticated, funcione
     var {
         latitud,
         longitud,
-        lng,lat
+        lng, lat
     } = req.body;
     try {
-     /*    var [baliza] = await db.query("SELECT * FROM localizacion WHERE nif=?", [nif]);
+        /*    var [baliza] = await db.query("SELECT * FROM localizacion WHERE nif=?", [nif]);
+   
+           //TODO: convert data to  39º 26.901´N format
+   
+           baliza.latitud = latitud;
+           baliza.longitud = longitud; */
 
-        //TODO: convert data to  39º 26.901´N format
-
-        baliza.latitud = latitud;
-        baliza.longitud = longitud; */
-
-        await db.query("UPDATE localizacion set latitud = ?, longitud= ? WHERE nif = ?", [latitud,longitud, nif]);
-//        baliza.coordenadas= 'point('+lng+','+lat+')';
-        await db.query("UPDATE localizacion set coordenadas=point(?,?)  WHERE nif = ?", [lat,lng, nif]);
+        await db.query("UPDATE localizacion set latitud = ?, longitud= ? WHERE nif = ?", [latitud, longitud, nif]);
+        //        baliza.coordenadas= 'point('+lng+','+lat+')';
+        await db.query("UPDATE localizacion set coordenadas=point(?,?)  WHERE nif = ?", [lat, lng, nif]);
 
 
         funciones.insertarLog(req.user.usuario, "UPDATE localizacion", nif + " " + latitud + " " + longitud);
@@ -561,12 +561,19 @@ router.post("/observaciones/add", funciones.isAuthenticated, funciones.hasSanPri
 router.get("/observaciones/delete/:idObs", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     //console.log(req.params.idObs);
     const { idObs } = req.params;
-    const resp = await db.query("select nif from observaciones where id_observacion=?", [idObs]);
-    const nif = resp[0].nif;
-    await db.query("delete from observaciones where id_observacion=?", [idObs]);
-    funciones.insertarLog(req.user.usuario, "DELETE observaciones del aton ", nif);
-    req.flash("success", "Observacion de baliza " + nif + " borrada correctamente.");
-    res.redirect("/aton/plantilla/" + nif);
+    try {
+        const resp = await db.query("select nif from observaciones where id_observacion=?", [idObs]);
+        const nif = resp[0].nif;
+        await db.query("delete from observaciones where id_observacion=?", [idObs]);
+        funciones.insertarLog(req.user.usuario, "DELETE observaciones del aton ", nif);
+
+        req.flash("success", "Observacion de baliza " + nif + " borrada correctamente.");
+        res.redirect("/aton/plantilla/" + nif);
+    } catch (error) {
+        console.error(error);
+        req.flash("error", "Hubo algun error al borrar la observación");
+        res.redirect("/aton/plantilla/" + nif);
+    }
 });
 router.get("/observaciones/edit/:idObs", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     const { idObs } = req.params;
@@ -633,12 +640,18 @@ router.post("/mantenimiento/add", funciones.isAuthenticated, funciones.hasSanPri
 router.get("/mantenimiento/delete/:idMan", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     //console.log(req.params.idMan);
     const { idMan } = req.params;
-    const resp = await db.query("select nif from mantenimiento where id_mantenimiento=?", [idMan]);
-    const nif = resp[0].nif;
-    await db.query("delete from mantenimiento where id_mantenimiento=?", [idMan]);
-    funciones.insertarLog(req.user.usuario, "DELETE mantenimientos del aton", nif);
-    req.flash("success", "mantenimiento de baliza " + nif + " borrado correctamente ");
-    res.redirect("/aton/plantilla/" + nif);
+    try {
+        const resp = await db.query("select nif from mantenimiento where id_mantenimiento=?", [idMan]);
+        const nif = resp[0].nif;
+        await db.query("delete from mantenimiento where id_mantenimiento=?", [idMan]);
+        funciones.insertarLog(req.user.usuario, "DELETE mantenimientos del aton", nif);
+        req.flash("success", "mantenimiento de baliza " + nif + " borrado correctamente ");
+        res.redirect("/aton/plantilla/" + nif);
+    } catch (error) {
+        console.error(error);
+        req.flash("error", "Hubo algun error al borrar el mantenimiento");
+        res.redirect("/aton/plantilla/" + nif);
+    }
 });
 router.get("/mantenimiento/edit/:idMan", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     const { idMan } = req.params;

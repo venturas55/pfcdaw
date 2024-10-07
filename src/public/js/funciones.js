@@ -22,6 +22,24 @@ function cambiarUsuario() {
     //TODO: verificar el pass con la base de datos
 }
 
+function abreModalObs(id) {
+  //console.log("observacion con id" + id);
+  var item = document.getElementById("myModalBorradoObs");
+  var ref= document.getElementById("refobsdel");
+  ref.href+=id;
+  //console.log(ref.href);
+  item.style.display = 'block';
+}
+
+
+function abreModalMant(id) {
+    //console.log("Mantenimiento con id" + id);
+    var item = document.getElementById("myModalBorradoMant");
+    var ref= document.getElementById("refmantdel");
+    ref.href+=id;
+    console.log(ref.href);
+    item.style.display = 'block';
+  }
 
 /////############
 //FUNCIONES PARA EL MAPS DE GOOGLE
@@ -71,6 +89,7 @@ function centrar() {
 async function fetchData() {
     try {
         var apiURL = myurl + "/api/balizas";
+        console.log(apiURL);
         return await fetch(apiURL).then(res => res.json());
         /* .then(response => {
             var data = response;

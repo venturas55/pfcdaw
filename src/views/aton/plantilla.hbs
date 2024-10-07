@@ -208,8 +208,10 @@
                                     class="fa fa-pencil"></i>Edit</a>
                         </div>
                         <div>
-                            <a type="submit" href="/aton/observaciones/delete/{{this.id_observacion}}"
-                                class="text-light "><i class="fa fa-trash"></i>Del</a>
+                            {{!-- <a type="submit" href="/aton/observaciones/delete/{{this.id_observacion}}"
+                                class="text-light "><i class="fa fa-trash"></i>Del</a> --}}
+                            <a type="submit" onclick="abreModalObs({{this.id_observacion}})" class="text-light "><i
+                                    class="fa fa-trash"></i>Del</a>
                         </div>
                     </td>
                 </tr>
@@ -252,7 +254,10 @@
                                     class="fa fa-pencil"></i>Edit</a>
                         </div>
                         <div>
-                            <a href="/aton/mantenimiento/delete/{{this.id_mantenimiento}}" class="text-light"><i
+                            {{!-- <a href="/aton/mantenimiento/delete/{{this.id_mantenimiento}}" class="text-light"><i
+                                    class="fa fa-trash"></i>Del</a> --}}
+
+                            <a type="submit" onclick="abreModalMant({{this.id_mantenimiento}})" class="text-light "><i
                                     class="fa fa-trash"></i>Del</a>
                         </div>
                     </td>
