@@ -69,13 +69,11 @@ funciones.listadoBackupsFotos = (req, res, next) => {
     fse.readdir(directorio, (err, files) => {
         if (files) {
             files.forEach(file => {
-                //console.log(file);
                 var item = {
                     'name': file,
                     'size': (fse.statSync(join(directorio, file)).size / (1024 * 1024)).toFixed(2),
                     'created_at': fse.statSync(join(directorio, file)).birthtime,
                 }
-                //console.log(item.created_at);
                 backups.push(item);
             });
         } else {
@@ -83,7 +81,6 @@ funciones.listadoBackupsFotos = (req, res, next) => {
         }
     });
     backups.sort((a, b) => a.created_at - b.created_at);
-    //console.log(backups);
     return backups;
 }
 
@@ -208,7 +205,6 @@ funciones.runSQLrecovery =  (file) => {
  
         
         if (chunk.toString('ascii').charAt(chunk.length - 1) == ';') {
-            //console.log(">> " + total);
             pool.query(total, function (err, sets, fields) { if (err) console.log(err); });
             total = "";
         }
@@ -235,7 +231,6 @@ funciones.sendRecoveryMail = async (email, token) => (req, res) => {
 
 funciones.consultaPrueba = async () => {
     let ruta = join(__dirname, '..', '..', 'database', 'prueba.sql');
-    console.log(ruta);
 
     var rl = createInterface({
 
@@ -245,9 +240,6 @@ funciones.consultaPrueba = async () => {
     rl.on('line', function (chunk) {
         pool.query(chunk.toString('ascii'), function (err, sets, fields) {
             if (err) console.log(err);
-            console.log("voy");
-            console.log(sets);
-            console.log(fields);
         });
     });
     rl.on('close', function () {

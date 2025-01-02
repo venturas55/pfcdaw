@@ -198,14 +198,9 @@ router.post("/add", funciones.isAuthenticated, funciones.hasSanPrivileges, async
 //CRUD ATON read
 router.get("/list", async (req, res) => {
     var numPintado = 0;
-    console.log("num");
-    console.log(db);
-
     const balizas = await db.query(queryListadoAton);
-console.log(balizas);
     const tickets = await db.query("select * from tickets where solved_at IS NULL");
     const preventivos = await db.query("select * from preventivos where solved_at IS NULL");
-    //console.log(tickets);
     balizas.forEach((element) => {
         const hasItem = tickets.some(obj => obj.nif === element.nif);
         const hasPreventivo = preventivos.some(obj => obj.nif === element.nif);
@@ -225,7 +220,6 @@ router.get("/list/:busqueda", async (req, res) => {
     var { busqueda } = req.params;
     var balizas;
     if (busqueda === 'Ext') {
-        //console.log("Externas");
         balizas = await db.query(queryListadoAton + " where b.nif=lo.nif AND lo.puerto not like '%valencia%' and lo.puerto not like '%sagunto%' and lo.puerto not like '%gandia%' order by lo.nif");
     } else {
         busqueda = "%" + busqueda + "%";
@@ -235,7 +229,6 @@ router.get("/list/:busqueda", async (req, res) => {
 
     //Añado la info de los tickets
     const tickets = await db.query("select * from tickets where solved_at IS NULL");
-    //console.log(tickets);
     balizas.forEach((element) => {
         const hasItem = tickets.some(obj => obj.nif === element.nif);
         if (hasItem)
@@ -243,22 +236,17 @@ router.get("/list/:busqueda", async (req, res) => {
     });
 
     res.render("aton/list", { balizas });
-    // NO FUNCIONA CON LA BARRA DELANTE res.render('/links/list');
 });
 router.get("/plantilla/:nif", async (req, res) => {
     const { nif } = req.params;
-    //nif=nif.toString();
-    console.log(nif);
 
     //const baliza = await db.db.query('SELECT * FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif where b.nif=?', [nif]);  CON ESTA CONSULTA EL LEFT JOIN NO FUNCIONA BIEN PARA EL HIPOTETICO CASO EN EL QUE EXISTE UN ATON QUE NO ESTA EN ALGUNA DE LAS TRES TABLAS
     const baliza = await db.query(queryListadoAton + ' where b.nif=?', [nif]);
     if (baliza[0]) {
-        //console.log(baliza[0]);
         const observaciones = await db.query('SELECT * FROM observaciones where nif=?', [nif]);
         const mantenimiento = await db.query('SELECT * FROM mantenimiento where nif=? order by fecha DESC', [nif]);
         const tickets = await db.query(queryListadoTicketsUsers + 'where t.nif=? and solved_at is null', [nif]);
         const preventivos = await db.query(queryListadoPreventivosUsers + 'where p.nif=? ', [nif]);
-        //console.log(tickets);
         var fotos = funciones.listadoFotos(nif);
         res.render("aton/plantilla", { layout: 'layoutPlantilla', baliza: baliza[0], obs: observaciones, mant: mantenimiento, fotos, tickets, preventivos });
     } else {
@@ -287,7 +275,6 @@ router.get("/editLocalizacion/:nif", funciones.isAuthenticated, funciones.hasSan
     } else {
         baliza = baliza[0];
     }
-    console.log(baliza);
     res.render("aton/editLocalizacion", { baliza });
 });
 router.get("/editLampara/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
@@ -442,27 +429,6 @@ router.post("/editLocalizacionFromMap/:nif", funciones.isAuthenticated, funcione
     }
 
 });
-/* router.get("/transform/:nif", funciones.funciones.isAuthenticated, funciones.funciones.isAdmin, async (req, res) => {
-    const nif = req.params.nif;
-
-    try {
-        var [baliza] = await db.db.query("SELECT * FROM localizacion WHERE nif=?", [nif]);
-        var punto = getPointfromLatLng(baliza.latitud ,baliza.longitud);
-
-        baliza.coordenadas ='POINT('+ punto.lat + ","+punto.lng  + ')';
-        console.log( baliza.coordenadas);
-
-        await db.db.query("UPDATE localizacion set coordenadas= point(?,?) WHERE nif = ?", [punto.lat,punto.lng, nif]);
-        req.flash("success", "Localizacion de baliza transformada correctamente");
-        res.redirect("/aton/plantilla/" + nif);
-
-    } catch (error) {
-        console.error(error);
-        req.flash("error", "Hubo algun error al modificar la localización del aton con NIF " + nif);
-        res.redirect("/aton/plantilla/" + nif);
-    }
-
-}); */
 router.get("/transform", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     const nif = req.params.nif;
     try {
@@ -530,7 +496,6 @@ router.get("/delete/:nif", funciones.isAuthenticated, funciones.isAdmin, async (
         await db.query("DELETE FROM localizacion WHERE nif=?", [nif]);
         await db.query("DELETE FROM lampara WHERE nif=?", [nif]);
         await db.query("DELETE FROM balizamiento WHERE nif=?", [nif]);
-        console.log(req.user);
         funciones.insertarLog(req.user.usuario, "DELETE aton ", req.params.nif);
         req.flash("success", "Baliza borrada correctamente");
         res.redirect("/aton/list");
@@ -562,7 +527,6 @@ router.post("/observaciones/add", funciones.isAuthenticated, funciones.hasSanPri
 
 });
 router.get("/observaciones/delete/:idObs", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
-    //console.log(req.params.idObs);
     const { idObs } = req.params;
     try {
         const resp = await db.query("select nif from observaciones where id_observacion=?", [idObs]);
@@ -580,10 +544,7 @@ router.get("/observaciones/delete/:idObs", funciones.isAuthenticated, funciones.
 });
 router.get("/observaciones/edit/:idObs", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     const { idObs } = req.params;
-    //console.log("Que id es: " + idObs);
     const observacion = await db.query("SELECT * FROM observaciones WHERE id_observacion=?", [idObs,]);
-    //console.log(baliza);
-    //console.log(baliza[0]);
     res.render("aton/editObservaciones", { observacion: observacion[0] });
 });
 router.post("/observaciones/edit/:idObs", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
@@ -641,7 +602,6 @@ router.post("/mantenimiento/add", funciones.isAuthenticated, funciones.hasSanPri
     }
 });
 router.get("/mantenimiento/delete/:idMan", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
-    //console.log(req.params.idMan);
     const { idMan } = req.params;
     try {
         const resp = await db.query("select nif from mantenimiento where id_mantenimiento=?", [idMan]);
@@ -658,9 +618,7 @@ router.get("/mantenimiento/delete/:idMan", funciones.isAuthenticated, funciones.
 });
 router.get("/mantenimiento/edit/:idMan", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     const { idMan } = req.params;
-    //console.log("Que id es: "+idMan);
     const mantenimient = await db.query("SELECT * FROM mantenimiento WHERE id_mantenimiento=?", [idMan,]);
-    //console.log(mantenimient[0]);
     res.render("aton/editMantenimiento", { mant: mantenimient[0] });
 
 });
@@ -706,7 +664,6 @@ router.get("/pintado/:nif", funciones.isAuthenticated, funciones.hasSanPrivilege
     try {
         const { nif } = req.params;
         const baliza = (await db.query('Select * from balizamiento where nif=?', [nif]))[0];
-        console.log(baliza);
         baliza.necesita_pintado = false;
         await db.query("UPDATE balizamiento set ? WHERE nif = ?", [baliza, nif]);
         const mant = {

@@ -17,7 +17,6 @@ passport.use(
            
             if (rows.length > 0) {
                 const user = rows[0];
-                console.log(user);
                 const validPassword = await funciones.verifyPassword(password,user.contrasena);
                 if (validPassword){
                     req.flash("success", "Bienvenido");
@@ -69,7 +68,6 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser(async (id, done) => {
-    console.log([id]);
     const rows = await db.query("SELECT * FROM usuarios WHERE id= ?", [id]);
     done(null, rows[0]);
 });
