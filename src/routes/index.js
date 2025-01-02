@@ -1,8 +1,7 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const db = require("../database"); //db hace referencia a la BBDD
-const funciones = require("../lib/funciones.js");
-
+import db from "../database.js"; //db hace referencia a la BBDD
+import funciones from "../lib/funciones.js";
 
 //MOSTRAR PAGINA INICIAL
 router.get('/', (req, res) => {
@@ -56,4 +55,4 @@ router.post("/pruebaPost", funciones.isAdmin, async (req, res) => {
 
 });
 
-module.exports = router;
+export default router;

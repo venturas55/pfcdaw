@@ -1,34 +1,40 @@
-const express = require('express');
-const morgan = require('morgan');
-const exphbs = require('express-handlebars'); //Para usar plantillas
-const path = require('path'); //Para manejar directorios, basicamente unirlos 
-const flash = require('connect-flash'); //Para mostar mensajes
-const session = require('express-session'); //Lo necesita el flash tb
-const MySQLstore = require('express-mysql-session'); // para poder guardar la sesion en la sql
-const passport = require('passport');
-const { database } = require('./config');
-var cors = require('cors')
-var os = require('os');
-//console.log(process.env.DB_HOST);
+import express, { urlencoded, json } from "express";
+import morgan from "morgan";
+import { engine } from "express-handlebars"; //Para usar plantillas
+import handlebars from "./lib/handlebars.js"; //Para usar funciones en las plantillas
+import flash from "connect-flash"; //Para mostar mensajes
+import session from "express-session"; //Lo necesita el flash tb
+import MySQLstore from "express-mysql-session"; // para poder guardar la sesion en la sql
+import { config } from "./config.js";
+import passport from "passport";
+import cors from "cors";
+import { networkInterfaces } from "os";
+import * as path from "path";
+import * as url from "url";
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
 //Inicializacion
 const app = express();
-require('./lib/passport'); //para que se entere de la autentificacion que se ha creado 
+import "./lib/passport.js"; //para que se entere de la autentificacion que se ha creado
 
 //Configuracion
-app.set('port', process.env.PORT || 4000);
-app.set('views', path.join(__dirname, 'views'));
-app.engine('.hbs', exphbs.engine({ //con esto se configura el app.engine
-    defaultLayout: 'main',
-    layoutDir: path.join(app.get('views'), 'layouts'),
-    partialsDir: path.join(app.get('views'), 'partials'),
-    extname: '.hbs',
-    helpers: require('./lib/handlebars') //no hay nada aun
-}));
-app.set('view engine', '.hbs'); //Para utilizar el app.engine
-
+app.set("port", config.PORT);
+app.set("views", path.join(__dirname, "views"));
+app.engine(
+  ".hbs",
+  engine({
+    //con esto se configura el app.engine
+    defaultLayout: "main",
+    layoutDir: path.join(app.get("views"), "layouts"),
+    partialsDir: path.join(app.get("views"), "partials"),
+    extname: ".hbs",
+    helpers: handlebars, //no hay nada aun
+  })
+);
+app.set("view engine", ".hbs"); //Para utilizar el app.engine
 //Middleware
-app.use(cors(/* {
+app.use(
+  cors /* {
     origin: (origin, callback) => {
         const ACCEPTED_ORIGINS = [
             "http://localhost:" + app.get('port'),
@@ -44,103 +50,90 @@ app.use(cors(/* {
         }
         return callback(new Error("CORS no aceptado en la app"));
     }
-} */
-
-));
-
-app.use(session({
-    secret: 'mysesion',
+} */()
+);
+app.use(
+  session({
+    secret: "mysesion",
     resave: false,
     saveUninitialized: false,
-    store: new MySQLstore(database)
-}));
+    store: new MySQLstore(config.database),
+  })
+);
 app.use(flash()); // Para poder usar el middleware de enviar mensajes popups
-app.use(morgan('dev')); //Para que muestre mensajes relacionados con el desarrollo por consola
-app.use(express.urlencoded({ extended: false })); //aceptar los datos desde los formularios sin aceptar imagenes ni nada raro
-app.use(express.json()); //Para enviar y recibir jsons.
+app.use(morgan("dev")); //Para que muestre mensajes relacionados con el desarrollo por consola
+app.use(urlencoded({ extended: false })); //aceptar los datos desde los formularios sin aceptar imagenes ni nada raro
+app.use(json()); //Para enviar y recibir jsons.
 app.use(passport.initialize()); //iniciar passport
 app.use(passport.session()); //para que sepa donde guardar y como manejar los datos
-//CORS
-//TODO: aun no funciona el CORS, cada vez que se actualiza el proyecto hay que poner el fetch del dominio a mano adriandeharo.es en funciones.js
-/* app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT');
-    next();
-}); */
 
 // DIRECCION DEL SERVIDOR
-const nets = os.networkInterfaces();
-var resultados=[];
+const nets = networkInterfaces();
+var resultados = [];
 for (const name of Object.keys(nets)) {
-    for (const net of nets[name]) {
-        // Skip over non-IPv4 and internal (i.e. 127.0.0.1) addresses
-        // 'IPv4' is in Node <= 17, from 18 it's a number 4 or 6
-        const familyV4Value = typeof net.family === 'string' ? 'IPv4' : 4
-        if (net.family === familyV4Value && !net.internal) {
-            resultados.push(net.address);
-        }
+  for (const net of nets[name]) {
+    // Skip over non-IPv4 and internal (i.e. 127.0.0.1) addresses
+    // 'IPv4' is in Node <= 17, from 18 it's a number 4 or 6
+    const familyV4Value = typeof net.family === "string" ? "IPv4" : 4;
+    if (net.family === familyV4Value && !net.internal) {
+      resultados.push(net.address);
     }
+  }
 }
-console.log(resultados);
-
-
-
-
 
 //Variables globales (que podrán ser usadas en cualquier vista)
 app.use((req, res, next) => {
-    app.locals.signupMessage = req.flash('signupMessage');
-    app.locals.success = req.flash('success');
-    app.locals.warning = req.flash('warning');
-    app.locals.error = req.flash('error');
-    app.locals.message = req.flash('message');
-    app.locals.user = req.user;
-    app.locals.direcciones = resultados[0];
-    app.locals.puerto = app.get('port');
-    next();
+  app.locals.signupMessage = req.flash("signupMessage");
+  app.locals.success = req.flash("success");
+  app.locals.warning = req.flash("warning");
+  app.locals.error = req.flash("error");
+  app.locals.message = req.flash("message");
+  app.locals.user = req.user;
+  app.locals.direcciones = resultados[0];
+  app.locals.puerto = app.get("port");
+  next();
 });
 
-
 //Rutas
-app.use(require('./routes')); //busca automaticamente index.js
-app.use(require('./routes/authentication'));
-app.use(require('./routes/fotos'));
-app.use('/aton', require('./routes/aton'));
-app.use(require('./routes/documentos'));
-app.use(require('./routes/api'));
-app.use(require('./routes/inventario'));
-app.use(require('./routes/backups'));
-app.use(require('./routes/mapas'));
-app.use(require('./routes/profile'));
-app.use('/tickets', require('./routes/tickets'));
-app.use('/mantenimientopreventivo', require('./routes/preventivos'));
-
-
+import rutas from "./routes/index.js";
+import authentication from "./routes/authentication.js";
+import fotos from "./routes/fotos.js";
+import aton from "./routes/aton.js";
+import documentos from "./routes/documentos.js";
+import api from "./routes/api.js";
+import inventario from "./routes/inventario.js";
+import backups from "./routes/backups.js";
+import mapas from "./routes/mapas.js";
+import profile from "./routes/profile.js";
+import tickets from "./routes/tickets.js";
+import preventivos from "./routes/preventivos.js";
+app.use(rutas); // Esta busca automáticamente index.js en la carpeta routes
+app.use(authentication); // Si el archivo tiene exportación por defecto
+app.use(fotos);
+app.use("/aton", aton);
+app.use(documentos);
+app.use(api);
+app.use(inventario);
+app.use(backups);
+app.use(mapas);
+app.use(profile);
+app.use("/tickets", tickets);
+app.use("/mantenimientopreventivo", preventivos);
 
 //Public
-app.use(express.static(path.join(__dirname, 'public')));
-//app.use(express.static(path.join(__dirname,'..', 'database')));
-
 //Bootstrap
-app.use('/css', express.static(path.join(__dirname, '../node_modules/bootstrap/dist/css')))
-app.use('/js', express.static(path.join(__dirname, '../node_modules/bootstrap/dist/js')))
+app.use((express.static(path.join(__dirname,"public"))));
+app.use("/css", express.static(path.join(__dirname, "../node_modules/bootstrap/dist/css")));
 app.use('/js', express.static(path.join(__dirname, '../node_modules/@popperjs/core/dist/umd')))
 app.use('/js', express.static(path.join(__dirname, '../node_modules/jquery/dist')))
-
-//VUE
-/* const history = require('connect-history-api-fallback');
-app.use(history());
-app.use('/js', express.static(path.join(__dirname, '../node_modules/vue'))) */
-
-//Fontawesome
-app.use('/css', express.static(path.join(__dirname, '../node_modules/font-awesome/css')))
-app.use('/fonts', express.static(path.join(__dirname, '../node_modules/font-awesome/fonts')))
+app.use("/js", express.static(path.join(__dirname, "../node_modules/bootstrap/dist/js")));
+app.use("/fonts", express.static(path.join(__dirname, "../node_modules/font-awesome/fonts")));
+app.use("/css", express.static(path.join(__dirname, "../node_modules/font-awesome/css")));
 
 //Leaflet
-app.use('/leaflet', express.static(path.join(__dirname, '../node_modules', 'leaflet', 'dist')))
+app.use("/leaflet", express.static(path.join(__dirname, "../node_modules", "leaflet", "dist")));
 
 //Arrancar servidor
-app.listen(app.get('port'), () => {
-    console.log("Running on http://localhost:" + app.get('port'));
+app.listen(app.get("port"), () => {
+  console.log("Running on http://localhost:" + app.get("port"));
 });

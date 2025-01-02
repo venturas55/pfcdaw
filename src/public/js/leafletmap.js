@@ -91,11 +91,7 @@ fetchData().then((balizas) => {
     marker.addTo(map);
 
   });
-
-  //map.on('click', onMapClick);
-  // Creamos un evento que captura dos puntos
-  map.on('click', onMapDistance)
-
+  map.on('click', onMapClick);
 });
 
 var popup = L.popup();
@@ -138,39 +134,12 @@ function onMapClick(e) {
     .openOn(map);
 }
 
-let firstLatLng, secondLatLng, secondClick = false;
-function onMapDistance(e) {
-  if (secondClick) {
-    secondLatLng = e.latlng;
-    L.marker(secondLatLng).addTo(map).bindPopup('Point B<br/>' + e.latlng).openPopup();
-     // Dibujamos una línea entre los dos puntos
-     L.polyline([firstLatLng, secondLatLng], {
-      color: 'red'
-    }).addTo(map);
-    medirDistancia();
-    secondClick=false;
-
-  } else {
-    firstLatLng = e.latlng;
-    L.marker(firstLatLng).addTo(map).bindPopup('Point A<br/>' + e.latlng).openPopup();
-    secondClick=true;
-  }
-}
-
-function medirDistancia() {
-  var distance = map.distance(firstLatLng, secondLatLng);
-  document.getElementById('distance').innerHTML = distance.toFixed(2);
-  firstLatLng = undefined;
-  console.log(L.polyline);
-}
-
-
-function actualizarCoordenadaWGS2DEC() {
-  var latWGS = document.getElementById("latmarkerWGS").value;
-  var lngWGS = document.getElementById("lngmarkerWGS").value;
-  var lat = document.getElementById("latmarker");
-  var lng = document.getElementById("lngmarker");
-  var punto = setMarkerLatLng(latWGS, lngWGS);
+function actualizarCoordenadaWGS2DEC(){
+  var latWGS=document.getElementById("latmarkerWGS").value;
+  var lngWGS=document.getElementById("lngmarkerWGS").value;
+  var lat=document.getElementById("latmarker");
+  var lng=document.getElementById("lngmarker");
+  var punto=setMarkerLatLng(latWGS, lngWGS);
   //console.log(punto.lat);
 
   lat.value = punto.lat;

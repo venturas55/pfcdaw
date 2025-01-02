@@ -1,24 +1,24 @@
-const express = require("express");
+import express from 'express';
 const router = express.Router();
-const { unlink } = require('fs-extra');
-const fs = require('fs');
-const path = require('path');
-const db = require("../database"); //db hace referencia a la BBDD
-const multer = require('multer');
+import  fse    from 'fs-extra';
+import fs from 'fs';
+import { join, extname as _extname, resolve } from 'path';
+import db from "../database.js"; //db hace referencia a la BBDD
+import multer, { diskStorage } from 'multer';
 //const { access, constants } = require('node:fs');
-const { access, constants } = require('fs');
-const funciones = require("../lib/funciones.js");
-const zl = require("zip-lib");
+import { access, constants } from 'fs';
+import funciones from "../lib/funciones.js";
+import { archiveFolder, extract } from "zip-lib";
 
 
 
-const storage = multer.diskStorage({
+const storage = diskStorage({
     destination: (req, file, cb) => {
         const { nif } = req.body;
         const { user } = req.body;
         //Si usuario es undefined es que se subió una baliza, y configuro el storage para balizas
         if (typeof user === 'undefined') {
-            const dir = path.join(__dirname, '../public/img/imagenes/', nif);
+            const dir = join(__dirname, '../public/img/imagenes/', nif);
             fs.access(dir, error => {
                 if (error) {
                     console.log("Directory does not exist.")
@@ -29,25 +29,25 @@ const storage = multer.diskStorage({
                 return cb(null, dir);
             });
         } else {//si no, entonces es una foto de perfil y va a otra carpeta
-            const dir = path.join(__dirname, '../public/img/profiles/');
+            const dir = join(__dirname, '../public/img/profiles/');
             //console.log("dir" + dir);
             return cb(null, dir);
         }
 
     },
     filename: (req, file, cb) => {
-        cb(null, new Date().getTime() + path.extname(file.originalname).toLowerCase());
+        cb(null, new Date().getTime() + _extname(file.originalname).toLowerCase());
     }
 });
 
-const storageZip = multer.diskStorage({
+const storageZip = diskStorage({
     destination: (req, file, cb) => {
-        const dir = path.join(__dirname, '../public/dumpFOTOS/');
+        const dir = join(__dirname, '../public/dumpFOTOS/');
         //console.log("dir " + dir);
         return cb(null, dir);
     },
     filename: (req, file, cb) => {
-        cb(null, new Date().getTime() + path.extname(file.originalname).toLowerCase());
+        cb(null, new Date().getTime() + _extname(file.originalname).toLowerCase());
     }
 });
 
@@ -59,7 +59,7 @@ const uploadFoto = multer({
         const filetypes = /jpeg|jpg|jfif|png|bmp|gif/;
         const mimetype = filetypes.test(file.mimetype);
         //console.log(mimetype + "es el 1");
-        const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+        const extname = filetypes.test(_extname(file.originalname).toLowerCase());
         if (mimetype && extname) {
             return cb(null, true);
         }
@@ -74,7 +74,7 @@ const uploadFotosZip = multer({
         const filetypes = /zip/;
         const mimetype = filetypes.test(file.mimetype);
         //console.log(mimetype + " es el 2");
-        const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+        const extname = filetypes.test(_extname(file.originalname).toLowerCase());
         if (mimetype && extname) {
             funciones.insertarLog(req.user.usuario, "INSERT zip backup fotos ", file.originalname.toLowerCase());
             return cb(null, true);
@@ -84,7 +84,7 @@ const uploadFotosZip = multer({
 }).single('backup');
 
 //GESTION FOTOS DE BALIZAS
-router.post("/aton/upload/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, uploadFoto, async (req, res) => {
+router.post("/aton/upload/:nif", funciones.insertarLog, funciones.hasSanPrivileges, uploadFoto, async (req, res) => {
     console.log("Subiendo foto baliza");
     const { nif } = req.params;
 
@@ -97,32 +97,32 @@ router.get("/aton/fotos/:nif", async (req, res) => {
     var fotos = await funciones.listadoFotos(nif);
     res.render("aton/fotos", { fotos, nif });
 });
-router.get("/aton/fotos/:nif/:src/delete", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
+router.get("/aton/fotos/:nif/:src/delete", funciones.insertarLog, funciones.isAdmin, async (req, res) => {
     const nif = req.params.nif;
     const src = req.params.src;
-    await unlink(path.resolve('src/public/img/imagenes/' + nif + "/" + src));
+    await fse.unlink(resolve('src/public/img/imagenes/' + nif + "/" + src));
     req.flash("success", "Fotografia borrada correctamente");
     funciones.insertarLog(req.user.usuario, "DELETE fotografia", nif);
     res.redirect("/aton/fotos/" + nif);
 });
 
 //BACKUPS DE FOTOS DE ATONS
-router.get("/backupsfotos", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
+router.get("/backupsfotos", funciones.insertarLog, funciones.isAdmin, async (req, res) => {
     var backups = funciones.listadoBackupsFotos();
     res.render("fotos/listadoBackupFotos", { backups });
 });
-router.get("/backupsfotos/del/:nombre", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
+router.get("/backupsfotos/del/:nombre", funciones.insertarLog, funciones.isAdmin, async (req, res) => {
     var { nombre } = req.params;
-    var file = path.resolve('src/public/dumpFOTOS', nombre);
+    var file = resolve('src/public/dumpFOTOS', nombre);
     //console.log(file);
     await fs.unlinkSync(file);
     funciones.insertarLog(req.user.usuario, "DELETE backup fotos", nombre);
     res.redirect('/backupsfotos');
 });
-router.get("/aton/fotos/backup/zip", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
-    const dir = path.join(__dirname, '../public/img/imagenes');
-    const dirbackups = path.join(__dirname, '../public/dumpFOTOS/');
-    zl.archiveFolder(dir, dirbackups + new Date().getTime() + ".zip").then(function () {
+router.get("/aton/fotos/backup/zip", funciones.insertarLog, funciones.isAdmin, async (req, res) => {
+    const dir = join(__dirname, '../public/img/imagenes');
+    const dirbackups = join(__dirname, '../public/dumpFOTOS/');
+    archiveFolder(dir, dirbackups + new Date().getTime() + ".zip").then(function () {
         console.log("done");
         req.flash("success", "Fotos backup realizado correctamente");
         res.redirect('/backupsfotos');
@@ -132,17 +132,17 @@ router.get("/aton/fotos/backup/zip", funciones.isAuthenticated, funciones.isAdmi
         res.redirect('/backupsfotos');
     });
 });
-router.post("/aton/fotos/backup/upload", funciones.isAuthenticated, funciones.isAdmin, uploadFotosZip, async (req, res) => {
+router.post("/aton/fotos/backup/upload", funciones.insertarLog, funciones.isAdmin, uploadFotosZip, async (req, res) => {
     console.log("Subiendo fotos en zip");
     req.flash("success", "backup fotos subido correctamente");
     res.redirect('/backupsfotos');
 });
-router.get("/aton/fotos/backup/unzip/:nombre", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
+router.get("/aton/fotos/backup/unzip/:nombre", funciones.insertarLog, funciones.isAdmin, async (req, res) => {
     var { nombre } = req.params;
-    const dir = path.join(__dirname, '../public/img/imagenes');
-    const backupPath = path.join(__dirname, '../public/dumpFOTOS/');
+    const dir = join(__dirname, '../public/img/imagenes');
+    const backupPath = join(__dirname, '../public/dumpFOTOS/');
     //TODO: COMPROBAR EL FORMATO DE DIRECTORIO DEL ZIP
-    zl.extract(backupPath + nombre, dir).then(function () {
+    extract(backupPath + nombre, dir).then(function () {
         console.log("done");
         req.flash("success", "Pack de Fotos descomprimido correctamente");
         res.redirect('/backupsfotos');
@@ -155,23 +155,23 @@ router.get("/aton/fotos/backup/unzip/:nombre", funciones.isAuthenticated, funcio
 router.get("/aton/fotos/clean/folders", funciones.isAdmin, async function (req, res) {
     let balizas = await db.query("select nif from balizamiento");
     balizas = balizas.map(function (item) { return item.nif });
-    let source = path.join(__dirname, "../public/img/imagenes/");
+    let source = join(__dirname, "../public/img/imagenes/");
     let carpetas = await funciones.listadoCarpetas();
     //console.log(carpetas);
     //console.log(balizas);
     carpetas.forEach(item => {
         if (!balizas.includes(item)) {
             //console.log("eliminar " + source + item);
-            fs.rmSync(path.join(source, item), { recursive: true, force: true });
+            fs.rmSync(join(source, item), { recursive: true, force: true });
         }
     });
-    funciones.insertarLog(req.user.usuario, "Limpieza carpeta fotos AtoNs ");
+    insertarLog(req.user.usuario, "Limpieza carpeta fotos AtoNs ");
     req.flash("success", "Directorios de fotos limpiado correctamente");
     res.redirect('/backupsfotos');
 });
 
 //GESTION  foto perfil
-router.post('/upload/:id', funciones.isAuthenticated, uploadFoto, async (req, res) => {
+router.post('/upload/:id', funciones.insertarLog, uploadFoto, async (req, res) => {
     const { id } = req.params;
     //console.log(req.file);
     var usuario = await db.query("select * from usuarios where id = ?", id);
@@ -179,14 +179,14 @@ router.post('/upload/:id', funciones.isAuthenticated, uploadFoto, async (req, re
 
     //borramos la foto anterior del perfil
     if (usuario.pictureURL != "") {
-        const filePath = path.resolve('src/public/img/profiles/' + usuario.pictureURL);
+        const filePath = resolve('src/public/img/profiles/' + usuario.pictureURL);
         access(filePath, constants.F_OK, async (err) => {
             if (err) {
                 req.flash("warning", "No tiene foto de perfil!");
                 console.log("No tiene foto de perfil");
             } else {
                 console.log('File exists. Deleting now ...');
-                await unlink(filePath);
+                await fse.unlink(filePath);
             }
         });
     }
@@ -194,22 +194,22 @@ router.post('/upload/:id', funciones.isAuthenticated, uploadFoto, async (req, re
     //Ponemos la nueva
     usuario.pictureURL = req.file.filename;
     await db.query("UPDATE usuarios set  ? WHERE id=?", [usuario, id]);
-    funciones.insertarLog(req.user.usuario, "UPDATE fotografia perfil", "");
+    insertarLog(req.user.usuario, "UPDATE fotografia perfil", "");
     req.flash("success", "Foto de perfil actualizada con exito");
     res.redirect("/profile");
 });
-router.get("/profile/borrarfoto/:id/:url", funciones.isAuthenticated, async (req, res) => {
+router.get("/profile/borrarfoto/:id/:url", funciones.insertarLog, async (req, res) => {
     //console.log(req.params);
     const { url } = req.params;
     const { id } = req.params;
     await db.query("UPDATE usuarios set pictureURL = NULL WHERE id=?", [id]);
-    const filePath = path.resolve('src/public/img/profiles/' + url);
+    const filePath = resolve('src/public/img/profiles/' + url);
     access(filePath, constants.F_OK, async (err) => {
         if (err) {
             console.log("No tiene foto de perfil");
         } else {
             console.log('File exists. Deleting now ...');
-            await unlink(filePath);
+            await fse.unlink(filePath);
         }
     });
     funciones.insertarLog(req.user.usuario, "DELETE fotografia perfil", "");
@@ -217,4 +217,4 @@ router.get("/profile/borrarfoto/:id/:url", funciones.isAuthenticated, async (req
     res.redirect('/profile');
 });
 
-module.exports = router;
+export default router;

@@ -1,10 +1,10 @@
-const express = require("express");
+import express from 'express';
 const router = express.Router();
-const funciones = require("../lib/funciones.js");
-const fs = require('fs');
-const multer = require('multer');
+import funciones from "../lib/funciones.js";
+import fs from 'fs';
+import multer, { diskStorage } from 'multer';
 
-const storageBBDD = multer.diskStorage({
+const storageBBDD = diskStorage({
     destination: (req, file, cb) => {
         const dir = path.join(__dirname, '../public/dumpSQL/');
         console.log("dir " + dir);
@@ -25,7 +25,7 @@ const uploadFotosBBDD = multer({
         console.log(path.extname(file.originalname).toLowerCase() +" antes if" + extname);
         if (extname) {
             console.log("en if");
-            //funciones.insertarLog(req.user.usuario, "INSERT sql backup  ", file.originalname.toLowerCase());
+            //funciones.funciones.insertarLog(req.user.usuario, "INSERT sql backup  ", file.originalname.toLowerCase());
             return cb(null, true);
         }
         return cb(("Error: Archivo debe ser un *.sql"));
@@ -35,7 +35,7 @@ const uploadFotosBBDD = multer({
 //GESTION BACKUPS BBDD
 router.get("/dbbackups/list", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     var backups = funciones.listadoBackups();
-    res.render("backups/listadoBackups", { backups });
+    res.render("backups/funciones.listadoBackups", { backups });
 });
 router.post("/dbbackups/create/:operacion", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     var { operacion } = req.params;
@@ -66,7 +66,7 @@ router.get("/dbbackups/runSQL/:file", funciones.isAuthenticated, funciones.isAdm
 
     funciones.runSQLrecovery(file);
     req.flash("success", "Informacion backup de la BBDD volcado correctamente");
-    //funciones.insertarLog(req.user.usuario, "RUN backup", "volcado de nueva info");
+    //funciones.funciones.insertarLog(req.user.usuario, "RUN backup", "volcado de nueva info");
     res.redirect("/dbbackups/list");
 });
 router.post("/dbbackups/upload", funciones.isAuthenticated, funciones.isAdmin, uploadFotosBBDD, async (req, res) => {
@@ -75,4 +75,4 @@ router.post("/dbbackups/upload", funciones.isAuthenticated, funciones.isAdmin, u
     res.redirect('dbbackups/list');
 });
 
-module.exports = router;
+export default router;

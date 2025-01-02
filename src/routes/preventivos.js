@@ -1,9 +1,9 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const db = require("../database.js");
-const funciones = require("../lib/funciones.js");
+import db from "../database.js";
+import  funciones from "../lib/funciones.js";
 const queryListadoPreventivosUsers = 'SELECT p.preventivo_id,p.fecha,p.nif,p.estructura_estado,p.estructura_marca_tope,p.estructura_engrase,p.estructura_golpes,p.estructura_limpieza_interior,p.estructura_limpieza_exterior,p.estructura_cuadro_interior,p.estructura_cuadro_exterior,p.estructura_observaciones,p.linterna_ldr1,p.linterna_ldr2,p.linterna_optica,p.linterna_estanqueidad_tornillos,p.linterna_estanqueidad_humedades,p.linterna_observaciones,p.telecontrol_monitoreo,p.telecontrol_gps,p.telecontrol_tipo,p.telecontrol_observaciones,p.alimentacion_panelFV,p.alimentacion_red,p.alimentacion_baterias,p.alimentacion_ah,p.alimentacion_vcc,p.alimentacion_grupo,p.alimentacion_cableado,p.alimentacion_observaciones,p.observaciones_generales,p.created_at,p.solved_at,p.created_by_id,u1.usuario as created_by FROM preventivos p LEFT JOIN usuarios u1 ON p.created_by_id=u1.id';
-var moment = require('moment');
+import moment from 'moment';
 moment().format();
 
 //preventivo
@@ -178,4 +178,4 @@ router.get("/delete/:id", funciones.isAuthenticated, funciones.isAdmin, async (r
     }
 });
 
-module.exports = router;
+export default router;

@@ -1,17 +1,16 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const db = require("../database"); //db hace referencia a la BBDD
-const funciones = require("../lib/funciones.js");
+import db from "../database.js"; //db hace referencia a la BBDD
+import funciones from "../lib/funciones.js";
+import moment from 'moment'; // require
 const queryListadoTickets = "SELECT * FROM tickets ";
 const queryListadoTicketsUsers = "SELECT t.ticket_id,t.nif,t.created_by_id,t.assigned_to_id,t.resolved_by_id,t.titulo,t.descripcion,t.solved_at,t.created_at,u1.usuario as created_by,u2.usuario as assigned_to,u3.usuario as resolved_by FROM tickets t LEFT JOIN usuarios u1 ON t.created_by_id=u1.id  LEFT JOIN usuarios u2 ON t.assigned_to_id=u2.id LEFT JOIN usuarios u3 ON t.resolved_by_id=u3.id";
-var moment = require('moment'); // require
 moment().format();
 
 
 //tickets
 // Ruta vista principal
 router.get('/list', async(req, res) => {
-    //const tickets = await db.query("select * from tickets order by created_at");
     try {
         const tickets = await db.query(queryListadoTicketsUsers + " order by t.solved_at asc,t.created_at desc");
         res.render('tickets/list', {
@@ -25,7 +24,6 @@ router.get('/list', async(req, res) => {
 });
 //ruta para obtener tickets asignados al usuario con ID
 router.get('/list/:accion/:id', async(req, res) => {
-    //const tickets = await db.query("select * from tickets order by created_at");
     const {
         accion,
         id
@@ -106,7 +104,6 @@ router.post('/add', funciones.isAuthenticated, async(req, res) => {
         console.log(awns.insertId);
         funciones.insertarLog(req.user.usuario, "INSERT ticket", nuevoTicket.titulo + " para " + nuevoTicket.assigned_to_id);
         req.flash("success", "Ticket añadido al inventario correctamente");
-        //let ticket = await db.query("select * from tickets where ticket_id=?", req.params.id);
         res.redirect('/tickets/edit/' + awns.insertId);
 
     } catch (error) {
@@ -158,7 +155,6 @@ router.post('/edit/:id', funciones.isAuthenticated, funciones.hasSanPrivileges, 
         assigned_to_id,
         resolved_by_id,
     };
-    //console.log(editedItem);
     //reemplazo vacios por null
     for (let key in editedItem) {
         if (editedItem.hasOwnProperty(key) && editedItem[key] === '') {
@@ -249,4 +245,4 @@ router.get("/delete/:id", funciones.isAuthenticated, funciones.isAdmin, async(re
 });
 
 
-module.exports = router;
+export default router;

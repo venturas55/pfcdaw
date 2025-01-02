@@ -1,12 +1,13 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const nodemailer = require('nodemailer');
-const passport = require('passport');
-const helpers = require('../lib/funciones');
-const db = require("../database"); //db hace referencia a la BBDD
+import { createTransport } from 'nodemailer';
+import passport from 'passport';
+import funciones from '../lib/funciones.js';
+import db from "../database.js"; //db hace referencia a la BBDD
+import { config }  from '../config.js'; 
 
 //GESTION SIGNIN registrarse C---
-router.get('/signup', helpers.isNotAuthenticated, (req, res) => {
+router.get('/signup', funciones.isNotAuthenticated, (req, res) => {
     res.render('auth/signup')
 });
 router.post('/signup', passport.authenticate('local.signup', {
@@ -17,7 +18,7 @@ router.post('/signup', passport.authenticate('local.signup', {
 }));
 
 //GESTION LOGIN login
-router.get('/signin', helpers.isNotAuthenticated, (req, res) => {
+router.get('/signin', funciones.isNotAuthenticated, (req, res) => {
     res.render('auth/signin');
 });
 router.post('/signin', (req, res, next) => {
@@ -53,8 +54,8 @@ router.post('/profile/email/recordarpass/', async (req, res) => { //:email
         const user_id = user.id;
 
 
-        var token = helpers.getCode();
-        const hash = await helpers.encryptPass(token);
+        var token = funciones.getCode();
+        const hash = await funciones.encryptPass(token);
         //console.log(hash);
         var hasAnyToken = await db.query("SELECT * FROM tokens WHERE user_id=?", [user_id]);
         if (hasAnyToken.length > 0) {
@@ -65,16 +66,15 @@ router.post('/profile/email/recordarpass/', async (req, res) => { //:email
 
         //var exito = await helpers.sendRecoveryMail(email,token); NOFUNCIONA 
         //console.log(email + " " + token);
-        //console.log(process.env.EMAIL_ACCOUNT + " " + process.env.EMAIL_PASS);
-        const transporter = nodemailer.createTransport({
+        const transporter = createTransport({
             service: 'ovh',
             host: "smtp.mail.ovh.net",
             secure: true,
             port: 465,
 
             auth: {
-                user: process.env.EMAIL_ACCOUNT,
-                pass: process.env.EMAIL_PASS,
+                user: config.EMAIL_ACCOUNT,
+                pass: config.EMAIL_PASS,
             }
         });
 
@@ -114,7 +114,7 @@ router.get('/profile/email/verifypass/:user_id/:code', async (req, res) => {
     //console.log(code + " == " + token.hashedtoken);
     if (token) {
 
-        const validToken = await helpers.verifyPassword(code, token.hashedtoken)
+        const validToken = await funciones.verifyPassword(code, token.hashedtoken)
         console.log(validToken);
         if (validToken) {
             req.flash("success", "Token proporcionado correcto");
@@ -136,10 +136,10 @@ router.get('/profile/recoverysetpass/:id', async (req, res) => {
 router.post('/profile/recoverysetpass', async (req, res) => {
     const { password, id } = req.body;
     //console.log(password + " "+ id);
-    var encryptedPass = await helpers.encryptPass(password);
+    var encryptedPass = await funciones.encryptPass(password);
     const result = await db.query("UPDATE usuarios set contrasena=? where id=?", [encryptedPass, id]);
     req.flash("success", "Contraseña actualizada correctamente");
     res.redirect("/");
 });
 
-module.exports = router;
+export default router;

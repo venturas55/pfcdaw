@@ -1,7 +1,7 @@
-const express = require("express");
+import express from 'express';
 const router = express.Router();
-const funciones = require("../lib/funciones.js");
-const db = require("../database"); //db hace referencia a la BBDD
+import funciones from "../lib/funciones.js";
+import db from "../database.js"; //db hace referencia a la BBDD
 
 //GESTION INVENTARIO
 router.get('/inventario', funciones.isAuthenticated, async (req, res) => {
@@ -76,4 +76,4 @@ router.get("/inventario/delete/:id", funciones.isAuthenticated, funciones.isAdmi
     res.redirect("/inventario");
 });
 
-module.exports = router;
+export default router;

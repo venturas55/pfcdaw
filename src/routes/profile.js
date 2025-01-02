@@ -1,10 +1,10 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const path = require('path');
-const db = require("../database"); //db hace referencia a la BBDD
-const { unlink } = require('fs-extra');
-const { access, constants } = require('fs');
-const funciones = require("../lib/funciones.js");
+import { resolve } from 'path';
+import db from "../database.js"; //db hace referencia a la BBDD
+import fse from 'fs-extra';
+import fs from 'fs';
+import funciones from "../lib/funciones.js";
 
 //MOSTRAR PERFIL  -RUD  
 router.get('/profile', async (req, res) => {
@@ -48,13 +48,13 @@ router.get("/profile/delete/:id", funciones.isAuthenticated, async (req, res) =>
     const { id } = req.params;
     const user = await db.query("SELECT * FROM usuarios where id=?", id);
     //borramos foto
-    const filePath = path.resolve('src/public/img/profiles/' + user.pictureURL);
-    access(filePath, constants.F_OK, async (err) => {
+    const filePath = resolve('src/public/img/profiles/' + user.pictureURL);
+    fs.access(filePath, fs.constants.F_OK, async (err) => {
         if (err) {
             console.log("No tiene foto de perfil");
         } else {
             console.log('File exists. Deleting now ...');
-            await unlink(filePath);
+            await fse.unlink(filePath);
         }
     });
     //hacemos logout
@@ -86,4 +86,4 @@ router.post('/doAdmin', funciones.isAuthenticated, async (req, res) => {
     }
 });
 
-module.exports = router;
+export default router;

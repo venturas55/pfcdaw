@@ -1,26 +1,25 @@
-const express = require("express");
+import express from 'express';
 const router = express.Router();
-const { unlink } = require('fs-extra');
-const path = require('path');
-const funciones = require("../lib/funciones");
-const db = require("../database"); //db hace referencia a la BBDD
-const multer = require('multer');
-const fs = require('fs');
-const { v4: uuidv4 } = require('uuid');
+import { join, extname, resolve } from 'path';
+import funciones from "../lib/funciones.js";
+import db from "../database.js"; //db hace referencia a la BBDD
+import multer, { diskStorage } from 'multer';
+import { exists, mkdir } from 'fs';
+import { v4 as uuidv4 } from 'uuid';
 
 
-const storage = multer.diskStorage({
+const storage = diskStorage({
   destination: (req, file, cb) => {
-    const dir = path.join(__dirname, '../public/documentos');
-    fs.exists(dir, exist => {
+    const dir = join(__dirname, '../public/documentos');
+    exists(dir, exist => {
       if (!exist) {
-        return fs.mkdir(dir, error => cb(error, dir));
+        return mkdir(dir, error => cb(error, dir));
       }
       return cb(null, dir);
     })
   },
   filename: (req, file, cb) => {
-    cb(null, (uuidv4() + path.extname(file.originalname)).toLowerCase());
+    cb(null, (uuidv4() + extname(file.originalname)).toLowerCase());
   }
 });
 const uploadDocument = multer({
@@ -48,9 +47,9 @@ router.post("/documentos", funciones.isAuthenticated,funciones.hasSanPrivileges,
   req.flash("success", "Documento subido correctamente");
   res.redirect("/documentos");
 });
-router.get("/documentoDelete/:id", funciones.isAuthenticated,funciones.isAdmin, async (req, res) => {
+router.get("/documentoDelete/:id", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
   const id_archivo = req.params.id;
-  const filePath = path.resolve('src/public/documentos/' + id_archivo);
+  const filePath = resolve('src/public/documentos/' + id_archivo);
   //await unlink(filePath);
   await db.query("delete from documentos where id_archivo = ?",[id_archivo]);
   funciones.insertarLog(req.user.usuario,"DELETE documento",id_archivo);
@@ -74,4 +73,4 @@ router.post("/documentoEdit/:id", funciones.isAuthenticated,funciones.hasSanPriv
   res.redirect("/documentos");
 });
 
-module.exports = router;
+export default router;
