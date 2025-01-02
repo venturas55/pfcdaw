@@ -1,4 +1,4 @@
-process.loadEnvFile();
+import 'dotenv/config'
 
 const {
   PORT = 4000,
