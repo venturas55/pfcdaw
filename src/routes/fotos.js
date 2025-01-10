@@ -84,7 +84,7 @@ const uploadFotosZip = multer({
 }).single('backup');
 
 //GESTION FOTOS DE BALIZAS
-router.post("/aton/upload/:nif", funciones.insertarLog, funciones.hasSanPrivileges, uploadFoto, async (req, res) => {
+router.post("/aton/upload/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, uploadFoto, async (req, res) => {
     console.log("Subiendo foto baliza");
     const { nif } = req.params;
 
@@ -97,7 +97,7 @@ router.get("/aton/fotos/:nif", async (req, res) => {
     var fotos = await funciones.listadoFotos(nif);
     res.render("aton/fotos", { fotos, nif });
 });
-router.get("/aton/fotos/:nif/:src/delete", funciones.insertarLog, funciones.isAdmin, async (req, res) => {
+router.get("/aton/fotos/:nif/:src/delete", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     const nif = req.params.nif;
     const src = req.params.src;
     await fse.unlink(resolve('src/public/img/imagenes/' + nif + "/" + src));
@@ -107,11 +107,12 @@ router.get("/aton/fotos/:nif/:src/delete", funciones.insertarLog, funciones.isAd
 });
 
 //BACKUPS DE FOTOS DE ATONS
-router.get("/backupsfotos", funciones.insertarLog, funciones.isAdmin, async (req, res) => {
+router.get("/backupsfotos", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     var backups = funciones.listadoBackupsFotos();
+    console.log("FOtos: ",backups);
     res.render("fotos/listadoBackupFotos", { backups });
 });
-router.get("/backupsfotos/del/:nombre", funciones.insertarLog, funciones.isAdmin, async (req, res) => {
+router.get("/backupsfotos/del/:nombre", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     var { nombre } = req.params;
     var file = resolve('src/public/dumpFOTOS', nombre);
     //console.log(file);
@@ -119,7 +120,7 @@ router.get("/backupsfotos/del/:nombre", funciones.insertarLog, funciones.isAdmin
     funciones.insertarLog(req.user.usuario, "DELETE backup fotos", nombre);
     res.redirect('/backupsfotos');
 });
-router.get("/aton/fotos/backup/zip", funciones.insertarLog, funciones.isAdmin, async (req, res) => {
+router.get("/aton/fotos/backup/zip", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     const dir = join(__dirname, '../public/img/imagenes');
     const dirbackups = join(__dirname, '../public/dumpFOTOS/');
     archiveFolder(dir, dirbackups + new Date().getTime() + ".zip").then(function () {
@@ -132,12 +133,12 @@ router.get("/aton/fotos/backup/zip", funciones.insertarLog, funciones.isAdmin, a
         res.redirect('/backupsfotos');
     });
 });
-router.post("/aton/fotos/backup/upload", funciones.insertarLog, funciones.isAdmin, uploadFotosZip, async (req, res) => {
+router.post("/aton/fotos/backup/upload", funciones.isAuthenticated, funciones.isAdmin, uploadFotosZip, async (req, res) => {
     console.log("Subiendo fotos en zip");
     req.flash("success", "backup fotos subido correctamente");
     res.redirect('/backupsfotos');
 });
-router.get("/aton/fotos/backup/unzip/:nombre", funciones.insertarLog, funciones.isAdmin, async (req, res) => {
+router.get("/aton/fotos/backup/unzip/:nombre", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     var { nombre } = req.params;
     const dir = join(__dirname, '../public/img/imagenes');
     const backupPath = join(__dirname, '../public/dumpFOTOS/');
@@ -171,7 +172,7 @@ router.get("/aton/fotos/clean/folders", funciones.isAdmin, async function (req, 
 });
 
 //GESTION  foto perfil
-router.post('/upload/:id', funciones.insertarLog, uploadFoto, async (req, res) => {
+router.post('/upload/:id', funciones.isAuthenticated, uploadFoto, async (req, res) => {
     const { id } = req.params;
     //console.log(req.file);
     var usuario = await db.query("select * from usuarios where id = ?", id);
@@ -198,7 +199,7 @@ router.post('/upload/:id', funciones.insertarLog, uploadFoto, async (req, res) =
     req.flash("success", "Foto de perfil actualizada con exito");
     res.redirect("/profile");
 });
-router.get("/profile/borrarfoto/:id/:url", funciones.insertarLog, async (req, res) => {
+router.get("/profile/borrarfoto/:id/:url", funciones.isAuthenticated, async (req, res) => {
     //console.log(req.params);
     const { url } = req.params;
     const { id } = req.params;
