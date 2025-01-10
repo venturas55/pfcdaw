@@ -35,7 +35,7 @@ const uploadFotosBBDD = multer({
 //GESTION BACKUPS BBDD
 router.get("/dbbackups/list", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     var backups = funciones.listadoBackups();
-    res.render("backups/funciones.listadoBackups", { backups });
+    res.render("backups/listadoBackups", { backups });
 });
 router.post("/dbbackups/create/:operacion", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     var { operacion } = req.params;
