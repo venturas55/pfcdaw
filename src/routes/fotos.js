@@ -9,6 +9,8 @@ import multer, { diskStorage } from 'multer';
 import { access, constants } from 'fs';
 import funciones from "../lib/funciones.js";
 import { archiveFolder, extract } from "zip-lib";
+import * as url from "url";
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
 
 

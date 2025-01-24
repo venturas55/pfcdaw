@@ -1,7 +1,7 @@
 import bcryptjs from 'bcryptjs';
 import { join } from 'path';
 import fse from 'fs-extra';
-import pool from "../database.js";
+import db from "../database.js";
 import mysqldump from 'mysqldump';
 import { stringify } from 'querystring';
 import { createInterface } from 'readline';
@@ -148,7 +148,7 @@ funciones.insertarLog = async (usuario, accion, observacion) => {
     }
     try {
         console.log("Insertando log: " + stringify(log));
-        const a = await query("insert into logs SET ?", [log]);
+        const a = await db.query("insert into logs SET ?", [log]);
         return a;
     } catch (err) {
         console.log(err);
@@ -205,7 +205,7 @@ funciones.runSQLrecovery =  (file) => {
  
         
         if (chunk.toString('ascii').charAt(chunk.length - 1) == ';') {
-            pool.query(total, function (err, sets, fields) { if (err) console.log(err); });
+            db.query(total, function (err, sets, fields) { if (err) console.log(err); });
             total = "";
         }
     });
@@ -238,7 +238,7 @@ funciones.consultaPrueba = async () => {
         terminal: false
     });
     rl.on('line', function (chunk) {
-        pool.query(chunk.toString('ascii'), function (err, sets, fields) {
+        db.query(chunk.toString('ascii'), function (err, sets, fields) {
             if (err) console.log(err);
         });
     });

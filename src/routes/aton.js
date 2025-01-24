@@ -7,6 +7,8 @@ import { promises as fs } from 'fs';
 const queryListadoAton = "SELECT lo.coordenadas,b.nif,b.num_internacional,b.tipo,b.apariencia,b.periodo,b.caracteristica,b.telecontrol,b.necesita_pintado,lo.puerto,lo.num_local,lo.localizacion,lo.latitud,lo.longitud,la.altura,la.elevacion,la.alcanceNom,la.linterna,la.candelasCalc,la.alcanceLum,la.candelasInst FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif";
 const queryListadoTicketsUsers = "SELECT t.ticket_id,t.nif,t.created_by_id,t.assigned_to_id,t.resolved_by_id,t.titulo,t.descripcion,t.solved_at,t.created_at,u1.usuario as created_by,u2.usuario as assigned_to,u3.usuario as resolved_by FROM tickets t LEFT JOIN usuarios u1 ON t.created_by_id=u1.id  LEFT JOIN usuarios u2 ON t.assigned_to_id=u2.id LEFT JOIN usuarios u3 ON t.resolved_by_id=u3.id ";
 const queryListadoPreventivosUsers = 'SELECT p.preventivo_id,p.nif,p.estructura_estado,p.estructura_marca_tope,p.estructura_engrase,p.estructura_golpes,p.estructura_limpieza_interior,p.estructura_limpieza_exterior,p.estructura_cuadro_interior,p.estructura_cuadro_exterior,p.estructura_observaciones,p.linterna_ldr1,p.linterna_ldr2,p.linterna_optica,p.linterna_estanqueidad_tornillos,p.linterna_estanqueidad_humedades,p.linterna_observaciones,p.telecontrol_monitoreo,p.telecontrol_gps,p.telecontrol_tipo,p.telecontrol_observaciones,p.alimentacion_panelFV,p.alimentacion_red,p.alimentacion_baterias,p.alimentacion_ah,p.alimentacion_vcc,p.alimentacion_grupo,p.alimentacion_cableado,p.alimentacion_observaciones,p.observaciones_generales,p.created_at,p.solved_at,p.created_by_id,u1.usuario as created_by FROM preventivos p LEFT JOIN usuarios u1 ON p.created_by_id=u1.id ';
+import * as url from "url";
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 import moment from 'moment'; // require
 moment().format();
 
@@ -289,6 +291,7 @@ router.get("/editLampara/:nif", funciones.isAuthenticated, funciones.hasSanPrivi
 });
 router.post("/editCaracteristicas/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     const nifviejo = req.params.nif;
+    console.log("nif viejo: ",nifviejo )
     var {
         nif,
         num_internacional,
@@ -345,8 +348,8 @@ router.post("/editCaracteristicas/:nif", funciones.isAuthenticated, funciones.ha
 
         //cambiar de nombre la carpeta de fotos
 
-        oldName = join(__dirname, '../public/img/imagenes/', nifviejo);
-        newName = join(__dirname, '../public/img/imagenes/', nif);
+        var oldName = join(__dirname, '../public/img/imagenes/', nifviejo);
+        var newName = join(__dirname, '../public/img/imagenes/', nif);
         await fs.rename(oldName, newName);
 
         funciones.insertarLog(req.user.usuario, "UPDATE balizamiento", newBaliza.nif + " " + newBaliza.num_internacional + " " + newBaliza.tipo + " " + newBaliza.telecontrol + newBaliza.apariencia + " " + newBaliza.periodo + " " + newBaliza.caracteristica);
@@ -385,7 +388,7 @@ router.post("/editLocalizacion/:nif", funciones.isAuthenticated, funciones.hasSa
             await db.query("INSERT into localizacion set ? ", [newBaliza]);
         } else {
             await db.query("UPDATE localizacion set ? WHERE nif = ?", [newBaliza, nifviejo]);
-            await db.query("UPDATE localizacion set coordenadas= point(?,?) WHERE nif = ?", [latitud, longitud, nifviejo]);
+            //await db.query("UPDATE localizacion set coordenadas= point(?,?) WHERE nif = ?", [latitud, longitud, nifviejo]);
         }
         funciones.insertarLog(req.user.usuario, "UPDATE localizacion", newBaliza.nif + " " + newBaliza.puerto + " " + newBaliza.num_local + " " + newBaliza.localizacion + " " + newBaliza.latitud + " " + newBaliza.longitud);
         req.flash("success", "Localizacion de baliza modificada correctamente");

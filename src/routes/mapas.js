@@ -10,7 +10,7 @@ var selectedLayout = 'layoutMapaLeaflet';
 //GESTION MAPAS
 router.get("/mapa/:nif", async (req, res) => {
     const { nif } = req.params;
-    const baliza = await dbuery(queryListadoAton + ' where b.nif=?', [nif]);
+    const baliza = await db.query(queryListadoAton + ' where b.nif=?', [nif]);
     res.render("mapas/mapa", { layout: selectedLayout, baliza: baliza[0] });
 });
 //funcion get para mostrar los mapas dinamicos con la api de google maps
