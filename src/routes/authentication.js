@@ -70,15 +70,12 @@ router.post('/profile/email/recordarpass/', async (req, res) => { //:email
     });
 
 
-
     const email = req.body.email;
     const usuario = req.body.usuario;
     var rows = await db.query("SELECT * FROM usuarios WHERE usuario=? AND email= ?", [usuario, email]);
     if (rows.length > 0) {
         var user = rows[0];
         const user_id = user.id;
-
-
         var token = funciones.getCode();
         const hash = await funciones.encryptPass(token);
         console.log(hash);
@@ -90,12 +87,12 @@ router.post('/profile/email/recordarpass/', async (req, res) => { //:email
         }
         //var exito = await helpers.sendRecoveryMail(email,token); NOFUNCIONA 
         console.log(email + " " + token);
-
         var mailOptions = {
             from: "BBDD SAN",
             to: email,
             subject: 'Restablecer contraseña BBDD SAN',
-            text: 'Has olvidado tu contraseña. Haz click en el siguiente vinculo http://san.valenciaport.com/profile/email/verifypass/' + user_id + '/' + token + " para reestablecer una nueva contraseña.",
+            text: 'Has olvidado tu contraseña. Haz click en el siguiente vinculo http://' + req.headers.host + '/profile/email/verifypass/' + user_id + '/' + token + " para reestablecer una nueva contraseña.",
+            //TODO: LA URL DEL SERVIDOR DESPLEGADO
             //text: 'Has olvidado tu contraseña. Haz click en el siguiente vinculo http://localhost:5001/profile/email/verifypass/' + user_id + '/' + token + " para reestablecer una nueva contraseña.",
         };
 
