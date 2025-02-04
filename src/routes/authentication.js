@@ -47,7 +47,7 @@ router.get('/profile/email/recordarpass/', async (req, res) => {
 router.post('/profile/email/recordarpass/', async (req, res) => { //:email
     const email = req.body.email;
     const usuario = req.body.usuario;
-    // console.log(email + " " + usuario);
+     console.log(email + " " + usuario);
     var rows = await db.query("SELECT * FROM usuarios WHERE usuario=? AND email= ?", [usuario, email]);
     if (rows.length > 0) {
         var user = rows[0];
@@ -56,7 +56,7 @@ router.post('/profile/email/recordarpass/', async (req, res) => { //:email
 
         var token = funciones.getCode();
         const hash = await funciones.encryptPass(token);
-        //console.log(hash);
+        console.log(hash);
         var hasAnyToken = await db.query("SELECT * FROM tokens WHERE user_id=?", [user_id]);
         if (hasAnyToken.length > 0) {
             rows = await db.query("UPDATE tokens set hashedtoken=? , expires =NOW()+ interval 5 minute where user_id=?", [hash, user_id,]);
@@ -65,7 +65,7 @@ router.post('/profile/email/recordarpass/', async (req, res) => { //:email
         }
 
         //var exito = await helpers.sendRecoveryMail(email,token); NOFUNCIONA 
-        //console.log(email + " " + token);
+        console.log(email + " " + token);
         const transporter = createTransport({
             service: 'ovh',
             host: "smtp.mail.ovh.net",
@@ -90,7 +90,7 @@ router.post('/profile/email/recordarpass/', async (req, res) => { //:email
             if (error) {
                 console.error("Error:");
                 console.log(error);
-                req.flash("danger", "Error al enviar el eMail para restablecer contraseña")
+                req.flash("error", "Error al enviar el eMail para restablecer contraseña")
                 res.redirect("/error");
 
             } else {
@@ -100,7 +100,7 @@ router.post('/profile/email/recordarpass/', async (req, res) => { //:email
             }
         });
     } else {
-        req.flash("danger", "El usuario y/o el correo no corresponden con ningún usuario.")
+        req.flash("error", "El usuario y/o el correo no corresponden con ningún usuario.")
         res.redirect("/error");
     }
 
@@ -121,11 +121,11 @@ router.get('/profile/email/verifypass/:user_id/:code', async (req, res) => {
             res.redirect("/profile/recoverysetpass/" + user_id);
         }
         else {
-            req.flash("danger", "Token proporcionado incorrecto");
+            req.flash("error", "Token proporcionado incorrecto");
             res.redirect("/error");
         }
     } else {
-        req.flash("danger", "Token proporcionado expirado"); //TODO: NO REDIRECIONA
+        req.flash("error", "Token proporcionado expirado"); //TODO: NO REDIRECIONA
         res.redirect("/error");
     }
 });
