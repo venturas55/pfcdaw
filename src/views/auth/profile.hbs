@@ -7,15 +7,15 @@
             </a>
         </div>
 
-        {{!-- <div class="col-md-12 mx-auto">
+        <div class="col-md-12 mx-auto">
             <table class="table table-bordered table-danger table-sm" style="white-space: nowrap; overflow-x: auto;">
                 <tr>
-                    <th class="text-center" colspan="5">Tiene los siguientes tickets activos </th>
+                    <th class="text-center" colspan="6">Tiene los siguientes tickets activos </th>
                 </tr>
                 {{#each tickets}}
                 <tr class="text-center">
                     <th class="d-none d-sm-block">Id:{{this.ticket_id}}</th>
-                    <td> <a href="/aton/plantilla/{{ this.nif }} ">{{ this.nif }}</a> </td>
+                    <th> <a href="/aton/plantilla/{{ this.nif }} ">{{ this.nif }}</a> </th>
                     <th>{{this.titulo}}</th>
                     <th>{{this.descripcion}}</th>
                     <th class="d-none d-sm-block">Creada {{timeagoSp this.created_at}}</th>
@@ -24,7 +24,7 @@
                 </tr>
                 {{/each}}
             </table>
-        </div> --}}
+        </div>
         {{/if}}
         <div class="col-md-8 mx-auto">
             <div class="card text-center">

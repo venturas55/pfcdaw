@@ -105,20 +105,20 @@
                                     {{/each}}
                                 </select>
                             </div>
-                            <button class="btn btn-primary btn-block">Guardar</button>
+                            <button class="btn btn-primary mx-3 ">Guardar</button>
                         </div>
                     </form>
                     {{#if ticket.resolved_by_id}}
                     {{#if ticket.descripcion }}
                     <form action="/tickets/cerrar/{{ticket.ticket_id}}" method="POST">
                         <div class="form-group">
-                            <button class="btn btn-warning btn-block ">Cerrar Ticket</button>
+                            <button class="btn btn-warning mx-3  ">Cerrar Ticket</button>
                         </div>
                     </form>
                     {{/if}}
                     {{/if}}
                 </div>
-                <a class="btn btn-secondary mx-3" onclick="history.back();">Cancelar</a>
+                <a class="btn btn-secondary mx-3" onclick="history.back();">Volver</a>
             </div>
         </div>
     </div>
