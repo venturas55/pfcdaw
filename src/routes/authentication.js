@@ -4,7 +4,7 @@ import { createTransport } from 'nodemailer';
 import passport from 'passport';
 import funciones from '../lib/funciones.js';
 import db from "../database.js"; //db hace referencia a la BBDD
-import { config }  from '../config.js'; 
+import { config } from '../config.js';
 
 //GESTION SIGNIN registrarse C---
 router.get('/signup', funciones.isNotAuthenticated, (req, res) => {
@@ -32,7 +32,7 @@ router.post('/signin', (req, res, next) => {
 //GESTION logout
 router.get('/logout', (req, res) => {
     //helpers.insertarLog(req.user.usuario, "LOGOUT usuario", req.user.id + " " + req.user.usuario);
-    req.logout(function(err) {
+    req.logout(function (err) {
         if (err) {
             return next(err);
         }
@@ -45,9 +45,34 @@ router.get('/profile/email/recordarpass/', async (req, res) => {
     res.render('auth/recoverypass');
 });
 router.post('/profile/email/recordarpass/', async (req, res) => { //:email
+
+    const transporter = createTransport({
+        //service: config.EMAIL_SERVICE,
+        host: config.EMAIL_HOST,
+        port: config.EMAIL_PORT,
+        secure: config.EMAIL_SECURITY,
+        auth: {
+            user: config.EMAIL_ACCOUNT,
+            pass: config.EMAIL_PASS,
+        },
+        secureConnection: false, // TLS requires secureConnection to be false
+        tls: {
+            ciphers: 'SSLv3'
+        }
+    });
+
+    transporter.verify(function (error, success) {
+        if (error) {
+            console.log(">", error);
+        } else {
+            console.log("Server is ready to take our messages");
+        }
+    });
+
+
+
     const email = req.body.email;
     const usuario = req.body.usuario;
-     console.log(email + " " + usuario);
     var rows = await db.query("SELECT * FROM usuarios WHERE usuario=? AND email= ?", [usuario, email]);
     if (rows.length > 0) {
         var user = rows[0];
@@ -63,28 +88,16 @@ router.post('/profile/email/recordarpass/', async (req, res) => { //:email
         } else {
             rows = await db.query("INSERT INTO tokens (user_id,hashedtoken, expires) VALUES (?,?, NOW()+ interval 5 minute)", [user_id, hash]);
         }
-
         //var exito = await helpers.sendRecoveryMail(email,token); NOFUNCIONA 
         console.log(email + " " + token);
-        const transporter = createTransport({
-            service: 'ovh',
-            host: "smtp.mail.ovh.net",
-            secure: true,
-            port: 465,
-
-            auth: {
-                user: config.EMAIL_ACCOUNT,
-                pass: config.EMAIL_PASS,
-            }
-        });
 
         var mailOptions = {
             from: "BBDD SAN",
             to: email,
             subject: 'Restablecer contraseña BBDD SAN',
-            text: 'Has olvidado tu contraseña. Haz click en el siguiente vinculo http://localhost:5001/profile/email/verifypass/' + user_id + '/' + token + " para reestablecer una nueva contraseña.",
+            text: 'Has olvidado tu contraseña. Haz click en el siguiente vinculo http://san.valenciaport.com/profile/email/verifypass/' + user_id + '/' + token + " para reestablecer una nueva contraseña.",
+            //text: 'Has olvidado tu contraseña. Haz click en el siguiente vinculo http://localhost:5001/profile/email/verifypass/' + user_id + '/' + token + " para reestablecer una nueva contraseña.",
         };
-        //console.log(mailOptions);
 
         transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
@@ -103,6 +116,8 @@ router.post('/profile/email/recordarpass/', async (req, res) => { //:email
         req.flash("error", "El usuario y/o el correo no corresponden con ningún usuario.")
         res.redirect("/error");
     }
+
+
 
 });
 router.get('/profile/email/verifypass/:user_id/:code', async (req, res) => {
