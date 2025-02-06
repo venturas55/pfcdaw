@@ -9,7 +9,7 @@ var puerto = document.getElementById("puerto").getAttribute("puerto");
 //let myurl = 'http://adriandeharo.es:'+puerto;
 //let myurl = 'https://san.valenciaport.com';
 let myurl = "http://"+direccion+":"+puerto;
-console.log(myurl);
+//console.log("URL: ",myurl);
 //FUNCION PARA CERRAR MODALES
 function cierraModal() {
     var el = document.getElementsByClassName("modal");
@@ -90,7 +90,7 @@ function centrar() {
 async function fetchData() {
     try {
         var apiURL = myurl + "/api/balizas";
-        console.log(apiURL);
+        console.log("fetch URL: ",apiURL);
         return await fetch(apiURL).then(res => res.json());
         /* .then(response => {
             var data = response;
