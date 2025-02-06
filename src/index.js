@@ -89,7 +89,9 @@ app.use((req, res, next) => {
   app.locals.error = req.flash("error");
   app.locals.message = req.flash("message");
   app.locals.user = req.user;
-  app.locals.direcciones = resultados[0];
+  app.locals.direccion = resultados[0];
+  app.locals.direccion2 = req.headers.host;
+  req.secure?app.locals.cabecera="https://": app.locals.cabecera="http://";
   app.locals.puerto = app.get("port");
   next();
 });
