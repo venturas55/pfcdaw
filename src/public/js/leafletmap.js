@@ -5,7 +5,7 @@ let centerLatLng = centrar();
 let posicionInicial = { lat: 1, lng: 1 };
 let map;
 
-fetchData().then((balizas) => {
+fetchData()?.then((balizas) => {
   map = L.map('myMap').setView(centerLatLng, presetZoom);
   // add the OpenStreetMap tiles
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {

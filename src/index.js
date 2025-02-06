@@ -12,7 +12,6 @@ import { networkInterfaces } from "os";
 import * as path from "path";
 import * as url from "url";
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
-
 //Inicializacion
 const app = express();
 import "./lib/passport.js"; //para que se entere de la autentificacion que se ha creado
@@ -67,19 +66,6 @@ app.use(json()); //Para enviar y recibir jsons.
 app.use(passport.initialize()); //iniciar passport
 app.use(passport.session()); //para que sepa donde guardar y como manejar los datos
 
-// DIRECCION DEL SERVIDOR
-const nets = networkInterfaces();
-var resultados = [];
-for (const name of Object.keys(nets)) {
-  for (const net of nets[name]) {
-    // Skip over non-IPv4 and internal (i.e. 127.0.0.1) addresses
-    // 'IPv4' is in Node <= 17, from 18 it's a number 4 or 6
-    const familyV4Value = typeof net.family === "string" ? "IPv4" : 4;
-    if (net.family === familyV4Value && !net.internal) {
-      resultados.push(net.address);
-    }
-  }
-}
 
 //Variables globales (que podrán ser usadas en cualquier vista)
 app.use((req, res, next) => {
@@ -89,8 +75,7 @@ app.use((req, res, next) => {
   app.locals.error = req.flash("error");
   app.locals.message = req.flash("message");
   app.locals.user = req.user;
-  app.locals.direccion = resultados[0];
-  app.locals.direccion2 = req.headers.host;
+  app.locals.direccion = req.headers.host;
   req.secure?app.locals.cabecera="https://": app.locals.cabecera="http://";
   app.locals.puerto = app.get("port");
   next();
@@ -137,5 +122,5 @@ app.use("/leaflet", express.static(path.join(__dirname, "../node_modules", "leaf
 
 //Arrancar servidor
 app.listen(app.get("port"), () => {
-  console.log("Running on http://localhost:" + app.get("port"));
+  console.log("Running on https://localhost:" + app.get("port"));
 });

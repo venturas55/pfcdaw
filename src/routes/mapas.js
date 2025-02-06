@@ -16,7 +16,10 @@ router.get("/mapa/:nif", async (req, res) => {
 //funcion get para mostrar los mapas dinamicos con la api de google maps
 router.get("/mapaGeneral/:valor", (req, res) => {
     //const { valor } = req.params;
-    res.render("mapas/mapa", { layout: selectedLayout });
+    console.log("sent",res.headersSent) // false
+    var protocol = req.protocol
+    console.log("protocol",req.protocol) // false 
+    res.render("mapas/mapa", { layout: selectedLayout ,protocol});
 });
 //funcion get para mostrar los mapas estaticos
 router.get("/mapaGeneral2/:valor", (req, res) => {

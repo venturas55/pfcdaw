@@ -3,15 +3,16 @@
 // ESPECIAL ME
 // FARO FA
 var direccion = document.getElementById("direccion").getAttribute("direccion");
-var direccion2 = document.getElementById("direccion2").getAttribute("direccion");
 var puerto = document.getElementById("puerto").getAttribute("puerto");
 var cabecera = document.getElementById("cabecera").getAttribute("cabecera");
+var protocolo = document.getElementById("protocolo").getAttribute("value");
 //console.log(puerto);
 //let myurl = 'http://localhost:' + puerto;
 //let myurl = 'http://adriandeharo.es:'+puerto;
 //let myurl = 'https://san.valenciaport.com';
-let myurl = cabecera+direccion2;
+let myurl = cabecera+direccion;
 console.log("URL: ",myurl);
+console.log("PROTOCOLO: ",protocolo);
 //FUNCION PARA CERRAR MODALES
 function cierraModal() {
     var el = document.getElementsByClassName("modal");
