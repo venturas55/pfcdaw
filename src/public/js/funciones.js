@@ -10,7 +10,8 @@ var protocolo = document.getElementById("protocolo").getAttribute("value");
 //let myurl = 'http://localhost:' + puerto;
 //let myurl = 'http://adriandeharo.es:'+puerto;
 //let myurl = 'https://san.valenciaport.com';
-let myurl = cabecera+direccion;
+console.log()
+let myurl = "https://"+direccion;
 console.log("URL: ",myurl);
 console.log("PROTOCOLO: ",protocolo);
 //FUNCION PARA CERRAR MODALES
