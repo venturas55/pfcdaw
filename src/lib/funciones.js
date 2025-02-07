@@ -229,11 +229,10 @@ funciones.getCode = () => {
 funciones.sendRecoveryMail = async (email, token) => (req, res) => {
 }
 
-funciones.consultaPrueba = async () => {
-    let ruta = join(__dirname, '..', '..', 'database', 'prueba.sql');
+funciones.consultaPrueba = async (filename) => {
+    let ruta = join(__dirname, '..', '..', 'database', filename);
 
     var rl = createInterface({
-
         input: fse.createReadStream(ruta),
         terminal: false
     });
@@ -245,6 +244,7 @@ funciones.consultaPrueba = async () => {
     rl.on('close', function () {
         console.log("finished");
     });
+    
 }
 
 export default funciones;

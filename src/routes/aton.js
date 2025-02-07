@@ -433,9 +433,8 @@ router.post("/editLocalizacionFromMap/:nif", funciones.isAuthenticated, funcione
 
 });
 router.get("/transform", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
-    const nif = req.params.nif;
     try {
-        var baliza = await db.query("SELECT * FROM localizacion", [nif]);
+        var baliza = await db.query("SELECT * FROM localizacion");
         for (var i = 0; i < baliza.length; i++) {
             var punto = getPointfromLatLng(baliza[i].latitud, baliza[i].longitud);
             await db.query("UPDATE localizacion set coordenadas= point(?,?) WHERE nif = ?", [punto.lat, punto.lng, baliza[i].nif]);
@@ -444,7 +443,7 @@ router.get("/transform", funciones.isAuthenticated, funciones.isAdmin, async (re
         res.redirect("/");
     } catch (error) {
         console.error(error);
-        req.flash("error", "Hubo algun error al modificar la localización del aton con NIF " + nif);
+        req.flash("error", "Hubo algun error al modificar la localización");
         res.redirect("/error");
     }
 });
