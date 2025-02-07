@@ -122,5 +122,5 @@ app.use("/leaflet", express.static(path.join(__dirname, "../node_modules", "leaf
 
 //Arrancar servidor
 app.listen(app.get("port"), () => {
-  console.log("Running on https://localhost:" + app.get("port"));
+  console.log("Running on http://localhost:" + app.get("port"));
 });

@@ -5,7 +5,7 @@ const queryListadoAton = "SELECT b.nif,b.num_internacional,b.tipo,b.apariencia,b
 import db from "../database.js"; //db hace referencia a la BBDD
 
 //var selectedLayout ='layoutMapa';  //  layoutMapa   o    layoutMapaLeaflet
-var selectedLayout = 'layoutMapaLeaflet';
+var selectedLayout = 'Leaflet';
 
 //GESTION MAPAS
 router.get("/mapa/:nif", async (req, res) => {
@@ -19,7 +19,7 @@ router.get("/mapaGeneral/:valor", (req, res) => {
     console.log("sent",res.headersSent) // false
     var protocol = req.protocol
     console.log("protocol",req.protocol) // false 
-    res.render("mapas/mapa", { layout: selectedLayout ,protocol});
+    res.render("mapas/mapa"+selectedLayout, { layout: 'layoutMapa'+selectedLayout ,protocol});
 });
 //funcion get para mostrar los mapas estaticos
 router.get("/mapaGeneral2/:valor", (req, res) => {
@@ -39,10 +39,10 @@ router.get("/mapaGeneral2/:valor", (req, res) => {
 });
 //funcion get para alternar entre los dos layouts google y leaflet
 router.get('/changelayout', funciones.isAuthenticated, funciones.isAdmin, (req, res) => {
-    if (selectedLayout == 'layoutMapaLeaflet') {
-        selectedLayout = 'layoutMapa';
+    if (selectedLayout == 'Leaflet') {
+        selectedLayout = 'Google';
     } else {
-        selectedLayout = 'layoutMapaLeaflet';
+        selectedLayout = 'Leaflet';
     }
     //TODO: refresh wherever page you are in when run this from navbar.
     res.redirect("/mapaGeneral/valencia");
