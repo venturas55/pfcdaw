@@ -95,6 +95,7 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   `full_name` varchar(150) DEFAULT NULL,
   `privilegio` varchar(20) DEFAULT NULL,
   `pictureURL` varchar(100) CHARACTER SET utf16 COLLATE utf16_spanish2_ci DEFAULT NULL,
+  `prefmap` varchar(10) default 'leaflet',
   PRIMARY KEY (`id`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 7 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'tabla de usuarios';
 

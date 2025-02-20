@@ -10,7 +10,10 @@ var cabecera = document.getElementById("cabecera").getAttribute("cabecera");
 //let myurl = 'http://localhost:' + puerto;
 //let myurl = 'http://adriandeharo.es:'+puerto;
 //let myurl = 'https://san.valenciaport.com';
-console.log()
+console.log("Direccion: ",direccion)
+console.log("puerto: ",puerto)
+console.log("cabecera: ",cabecera)
+
 let myurl = "https://"+direccion;
 console.log("URL: ",myurl);
 //console.log("PROTOCOLO: ",protocolo);
@@ -82,8 +85,11 @@ function centrar() {
             presetZoom = 16.5;
             break;
         default:
-            centerLatLng = setMarkerLatLng(lat.value, lng.value);
-            presetZoom = 18;
+            centerLatLng = {
+                lat: 39.438,
+                lng: -0.3172
+            };
+            presetZoom = 12;
     }
 
 
