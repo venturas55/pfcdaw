@@ -10,12 +10,12 @@ var cabecera = document.getElementById("cabecera").getAttribute("cabecera");
 //let myurl = 'http://localhost:' + puerto;
 //let myurl = 'http://adriandeharo.es:'+puerto;
 //let myurl = 'https://san.valenciaport.com';
-console.log("Direccion: ",direccion)
-console.log("puerto: ",puerto)
-console.log("cabecera: ",cabecera)
+console.log("Direccion: ", direccion)
+console.log("puerto: ", puerto)
+console.log("cabecera: ", cabecera)
 
-let myurl = "https://"+direccion;
-console.log("URL: ",myurl);
+let myurl = "https://" + direccion;
+console.log("URL: ", myurl);
 //console.log("PROTOCOLO: ",protocolo);
 //FUNCION PARA CERRAR MODALES
 function cierraModal() {
@@ -31,23 +31,23 @@ function cambiarUsuario() {
 }
 
 function abreModalObs(id) {
-  //console.log("observacion con id" + id);
-  var item = document.getElementById("myModalBorradoObs");
-  var ref= document.getElementById("refobsdel");
-  ref.href+=id;
-  //console.log(ref.href);
-  item.style.display = 'block';
+    //console.log("observacion con id" + id);
+    var item = document.getElementById("myModalBorradoObs");
+    var ref = document.getElementById("refobsdel");
+    ref.href += id;
+    //console.log(ref.href);
+    item.style.display = 'block';
 }
 
 
 function abreModalMant(id) {
     //console.log("Mantenimiento con id" + id);
     var item = document.getElementById("myModalBorradoMant");
-    var ref= document.getElementById("refmantdel");
-    ref.href+=id;
+    var ref = document.getElementById("refmantdel");
+    ref.href += id;
     console.log(ref.href);
     item.style.display = 'block';
-  }
+}
 
 /////############
 //FUNCIONES PARA EL MAPS DE GOOGLE
@@ -85,11 +85,8 @@ function centrar() {
             presetZoom = 16.5;
             break;
         default:
-            centerLatLng = {
-                lat: 39.438,
-                lng: -0.3172
-            };
-            presetZoom = 12;
+            centerLatLng = setMarkerLatLng(lat.value, lng.value);
+            presetZoom = 18;
     }
 
 
@@ -100,7 +97,7 @@ function centrar() {
 async function fetchData() {
     try {
         var apiURL = myurl + "/api/balizas";
-        console.log("fetch URL: ",apiURL);
+        console.log("fetch URL: ", apiURL);
         return await fetch(apiURL).then(res => res.json());
         /* .then(response => {
             var data = response;
@@ -146,7 +143,7 @@ function setMarkerLatLng(lat, lng) {
             lat2 = parseFloat(utmarraylat[0]) + (minutoslatEntero + minutoslatDecimal / 1000) / 60;
         } else {
             var minutoslat = minutoslatVector[0].trim().split(" ");
-            lat2 = parseFloat(utmarraylat[0]) + parseFloat(minutoslat[0])  / 60;
+            lat2 = parseFloat(utmarraylat[0]) + parseFloat(minutoslat[0]) / 60;
         }
         //console.log(minutoslatVector);
         if (minutoslat[1].trim() == 'N')
@@ -180,7 +177,7 @@ function setMarkerLatLng(lat, lng) {
             lng2 = parseFloat(utmarraylng[0]) + (minutoslngEntero + minutoslngDecimal / 1000) / 60;
         } else {
             var minutoslng = minutoslngVector[0].trim().split(" ");
-            lng2 = parseFloat(utmarraylng[0]) + parseFloat(minutoslng[0])  / 60;
+            lng2 = parseFloat(utmarraylng[0]) + parseFloat(minutoslng[0]) / 60;
         }
 
 

@@ -45,4 +45,4 @@ router.get('/changelayout', funciones.isAuthenticated, async (req, res) => {
     res.redirect("/mapaGeneral/valencia");
 });
 
-export default router;import { Router } from "express";
+export default router;
