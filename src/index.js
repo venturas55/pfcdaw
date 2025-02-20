@@ -8,7 +8,6 @@ import MySQLstore from "express-mysql-session"; // para poder guardar la sesion 
 import { config } from "./config.js";
 import passport from "passport";
 import cors from "cors";
-import { networkInterfaces } from "os";
 import * as path from "path";
 import * as url from "url";
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));

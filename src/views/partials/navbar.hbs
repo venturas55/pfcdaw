@@ -23,6 +23,7 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="/aton/list">Listado completo</a>
+                        <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="/aton/list/Valen">Listado Valencia</a>
                         <a class="dropdown-item" href="/aton/list/Sag">Listado Sagunto</a>
                         <a class="dropdown-item" href="/aton/list/Gand">Listado Gandia</a>
@@ -31,8 +32,6 @@
                         <a class="dropdown-item" href="/mapaGeneral/valencia">Plano Valencia</a>
                         <a class="dropdown-item" href="/mapaGeneral/sagunto">Plano Sagunto</a>
                         <a class="dropdown-item" href="/mapaGeneral/gandia">Plano Gandia</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="/changelayout">Change layout google/leaflet</a>
                     </ul>
                 </li>
 
@@ -84,22 +83,22 @@
                     </ul>
                 </li>
                 {{/if}}
-                {{#if user}}
 
+                {{#when user.privilegio 'eq' 'admin'}}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Panel Adm
+                        Panel Adm {{user.privilegio}}
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="/aton/transform">Conversión coordenadas</a>
                         <a class="dropdown-item" href="/pruebas/crearToken">Crear Tabla Tokens</a>
                         <a class="dropdown-item" href="/pruebas2">Pruebas2</a>
-
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/changelayout">Change layout google/leaflet</a>
                     </ul>
                 </li>
-                {{/if}}
-
+                {{/when}}
 
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
@@ -163,7 +162,8 @@
             </ul>
         </div>
         <div class="d-none d-sm-block">
-            <a href="http://www.valenciaport.com" target="_blank"> <img class="SVG-white-logo" src="/img/logo-APV.svg" alt="APV logo"></a>
+            <a href="http://www.valenciaport.com" target="_blank"> <img class="SVG-white-logo" src="/img/logo-APV.svg"
+                    alt="APV logo"></a>
         </div>
     </div>
 </nav>
