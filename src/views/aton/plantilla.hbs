@@ -10,7 +10,14 @@
             <button onclick="document.getElementById('myModalPintado').style.display = 'block';"
                 class="btn btn-danger  float-right"> <i class="fa fa-paint-brush"></i> </button>
             {{/if}}
+
+            {{#if baliza.apagada}}
+            <a class="btn btn-outline-secondary btn-sm" href="/aton/activar/{{baliza.nif}}">APAGADA</a>
+            {{else}}
+            <a class="btn btn-outline-secondary btn-sm" href="/aton/apagar/{{baliza.nif}}">ACTIVADA</a>
+            {{/if}}
         </div>
+
     </div>
     {{#if tickets}}
     <div class="row mb-2 mx-4">

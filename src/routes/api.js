@@ -2,8 +2,8 @@ import express from 'express';
 const router = express.Router();
 import db from "../database.js";
 import funciones from "../lib/funciones.js";
-const queryBaliza = "SELECT b.nif,lo.puerto,lo.num_local,b.telecontrol,b.periodo,b.tipo,b.apariencia,b.caracteristica,lo.localizacion,lo.latitud,lo.longitud,la.altura,la.elevacion,la.linterna,la.alcanceNom,la.alcanceLum,la.candelasCalc,la.candelasInst FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif where b.nif=?";
-const queryListadoAton = "SELECT b.nif,b.num_internacional,b.tipo,b.apariencia,b.periodo,b.caracteristica,b.telecontrol,b.necesita_pintado,lo.puerto,lo.num_local,lo.localizacion,lo.latitud,lo.longitud,la.altura,la.elevacion,la.alcanceNom,la.linterna,la.candelasCalc,la.alcanceLum,la.candelasInst FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif";
+const queryBaliza = "SELECT b.nif,lo.puerto,lo.num_local,b.telecontrol,b.periodo,b.tipo,b.apariencia,b.caracteristica,b.necesita_pintado,b.apagada,lo.localizacion,lo.latitud,lo.longitud,la.altura,la.elevacion,la.linterna,la.alcanceNom,la.alcanceLum,la.candelasCalc,la.candelasInst FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif where b.nif=?";
+const queryListadoAton = "SELECT b.nif,b.num_internacional,b.tipo,b.apariencia,b.periodo,b.caracteristica,b.telecontrol,b.necesita_pintado,b.apagada,lo.puerto,lo.num_local,lo.localizacion,lo.latitud,lo.longitud,la.altura,la.elevacion,la.alcanceNom,la.linterna,la.candelasCalc,la.alcanceLum,la.candelasInst FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif";
 
 
 //Devuelve el listado de todas las balizas introducidas

@@ -4,7 +4,7 @@ import { join } from 'path';
 import db from "../database.js"; //db hace referencia a la BBDD
 import funciones from "../lib/funciones.js";
 import { promises as fs } from 'fs';
-const queryListadoAton = "SELECT lo.coordenadas,b.nif,b.num_internacional,b.tipo,b.apariencia,b.periodo,b.caracteristica,b.telecontrol,b.necesita_pintado,lo.puerto,lo.num_local,lo.localizacion,lo.latitud,lo.longitud,la.altura,la.elevacion,la.alcanceNom,la.linterna,la.candelasCalc,la.alcanceLum,la.candelasInst FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif";
+const queryListadoAton = "SELECT lo.coordenadas,b.nif,b.num_internacional,b.tipo,b.apariencia,b.periodo,b.caracteristica,b.telecontrol,b.necesita_pintado,b.apagada,lo.puerto,lo.num_local,lo.localizacion,lo.latitud,lo.longitud,la.altura,la.elevacion,la.alcanceNom,la.linterna,la.candelasCalc,la.alcanceLum,la.candelasInst FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif";
 const queryListadoTicketsUsers = "SELECT t.ticket_id,t.nif,t.created_by_id,t.assigned_to_id,t.resolved_by_id,t.titulo,t.descripcion,t.solved_at,t.created_at,u1.usuario as created_by,u2.usuario as assigned_to,u3.usuario as resolved_by FROM tickets t LEFT JOIN usuarios u1 ON t.created_by_id=u1.id  LEFT JOIN usuarios u2 ON t.assigned_to_id=u2.id LEFT JOIN usuarios u3 ON t.resolved_by_id=u3.id ";
 const queryListadoPreventivosUsers = 'SELECT p.preventivo_id,p.nif,p.estructura_estado,p.estructura_marca_tope,p.estructura_engrase,p.estructura_golpes,p.estructura_limpieza_interior,p.estructura_limpieza_exterior,p.estructura_cuadro_interior,p.estructura_cuadro_exterior,p.estructura_observaciones,p.linterna_ldr1,p.linterna_ldr2,p.linterna_optica,p.linterna_estanqueidad_tornillos,p.linterna_estanqueidad_humedades,p.linterna_observaciones,p.telecontrol_monitoreo,p.telecontrol_gps,p.telecontrol_tipo,p.telecontrol_observaciones,p.alimentacion_panelFV,p.alimentacion_red,p.alimentacion_baterias,p.alimentacion_ah,p.alimentacion_vcc,p.alimentacion_grupo,p.alimentacion_cableado,p.alimentacion_observaciones,p.observaciones_generales,p.created_at,p.solved_at,p.created_by_id,u1.usuario as created_by FROM preventivos p LEFT JOIN usuarios u1 ON p.created_by_id=u1.id ';
 import * as url from "url";
@@ -291,7 +291,7 @@ router.get("/editLampara/:nif", funciones.isAuthenticated, funciones.hasSanPrivi
 });
 router.post("/editCaracteristicas/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     const nifviejo = req.params.nif;
-    console.log("nif viejo: ",nifviejo )
+    console.log("nif viejo: ", nifviejo)
     var {
         nif,
         num_internacional,
@@ -681,6 +681,36 @@ router.get("/pintado/:nif", funciones.isAuthenticated, funciones.hasSanPrivilege
     } catch (error) {
         console.error(error);
         req.flash("error", "Hubo algun error al añadir mantenimiento al NIF: " + nif);
+        res.redirect("/aton/plantilla/" + nif);
+    }
+});
+router.get("/activar/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
+    try {
+        const { nif } = req.params;
+        const baliza = (await db.query('Select * from balizamiento where nif=?', [nif]))[0];
+        baliza.apagada = false;
+        await db.query("UPDATE balizamiento set ? WHERE nif = ?", [baliza, nif]);
+        req.flash("success", "AtoN " + nif + " activado correctamente");
+        res.redirect("/aton/plantilla/" + nif);
+
+    } catch (error) {
+        console.error(error);
+        req.flash("error", "Hubo algun error al activar AtoN NIF: " + nif);
+        res.redirect("/aton/plantilla/" + nif);
+    }
+});
+router.get("/apagar/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
+    try {
+        const { nif } = req.params;
+        const baliza = (await db.query('Select * from balizamiento where nif=?', [nif]))[0];
+        baliza.apagada = true;
+        await db.query("UPDATE balizamiento set ? WHERE nif = ?", [baliza, nif]);
+        req.flash("success", "AtoN " + nif + " apagado correctamente");
+        res.redirect("/aton/plantilla/" + nif);
+
+    } catch (error) {
+        console.error(error);
+        req.flash("error", "Hubo algun error al apagar AtoN NIF: " + nif);
         res.redirect("/aton/plantilla/" + nif);
     }
 });

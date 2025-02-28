@@ -16,6 +16,13 @@ fetchData()?.then((balizas) => {
 
   // show the scale bar on the lower left corner
   L.control.scale({ imperial: true, metric: true }).addTo(map);
+
+
+  var marker = new L.marker([39.435, -0.29], { opacity: 0.01 }); //opacity may be set to zero 
+  marker.bindTooltip("Darsena Norte", {permanent: true, className: "my-label", offset: [0, 0] });
+  marker.addTo(map);
+
+
   // show a marker on the map
   markers = [];
   balizas.forEach(item => {
@@ -23,6 +30,8 @@ fetchData()?.then((balizas) => {
       iconUrl: myurl + '/img/icon/' + getTipo(item) + '.png',
       iconSize: [20, 40],
     }
+    if(item.apagada)
+      customIcon.className="apagada";
     let myIcon = L.icon(customIcon);
     let iconOptions = {
       title: item.tipo,
@@ -125,7 +134,7 @@ function drawPin() {
 }
 
 function onMapClick(e) {
-  console.log("You clicked the map at ", e);
+  //console.log("You clicked the map at ", e);
   var coordenadas = e.latlng.toString().split("(")[1];
   var latitud = coordenadas.split(",")[0];
   var longitud = coordenadas.split(",")[1].split(")")[0];
