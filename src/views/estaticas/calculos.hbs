@@ -175,9 +175,9 @@
               <p> Consumo continuo: <input type="number" v-model="consumofijo" class="w-25"></p>
               <p> Capacidad Bateria: <input type="number" v-model="capacidad" class="w-25"></p>
               <p> Capacidad Max trabajo : <input type="number" v-model="capacidadmaxima" class="w-25"></p>
-              <p> Eficacia : <input type="number" v-model="eficacia" class="w-25"></p>
+              <p> Eficacia : <input type="number" v-model="eficacia" class="w-25" step="0.1"></p>
               <p> Autonomia : <input type="number" v-model="dias" class="w-25"></p>
-
+              <button class="btn btn-sm btn-primary" @click="reDraw()">REDIBUJAR</button>
             </div>
 
             <div class="col-9">
@@ -190,7 +190,7 @@
               <p> ENERGIA CONSUMIDA<span> \{{energiaConsumida}} </span></p>
               <p> CONSUMIDA<span> \{{consumoAh}} </span></p>diasSinSol
               <p> DIAS SIN SOL<span> \{{diasSinSol}} </span> </p>
-              <button class="btn btn-sm btn-primary" @click="drawGraph()">REDIBUJAR</button>
+
 
             </div>
           </div>
@@ -988,6 +988,7 @@
   var app4 = new Vue({
     el: "#autonomia",
     data: {
+      myChartjs: null,
       alcance: 2.3,
       visibilidad: 8.172,
       orientacion: 1,
@@ -1014,9 +1015,7 @@
 
     },
     mounted: function () {
-      console.log("dibujando...");
       this.drawGraph();
-
     },
 
     methods: {
@@ -1024,15 +1023,11 @@
         this.edad = parseFloat(this.edad);
       },
       drawGraph: function () {
-        //ctx.remove();
-
         const ctx = document.getElementById('myChart');
-
-        var labels = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Nov', 'Dic'];
-        new Chart(ctx, {
+        this.myChartjs = new Chart(ctx, {
           type: 'bar',
           data: {
-            labels,
+            labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Nov', 'Dic'],
             datasets: [{
               label: 'Consumo',
               data: this.energiaConsumida,
@@ -1081,6 +1076,31 @@
             }
           }
         });
+      },
+      reDraw: function () {
+        this.myChartjs.data = {
+          labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Nov', 'Dic'],
+          datasets: [{
+            label: 'Consumo',
+            data: this.energiaConsumida,
+            backgroundColor: "red"
+          }, {
+            label: 'Fotovoltaico',
+            data: this.energiaGanada,
+            backgroundColor: "green"
+          }, {
+            label: 'Bateria Ah Disponible',
+            data: this.consumoAh,
+            backgroundColor: "blue"
+          }, {
+            label: 'dias autonomia sin sol',
+            data: this.diasSinSol,
+            backgroundColor: "#f7f2bb",
+            yAxisID: "y2"
+          }
+          ]
+        };
+         this.myChartjs.update('none');
       }
     },
     computed: {
@@ -1090,7 +1110,6 @@
       coeficienteradiacion: function () {
         var el = this.radiacion.find((el) => {
           if (el.ciudad == this.zona) {
-            //console.log(el.ciudad)
             return el;
           }
         }
