@@ -260,6 +260,8 @@
                 <option value="T90">90% de los días</option>
                 <option value="T70">70% de los días</option>
               </select> <span>\{{getTA}}</span>
+
+              <p>Transmisividad Atmosferica <input type="number" v-model="Transmisividad" class="w-50"></p>
             </p>
             <p> ES TODO HORIZONTE <select name="horizonte" v-model="horizonte"> //K2prima
                 <option value="" selected>No</option>
@@ -316,7 +318,7 @@
                 <p> F5 (ad): <input type="number" v-model="F5" class="w-50"></p>
                 <p v-if="horizonte"> P (w): <input type="number" v-model="P" class="w-50"></p>
                 <p v-if="horizonte"> V (volt): <input type="number" v-model="V" class="w-50"></p>
-                <p v-if="horizonte"> Tipo Corriente (a/c): <input type="text" v-model="TC" class="w-50"></p>
+                <p v-if="horizonte"> Tipo Corriente (a/c): <input type="text" v-model="Tc" class="w-50"></p>
                 <p v-if="horizonte"> Rc (ohm): <input type="number" v-model="Rc" class="w-50"></p>
                 <p> H (m): <input type="number" v-model="H" class="w-50"></p>
                 <p v-if="horizonte"> f (cm): <input type="number" v-model="f" class="w-50"></p>
@@ -647,6 +649,7 @@
     data: {
       zona: "huelva",
       TA: "TB",
+      Transmisividad: 0.810,
       alcance: 2.3,
       visibilidad: 8.172,
       horizonte: "",
@@ -666,17 +669,12 @@
       apariencia_origen: " GpD(2+4)",
       horizonte: false,
       a2: 914,
-      tita: 34,
+      tita: 30,
       a2_I: 563,
       titaI: 19,
-      h2: 59,
-      h3: 59,
-      h4: 26.5,
+   
 
-      tita1: 31,
-      tita2: 80,
-      tita3: 31,
-      tita4: 62,
+ 
       K: 1,
       Kprima: 1,
       K2prima: 1,
@@ -689,18 +687,26 @@
       c3_I: 0.85,
       a3_II: 1168,
       c3_II: 0.85,
-      L: 650,
+      
       Pf: 0.5,
-      b: 2,
-      f: 37,
+      b: 1.7,
+      L: 89,
+      h2: 30,
+      h3: 21,
+      h4: 11,
+      tita1: 31,
+      tita2: 80,
+      tita3: 31,
+      tita4: 62,
+      f: 25,
       g: 72,
       n: 2,
       T: 30,
-      h: 4,
-      F3: 0.85,
+      h: 1.2,
+      F3: 0.8,
       F4: 1,
-      F5: 3,
-      H: 50,
+      F5: 1,
+      H: 28,
 
       altura_ojo: 4,
       apariencia_limite: " L0.194 Oc3.806 L0.194 Oc3.806 L0.194 Oc11.806",
@@ -723,7 +729,7 @@
         "No cumpl el limite del punto 8 del British Standar 942:1949 (divergencia del haz 1/50 o bien de 1.15º)",
         "Apariencia cualitativa inadaptada a la del Plan de Señales Marítimas 1985-1989",
       ],
-      transmisionesAtmosfericas: [
+      transmisionesAtmosfericasV: [
         { "observatorio": "almeria", "TB": 8.28, "TM": 20.15, "TC": 33.45, "T90": 7.469, "T70": 5.220 },
         { "observatorio": "alicante", "TB": 13.80, "TM": 23.21, "TC": 36.89, "T90": 8.172, "T70": 5.775 },
         { "observatorio": "barcelona", "TB": 3.14, "TM": 11.80, "TC": 50.74, "T90": 8.172, "T70": 5.775 },
@@ -742,7 +748,28 @@
         { "observatorio": "fuerteventura", "TB": 12.10, "TM": 19.68, "TC": 31.15, "T90": 11.699, "T70": 8.549 },
         { "observatorio": "huelva", "TB": 4.08, "TM": 10.35, "TC": 14.11, "T90": 7.469, "T70": 5.22 },
         { "observatorio": "valencia", "TB": 4.26, "TM": 10.77, "TC": 25.65, "T90": 8.172, "T70": 5.775 },
-
+        { "observatorio": "prueba", "TB": 28, "TM": 15, "TC": 45, "T90": 7, "T70": 5 },
+      ],
+      transmisionesAtmosfericasT: [
+      //TODO: por añadir las transmisividaddes
+        { "observatorio": "almeria", "TB": 0.663, "TM": 20.15, "TC": 33.45, "T90": 7.469, "T70": 5.220 },
+        { "observatorio": "alicante", "TB": 13.80, "TM": 23.21, "TC": 36.89, "T90": 8.172, "T70": 5.775 },
+        { "observatorio": "barcelona", "TB": 3.14, "TM": 11.80, "TC": 50.74, "T90": 8.172, "T70": 5.775 },
+        { "observatorio": "sebastian", "TB": 4.16, "TM": 19.29, "TC": 36.27, "T90": 3.888, "T70": 6.246 },
+        { "observatorio": "santander", "TB": 2.95, "TM": 8.11, "TC": 22.28, "T90": 3.888, "T70": 6.246 },
+        { "observatorio": "coruna", "TB": 5.63, "TM": 12.21, "TC": 20.78, "T90": 3.888, "T70": 6.246 },
+        { "observatorio": "vigo", "TB": 5.43, "TM": 18.66, "TC": 22.77, "T90": 3.888, "T70": 6.246 },
+        { "observatorio": "cadiz", "TB": 15.7, "TM": 21.28, "TC": 25.90, "T90": 7.469, "T70": 5.220 },
+        { "observatorio": "ceuta", "TB": 7.86, "TM": 20.94, "TC": 31.66, "T90": 5.760, "T70": 3.780 },
+        { "observatorio": "malaga", "TB": 5.98, "TM": 17.74, "TC": 28.43, "T90": 7.469, "T70": 5.220 },
+        { "observatorio": "mahon", "TB": 8.39, "TM": 17.89, "TC": 32.65, "T90": 8.172, "T70": 5.775 },
+        { "observatorio": "mallorca", "TB": 10.65, "TM": 20.52, "TC": 31.42, "T90": 8.172, "T70": 5.775 },
+        { "observatorio": "ibiza", "TB": 12.01, "TM": 25.44, "TC": 39.09, "T90": 8.172, "T70": 5.775 },
+        { "observatorio": "tenerife", "TB": 20.13, "TM": 24.99, "TC": 39.33, "T90": 11.699, "T70": 8.549 },
+        { "observatorio": "palmas", "TB": 8.48, "TM": 21.91, "TC": 41.12, "T90": 11.699, "T70": 8.549 },
+        { "observatorio": "fuerteventura", "TB": 12.10, "TM": 19.68, "TC": 31.15, "T90": 11.699, "T70": 8.549 },
+        { "observatorio": "huelva", "TB": 4.08, "TM": 10.35, "TC": 14.11, "T90": 7.469, "T70": 5.22 },
+        { "observatorio": "valencia", "TB": 4.26, "TM": 10.77, "TC": 25.65, "T90": 8.172, "T70": 5.775 },
         { "observatorio": "prueba", "TB": 28, "TM": 15, "TC": 45, "T90": 7, "T70": 5 },
       ],
     },
@@ -801,7 +828,7 @@
         return min;
       },
       obtenerTA: function (observatorio, TA) {
-        var item = this.transmisionesAtmosfericas.find((element) => element.observatorio == observatorio);
+        var item = this.transmisionesAtmosfericasV.find((element) => element.observatorio == observatorio);
         switch (TA) {
           case 'TB':
             return item.TB;
@@ -834,17 +861,24 @@
         }
       },
       c2_I: function () {
-        //TODO:
-        return (0.74);
-      },
-      K2: function () {
-        //Si angulo>30 y=−0.01167x+1.0851
+        //TODO: SOLO AÑADO UN +0.2
+                //Si angulo>30 y=−0.01167x+1.0851
         if (this.tita >= 30) {
           return (-0.01167 * this.tita + 1.0851).toFixed(4);
         } else if (this.tita >= 20) {
           return (-0.0075 * this.tita + 0.96).toFixed(4);
         } else {
-          return ((-1 / 200 * this.tita ** 2 + 13 / 10 * this.tita + 0.888) / (1000)).toFixed(4);
+          return ((-1 / 200 * this.tita ** 2 + 13 / 10 * this.tita + 0.888) / (1000)).toFixed(4)+0.2;
+        }
+      },
+      K2: function () {
+        // (0, 888) (10,875) (20,835) (30,765)  (40,670) (45,615)  )   (0, 888) (10,875) (30,765)
+        //Si angulo <30 y=−0.14x 2 +0.1x+888
+        //Si angulo>30  y=−10x+1065    (30,765) (45,615)
+        if (this.tita > 30) {
+          return ((-10 * this.tita + 1065)/1000).toFixed(4);
+        } else {
+          return ((-0.14 * this.tita ** 2 + 0.1 * this.tita + 888) / (1000)).toFixed(4);
         }
       },
       // f(90,60)=200 f(80,73)=200
