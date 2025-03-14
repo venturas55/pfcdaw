@@ -26,8 +26,9 @@
                   <option value="6.839">Sevilla</option>
                   <option value="5.76">Ceuta</option>
                   <option value="11.699">Canarias</option>
+                  <option value="10">Nominal</option>
                 </select>
-                Visibilidad= <span>\{{visibilidad}}</span>
+                Visibilidad= <span>\{{visibilidad}}</span>  Transmisividad <span> \{{transmisividad | redondeo2}}</span>
               </p>
 
               <p> FUENTE AZUL: <select name="azul" v-model="azul">
@@ -261,7 +262,7 @@
                 <option value="T70">70% de los días</option>
               </select> <span>\{{getTA}}</span>
 
-              <p>Transmisividad Atmosferica <input type="number" v-model="Transmisividad" class="w-50"></p>
+            <p>Transmisividad Atmosferica <input type="number" v-model="Transmisividad" class="w-50"></p>
             </p>
             <p> ES TODO HORIZONTE <select name="horizonte" v-model="horizonte"> //K2prima
                 <option value="" selected>No</option>
@@ -471,6 +472,8 @@
                 break;
               case 11.699:
                 this.visibilidad = 8.549;
+              case 10:
+                this.visibilidad = 7.4; //TODO:
                 break;
 
             }
@@ -492,6 +495,11 @@
       },
     },
     computed: {
+      transmisividad:function (){
+        let valor=Math.pow(0.05,(1/this.visibilidad));
+        console.log(valor);
+        return  valor;
+      },
       umbral: function () {
         switch (this.tipo) {
           case "Nocturna":
@@ -672,9 +680,9 @@
       tita: 30,
       a2_I: 563,
       titaI: 19,
-   
 
- 
+
+
       K: 1,
       Kprima: 1,
       K2prima: 1,
@@ -687,7 +695,7 @@
       c3_I: 0.85,
       a3_II: 1168,
       c3_II: 0.85,
-      
+
       Pf: 0.5,
       b: 1.7,
       L: 89,
@@ -751,7 +759,7 @@
         { "observatorio": "prueba", "TB": 28, "TM": 15, "TC": 45, "T90": 7, "T70": 5 },
       ],
       transmisionesAtmosfericasT: [
-      //TODO: por añadir las transmisividaddes
+        //TODO: por añadir las transmisividaddes
         { "observatorio": "almeria", "TB": 0.663, "TM": 20.15, "TC": 33.45, "T90": 7.469, "T70": 5.220 },
         { "observatorio": "alicante", "TB": 13.80, "TM": 23.21, "TC": 36.89, "T90": 8.172, "T70": 5.775 },
         { "observatorio": "barcelona", "TB": 3.14, "TM": 11.80, "TC": 50.74, "T90": 8.172, "T70": 5.775 },
@@ -862,13 +870,13 @@
       },
       c2_I: function () {
         //TODO: SOLO AÑADO UN +0.2
-                //Si angulo>30 y=−0.01167x+1.0851
+        //Si angulo>30 y=−0.01167x+1.0851
         if (this.tita >= 30) {
           return (-0.01167 * this.tita + 1.0851).toFixed(4);
         } else if (this.tita >= 20) {
           return (-0.0075 * this.tita + 0.96).toFixed(4);
         } else {
-          return ((-1 / 200 * this.tita ** 2 + 13 / 10 * this.tita + 0.888) / (1000)).toFixed(4)+0.2;
+          return ((-1 / 200 * this.tita ** 2 + 13 / 10 * this.tita + 0.888) / (1000)).toFixed(4) + 0.2;
         }
       },
       K2: function () {
@@ -876,7 +884,7 @@
         //Si angulo <30 y=−0.14x 2 +0.1x+888
         //Si angulo>30  y=−10x+1065    (30,765) (45,615)
         if (this.tita > 30) {
-          return ((-10 * this.tita + 1065)/1000).toFixed(4);
+          return ((-10 * this.tita + 1065) / 1000).toFixed(4);
         } else {
           return ((-0.14 * this.tita ** 2 + 0.1 * this.tita + 888) / (1000)).toFixed(4);
         }
@@ -1134,7 +1142,7 @@
           }
           ]
         };
-         this.myChartjs.update('none');
+        this.myChartjs.update('none');
       }
     },
     computed: {
