@@ -684,6 +684,17 @@ router.get("/pintado/:nif", funciones.isAuthenticated, funciones.hasSanPrivilege
         res.redirect("/aton/plantilla/" + nif);
     }
 });
+// Ruta vista pintados list
+router.get('/pintadas/list', funciones.isAuthenticated, async(req, res) => {
+    try {
+        const pintados = await db.query('select * from mantenimiento where mantenimiento like "%pinta%" order by fecha desc');
+        res.render('aton/pintadoList', {item:pintados });
+    } catch (error) {
+        console.error(error);
+        req.flash("error", "Hubo algun error al intentar mostrar los tickets: " + error);
+        res.redirect("/");
+    }
+});
 router.get("/activar/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     try {
         const { nif } = req.params;
