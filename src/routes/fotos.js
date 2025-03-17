@@ -155,6 +155,7 @@ router.get("/aton/fotos/backup/unzip/:nombre", funciones.isAuthenticated, funcio
         res.redirect('/backupsfotos');
     });
 });
+//Elimina todas las carpetas que tengan un nombre que no corresponda a ninguna baliza
 router.get("/aton/fotos/clean/folders", funciones.isAdmin, async function (req, res) {
     let balizas = await db.query("select nif from balizamiento");
     balizas = balizas.map(function (item) { return item.nif });
@@ -168,7 +169,7 @@ router.get("/aton/fotos/clean/folders", funciones.isAdmin, async function (req, 
             fs.rmSync(join(source, item), { recursive: true, force: true });
         }
     });
-    insertarLog(req.user.usuario, "Limpieza carpeta fotos AtoNs ");
+    funciones.insertarLog(req.user.usuario, "Limpieza carpeta fotos AtoNs ");
     req.flash("success", "Directorios de fotos limpiado correctamente");
     res.redirect('/backupsfotos');
 });
@@ -197,7 +198,7 @@ router.post('/upload/:id', funciones.isAuthenticated, uploadFoto, async (req, re
     //Ponemos la nueva
     usuario.pictureURL = req.file.filename;
     await db.query("UPDATE usuarios set  ? WHERE id=?", [usuario, id]);
-    insertarLog(req.user.usuario, "UPDATE fotografia perfil", "");
+    funciones.insertarLog(req.user.usuario, "UPDATE fotografia perfil", "");
     req.flash("success", "Foto de perfil actualizada con exito");
     res.redirect("/profile");
 });

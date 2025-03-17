@@ -1,1 +1,0 @@
- alter table usuarios add column prefmap varchar(10) default 'Leaflet'; 

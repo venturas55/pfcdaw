@@ -33,7 +33,7 @@ router.get('/noperm', (req, res) => {
 });
 
 //MOSTRAR PRUEBA
-router.get("/pruebas/:filename", funciones.isAdmin, (req, res) => {
+router.get("/runSQLfile/:filename", funciones.isAdmin, (req, res) => {
     let filename = req.params.filename+".sql";
     console.log("Ejecutando prueba");
     try {
@@ -61,22 +61,6 @@ router.post("/pruebaPost", funciones.isAdmin, async (req, res) => {
         res.redirect("/noperm");
     }
 
-});
-
-router.get("/pruebas2", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
-    try {
-        var baliza = await db.query("SELECT * FROM localizacion", [nif]);
-        for (var i = 0; i < baliza.length; i++) {
-            var punto = getPointfromLatLng(baliza[i].latitud, baliza[i].longitud);
-            await db.query("UPDATE localizacion set coordenadas= point(?,?) WHERE nif = ?", [punto.lat, punto.lng, baliza[i].nif]);
-        }
-        req.flash("success", "Comando ejecutado correctamente");
-        res.redirect("/");
-    } catch (error) {
-        console.error(error);
-        req.flash("error", "Hubo algun error al ejecutar el comando");
-        res.redirect("/error");
-    }
 });
 
 export default router;
