@@ -4,6 +4,7 @@ let centerLatLng = centrar();
 //console.log(centerLatLng);
 let posicionInicial = { lat: 1, lng: 1 };
 let map;
+let pinMarkers = [];
 
 fetchData()?.then((balizas) => {
   map = L.map('myMap').setView(centerLatLng, presetZoom);
@@ -19,7 +20,7 @@ fetchData()?.then((balizas) => {
 
 
   var marker = new L.marker([39.435, -0.29], { opacity: 0.01 }); //opacity may be set to zero 
-  marker.bindTooltip("Darsena Norte", {permanent: true, className: "my-label", offset: [0, 0] });
+  marker.bindTooltip("Darsena Norte", { permanent: true, className: "my-label", offset: [0, 0] });
   marker.addTo(map);
 
 
@@ -30,8 +31,8 @@ fetchData()?.then((balizas) => {
       iconUrl: myurl + '/img/icon/' + getTipo(item) + '.png',
       iconSize: [20, 40],
     }
-    if(item.apagada)
-      customIcon.className="apagada";
+    if (item.apagada)
+      customIcon.className = "apagada";
     let myIcon = L.icon(customIcon);
     let iconOptions = {
       title: item.tipo,
@@ -105,16 +106,13 @@ fetchData()?.then((balizas) => {
 
 var popup = L.popup();
 
-function drawPin() {
-  console.log("Drawing pin");
-  console.log(map);
-
+function drawPin(latlang,title) {
   let iconOptions = {
-    title: "Nuevo punto de estudio",
+    title,
     draggable: true,
   }
-
-  let marker = new L.Marker({ "lat": document.getElementById("latmarker").value, "lng": document.getElementById("lngmarker").value }, iconOptions);
+  //let marker = new L.Marker({ "lat": document.getElementById("latmarker").value, "lng": document.getElementById("lngmarker").value }, iconOptions);
+  let marker = new L.Marker(latlang, iconOptions);
   /*   marker.on('dragstart', function (event) {
       console.log(posicionInicial);
       posicionInicial = event.target.getLatLng();
@@ -125,12 +123,30 @@ function drawPin() {
     var position = thismarker.getLatLng();
     thismarker.setLatLng(new L.LatLng(position.lat, position.lng), { draggable: 'true' });
     map.panTo(new L.LatLng(position.lat, position.lng));
-    console.log(position);
+    //console.log(position);
     document.getElementById("latmarker").value = position.lat;
     document.getElementById("lngmarker").value = position.lng;
   });
+  pinMarkers.push(marker);
   marker.addTo(map);
   map.panTo(new L.LatLng(document.getElementById("latmarker").value, document.getElementById("lngmarker").value));
+}
+function drawThisPin(){
+  console.log("Dibujando");
+  drawPin({ "lat": document.getElementById("latmarker").value, "lng": document.getElementById("lngmarker").value }, "Un Pin");
+}
+
+function clearAll() {
+  console.log(pinMarkers);
+  for (let i = 0; i < pinMarkers.length; i++)
+    map.removeLayer(pinMarkers[i]);
+  pinMarkers = [];
+}
+
+function clearLast() {
+  console.log(pinMarkers, pinMarkers[pinMarkers.length - 1]);
+  map.removeLayer(pinMarkers[pinMarkers.length - 1]);
+  pinMarkers.pop();
 }
 
 function onMapClick(e) {
@@ -148,17 +164,21 @@ let firstLatLng, secondLatLng, secondClick = false;
 function onMapDistance(e) {
   if (secondClick) {
     secondLatLng = e.latlng;
-    L.marker(secondLatLng).addTo(map).bindPopup('Point B<br/>' + e.latlng).openPopup();
-     // Dibujamos una línea entre los dos puntos
-     L.polyline([firstLatLng, secondLatLng], {
+    //L.marker(secondLatLng).addTo(map).bindPopup('Point B<br/>' + e.latlng).openPopup();
+    drawPin(secondLatLng,"Punto B")
+    // Dibujamos una línea entre los dos puntos
+    let pl= L.polyline([firstLatLng, secondLatLng], {
       color: 'red'
-    }).addTo(map);
+    });
+    pl.addTo(map);
+    pinMarkers.push(pl);
     medirDistancia();
-    secondClick=false;
+    secondClick = false;
   } else {
     firstLatLng = e.latlng;
-    L.marker(firstLatLng).addTo(map).bindPopup('Point A<br/>' + e.latlng).openPopup();
-    secondClick=true;
+    //L.marker(firstLatLng).addTo(map).bindPopup('Point A<br/>' + e.latlng).openPopup();
+    drawPin(firstLatLng,"Punto A");
+    secondClick = true;
   }
 }
 function medirDistancia() {
@@ -168,12 +188,12 @@ function medirDistancia() {
   console.log(L.polyline);
 }
 
-function actualizarCoordenadaWGS2DEC(){
-  var latWGS=document.getElementById("latmarkerWGS").value;
-  var lngWGS=document.getElementById("lngmarkerWGS").value;
-  var lat=document.getElementById("latmarker");
-  var lng=document.getElementById("lngmarker");
-  var punto=setMarkerLatLng(latWGS, lngWGS);
+function actualizarCoordenadaWGS2DEC() {
+  var latWGS = document.getElementById("latmarkerWGS").value;
+  var lngWGS = document.getElementById("lngmarkerWGS").value;
+  var lat = document.getElementById("latmarker");
+  var lng = document.getElementById("lngmarker");
+  var punto = setMarkerLatLng(latWGS, lngWGS);
   //console.log(punto.lat);
 
   lat.value = punto.lat;
