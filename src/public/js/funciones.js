@@ -14,7 +14,7 @@ console.log("Direccion: ", direccion)
 console.log("puerto: ", puerto)
 console.log("cabecera: ", cabecera)
 
-let myurl = "http://" + direccion;
+let myurl = "https://" + direccion;
 console.log("URL: ", myurl);
 //console.log("PROTOCOLO: ",protocolo);
 //FUNCION PARA CERRAR MODALES
