@@ -1199,16 +1199,14 @@
         var valores = [];
         var capacidadAnterior = this.capacidad;
         valores.push(capacidadAnterior);
-        for (var i = 0; i < 12; i++) {
+        for (var i = 0; i < 11; i++) {
           capacidadAnterior = capacidadAnterior + this.energiaGanada[i] / this.eficacia - this.energiaConsumida[i];
           //console.log(capacidadAnterior)
           if (capacidadAnterior > this.capacidad * this.capacidadmaxima / 100)
             capacidadAnterior = this.capacidad * this.capacidadmaxima / 100;
           else if (capacidadAnterior < 0)
             capacidadAnterior = 0;
-
-
-          valores.push(capacidadAnterior)
+          valores.push(parseFloat(capacidadAnterior.toFixed(2)));
         }
         return valores;
       },
