@@ -19,6 +19,34 @@ router.get('/api/balizas', async (req, res) => {
     res.send(balizas);
 });
 
+router.get('/api/aton/boyas', async (req, res) => {
+    const balizas = await db.query(queryListadoAton + " where b.esBoya=1");
+    for (var i = 0; i < balizas.length; i++) {
+        var archivos = await funciones.getUrlPictureAtoN(balizas[i].nif);
+        var fondeo = await db.query("select * from fondeos where nif=?",balizas[i].nif)
+        balizas[i].fondeo=fondeo;
+        if (archivos)
+            balizas[i].pictureUrl = archivos;
+        else
+            balizas[i].pictureUrl = ["N/A"];
+    }
+    res.send(balizas);
+});
+
+router.get('/api/aton/balizas', async (req, res) => {
+    const balizas = await db.query(queryListadoAton + " where b.esBoya=0");
+    for (var i = 0; i < balizas.length; i++) {
+        var archivos = await funciones.getUrlPictureAtoN(balizas[i].nif);
+        if (archivos)
+            balizas[i].pictureUrl = archivos;
+        else
+            balizas[i].pictureUrl = ["N/A"];
+    }
+    res.send(balizas);
+});
+
+
+
 //Devuelve las caracteristicas de la baliza introducida 
 router.get('/api/baliza/:nif', async (req, res) => {
     const { nif } = req.params;
