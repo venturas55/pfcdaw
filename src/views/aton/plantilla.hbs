@@ -294,10 +294,12 @@
             </table>
         </div>
     </div>
+
+    {{#if baliza.esBoya}}
     <div class="row mx-1  mt-2" id="datos_fondeo">
         <div class="col-sm-12">
-
             <h1 class="text-center"> DATOS DEL FONDEO </h1>
+             {{#if fondeo}}
             <table class="table table-dark table-hover">
                 {{!-- <tr>
                     <th>NIF</th>
@@ -341,8 +343,16 @@
                     href="/aton/editFondeo/{{baliza.nif}}">ACTUALIZAR
                     FONDEO </a>
             </div>
+             {{else}}
+            <div class="input-group">
+                <a class="btn btn-outline-primary btn-xs btn-block mx-auto mb-2"
+                    href="/aton/editFondeo/{{baliza.nif}}">INTRODUCIR
+                    FONDEO </a>
+            </div>
+            {{/if}}
         </div>
     </div>
+    {{/if}}
 
     <div class="row mx-1 mb-5">
         <div class="col-sm-12">
