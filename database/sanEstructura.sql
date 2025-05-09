@@ -21,8 +21,9 @@ CREATE TABLE IF NOT EXISTS `balizamiento` (
   `apariencia` varchar(50) DEFAULT NULL,
   `periodo` decimal(5, 2) DEFAULT NULL,
   `caracteristica` varchar(50) DEFAULT NULL,
-  `necesita_pintado` tinyint(1) DEFAULT 0, //TODO:
+  `necesita_pintado` tinyint(1) DEFAULT 0,
   `apagada` tinyint(1) DEFAULT 0,
+  `esBoya` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`nif`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'tabla de balizas';
 
@@ -65,6 +66,24 @@ CREATE TABLE IF NOT EXISTS `observaciones` (
   PRIMARY KEY (`id_observacion`),
   KEY `observaciones_FK` (`nif`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 188 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'tabla de observaciones del balizamiento';
+
+CREATE TABLE IF NOT EXISTS `fondeos` (
+  `nif` varchar(8) NOT NULL,
+  `calado` decimal(5, 2) UNSIGNED DEFAULT NULL,
+  `longitud_cadena` decimal(5, 2) UNSIGNED DEFAULT NULL,
+  `ubicacion` ENUM('exterior', 'intermedio', 'interior') default 'interior',
+  `h_muerto` smallint unsigned DEFAULT NULL,
+  `b_muerto` smallint unsigned DEFAULT NULL,
+  `l_muerto` smallint unsigned DEFAULT NULL,
+  `diametro_cadena` TINYINT unsigned DEFAULT NULL,
+  `area_total_viva` decimal(5, 3) UNSIGNED DEFAULT NULL,
+  `Cw_aerodinamico` decimal(5, 4) UNSIGNED DEFAULT NULL,
+  `area_total_muerta` decimal(5, 3) UNSIGNED DEFAULT NULL,
+  `Cd_aerodinamico` decimal(5, 4) UNSIGNED DEFAULT NULL,
+  `observaciones` varchar(250) default null,
+  `last_modified` DATETIME NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  FOREIGN KEY (nif) REFERENCES balizamiento(nif) ON DELETE CASCADE
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = 'tabla de fondeos';
 
 /*FIN ATON*/
 /* INVENTARIO */
@@ -145,89 +164,26 @@ CREATE TABLE `tokens` (
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = 'tabla de tokens';
 
 DROP TABLE IF EXISTS preventivos;
+
 CREATE TABLE IF NOT EXISTS `preventivos` (
   `preventivo_id` int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `nif` varchar(8) DEFAULT NULL,
-  `estructura_estado` ENUM(
-    'ok',
-    'ko',
-    'na'
-  ) default null,
-  `estructura_marca_tope` ENUM(
-    'ok',
-    'ko',
-    'na'
-  )  default null,
-  `estructura_engrase` ENUM(
-    'ok',
-    'ko',
-    'na'
-  )  default null,
-  `estructura_golpes` ENUM(
-    'ok',
-    'ko',
-    'na'
-  )  default null,
-  `estructura_flotador` ENUM(
-    'ok',
-    'ko',
-    'na'
-  )  default null,
-  `estructura_limpieza_interior` ENUM(
-    'ok',
-    'ko',
-    'na'
-  )  default null,
-  `estructura_limpieza_exterior` ENUM(
-    'ok',
-    'ko',
-    'na'
-  )  default null,
-  `estructura_cuadro_interior` ENUM(
-    'ok',
-    'ko',
-    'na'
-  )  default null,
-  `estructura_cuadro_exterior` ENUM(
-    'ok',
-    'ko',
-    'na'
-  )  default null,
-  `linterna_ldr1` ENUM(
-    'ok',
-    'ko',
-    'na'
-  )  default null,
-  `linterna_ldr2` ENUM(
-    'ok',
-    'ko',
-    'na'
-  )  default null,
-  `linterna_optica` ENUM(
-    'ok',
-    'ko',
-    'na'
-  )  default null,
-  `linterna_estanqueidad_tornillos` ENUM(
-    'ok',
-    'ko',
-    'na'
-  )  default null,
-  `linterna_estanqueidad_humedades` ENUM(
-    'ok',
-    'ko',
-    'na'
-  )  default null,
-  `telecontrol_monitoreo` ENUM(
-    'ok',
-    'ko',
-    'na'
-  )  default null,
-  `telecontrol_gps` ENUM(
-    'ok',
-    'ko',
-    'na'
-  )  default null,
+  `estructura_estado` ENUM('ok', 'ko', 'na') default null,
+  `estructura_marca_tope` ENUM('ok', 'ko', 'na') default null,
+  `estructura_engrase` ENUM('ok', 'ko', 'na') default null,
+  `estructura_golpes` ENUM('ok', 'ko', 'na') default null,
+  `estructura_flotador` ENUM('ok', 'ko', 'na') default null,
+  `estructura_limpieza_interior` ENUM('ok', 'ko', 'na') default null,
+  `estructura_limpieza_exterior` ENUM('ok', 'ko', 'na') default null,
+  `estructura_cuadro_interior` ENUM('ok', 'ko', 'na') default null,
+  `estructura_cuadro_exterior` ENUM('ok', 'ko', 'na') default null,
+  `linterna_ldr1` ENUM('ok', 'ko', 'na') default null,
+  `linterna_ldr2` ENUM('ok', 'ko', 'na') default null,
+  `linterna_optica` ENUM('ok', 'ko', 'na') default null,
+  `linterna_estanqueidad_tornillos` ENUM('ok', 'ko', 'na') default null,
+  `linterna_estanqueidad_humedades` ENUM('ok', 'ko', 'na') default null,
+  `telecontrol_monitoreo` ENUM('ok', 'ko', 'na') default null,
+  `telecontrol_gps` ENUM('ok', 'ko', 'na') default null,
   `telecontrol_tipo` ENUM(
     'Radio-Moscad',
     'radioUHF',
@@ -235,33 +191,13 @@ CREATE TABLE IF NOT EXISTS `preventivos` (
     'GSM',
     'Satelital'
   ) default null,
-  `alimentacion_panelFV` ENUM(
-    'ok',
-    'ko',
-    'na'
-  )  default null,
-  `alimentacion_red` ENUM(
-    'ok',
-    'ko',
-    'na'
-  )  default null,
-  `alimentacion_baterias` ENUM(
-    'ok',
-    'ko',
-    'na'
-  )  default null,
+  `alimentacion_panelFV` ENUM('ok', 'ko', 'na') default null,
+  `alimentacion_red` ENUM('ok', 'ko', 'na') default null,
+  `alimentacion_baterias` ENUM('ok', 'ko', 'na') default null,
   `alimentacion_ah` int default null,
   `alimentacion_vcc` float default null,
-  `alimentacion_grupo` ENUM(
-    'ok',
-    'ko',
-    'na'
-  )  default null,
-  `alimentacion_cableado` ENUM(
-    'ok',
-    'ko',
-    'na'
-  )  default null,
+  `alimentacion_grupo` ENUM('ok', 'ko', 'na') default null,
+  `alimentacion_cableado` ENUM('ok', 'ko', 'na') default null,
   `estructura_observaciones` varchar(250) default null,
   `linterna_observaciones` varchar(250) default null,
   `telecontrol_observaciones` varchar(250) default null,
