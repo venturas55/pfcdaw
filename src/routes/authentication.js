@@ -45,10 +45,11 @@ router.get('/profile/email/recordarpass/', async (req, res) => {
     res.render('auth/recoverypass');
 });
 router.post('/profile/email/recordarpass/', async (req, res) => { //:email
-   
-   var transporter;
-    if (config.EMAIL_PASS) {
-         transporter = createTransport({
+
+    var transporter;
+    //console.log("EMAIL_AUTH_NEEDED: " + config.EMAIL_AUTH_NEEDED);
+    if (config.EMAIL_AUTH_NEEDED) {
+        transporter = createTransport({
             //service: config.EMAIL_SERVICE,
             host: config.EMAIL_HOST,
             port: config.EMAIL_PORT,
@@ -58,12 +59,12 @@ router.post('/profile/email/recordarpass/', async (req, res) => { //:email
                 pass: config.EMAIL_PASS,
             },
             secureConnection: false, // TLS requires secureConnection to be false
-            tls: {
-                ciphers: 'SSLv3'
-            }
+            /*   tls: {
+                  ciphers: 'SSLv3'
+              } */
         });
     } else {
-         transporter = createTransport({
+        transporter = createTransport({
             //service: config.EMAIL_SERVICE,
             host: config.EMAIL_HOST,
             port: config.EMAIL_PORT,
@@ -82,13 +83,13 @@ router.post('/profile/email/recordarpass/', async (req, res) => { //:email
 
     const email = req.body.email;
     const usuario = req.body.usuario;
-    var rows = await db.query("SELECT * FROM usuarios WHERE usuario = ? AND email= ?", [usuario,email]);
+    var rows = await db.query("SELECT * FROM usuarios WHERE usuario = ? AND email= ?", [usuario, email]);
     if (rows.length > 0) {
         var user = rows[0];
         const user_id = user.id;
         var token = funciones.getCode();
         const hash = await funciones.encryptPass(token);
-        console.log(hash);
+        //console.log(hash);
         var hasAnyToken = await db.query("SELECT * FROM tokens WHERE user_id=?", [user_id]);
         if (hasAnyToken.length > 0) {
             rows = await db.query("UPDATE tokens set hashedtoken=? , expires =NOW()+ interval 5 minute where user_id=?", [hash, user_id,]);
@@ -96,7 +97,7 @@ router.post('/profile/email/recordarpass/', async (req, res) => { //:email
             rows = await db.query("INSERT INTO tokens (user_id,hashedtoken, expires) VALUES (?,?, NOW()+ interval 5 minute)", [user_id, hash]);
         }
         //var exito = await helpers.sendRecoveryMail(email,token); NOFUNCIONA 
-        console.log(email + " " + token);
+        //console.log(email + " " + token);
         var mailOptions = {
             from: "BBDD SAN",
             to: email,
