@@ -4,7 +4,7 @@ import { join } from 'path';
 import db from "../database.js"; //db hace referencia a la BBDD
 import funciones from "../lib/funciones.js";
 import { promises as fs } from 'fs';
-const queryListadoAton = "SELECT lo.coordenadas,b.nif,b.num_internacional,b.tipo,b.apariencia,b.periodo,b.caracteristica,b.telecontrol,b.necesita_pintado,b.apagada,lo.puerto,lo.num_local,lo.localizacion,lo.latitud,lo.longitud,la.altura,la.elevacion,la.alcanceNom,la.linterna,la.candelasCalc,la.alcanceLum,la.candelasInst FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif";
+const queryListadoAton = "SELECT lo.coordenadas,b.nif,b.num_internacional,b.tipo,b.apariencia,b.periodo,b.caracteristica,b.telecontrol,b.necesita_pintado,b.apagada,b.esBoya,lo.puerto,lo.num_local,lo.localizacion,lo.latitud,lo.longitud,la.altura,la.elevacion,la.alcanceNom,la.linterna,la.candelasCalc,la.alcanceLum,la.candelasInst FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif";
 const queryListadoTicketsUsers = "SELECT t.ticket_id,t.nif,t.created_by_id,t.assigned_to_id,t.resolved_by_id,t.titulo,t.descripcion,t.solved_at,t.created_at,u1.usuario as created_by,u2.usuario as assigned_to,u3.usuario as resolved_by FROM tickets t LEFT JOIN usuarios u1 ON t.created_by_id=u1.id  LEFT JOIN usuarios u2 ON t.assigned_to_id=u2.id LEFT JOIN usuarios u3 ON t.resolved_by_id=u3.id ";
 const queryListadoPreventivosUsers = 'SELECT p.preventivo_id,p.nif,p.estructura_estado,p.estructura_marca_tope,p.estructura_engrase,p.estructura_golpes,p.estructura_limpieza_interior,p.estructura_limpieza_exterior,p.estructura_cuadro_interior,p.estructura_cuadro_exterior,p.estructura_observaciones,p.linterna_ldr1,p.linterna_ldr2,p.linterna_optica,p.linterna_estanqueidad_tornillos,p.linterna_estanqueidad_humedades,p.linterna_observaciones,p.telecontrol_monitoreo,p.telecontrol_gps,p.telecontrol_tipo,p.telecontrol_observaciones,p.alimentacion_panelFV,p.alimentacion_red,p.alimentacion_baterias,p.alimentacion_ah,p.alimentacion_vcc,p.alimentacion_grupo,p.alimentacion_cableado,p.alimentacion_observaciones,p.observaciones_generales,p.created_at,p.solved_at,p.created_by_id,u1.usuario as created_by FROM preventivos p LEFT JOIN usuarios u1 ON p.created_by_id=u1.id ';
 import * as url from "url";
@@ -95,6 +95,7 @@ router.get("/add", funciones.isAuthenticated, funciones.hasSanPrivileges, (req, 
     res.render("aton/add");
 });
 router.post("/add", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
+    console.log(req.body);
     const {
         nif,
         num_internacional,
@@ -114,7 +115,8 @@ router.post("/add", funciones.isAuthenticated, funciones.hasSanPrivileges, async
         alcanceNom,
         alcanceLum,
         candelasCalc,
-        candelasInst
+        candelasInst,
+        esBoya
     } = req.body;
     const newBalizamiento = {
         nif,
@@ -124,7 +126,7 @@ router.post("/add", funciones.isAuthenticated, funciones.hasSanPrivileges, async
         apariencia,
         periodo,
         caracteristica,
-
+        esBoya,
     };
     const newBalizamientoLocalizacion = {
         nif,
@@ -250,9 +252,12 @@ router.get("/plantilla/:nif", async (req, res) => {
         const tickets = await db.query(queryListadoTicketsUsers + 'where t.nif=? and solved_at is null', [nif]);
         const preventivos = await db.query(queryListadoPreventivosUsers + 'where p.nif=? ', [nif]);
         var fotos = funciones.listadoFotos(nif);
-        res.render("aton/plantilla", { layout: 'layoutPlantilla', baliza: baliza[0], obs: observaciones, mant: mantenimiento, fotos, tickets, preventivos });
+        console.log("Es boya??", baliza[0]);
+        if (baliza[0].esBoya)
+            var [fondeo] = await db.query('select * from fondeos where nif=?', [nif]);
+        res.render("aton/plantilla", { layout: 'layoutPlantilla', baliza: baliza[0], obs: observaciones, mant: mantenimiento, fotos, tickets, preventivos, fondeo });
     } else {
-        req.flash("warning", "La baliza indicada con nif " + nif + " no existe!!");
+        req.flash("warning", "La señal indicada con nif " + nif + " no existe!!");
         res.redirect("/error");
     }
 });
@@ -289,6 +294,16 @@ router.get("/editLampara/:nif", funciones.isAuthenticated, funciones.hasSanPrivi
     }
     res.render("aton/editLampara", { baliza });
 });
+router.get("/editFondeo/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
+    const { nif } = req.params;
+    var baliza = await db.query("SELECT * FROM fondeos WHERE nif=?", [nif]);
+    if (baliza[0] == null || baliza[0] == undefined) {
+        baliza = { nif };
+    } else {
+        baliza = baliza[0];
+    }
+    res.render("aton/editFondeo", { baliza });
+});
 router.post("/editCaracteristicas/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     const nifviejo = req.params.nif;
     console.log("nif viejo: ", nifviejo)
@@ -300,6 +315,7 @@ router.post("/editCaracteristicas/:nif", funciones.isAuthenticated, funciones.ha
         apariencia,
         periodo,
         caracteristica,
+        esBoya,
     } = req.body;
     periodo = parseInt(periodo);
     const newBaliza = {
@@ -310,8 +326,9 @@ router.post("/editCaracteristicas/:nif", funciones.isAuthenticated, funciones.ha
         apariencia,
         periodo,
         caracteristica,
+        esBoya,
     };
-
+    console.log(newBaliza);
     try {
         await db.query("UPDATE balizamiento set ? WHERE nif = ?", [
             newBaliza,
@@ -358,7 +375,11 @@ router.post("/editCaracteristicas/:nif", funciones.isAuthenticated, funciones.ha
 
     } catch (error) {
         console.error(error);
-        req.flash("error", "Hubo algun error al modificar el aton " + newBaliza.nif);
+        if (error.errno == -4058) {
+            //req.flash("error", "Carpeta de imagenes " + newBaliza.nif);
+        }
+        else
+            req.flash("error", "Hubo algun error al modificar el aton " + newBaliza.nif);
         res.redirect("/aton/plantilla/" + nifviejo);
     }
 
@@ -432,6 +453,53 @@ router.post("/editLocalizacionFromMap/:nif", funciones.isAuthenticated, funcione
     }
 
 });
+router.post("/editFondeo/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
+    const nifviejo = req.params.nif;
+    var {
+        calado,
+        longitud_cadena,
+        ubicacion,
+        h_muerto, b_muerto, l_muerto,
+        diametro_cadena,
+        observaciones,
+        area_total_viva,
+        Cw_aerodinamico,
+        area_total_muerta,
+        Cd_aerodinamico,
+    } = req.body;
+    const newBaliza = {
+        nif: nifviejo,
+        calado,
+        longitud_cadena,
+        ubicacion,
+        h_muerto, b_muerto, l_muerto,
+        diametro_cadena,
+        observaciones,
+        area_total_viva,
+        Cw_aerodinamico,
+        area_total_muerta,
+        Cd_aerodinamico,
+    };
+    console.log("params", newBaliza)
+    try {
+
+        var baliza = await db.query("SELECT * FROM fondeos WHERE nif=?", [nifviejo]);
+        if (baliza[0] == null || baliza[0] == undefined) {
+            await db.query("INSERT into fondeos set ? ", [newBaliza]);
+        } else {
+            await db.query("UPDATE fondeos set ? WHERE nif = ?", [newBaliza, nifviejo]);
+        }
+        funciones.insertarLog(req.user.usuario, "UPDATE fondeos", newBaliza.nif + " " + newBaliza.puerto + " " + newBaliza.num_local + " " + newBaliza.localizacion + " " + newBaliza.latitud + " " + newBaliza.longitud);
+        req.flash("success", "Fondeo de la boya modificada correctamente");
+        res.redirect("/aton/plantilla/" + nifviejo);
+
+    } catch (error) {
+        console.error(error);
+        req.flash("error", "Hubo algun error al modificar el fondeo del aton con NIF " + nifviejo);
+        res.redirect("/aton/plantilla/" + nifviejo);
+    }
+
+});
 router.get("/transform", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     try {
         var baliza = await db.query("SELECT * FROM localizacion");
@@ -498,8 +566,9 @@ router.get("/delete/:nif", funciones.isAuthenticated, funciones.isAdmin, async (
         await db.query("DELETE FROM localizacion WHERE nif=?", [nif]);
         await db.query("DELETE FROM lampara WHERE nif=?", [nif]);
         await db.query("DELETE FROM balizamiento WHERE nif=?", [nif]);
+        await db.query("DELETE FROM fondeos WHERE nif=?", [nif]);
         funciones.insertarLog(req.user.usuario, "DELETE aton ", req.params.nif);
-        req.flash("success", "Baliza borrada correctamente");
+        req.flash("success", "Señal borrada correctamente");
         res.redirect("/aton/list");
     } catch (error) {
         req.flash("error", "Hubo algun error al borrar el AtoN con NIF: " + nif);
@@ -685,10 +754,10 @@ router.get("/pintado/:nif", funciones.isAuthenticated, funciones.hasSanPrivilege
     }
 });
 // Ruta vista pintados list
-router.get('/pintadas/list', funciones.isAuthenticated, async(req, res) => {
+router.get('/pintadas/list', funciones.isAuthenticated, async (req, res) => {
     try {
         const pintados = await db.query('select * from mantenimiento where mantenimiento like "%pinta%" order by fecha desc');
-        res.render('aton/pintadoList', {item:pintados });
+        res.render('aton/pintadoList', { item: pintados });
     } catch (error) {
         console.error(error);
         req.flash("error", "Hubo algun error al intentar mostrar los tickets: " + error);

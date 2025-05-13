@@ -113,28 +113,46 @@ helpers.esTecnico = (value) => {
 };
 helpers.when = (operand_1, operator, operand_2, options) => {
   var operators = {
-      eq: function (l, r) {
-        return l == r;
-      },
-      noteq: function (l, r) {
-        return l != r;
-      },
-      gt: function (l, r) {
-        return Number(l) > Number(r);
-      },
-      or: function (l, r) {
-        return l || r;
-      },
-      and: function (l, r) {
-        return l && r;
-      },
-      "%": function (l, r) {
-        return l % r === 0;
-      },
+    eq: function (l, r) {
+      return l == r;
     },
+    noteq: function (l, r) {
+      return l != r;
+    },
+    gt: function (l, r) {
+      return Number(l) > Number(r);
+    },
+    or: function (l, r) {
+      return l || r;
+    },
+    and: function (l, r) {
+      return l && r;
+    },
+    "%": function (l, r) {
+      return l % r === 0;
+    },
+  },
     result = operators[operator](operand_1, operand_2);
 
   if (result) return options.fn(this);
   else return options.inverse(this);
+};
+
+helpers.tiempo_activo = (fecha1, fecha2) => {
+  let timestamp1 = new Date(fecha1);
+  let timestamp2 = new Date(fecha2)
+
+  let totalSegundos = (timestamp2.getTime() - timestamp1.getTime()) / 1000
+
+  // Calcular días, horas y minutos
+  const dias = Math.floor(totalSegundos / (3600 * 24)); // 1 día = 86400 segundos
+  const horas = Math.floor((totalSegundos % (3600 * 24)) / 3600); // 1 hora = 3600 segundos
+  const minutos = Math.floor((totalSegundos % 3600) / 60); // 1 minuto = 60 segundos
+
+  // Devolver el resultado como un objeto o un string
+  if (dias > 0)
+    return `${dias} días, ${horas} horas, ${minutos} minutos`;
+  else
+    return `${horas} horas, ${minutos} minutos`;
 };
 export default helpers;

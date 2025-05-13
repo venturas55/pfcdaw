@@ -1,7 +1,7 @@
 <div class="container p-1 my-4">
         <form action="/aton/add" method="POST">
                 <div class="row mx-auto my-2">
-                        <div class="col-md-4"> {{!-- ccaracteristicas --}}
+                        <div class="col-md-8 mx-auto"> {{!-- ccaracteristicas --}}
                                 <div class="card">
                                         <div class="card-body">
                                                 <h2>CARACTERISTICAS</h2>
@@ -23,10 +23,26 @@
                                                 <div class="form-group"><input class="form-control" type="text"
                                                                 name="caracteristica" placeholder="caracteristica" />
                                                 </div>
+                                                <div class="form-group">
+                                                        <label for="titulo">Es boya?</label>
+                                                        <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio"
+                                                                        name="esboya" id="esboya1" value="1" checked />
+                                                                <label class="form-check-label" for="esboya1">Si</label>
+                                                        </div>
+
+                                                        <div class="form-check form-check-inline">
+                                                                <input class="form-check-input" type="radio"
+                                                                        name="esboya" id="esboya0" value="0" {{#when
+                                                                        preventivo.telecontrol_gps 'eq' 'ko' }} checked
+                                                                        {{/when}} />
+                                                                <label class="form-check-label" for="esboya0">No</label>
+                                                        </div>
+                                                </div>
                                         </div>
                                 </div>
                         </div>
-                        <div class="col-md-4"> {{!-- localizacion --}}
+                        <div class="col-md-8 mx-auto my-4"> {{!-- localizacion --}}
                                 <div class="card">
                                         <div class="card-body">
                                                 <h2>LOCALIZACION</h2>
@@ -44,7 +60,7 @@
                                         </div>
                                 </div>
                         </div>
-                        <div class="col-md-4"> {{!-- lampara --}}
+                        <div class="col-md-8 mx-auto"> {{!-- lampara --}}
                                 <div class="card">
                                         <div class="card-body">
                                                 <h2>LAMPARA</h2>
@@ -66,7 +82,7 @@
                                 </div>
                         </div>
                 </div>
-                <div class="row m-auto">
+                <div class="row m-auto my-4">
                         <button class="btn btn-success btn-block">Guardar</button>
                 </div>
         </form>

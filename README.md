@@ -166,4 +166,5 @@ Además se han añadido dos variables de entorno más EMAIL_ACCOUNT y EMAIL_PASS
 
 ACTUALIZACIONES:
 Se ha de añadir en la BBDD una columna nueva a la tabla localizacion. La columna es experiemntal y es de tipo POINT para almacenar las coordenadas.
+Se ha creado para que el admin pueda ejecutar los cambios en la bbdd desde la app. solo hay que añadir los comandos de modificacion de las tablas en database/addNewMods.sql
 

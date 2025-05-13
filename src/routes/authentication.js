@@ -45,21 +45,32 @@ router.get('/profile/email/recordarpass/', async (req, res) => {
     res.render('auth/recoverypass');
 });
 router.post('/profile/email/recordarpass/', async (req, res) => { //:email
-
-    const transporter = createTransport({
-        //service: config.EMAIL_SERVICE,
-        host: config.EMAIL_HOST,
-        port: config.EMAIL_PORT,
-        secure: config.EMAIL_SECURITY,
-        auth: {
-            user: config.EMAIL_ACCOUNT,
-            pass: config.EMAIL_PASS,
-        },
-        secureConnection: false, // TLS requires secureConnection to be false
-        tls: {
-            ciphers: 'SSLv3'
-        }
-    });
+   
+   var transporter;
+    if (config.EMAIL_PASS) {
+         transporter = createTransport({
+            //service: config.EMAIL_SERVICE,
+            host: config.EMAIL_HOST,
+            port: config.EMAIL_PORT,
+            secure: config.EMAIL_SECURITY,
+            auth: {
+                user: config.EMAIL_ACCOUNT,
+                pass: config.EMAIL_PASS,
+            },
+            secureConnection: false, // TLS requires secureConnection to be false
+            tls: {
+                ciphers: 'SSLv3'
+            }
+        });
+    } else {
+         transporter = createTransport({
+            //service: config.EMAIL_SERVICE,
+            host: config.EMAIL_HOST,
+            port: config.EMAIL_PORT,
+            secure: config.EMAIL_SECURITY,
+            secureConnection: false, // TLS requires secureConnection to be false
+        });
+    }
 
     transporter.verify(function (error, success) {
         if (error) {
@@ -69,10 +80,9 @@ router.post('/profile/email/recordarpass/', async (req, res) => { //:email
         }
     });
 
-
     const email = req.body.email;
     const usuario = req.body.usuario;
-    var rows = await db.query("SELECT * FROM usuarios WHERE usuario=? AND email= ?", [usuario, email]);
+    var rows = await db.query("SELECT * FROM usuarios WHERE usuario = ? AND email= ?", [usuario,email]);
     if (rows.length > 0) {
         var user = rows[0];
         const user_id = user.id;
@@ -91,11 +101,9 @@ router.post('/profile/email/recordarpass/', async (req, res) => { //:email
             from: "BBDD SAN",
             to: email,
             subject: 'Restablecer contraseña BBDD SAN',
-            text: 'Has olvidado tu contraseña. Haz click en el siguiente vinculo http://' + req.headers.host + '/profile/email/verifypass/' + user_id + '/' + token + " para reestablecer una nueva contraseña.",
+            text: 'Has olvidado tu contraseña. Haz click en el siguiente vinculo http://' + req.headers.host + '/profile/email/verifypass/' + user_id + '/' + token + " para reestablecer una nueva contraseña.\n\t Recuerda que tu usuario es " + user.usuario + " .",
             //TODO: LA URL DEL SERVIDOR DESPLEGADO
-            //text: 'Has olvidado tu contraseña. Haz click en el siguiente vinculo http://localhost:5001/profile/email/verifypass/' + user_id + '/' + token + " para reestablecer una nueva contraseña.",
         };
-
         transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
                 console.error("Error:");
@@ -109,6 +117,8 @@ router.post('/profile/email/recordarpass/', async (req, res) => { //:email
                 res.redirect("/");
             }
         });
+        console.log("email enviado");
+
     } else {
         req.flash("error", "El usuario y/o el correo no corresponden con ningún usuario.")
         res.redirect("/error");
