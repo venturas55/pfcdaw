@@ -16,6 +16,7 @@ const {
   NODE_DOCKER_PORT = 5002,
   MYSQL_LOCAL_PORT = 3307,
   MYSQL_DOCKER_PORT = 3306,
+  EMAIL_AUTH_NEEDED ="true",
 
 } = process.env;
   //const DB_MP = process.env.DB_MP || '2a$10$.6weXYERL6XMB7nb0xcMTus/Qbi4aotItCWLs3QyBDk7cup4oCOo.';
@@ -43,8 +44,9 @@ export const config = {
   EMAIL_PORT,
   EMAIL_SECURITY,
   EMAIL_ACCOUNT,
+  EMAIL_AUTH_NEEDED,
   EMAIL_PASS,
   NODE_DOCKER_PORT,
   MYSQL_LOCAL_PORT,
   MYSQL_DOCKER_PORT,
-};
+  };
