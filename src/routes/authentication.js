@@ -178,7 +178,7 @@ router.post('/profile/email/recordarpass/', async (req, res) => { //:email
             if (error) {
                 console.error("Error:");
                 console.log(error);
-                req.flash("error", "Error al enviar el eMail para restablecer contraseña")
+                req.flash("error", "Error al enviar el eMail para restablecer contraseña:",error)
                 res.redirect("/error");
 
             } else {
