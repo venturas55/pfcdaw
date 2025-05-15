@@ -4,4 +4,5 @@ alter table balizamiento add column esBoya boolean default false;
 ALTER TABLE preventivos MODIFY fecha TIMESTAMP NULL;
 ALTER TABLE preventivos MODIFY solved_at TIMESTAMP NULL;
 alter table preventivos add solved_by_id int(11) after solved_at;
+update balizamiento set esBoya=1 where tipo like '%boya%';
 ALTER TABLE `usuarios` ADD CONSTRAINT `unique_email` UNIQUE (`email`);
