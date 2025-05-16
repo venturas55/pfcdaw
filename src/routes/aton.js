@@ -1,7 +1,8 @@
 import express from 'express';
 const router = express.Router();
 import { join } from 'path';
-import db from "../database.js"; //db hace referencia a la BBDD
+import db from "../database.js"; 
+import db_NETCOM from "../database_netcom.js"; 
 import funciones from "../lib/funciones.js";
 import { promises as fs } from 'fs';
 const queryListadoAton = "SELECT lo.coordenadas,b.nif,b.num_internacional,b.tipo,b.apariencia,b.periodo,b.caracteristica,b.telecontrol,b.necesita_pintado,b.apagada,b.esBoya,lo.puerto,lo.num_local,lo.localizacion,lo.latitud,lo.longitud,la.altura,la.elevacion,la.alcanceNom,la.linterna,la.candelasCalc,la.alcanceLum,la.candelasInst FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif";
@@ -11,6 +12,8 @@ import * as url from "url";
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 import moment from 'moment'; // require
 moment().format();
+
+//db_NETCOM.query("SELECT * from uhf36_messages");
 
 const getPointfromLatLng = (lat, lng) => {
     var lat2 = 0;

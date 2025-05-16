@@ -67,18 +67,27 @@ router.post('/profile/email/recordarpass/', async (req, res) => { //:email
                 path: join(__dirname, '../public/img/ccby.png'),
                 cid: 'ccby'
             }]
-            /*   tls: {
-                  ciphers: 'SSLv3'
-              } */
+
         });
     } else {
+        let seguridad;
+        if (config.EMAIL_PORT == 465)
+            seguridad = true;
+        else
+            seguridad = false;
         console.log(`Intentando enviar email con la siguiente configuracion \n \t host: ${config.EMAIL_HOST} \n \t port:  ${config.EMAIL_PORT} \n \t secure:  ${config.EMAIL_SECURITY}`);
         transporter = createTransport({
             //service: config.EMAIL_SERVICE,
             host: config.EMAIL_HOST,
             port: config.EMAIL_PORT,
-            secure: config.EMAIL_SECURITY,
+            secure: seguridad,
+            tls: {
+                rejectUnauthorized: false // (opcional) si es un servidor que usa TLS autofirmado
+            }
             //secureConnection: false, // TLS requires secureConnection to be false
+            /*   tls: {
+           ciphers: 'SSLv3'
+       } */
         });
     }
 
@@ -178,7 +187,7 @@ router.post('/profile/email/recordarpass/', async (req, res) => { //:email
             if (error) {
                 console.error("Error:");
                 console.log(error);
-                req.flash("error", "Error al enviar el eMail para restablecer contraseña:",error)
+                req.flash("error", "Error al enviar el eMail para restablecer contraseña:", `host: ${config.EMAIL_HOST} \n \t port:  ${config.EMAIL_PORT} \n \t secure:  ${config.EMAIL_SECURITY}`, error)
                 res.redirect("/error");
 
             } else {

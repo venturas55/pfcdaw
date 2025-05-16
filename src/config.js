@@ -17,6 +17,10 @@ const {
   MYSQL_LOCAL_PORT = 3307,
   MYSQL_DOCKER_PORT = 3306,
   EMAIL_AUTH_NEEDED ="true",
+  DB_HOST_NETCOM="localhost:3306",
+  DB_USER_NETCOM="root",
+  DB_PASS_NETCOM="Pablo-MsM",
+  DB_NAME_NETCOM="mesemar_beacons"
 
 } = process.env;
   //const DB_MP = process.env.DB_MP || '2a$10$.6weXYERL6XMB7nb0xcMTus/Qbi4aotItCWLs3QyBDk7cup4oCOo.';
@@ -28,11 +32,19 @@ const database = {
   password: DB_PASS,
   database: DB_NAME,
 };
+
+const database_NETCOM = {
+  host: DB_HOST_NETCOM,
+  user: DB_USER_NETCOM,
+  password: DB_PASS_NETCOM,
+  database: DB_NAME_NETCOM,
+};
   //masterPass: '2a$10$.6weXYERL6XMB7nb0xcMTus/Qbi4aotItCWLs3QyBDk7cup4oCOo.',
 
 
 export const config = {
   database,
+  database_NETCOM,
   PORT,
   DB_HOST,
   DB_USER,
