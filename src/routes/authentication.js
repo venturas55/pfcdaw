@@ -81,13 +81,14 @@ router.post('/profile/email/recordarpass/', async (req, res) => { //:email
             host: config.EMAIL_HOST,
             port: config.EMAIL_PORT,
             secure: seguridad,
-            tls: {
-                rejectUnauthorized: false // (opcional) si es un servidor que usa TLS autofirmado
-            }
+            /*    tls: {
+                   rejectUnauthorized: false // (opcional) si es un servidor que usa TLS autofirmado
+               } */
             //secureConnection: false, // TLS requires secureConnection to be false
-            /*   tls: {
-           ciphers: 'SSLv3'
-       } */
+            tls: {
+                rejectUnauthorized: false ,
+                ciphers: 'SSLv3'
+            }
         });
     }
 
