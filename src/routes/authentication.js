@@ -116,7 +116,7 @@ router.post('/profile/email/recordarpass/', async (req, res) => { //:email
         //var exito = await helpers.sendRecoveryMail(email,token); NOFUNCIONA 
         //console.log(email + " " + token);
         var mailOptions = {
-            from: "BBDD SAN",
+            from: config.EMAIL_ACCOUNT,
             to: email,
             subject: 'Restablecer contraseña BBDD SAN',
             html: ` 
