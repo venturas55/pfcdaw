@@ -52,6 +52,7 @@ router.post('/profile/email/recordarpass/', async (req, res) => { //:email
     var transporter;
     //console.log("EMAIL_AUTH_NEEDED: " + config.EMAIL_AUTH_NEEDED);
     if (config.EMAIL_AUTH_NEEDED) {
+        console.log("IF con AUTH")
         transporter = createTransport({
             //service: config.EMAIL_SERVICE,
             host: config.EMAIL_HOST,
