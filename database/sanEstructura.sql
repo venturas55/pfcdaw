@@ -209,6 +209,11 @@ CREATE TABLE IF NOT EXISTS `preventivos` (
   `fecha` timestamp DEFAULT NULL,
   `created_by_id` int(11) DEFAULT NULL,
   `completado` BOOLEAN DEFAULT false,
+  `foto_estructura` varchar(250) default null,
+  `foto_linterna` varchar(250) default null,
+  `foto_monitoreo` varchar(250) default null,
+  `foto_alimentacion` varchar(250) default null,
+  `foto_general` varchar(250) default null,
   CONSTRAINT `preventivo_ibfk_1` FOREIGN KEY (`created_by_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `preventivo_ibfk_3` FOREIGN KEY (`solved_by_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `preventivo_ibfk_2` FOREIGN KEY (`nif`) REFERENCES `balizamiento` (`nif`)

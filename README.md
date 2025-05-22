@@ -167,3 +167,5 @@ Además se han añadido dos variables de entorno más EMAIL_ACCOUNT y EMAIL_PASS
 ACTUALIZACIONES:
 Se ha de añadir en la BBDD una columna nueva a la tabla localizacion. La columna es experiemntal y es de tipo POINT para almacenar las coordenadas.
 
+22-5-25 Se añade fotos en los preventivos.
+
