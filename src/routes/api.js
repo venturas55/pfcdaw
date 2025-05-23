@@ -5,7 +5,6 @@ import funciones from "../lib/funciones.js";
 const queryBaliza = "SELECT b.nif,lo.puerto,lo.num_local,b.telecontrol,b.periodo,b.tipo,b.apariencia,b.caracteristica,b.necesita_pintado,b.apagada,b.esBoya,lo.localizacion,lo.latitud,lo.longitud,la.altura,la.elevacion,la.linterna,la.alcanceNom,la.alcanceLum,la.candelasCalc,la.candelasInst FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif where b.nif=?";
 const queryListadoAton = "SELECT b.nif,b.num_internacional,b.tipo,b.apariencia,b.periodo,b.caracteristica,b.telecontrol,b.necesita_pintado,b.apagada,b.esBoya,lo.puerto,lo.num_local,lo.localizacion,lo.latitud,lo.longitud,la.altura,la.elevacion,la.alcanceNom,la.linterna,la.candelasCalc,la.alcanceLum,la.candelasInst FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif";
 
-
 //Devuelve el listado de todas las balizas introducidas
 router.get('/api/balizas', async (req, res) => {
     const balizas = await db.query(queryListadoAton);
@@ -18,7 +17,6 @@ router.get('/api/balizas', async (req, res) => {
     }
     res.send(balizas);
 });
-
 router.get('/api/aton/boyas', async (req, res) => {
     const balizas = await db.query(queryListadoAton + " where b.esBoya=1");
     for (var i = 0; i < balizas.length; i++) {
@@ -32,7 +30,6 @@ router.get('/api/aton/boyas', async (req, res) => {
     }
     res.send(balizas);
 });
-
 router.get('/api/aton/balizas', async (req, res) => {
     const balizas = await db.query(queryListadoAton + " where b.esBoya=0");
     for (var i = 0; i < balizas.length; i++) {
@@ -44,16 +41,12 @@ router.get('/api/aton/balizas', async (req, res) => {
     }
     res.send(balizas);
 });
-
-
-
 //Devuelve las caracteristicas de la baliza introducida 
 router.get('/api/baliza/:nif', async (req, res) => {
     const { nif } = req.params;
     const baliza = await db.query(queryBaliza, [nif]);
     res.send(baliza);
 });
-
 //Devuelve los mantenimientos de la baliza introducida 
 router.get('/api/mantenimiento/:nif', async (req, res) => {
     const { nif } = req.params;
@@ -61,7 +54,6 @@ router.get('/api/mantenimiento/:nif', async (req, res) => {
     const q = await db.query('SELECT * FROM mantenimiento where nif=? order by fecha DESC', [nif]);
     res.send(q);
 });
-
 //Devuelve las observaciones de la baliza introducida 
 router.get('/api/observaciones/:nif', async (req, res) => {
     const { nif } = req.params;
@@ -69,12 +61,10 @@ router.get('/api/observaciones/:nif', async (req, res) => {
     const q = await db.query('SELECT * FROM observaciones where nif=?', [nif]);
     res.send(q);
 });
-
 //Devuelve el listado de todos los usuarios
 router.get('/api/usuarios', async (req, res) => {
     const balizas = await db.query('SELECT full_name,usuario,email, privilegio FROM usuarios');
     res.send(balizas);
 });
-
 
 export default router;

@@ -10,9 +10,8 @@ import { access, constants } from 'fs';
 import funciones from "../lib/funciones.js";
 import { archiveFolder, extract } from "zip-lib";
 import * as url from "url";
+import {imageSizeLimitErrorHandler,zipSizeLimitErrorHandler} from "../lib/validaciones.js";
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
-
-
 
 const storage = diskStorage({
     destination: (req, file, cb) => {
@@ -53,7 +52,6 @@ const storageZip = diskStorage({
     }
 });
 
-
 const uploadFoto = multer({
     storage,
     limits: { fileSize: 5000000, },
@@ -86,7 +84,7 @@ const uploadFotosZip = multer({
 }).single('backup');
 
 //GESTION FOTOS DE BALIZAS
-router.post("/aton/upload/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, uploadFoto, async (req, res) => {
+router.post("/aton/upload/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, uploadFoto,imageSizeLimitErrorHandler, async (req, res) => {
     console.log("Subiendo foto baliza");
     const { nif } = req.params;
 
@@ -175,7 +173,7 @@ router.get("/aton/fotos/clean/folders", funciones.isAdmin, async function (req, 
 });
 
 //GESTION  foto perfil
-router.post('/upload/:id', funciones.isAuthenticated, uploadFoto, async (req, res) => {
+router.post('/upload/:id', funciones.isAuthenticated, uploadFoto, zipSizeLimitErrorHandler, async (req, res) => {
     const { id } = req.params;
     //console.log(req.file);
     var usuario = await db.query("select * from usuarios where id = ?", id);

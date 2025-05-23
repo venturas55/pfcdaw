@@ -23,3 +23,29 @@ export function validatePassMatch(object) {
 export function validatePartialPassMatch(object) {
     return passmatchSchema.partial().safeParse(object);
 }
+
+/* ============MIDDLEWARES=========== */
+
+export const imageSizeLimitErrorHandler = (err, req, res, next) => {
+  if (err && err.code === 'LIMIT_FILE_SIZE') {
+    req.flash("error", "Tamaño demasiado grande. Límite de 5MB.");
+    return res.redirect("back"); // Redirige a la misma página
+  }
+  next(err); // Pasa el error a otro middleware si no es de tamaño
+};
+
+export const zipSizeLimitErrorHandler = (err, req, res, next) => {
+  if (err && err.code === 'LIMIT_FILE_SIZE') {
+    req.flash("error", "Tamaño demasiado grande. Límite de 200MB.");
+    return res.redirect("back"); // Redirige a la misma página
+  }
+  next(err); // Pasa el error a otro middleware si no es de tamaño
+};
+
+export const pdfSizeLimitErrorHandler = (err, req, res, next) => {
+  if (err && err.code === 'LIMIT_FILE_SIZE') {
+    req.flash("error", "Tamaño demasiado grande. Límite de 15MB.");
+    return res.redirect("back"); // Redirige a la misma página
+  }
+  next(err); // Pasa el error a otro middleware si no es de tamaño
+};

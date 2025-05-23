@@ -7,7 +7,6 @@ const queryListadoTickets = "SELECT * FROM tickets ";
 const queryListadoTicketsUsers = "SELECT t.ticket_id,t.nif,t.created_by_id,t.assigned_to_id,t.resolved_by_id,t.titulo,t.descripcion,t.solved_at,t.created_at,u1.usuario as created_by,u2.usuario as assigned_to,u3.usuario as resolved_by FROM tickets t LEFT JOIN usuarios u1 ON t.created_by_id=u1.id  LEFT JOIN usuarios u2 ON t.assigned_to_id=u2.id LEFT JOIN usuarios u3 ON t.resolved_by_id=u3.id";
 moment().format();
 
-
 //tickets
 // Ruta vista principal
 router.get('/list', async(req, res) => {
@@ -243,6 +242,5 @@ router.get("/delete/:id", funciones.isAuthenticated, funciones.isAdmin, async(re
         res.redirect("/tickets/list");
     }
 });
-
 
 export default router;

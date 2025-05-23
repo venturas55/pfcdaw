@@ -9,6 +9,7 @@ import * as url from "url";
 import { join, extname as _extname, resolve } from 'path';
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 import multer, { diskStorage } from 'multer';
+import {imageSizeLimitErrorHandler} from "../lib/validaciones.js";
 
 const storage = diskStorage({
     destination: (req, file, cb) => {
@@ -128,7 +129,7 @@ router.post('/edit/:id', funciones.isAuthenticated, funciones.hasSanPrivileges, 
     { name: 'foto_monitoreo', maxCount: 1 },
     { name: 'foto_alimentacion', maxCount: 1 },
     { name: 'foto_general', maxCount: 1 }
-]), async (req, res) => {
+]), imageSizeLimitErrorHandler,async (req, res) => {
 
     // Verificar si se subieron fotos y guardarlas en la base de datos
     const foto_estructura = req.files && req.files.foto_estructura ? req.files.foto_estructura[0].filename : null;
