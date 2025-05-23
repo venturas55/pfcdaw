@@ -6,7 +6,7 @@ import db from "../database.js"; //db hace referencia a la BBDD
 import multer, { diskStorage } from 'multer';
 import { exists, mkdir } from 'fs';
 import { v4 as uuidv4 } from 'uuid';
-
+import {pdfSizeLimitErrorHandler} from "../lib/validaciones.js";
 
 const storage = diskStorage({
   destination: (req, file, cb) => {
@@ -24,7 +24,7 @@ const storage = diskStorage({
 });
 const uploadDocument = multer({
   storage,
-  limits: { fileSize: 10000000, },
+  limits: { fileSize: 15000000, },
 }).single('documento');
 
 //CRUD read
@@ -36,7 +36,7 @@ router.get("/documentos",funciones.isAuthenticated,funciones.hasSanPrivileges, a
 router.get("/documentoUpload", funciones.isAuthenticated,funciones.hasSanPrivileges,(req, res) => {
   res.render("documentos/documentoUpload");
 });
-router.post("/documentos", funciones.isAuthenticated,funciones.hasSanPrivileges, uploadDocument, async (req, res) => {
+router.post("/documentos", funciones.isAuthenticated,funciones.hasSanPrivileges, uploadDocument,pdfSizeLimitErrorHandler, async (req, res) => {
   //console.log(req.body);
   //console.log(req.file);
   const { nombre, descripcion } = req.body;

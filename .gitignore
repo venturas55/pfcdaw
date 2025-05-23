@@ -1,4 +1,5 @@
 node_modules
 .env
-src/public/img/imagenes
+src/public/img/imagenes/*
+src/public/img/preventivos/*
 src/public/topo

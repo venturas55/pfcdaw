@@ -7,6 +7,7 @@ import * as path from "path";
 import * as url from "url";
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 import db from "../database.js"; //db hace referencia a la BBDD
+import {imageSizeLimitErrorHandler,zipSizeLimitErrorHandler} from "../lib/validaciones.js";
 
 const storageBBDD = diskStorage({
     destination: (req, file, cb) => {
@@ -56,7 +57,6 @@ router.get("/dbbackups/del/:nombre", funciones.isAuthenticated, funciones.isAdmi
     funciones.insertarLog(req.user.usuario, "DELETE backup", nombre);
     res.redirect('/dbbackups/list');
 });
-
 router.get("/dbbackups/deleteAbsoluto", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     console.log("Borrando BBDD ...");
     try {
@@ -73,7 +73,6 @@ router.get("/dbbackups/deleteAbsoluto", funciones.isAuthenticated, funciones.isA
         res.redirect('/dbbackups/list');
     }
 });
-
 router.get("/dbbackups/runSQL/:file", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     var { file } = req.params;
     //SI EL BACKUP SQL TIENE EL COMETNARIO   ==>    /*!40101 SET NAMES utf8 */;  
@@ -91,7 +90,7 @@ router.get("/dbbackups/runSQL/:file", funciones.isAuthenticated, funciones.isAdm
     funciones.insertarLog(req.user.usuario, "RUN backup", "volcado de nueva info");
     res.redirect("/dbbackups/list");
 });
-router.post("/dbbackups/upload", funciones.isAuthenticated, funciones.isAdmin, uploadFotosBBDD, async (req, res) => {
+router.post("/dbbackups/upload", funciones.isAuthenticated, funciones.isAdmin, uploadFotosBBDD, zipSizeLimitErrorHandler,async (req, res) => {
     console.log("Subiendo BACKUP sql");
     funciones.insertarLog(req.user.usuario, "Upload backup", "subido nuevo backup");
     req.flash("success", "backup sql subido correctamente");

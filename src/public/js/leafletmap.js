@@ -14,7 +14,7 @@ fetchData()?.then((balizas) => {
   }).addTo(map);
   /*   var TopoLayer = L.tileLayer('../topo/{z}/{x}/{y}.jpg', { maxZoom: 17 ,minZoom: 0 });
     map.addLayer(TopoLayer); */
-  
+
   // show the scale bar on the lower left corner
   L.control.scale({ imperial: true, metric: true }).addTo(map);
 
@@ -39,7 +39,7 @@ fetchData()?.then((balizas) => {
       draggable: true,
       icon: myIcon
     }
-    let marker = new L.Marker([item.coordenadas.x, item.coordenadas.y], iconOptions);
+    let marker = new L.Marker(setMarkerLatLng(item.latitud, item.longitud), iconOptions);
 
     marker.on('dragstart', function (event) {
       console.log(posicionInicial);

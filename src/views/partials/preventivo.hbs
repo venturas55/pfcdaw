@@ -1,10 +1,9 @@
 <div class="border border-primary rounded estructura p-2 m-2">
     <div class="form-group">
         <label for="titulo">Estado</label>
-
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="estructura_estado" id="estructura_estado1" value="ok"
-                checked/>
+                checked />
             <label class="form-check-label" for="estructura_estado1">OK</label>
         </div>
 
@@ -20,9 +19,6 @@
             <label class="form-check-label" for="estructura_estado3">N/A</label>
         </div>
     </div>
-
-
-
     <div class="form-group">
         <label for="titulo">Marca de Tope</label>
         <div class="form-check form-check-inline">
@@ -43,8 +39,6 @@
             <label class="form-check-label" for="estructura_marca_tope3">N/A</label>
         </div>
     </div>
-
-
     <div class="form-group">
         <label for="titulo">Engrase</label>
         <div class="form-check form-check-inline">
@@ -65,8 +59,6 @@
             <label class="form-check-label" for="estructura_engrase3">N/A</label>
         </div>
     </div>
-
-
     <div class="form-group">
         <label for="titulo">Golpes</label>
         <div class="form-check form-check-inline">
@@ -87,12 +79,11 @@
             <label class="form-check-label" for="estructura_golpes3">N/A</label>
         </div>
     </div>
-
     <div class="form-group">
         <label for="titulo">Flotador</label>
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="estructura_flotador" id="estructura_flotador1" value="ok"
-               checked/>
+                checked />
             <label class="form-check-label" for="estructura_flotador1">OK</label>
         </div>
 
@@ -108,13 +99,11 @@
             <label class="form-check-label" for="estructura_flotador3">N/A</label>
         </div>
     </div>
-
-
     <div class="form-group">
         <label for="titulo">Limpieza Interior</label>
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="estructura_limpieza_interior"
-                id="estructura_limpieza_interior1" value="ok" checked/>
+                id="estructura_limpieza_interior1" value="ok" checked />
             <label class="form-check-label" for="estructura_limpieza_interior1">OK</label>
         </div>
 
@@ -132,13 +121,11 @@
             <label class="form-check-label" for="estructura_limpieza_interior3">N/A</label>
         </div>
     </div>
-
-
     <div class="form-group">
         <label for="titulo">Limpieza Exterior</label>
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="estructura_limpieza_exterior"
-                id="estructura_limpieza_exterior1" value="ok" checked/>
+                id="estructura_limpieza_exterior1" value="ok" checked />
             <label class="form-check-label" for="estructura_limpieza_exterior1">OK</label>
         </div>
 
@@ -156,13 +143,11 @@
             <label class="form-check-label" for="estructura_limpieza_exterior3">N/A</label>
         </div>
     </div>
-
-
     <div class="form-group">
         <label for="titulo">cuadro Electrico Interior</label>
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="estructura_cuadro_interior"
-                id="estructura_cuadro_interior1" value="ok" checked/>
+                id="estructura_cuadro_interior1" value="ok" checked />
             <label class="form-check-label" for="estructura_cuadro_interior1">OK</label>
         </div>
 
@@ -180,12 +165,11 @@
             <label class="form-check-label" for="estructura_cuadro_interior3">N/A</label>
         </div>
     </div>
-
     <div class="form-group">
         <label for="titulo">cuadro Electrico Exterior</label>
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="estructura_cuadro_exterior"
-                id="estructura_cuadro_exterior1" value="ok" checked/>
+                id="estructura_cuadro_exterior1" value="ok" checked />
             <label class="form-check-label" for="estructura_cuadro_exterior1">OK</label>
         </div>
 
@@ -208,6 +192,13 @@
         <textarea class="form-control"
             name="estructura_observaciones">{{preventivo.estructura_observaciones}}</textarea>
     </div>
+    <input type="file" class="form-control-file" name="foto_estructura" id="foto_estructura">
+    {{#if preventivo.foto_estructura}}
+    <div class="form-group">
+        <img class="img-fluid rounded mx-auto d-block" style="max-width: 100%; height: auto; max-height: 300px;"
+            src="/img/preventivos/{{preventivo.foto_estructura}}" alt="Estructura">
+    </div>
+    {{/if}}
 </div>
 <div class=" border border-primary rounded linterna p-2 m-2">
     <div class="form-group">
@@ -229,8 +220,6 @@
             <label class="form-check-label" for="linterna_ldr13">N/A</label>
         </div>
     </div>
-
-
     <div class="form-group">
         <label for="titulo">Encendido LDR2</label>
         <div class="form-check form-check-inline">
@@ -253,7 +242,8 @@
     <div class="form-group">
         <label for="titulo">Optica</label>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="linterna_optica" id="linterna_optica1" value="ok" checked />
+            <input class="form-check-input" type="radio" name="linterna_optica" id="linterna_optica1" value="ok"
+                checked />
             <label class="form-check-label" for="linterna_optica1">OK</label>
         </div>
 
@@ -273,7 +263,7 @@
         <label for="titulo">Estanqueidad Tornillos</label>
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="linterna_estanqueidad_tornillos"
-                id="linterna_estanqueidad_tornillos1" value="ok"checked />
+                id="linterna_estanqueidad_tornillos1" value="ok" checked />
             <label class="form-check-label" for="linterna_estanqueidad_tornillos1">OK</label>
         </div>
 
@@ -295,7 +285,7 @@
         <label for="titulo">Estanqueidad humedades</label>
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="linterna_estanqueidad_humedades"
-                id="linterna_estanqueidad_humedades1" value="ok" checked/>
+                id="linterna_estanqueidad_humedades1" value="ok" checked />
             <label class="form-check-label" for="linterna_estanqueidad_humedades1">OK</label>
         </div>
 
@@ -317,6 +307,13 @@
         <label for="item">Observaciones Sobre la linterna</label>
         <textarea class="form-control" name="linterna_observaciones">{{preventivo.linterna_observaciones}}</textarea>
     </div>
+    <input type="file" class="form-control-file" name="foto_linterna" id="foto_linterna">
+    {{#if preventivo.foto_linterna}}
+    <div class="form-group">
+        <img class="img-fluid rounded mx-auto d-block" style="max-width: 100%; height: auto; max-height: 300px;"
+            src="/img/preventivos/{{preventivo.foto_linterna}}" alt="foto_linterna">
+    </div>
+    {{/if}}
 </div>
 <div class="border border-primary rounded telecontrol p-2 m-2">
     <div class="form-group">
@@ -338,11 +335,11 @@
             <label class="form-check-label" for="telecontrol_monitoreo3">N/A</label>
         </div>
     </div>
-
     <div class="form-group">
         <label for="titulo">GPS</label>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="telecontrol_gps" id="telecontrol_gps1" value="ok" checked/>
+            <input class="form-check-input" type="radio" name="telecontrol_gps" id="telecontrol_gps1" value="ok"
+                checked />
             <label class="form-check-label" for="telecontrol_gps1">OK</label>
         </div>
 
@@ -357,16 +354,18 @@
             <label class="form-check-label" for="telecontrol_gps2">N/A</label>
         </div>
     </div>
-
-
-
     <div class="form-group">
         <label for="item">Observaciones Sobre Telecontrol</label>
         <textarea class="form-control"
             name="telecontrol_observaciones">{{preventivo.telecontrol_observaciones}}</textarea>
     </div>
-
-
+    <input type="file" class="form-control-file" name="foto_monitoreo" id="foto_monitoreo">
+    {{#if preventivo.foto_monitoreo}}
+    <div class="form-group">
+        <img class="img-fluid rounded mx-auto d-block" style="max-width: 100%; height: auto; max-height: 300px;"
+            src="/img/preventivos/{{preventivo.foto_monitoreo}}" alt="foto_monitoreo">
+    </div>
+    {{/if}}
 </div>
 <div class="border border-primary rounded alimentacion p-2 m-2">
     <div class="form-group">
@@ -376,7 +375,6 @@
                 value="ok" checked />
             <label class="form-check-label" for="alimentacion_panelFV1">OK</label>
         </div>
-
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" name="alimentacion_panelFV" id="alimentacion_panelFV2"
                 value="ko" {{#when preventivo.alimentacion_panelFV 'eq' 'ko' }} checked {{/when}} />
@@ -388,7 +386,6 @@
             <label class="form-check-label" for="alimentacion_panelFV3">N/A</label>
         </div>
     </div>
-
     <div class="form-group">
         <label for="titulo">Red</label>
         <div class="form-check form-check-inline">
@@ -417,8 +414,6 @@
         <input type="number" name="alimentacion_vcc" min="0" max="20" step="0.01"
             value="{{preventivo.alimentacion_vcc}}">
     </div>
-
-
     <div class="form-group">
         <label for="titulo">Baterias</label>
         <div class="form-check form-check-inline">
@@ -438,7 +433,6 @@
             <label class="form-check-label" for="alimentacion_baterias3">N/A</label>
         </div>
     </div>
-
     <div class="form-group">
         <label for="titulo">Grupo Electrogeno</label>
         <div class="form-check form-check-inline">
@@ -458,7 +452,6 @@
             <label class="form-check-label" for="alimentacion_grupo3">N/A</label>
         </div>
     </div>
-
     <div class="form-group">
         <label for="titulo">Estado cableado</label>
         <div class="form-check form-check-inline">
@@ -478,15 +471,28 @@
             <label class="form-check-label" for="alimentacion_cableado3">N/A</label>
         </div>
     </div>
-
     <div class="form-group">
         <label for="item">Observaciones Sobre Alimentacion</label>
         <textarea class="form-control"
             name="alimentacion_observaciones">{{preventivo.alimentacion_observaciones}}</textarea>
     </div>
+    <input type="file" class="form-control-file" name="foto_alimentacion" id="foto_alimentacion">
+    {{#if preventivo.foto_alimentacion}}
+    <div class="form-group">
+        <img class="img-fluid rounded mx-auto d-block" style="max-width: 100%; height: auto; max-height: 300px;"
+            src="/img/preventivos/{{preventivo.foto_alimentacion}}" alt="foto_alimentacion"> 
+    </div>
+    {{/if}}
 </div>
 <div class="border border-primary rounded form-group p-2 m-2">
     <label for="item">Observaciones Generales</label>
     <textarea class="form-control" rows="4" cols="50"
         name="observaciones_generales">{{preventivo.observaciones_generales}}</textarea>
+    <input type="file" class="form-control-file" name="foto_general" id="foto_general">
+    {{#if preventivo.foto_general}}
+    <div class="form-group">
+        <img class="img-fluid rounded mx-auto d-block" style="max-width: 100%; height: auto; max-height: 300px;"
+            src="/img/preventivos/{{preventivo.foto_general}}" alt="foto_general">
+    </div>
+    {{/if}}
 </div>

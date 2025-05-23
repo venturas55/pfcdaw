@@ -26,9 +26,6 @@
         </div>
         {{/when}}
     </div>
-
-
-
     <div class="form-group">
 
         <label for="titulo">Marca de Tope</label>
@@ -52,8 +49,6 @@
         </div>
         {{/when}}
     </div>
-
-
     <div class="form-group">
         <label for="titulo">Engrase</label>
         {{#when preventivo.estructura_engrase 'eq' 'ok' }}
@@ -76,8 +71,6 @@
         </div>
         {{/when}}
     </div>
-
-
     <div class="form-group">
         <label for="titulo">Golpes</label>
         {{#when preventivo.estructura_golpes 'eq' 'ok' }}
@@ -99,7 +92,6 @@
             <label class="form-check-label" for="estructura_golpes3">N/A</label>
         </div>{{/when}}
     </div>
-
     <div class="form-group">
         <label for="titulo">Flotador</label>
         {{#when preventivo.estructura_flotador 'eq' 'ok' }}
@@ -124,8 +116,6 @@
         </div>
         {{/when}}
     </div>
-
-
     <div class="form-group">
         <label for="titulo">Limpieza Interior</label>{{#when preventivo.estructura_limpieza_interior 'eq' 'ok'
         }}
@@ -148,8 +138,6 @@
             <label class="form-check-label" for="estructura_limpieza_interior3">N/A</label>
         </div>{{/when}}
     </div>
-
-
     <div class="form-group">
         <label for="titulo">Limpieza Exterior</label> {{#when preventivo.estructura_limpieza_exterior 'eq' 'ok' }}
         <div class="form-check form-check-inline">
@@ -170,8 +158,6 @@
             <label class="form-check-label" for="estructura_limpieza_exterior3">N/A</label>
         </div>{{/when}}
     </div>
-
-
     <div class="form-group">
         <label for="titulo">cuadro Electrico Interior</label>{{#when preventivo.estructura_cuadro_interior 'eq' 'ok' }}
         <div class="form-check form-check-inline">
@@ -192,7 +178,6 @@
             <label class="form-check-label" for="estructura_cuadro_interior3">N/A</label>
         </div>{{/when}}
     </div>
-
     <div class="form-group">
         <label for="titulo">cuadro Electrico Exterior</label>
         {{#when preventivo.estructura_cuadro_exterior 'eq' 'ok' }}
@@ -221,6 +206,12 @@
         <textarea readonly class="form-control"
             name="estructura_observaciones">{{preventivo.estructura_observaciones}}</textarea>
     </div>
+    {{#if preventivo.foto_estructura}}
+    <div class="form-group">
+        <img class="img-fluid rounded mx-auto d-block" style="max-width: 100%; height: auto; max-height: 300px;"
+            src="/img/preventivos/{{preventivo.foto_estructura}}" alt="Estructura">
+    </div>
+    {{/if}}
 </div>
 <div class="border border-primary rounded linterna p-2 m-2">
     <div class="form-group">
@@ -243,7 +234,6 @@
             <label class="form-check-label" for="linterna_ldr13">N/A</label>
         </div>{{/when}}
     </div>
-
     <div class="form-group">
         <label for="titulo">Encendido LDR2</label>
         {{#when preventivo.linterna_ldr2 'eq' 'ok' }}
@@ -264,7 +254,6 @@
             <label class="form-check-label" for="linterna_ldr23">N/A</label>
         </div>{{/when}}
     </div>
-
     <div class="form-group">
         <label for="titulo">Optica</label>{{#when
         preventivo.linterna_optica 'eq' 'ok' }}
@@ -311,7 +300,6 @@
             <label class="form-check-label" for="linterna_estanqueidad_tornillos3">N/A</label>
         </div>{{/when}}
     </div>
-
     <div class="form-group">
         <label for="titulo">Estanqueidad humedades</label> {{#when
         preventivo.linterna_estanqueidad_humedades 'eq' 'ok' }}
@@ -340,6 +328,12 @@
         <textarea readonly class="form-control"
             name="linterna_observaciones">{{preventivo.linterna_observaciones}}</textarea>
     </div>
+    {{#if preventivo.foto_linterna}}
+    <div class="form-group">
+        <img class="img-fluid rounded mx-auto d-block" style="max-width: 100%; height: auto; max-height: 300px;"
+            src="/img/preventivos/{{preventivo.foto_linterna}}" alt="foto_linterna">
+    </div>
+    {{/if}}
 </div>
 <div class="border border-primary rounded telecontrol p-2 m-2">
     <div class="form-group">
@@ -362,7 +356,6 @@
             <label class="form-check-label" for="telecontrol_monitoreo3">N/A</label>
         </div>{{/when}}
     </div>
-
     <div class="form-group">
         <label for="titulo">GPS</label>{{#when
         preventivo.telecontrol_gps 'eq' 'ok' }}
@@ -385,16 +378,17 @@
             <label class="form-check-label" for="telecontrol_gps2">N/A</label>
         </div> {{/when}}
     </div>
-
-
-
     <div class="form-group">
         <label for="item">Observaciones Sobre Telecontrol</label>
         <textarea readonly class="form-control"
             name="telecontrol_observaciones">{{preventivo.telecontrol_observaciones}}</textarea>
     </div>
-
-
+      {{#if preventivo.foto_monitoreo}}
+    <div class="form-group">
+        <img class="img-fluid rounded mx-auto d-block" style="max-width: 100%; height: auto; max-height: 300px;"
+            src="/img/preventivos/{{preventivo.foto_monitoreo}}" alt="foto_monitoreo">
+    </div>
+    {{/if}}
 </div>
 <div class="border border-primary rounded alimentacion p-2 m-2">
     <div class="form-group">
@@ -416,7 +410,6 @@
             <label class="form-check-label" for="alimentacion_panelFV3">N/A</label>
         </div>{{/when}}
     </div>
-
     <div class="form-group">
         <label for="titulo">Red</label> {{#when preventivo.alimentacion_red 'eq' 'ok' }}
         <div class="form-check form-check-inline">
@@ -444,8 +437,6 @@
         <label for="titulo">Voltaje {{preventivo.alimentacion_vcc}} V</label>
 
     </div>
-
-
     <div class="form-group">
         <label for="titulo">Baterias</label>{{#when preventivo.alimentacion_baterias 'eq' 'ok' }}
         <div class="form-check form-check-inline">
@@ -466,7 +457,6 @@
             <label class="form-check-label" for="alimentacion_baterias3">N/A</label>
         </div>{{/when}}
     </div>
-
     <div class="form-group">
         <label for="titulo">Grupo Electrogeno</label> {{#when preventivo.alimentacion_grupo 'eq' 'ok' }}
         <div class="form-check form-check-inline">
@@ -487,7 +477,6 @@
             <label class="form-check-label" for="alimentacion_grupo3">N/A</label>
         </div>{{/when}}
     </div>
-
     <div class="form-group">
         <label for="titulo">Estado cableado</label>{{#when preventivo.alimentacion_cableado 'eq' 'ok' }}
         <div class="form-check form-check-inline">
@@ -508,15 +497,28 @@
             <label class="form-check-label" for="alimentacion_cableado3">N/A</label>
         </div>{{/when}}
     </div>
-
     <div class="form-group">
         <label for="item">Observaciones Sobre Alimentacion</label>
         <textarea readonly class="form-control"
             name="alimentacion_observaciones">{{preventivo.alimentacion_observaciones}}</textarea>
     </div>
+    {{#if preventivo.foto_alimentacion}}
+    <div class="form-group">
+        <img class="img-fluid rounded mx-auto d-block" style="max-width: 100%; height: auto; max-height: 300px;"
+            src="/img/preventivos/{{preventivo.foto_alimentacion}}" alt="foto_alimentacion">
+    </div>
+    {{/if}}
 </div>
 <div class="border border-primary rounded form-group p-2 m-2">
-    <label for="item">Observaciones Generales</label>
-    <textarea readonly class="form-control" rows="4" cols="50"
-        name="observaciones_generales">{{preventivo.observaciones_generales}}</textarea>
+    <div class="form-group">
+        <label for="item">Observaciones Generales</label>
+        <textarea readonly class="form-control" rows="4" cols="50"
+            name="observaciones_generales">{{preventivo.observaciones_generales}}</textarea>
+    </div>
+    {{#if preventivo.foto_general}}
+    <div class="form-group">
+        <img class="img-fluid rounded mx-auto d-block" style="max-width: 100%; height: auto; max-height: 300px;"
+            src="/img/preventivos/{{preventivo.foto_alimentacion}}" alt="foto_alimentacion">
+    </div>
+    {{/if}}
 </div>
