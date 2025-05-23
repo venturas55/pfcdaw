@@ -19,7 +19,7 @@ const storage = diskStorage({
         const nif = req.body.nif;
         const fecha = req.body.fecha;
         console.log("GRABANDO PREVENTIVO FOTOS")
-        cb(null, file.fieldname + "-"+nif +"-"+ fecha+ _extname(file.originalname).toLowerCase());
+        cb(null, nif + "-" + file.fieldname + "-" + fecha + _extname(file.originalname).toLowerCase());
     }
 });
 
@@ -88,7 +88,6 @@ router.post('/add', funciones.isAuthenticated, async (req, res) => {
     if (req.body.alimentacion_vcc == "")
         req.body.alimentacion_vcc = 0;
     req.body.created_by_id = req.user.id;
-    console.log("creado", req.body);
     try {
         //TODO:    telecontrol_tipo
         const awns = await db.query("insert into preventivos set ? ", [req.body]);
@@ -137,7 +136,7 @@ router.post('/edit/:id', funciones.isAuthenticated, funciones.hasSanPrivileges, 
     const foto_monitoreo = req.files && req.files.foto_monitoreo ? req.files.foto_monitoreo[0].filename : null;
     const foto_alimentacion = req.files && req.files.foto_alimentacion ? req.files.foto_alimentacion[0].filename : null;
     const foto_general = req.files && req.files.foto_general ? req.files.foto_general[0].filename : null;
-    
+
     if (foto_estructura) req.body.foto_estructura = foto_estructura;
     if (foto_linterna) req.body.foto_linterna = foto_linterna;
     if (foto_monitoreo) req.body.foto_monitoreo = foto_monitoreo;
