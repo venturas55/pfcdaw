@@ -39,7 +39,6 @@ function abreModalObs(id) {
     item.style.display = 'block';
 }
 
-
 function abreModalMant(id) {
     //console.log("Mantenimiento con id" + id);
     var item = document.getElementById("myModalBorradoMant");
@@ -216,78 +215,66 @@ function getMarkerLatLng({ lat, lng }) {
 
 //FUNCION QUE LE PASA UN OBJETO BALIZA Y LE DEVUELVE UNA LETRA QUE REPRESENTA EL COLOR/TIPO
 function getTipo(item) {
-    //var balizaPrueba="25620";
-    var color = item.apariencia.toUpperCase().replaceAll(" ", "");
-    color = color.charAt(color.length - 1);
+const tipo = item.tipo.toLowerCase();
+    const caracteristica = item.caracteristica.toLowerCase().replace(/[\s.,+]/g, "");
+    let apariencia = item.apariencia.toUpperCase().replace(/\s/g, "");
+    let color = apariencia.slice(-1); // Último carácter
 
-    var caracteristica = item.caracteristica.toLowerCase().replaceAll(" ", "").replaceAll(".", "").replaceAll(",", "").replaceAll("+", "");
-    var tipo = item.tipo.toLowerCase();
-    item.cambio = false;
-
+    // Clasificación por tipo principal
     if (tipo.includes("faro")) {
-        item.cambio = true;
-        color = "F";
-
-    } else if (tipo.includes("semaforo")) {
-        color = "S";
-        item.cambio = true;
-    } else if (tipo.includes("peligro")) {
-        color = "PA";
-        item.cambio = true;
-    } else if (tipo.includes("navegable")) {
-        color = "AN";
-        item.cambio = true;
-    } else if (tipo.includes(" odas ") || tipo.includes(" sado ")) {
-        color = "ODAS";
-        item.cambio = true;
-    } else {
-        switch (color) {
-            case 'R':
-                item.cambio = true;
-                color = "R";
-                break;
-            case 'G':
-            case 'V':
-                item.cambio = true;
-                color = "V";
-                break;
-            case 'B':
-            case 'W':
-                item.cambio = true;
-                color = "B";
-                break;
-            case 'A':
-            case 'Y':
-                item.cambio = true;
-                color = "A";
-                break;
-
-        }
+        return "F";
     }
-    //Si tiene una de las siguientes caracteristicas siendo Blanca... es muy probable que sea una cardinal.
-    if (caracteristica == "l025oc025" && color == "B") {
-        color = "CN";
-        item.cambio = true;
-    } else if ((caracteristica == "[(l025oc025)x2]l025oc375" || caracteristica == "[(l03oc08)x2]l03oc25") && color == "B") {
-        color = "CE";
-        item.cambio = true;
-    } else if (caracteristica == "[(l025oc025)x6]l2oc5" && color == "B") {
-        color = "CS";
-        item.cambio = true;
-    } else if (caracteristica == "[(l025oc025)x5]l025oc375" && color == "B") {
-        color = "CO";
-        item.cambio = true;
+    if (tipo.includes("semaforo")) {
+        return "S";
+    }
+    if (tipo.includes("peligro")) {
+        return "PA";
+    }
+    if (tipo.includes("navegable") || tipo.includes("nuevo")) {
+        return "AN";
+    }
+    if (tipo.includes(" odas ") || tipo.includes(" sado ")) {
+        return "ODAS";
     }
 
-    if (!item.cambio) {
-        //IMPRIMO ERRORES
-        color = "B";
-        //console.log(item);
+    // Clasificación por color y combinación
+    const tieneCombinacion = /[234]\+1/.test(apariencia);
+
+    switch (color) {
+        case 'R':
+            return tieneCombinacion ? "RB" : "R";
+        case 'G':
+        case 'V':
+            return tieneCombinacion ? "VB" : "V";
+        case 'B':
+        case 'W':
+            color = "B";
+            break;
+        case 'A':
+        case 'Y':
+            color = "A";
+            break;
     }
-    /*  if (item.nif==balizaPrueba)
-            console.log(color); */
+
+    // Boyas cardinales blancas
+    const cardinales = {
+        "l025oc025": "CN",
+        "[(l025oc025)x2]l025oc375": "CE",
+        "[(l03oc08)x2]l03oc25": "CE",
+        "[(l025oc025)x6]l2oc5": "CS",
+        "[(l025oc025)x5]l025oc375": "CO"
+    };
+
+    if (color === "B" && cardinales[caracteristica]) {
+        return cardinales[caracteristica];
+    }
 
     return color;
+}
+
+function getFlash(item){
+     let apariencia = item.apariencia.toLowerCase().replace(/[\s()]/g, "").replace(/rp/g, "d");
+     return apariencia;
 }
 
 ///////// #################################

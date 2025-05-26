@@ -28,8 +28,9 @@ fetchData()?.then((balizas) => {
   markers = [];
   balizas.forEach(item => {
     let customIcon = {
+      //iconUrl: myurl + '/img/icon/portalaton/' + getFlash(item) + '.png',
       iconUrl: myurl + '/img/icon/' + getTipo(item) + '.png',
-      iconSize: [20, 40],
+      iconSize: [15, 30],
     }
     if (item.apagada)
       customIcon.className = "apagada";
