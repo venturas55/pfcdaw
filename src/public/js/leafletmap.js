@@ -32,15 +32,21 @@ fetchData()?.then((balizas) => {
       iconUrl: myurl + '/img/icon/' + getTipo(item) + '.png',
       iconSize: [15, 30],
     }
-    if (item.apagada)
+    if (item.apagada) {
       customIcon.className = "apagada";
+      //customIcon.iconSize=[30,60];
+    }
     let myIcon = L.icon(customIcon);
     let iconOptions = {
       title: item.tipo,
       draggable: true,
       icon: myIcon
     }
+    /*     if (item.apagada){
+          iconOptions.draggable = false;
+        } */
     let marker = new L.Marker(setMarkerLatLng(item.latitud, item.longitud), iconOptions);
+
 
     marker.on('dragstart', function (event) {
       console.log(posicionInicial);
@@ -83,21 +89,24 @@ fetchData()?.then((balizas) => {
 
       markers.push(thismarker);
     });
-
-    marker.bindTooltip('<div>' +
-      "<div>NIF:" +
-      '<p>' + item.nif.toString() + "</p> Apariencia: " + item.apariencia + "</div>" +
-      '<img class="avatar avatar-s" src="/img/imagenes/' + item.nif.toString() + '/' + item.pictureUrl[0] + '"/>' +
-      "</div>", {
-      opapcity: 0.8,
-      direction: 'top',
-      sticky: true,
-    })
-      .bindPopup('<div>' +
+    //if (item.apagada) {}
+      marker.bindTooltip('<div>' +
         "<div>NIF:" +
-        '<a href="/aton/plantilla/' + item.nif.toString() + '">' + item.nif.toString() + "</a> Apariencia: " + item.apariencia + "</div>" +
-        //'<div> Coordenadas: ' + item.longitud + " "+ item.latitud+ '</div>' +
-        "</div>").openPopup();
+        `<p> ${item.nif.toString()}</p> Apariencia: ${item.apariencia}</div>` +
+        `<img class="avatar avatar-s" src="/img/imagenes/${item.nif.toString()}/${item.pictureUrl[item.pictureUrl.length-1]}/>` +
+        "</div>", {
+        opacity: 0.7,
+        direction: 'top',
+        sticky: false,
+      })
+    
+    marker.bindPopup(
+      `<div><div><p> NIF:<a href="/aton/plantilla/${item.nif.toString()}">${item.nif.toString()} </a> </p> Apariencia: ${item.apariencia}</div>
+      <img class="avatar avatar-s" src="/img/imagenes/${item.nif.toString()}/${item.pictureUrl[item.pictureUrl.length-1]}"/>
+      </div>`
+
+    ).openPopup();
+
 
     marker.addTo(map);
 
@@ -107,17 +116,13 @@ fetchData()?.then((balizas) => {
 
 var popup = L.popup();
 
-function drawPin(latlang,title) {
+function drawPin(latlang, title) {
   let iconOptions = {
     title,
     draggable: true,
   }
   //let marker = new L.Marker({ "lat": document.getElementById("latmarker").value, "lng": document.getElementById("lngmarker").value }, iconOptions);
   let marker = new L.Marker(latlang, iconOptions);
-  /*   marker.on('dragstart', function (event) {
-      console.log(posicionInicial);
-      posicionInicial = event.target.getLatLng();
-    }); */
 
   marker.on('dragend', function (event) {
     thismarker = event.target;
@@ -132,7 +137,7 @@ function drawPin(latlang,title) {
   marker.addTo(map);
   map.panTo(new L.LatLng(document.getElementById("latmarker").value, document.getElementById("lngmarker").value));
 }
-function drawThisPin(){
+function drawThisPin() {
   console.log("Dibujando");
   drawPin({ "lat": document.getElementById("latmarker").value, "lng": document.getElementById("lngmarker").value }, "Un Pin");
 }
@@ -166,9 +171,9 @@ function onMapDistance(e) {
   if (secondClick) {
     secondLatLng = e.latlng;
     //L.marker(secondLatLng).addTo(map).bindPopup('Point B<br/>' + e.latlng).openPopup();
-    drawPin(secondLatLng,"Punto B")
+    drawPin(secondLatLng, "Punto B")
     // Dibujamos una línea entre los dos puntos
-    let pl= L.polyline([firstLatLng, secondLatLng], {
+    let pl = L.polyline([firstLatLng, secondLatLng], {
       color: 'red'
     });
     pl.addTo(map);
@@ -178,7 +183,7 @@ function onMapDistance(e) {
   } else {
     firstLatLng = e.latlng;
     //L.marker(firstLatLng).addTo(map).bindPopup('Point A<br/>' + e.latlng).openPopup();
-    drawPin(firstLatLng,"Punto A");
+    drawPin(firstLatLng, "Punto A");
     secondClick = true;
   }
 }
