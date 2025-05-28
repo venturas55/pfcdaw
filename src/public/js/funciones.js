@@ -2,22 +2,27 @@
 // CARDINAL CN CS CE CO
 // ESPECIAL ME
 // FARO FA
-var direccion = document.getElementById("direccion").getAttribute("direccion");
-var puerto = document.getElementById("puerto").getAttribute("puerto");
-var cabecera = document.getElementById("cabecera").getAttribute("cabecera");
-var cabecera2 = document.getElementById("cabecera2").getAttribute("cabecera");
+//var direccion = document.getElementById("direccion").getAttribute("direccion");
+//var puerto = document.getElementById("puerto").getAttribute("puerto");
+//var cabecera = document.getElementById("cabecera").getAttribute("cabecera");
+//var cabecera2 = document.getElementById("cabecera2").getAttribute("cabecera");
 //var protocolo = document.getElementById("protocolo").getAttribute("value");
 //console.log(puerto);
 //let myurl = 'http://localhost:' + puerto;
 //let myurl = 'http://adriandeharo.es:'+puerto;
 //let myurl = 'https://san.valenciaport.com';
-console.log("Direccion: ", direccion)
-console.log("puerto: ", puerto)
-console.log("cabecera: ", cabecera)
-console.log("cabecera2: ", cabecera2)
+//console.log("Direccion: ", direccion)
+//console.log("puerto: ", puerto)
+//console.log("cabecera: ", cabecera)
+//console.log("cabecera2: ", cabecera2)
+//let myurl = cabecera2 + direccion;
 
-let myurl = cabecera2 + direccion;
-console.log("URL: ", myurl);
+const protocolo = window.location.protocol;
+const host = window.location.host;  
+const myurl = `${protocolo}//${host}`;
+//console.log("URL construida2: ", myurl);
+//console.log("URL: ", myurl);
+
 //console.log("PROTOCOLO: ",protocolo);
 //FUNCION PARA CERRAR MODALES
 function cierraModal() {
@@ -31,6 +36,7 @@ function cambiarUsuario() {
     var passcheck = document.getElementById("contrasenaConfirmacion").value;
     //TODO: verificar el pass con la base de datos
 }
+
 function abreModalObs(id) {
     //console.log("observacion con id" + id);
     var item = document.getElementById("myModalBorradoObs");
@@ -39,6 +45,7 @@ function abreModalObs(id) {
     //console.log(ref.href);
     item.style.display = 'block';
 }
+
 function abreModalMant(id) {
     //console.log("Mantenimiento con id" + id);
     var item = document.getElementById("myModalBorradoMant");
@@ -214,9 +221,8 @@ function getMarkerLatLng({ lat, lng }) {
 }
 
 //FUNCION QUE LE PASA UN OBJETO BALIZA Y LE DEVUELVE UNA LETRA QUE REPRESENTA EL COLOR/TIPO
-//FUNCION QUE LE PASA UN OBJETO BALIZA Y LE DEVUELVE UNA LETRA QUE REPRESENTA EL COLOR/TIPO
 function getTipo(item) {
-    const tipo = item.tipo.toLowerCase();
+const tipo = item.tipo.toLowerCase();
     const caracteristica = item.caracteristica.toLowerCase().replace(/[\s.,+]/g, "");
     let apariencia = item.apariencia.toUpperCase().replace(/\s/g, "");
     let color = apariencia.slice(-1); // Último carácter
@@ -272,9 +278,10 @@ function getTipo(item) {
 
     return color;
 }
-function getFlash(item) {
-    let apariencia = item.apariencia.toLowerCase().replace(/[\s()]/g, "").replace(/rp/g, "d");
-    return apariencia;
+
+function getFlash(item){
+     let apariencia = item.apariencia.toLowerCase().replace(/[\s()]/g, "").replace(/rp/g, "d");
+     return apariencia;
 }
 
 ///////// #################################

@@ -28,11 +28,8 @@ fetchData()?.then((balizas) => {
   markers = [];
   balizas.forEach(item => {
     let customIcon = {
-      //TODO: dar al usuario opción de elegir de mostrar TIPO o FLASH en mapa
       //iconUrl: myurl + '/img/icon/portalaton/' + getFlash(item) + '.png',
       iconUrl: myurl + '/img/icon/' + getTipo(item) + '.png',
-      //TODO: dar al usuario opción de elegir tamaño icono en mapa
-      //iconSize: [20, 40],
       iconSize: [15, 30],
     }
     if (item.apagada) {
@@ -92,12 +89,18 @@ fetchData()?.then((balizas) => {
 
       markers.push(thismarker);
     });
-    //if (item.apagada) {}
-      marker.bindTooltip('<div>' +
-        "<div>NIF:" +
-        `<p> ${item.nif.toString()}</p> Apariencia: ${item.apariencia}</div>` +
-        `<img class="avatar avatar-s" src="/img/imagenes/${item.nif.toString()}/${item.pictureUrl[item.pictureUrl.length-1]}/>` +
-        "</div>", {
+    let ruta="";
+    if (item.pictureUrl[0]!="N/A") {
+      ruta=`/img/imagenes/${item.nif.toString()}/${item.pictureUrl[item.pictureUrl.length-1]}`;
+    }
+    else{
+      ruta="/img/icon/buoyIcon.jpg";
+    }
+      marker.bindTooltip(`<div>
+        <div>NIF:
+        <p> ${item.nif.toString()}</p> Apariencia: ${item.apariencia}</div>
+        <img class="avatar avatar-s" src="${ruta}" />
+        </div>`, {
         opacity: 0.7,
         direction: 'top',
         sticky: false,
@@ -105,11 +108,10 @@ fetchData()?.then((balizas) => {
     
     marker.bindPopup(
       `<div><div><p> NIF:<a href="/aton/plantilla/${item.nif.toString()}">${item.nif.toString()} </a> </p> Apariencia: ${item.apariencia}</div>
-      <img class="avatar avatar-s" src="/img/imagenes/${item.nif.toString()}/${item.pictureUrl[item.pictureUrl.length-1]}"/>
+      <img class="avatar avatar-s" src="${ruta}"/>
       </div>`
-
     ).openPopup();
-
+  
 
     marker.addTo(map);
 

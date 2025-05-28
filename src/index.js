@@ -76,11 +76,10 @@ app.use((req, res, next) => {
   app.locals.error = req.flash("error");
   app.locals.message = req.flash("message");
   app.locals.user = req.user;
-  app.locals.direccion = req.headers.host;
-  req.secure?app.locals.cabecera="https://": app.locals.cabecera="http://";
-  app.locals.cabecera2 = req.protocol + "://";
-
-  app.locals.puerto = app.get("port");
+  //app.locals.direccion = req.headers.host;
+  //req.secure?app.locals.cabecera="https://": app.locals.cabecera="http://";
+  //app.locals.cabecera2 = req.protocol + "://";
+  //app.locals.puerto = app.get("port");
   next();
 });
 
