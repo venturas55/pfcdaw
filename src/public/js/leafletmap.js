@@ -91,7 +91,7 @@ fetchData()?.then((balizas) => {
     });
     let ruta="";
     if (item.pictureUrl[0]!="N/A") {
-      ruta=`/img/imagenes/${item.nif.toString()}/${item.pictureUrl[item.pictureUrl.length-1]}`;
+      ruta=`/img/imagenes/${item.nif.toString()}/${item.pictureUrl[0]}`;
     }
     else{
       ruta="/img/icon/buoyIcon.jpg";

@@ -1,6 +1,7 @@
 import bcryptjs from 'bcryptjs';
 import { join } from 'path';
 import fse from 'fs-extra';
+import { promises as fs } from "fs";
 import db from "../database.js";
 import mysqldump from 'mysqldump';
 import { stringify } from 'querystring';
@@ -9,28 +10,32 @@ import * as url from "url";
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const funciones = {};
 
-funciones.listadoFotos = (req, res, next) => {
-    const nif = req;
-    var fotitos = [];
-    var directorio = join(__dirname, "../public/img/imagenes", nif);
-    fse.readdir(directorio, (err, files) => {
-        if (files) {
-            files.forEach(file => {
-                fotitos.push(file);
-            });
-        }
-    });
-    return fotitos;
-}
+funciones.getFotosOrdenadas = async (nif) => {
+  const directorio = join(__dirname, "../public/img/imagenes", nif);
 
-funciones.getUrlPictureAtoN = (nif) => {
-    let files;
-    var directorio = join(__dirname, "../public/img/imagenes", nif);
-    if (fse.existsSync(directorio)) {
-        files = fse.readdirSync(directorio)
-    }
-    return files;
-}
+  try {
+    const files = await fs.readdir(directorio);
+
+    const archivosConFechas = await Promise.all(
+      files.map(async (file) => {
+        const rutaCompleta = join(directorio, file);
+        const stats = await fs.stat(rutaCompleta);
+        return {
+          file,
+          time: stats.mtime,
+        };
+      })
+    );
+
+    archivosConFechas.sort((a, b) => b.time - a.time);
+    return archivosConFechas.map(f => f.file);
+
+  } catch (err) {
+    console.error("Error al leer imágenes:", err);
+    return [];
+  }
+};
+
 
 funciones.listadoCarpetas = async (req, res, next) => {
     var source = join(__dirname, "../public/img/imagenes/");
