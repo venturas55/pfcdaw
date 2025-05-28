@@ -20,8 +20,8 @@
 const protocolo = window.location.protocol;
 const host = window.location.host;  
 const myurl = `${protocolo}//${host}`;
-console.log("URL construida2: ", myurl);
-console.log("URL: ", myurl);
+//console.log("URL construida2: ", myurl);
+//console.log("URL: ", myurl);
 
 //console.log("PROTOCOLO: ",protocolo);
 //FUNCION PARA CERRAR MODALES

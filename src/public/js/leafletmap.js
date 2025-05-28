@@ -90,11 +90,11 @@ fetchData()?.then((balizas) => {
       markers.push(thismarker);
     });
     //if (item.apagada) {}
-      marker.bindTooltip('<div>' +
-        "<div>NIF:" +
-        `<p> ${item.nif.toString()}</p> Apariencia: ${item.apariencia}</div>` +
-        `<img class="avatar avatar-s" src="/img/imagenes/${item.nif.toString()}/${item.pictureUrl[item.pictureUrl.length-1]}/>` +
-        "</div>", {
+      marker.bindTooltip(`<div>
+        <div>NIF:
+        <p> ${item.nif.toString()}</p> Apariencia: ${item.apariencia}</div>
+        <img class="avatar avatar-s" src="/img/imagenes/${item.nif.toString()}/${item.pictureUrl[item.pictureUrl.length-1]}"/>
+        </div>`, {
         opacity: 0.7,
         direction: 'top',
         sticky: false,
@@ -104,7 +104,6 @@ fetchData()?.then((balizas) => {
       `<div><div><p> NIF:<a href="/aton/plantilla/${item.nif.toString()}">${item.nif.toString()} </a> </p> Apariencia: ${item.apariencia}</div>
       <img class="avatar avatar-s" src="/img/imagenes/${item.nif.toString()}/${item.pictureUrl[item.pictureUrl.length-1]}"/>
       </div>`
-
     ).openPopup();
 
 
