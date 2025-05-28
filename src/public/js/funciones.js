@@ -5,6 +5,7 @@
 var direccion = document.getElementById("direccion").getAttribute("direccion");
 var puerto = document.getElementById("puerto").getAttribute("puerto");
 var cabecera = document.getElementById("cabecera").getAttribute("cabecera");
+var cabecera2 = document.getElementById("cabecera2").getAttribute("cabecera");
 //var protocolo = document.getElementById("protocolo").getAttribute("value");
 //console.log(puerto);
 //let myurl = 'http://localhost:' + puerto;
@@ -13,8 +14,9 @@ var cabecera = document.getElementById("cabecera").getAttribute("cabecera");
 console.log("Direccion: ", direccion)
 console.log("puerto: ", puerto)
 console.log("cabecera: ", cabecera)
+console.log("cabecera2: ", cabecera2)
 
-let myurl = "https://" + direccion;
+let myurl = cabecera2 + direccion;
 console.log("URL: ", myurl);
 //console.log("PROTOCOLO: ",protocolo);
 //FUNCION PARA CERRAR MODALES
