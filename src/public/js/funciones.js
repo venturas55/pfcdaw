@@ -16,6 +16,13 @@ console.log("puerto: ", puerto)
 console.log("cabecera: ", cabecera)
 console.log("cabecera2: ", cabecera2)
 
+const protocolo = window.location.protocol;
+const host = window.location.host;  
+const myurl2 = `${protocolo}//${host}`;
+console.log("URL construida2: ", myurl2);
+
+
+
 let myurl = cabecera2 + direccion;
 console.log("URL: ", myurl);
 //console.log("PROTOCOLO: ",protocolo);
