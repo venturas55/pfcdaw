@@ -9,7 +9,7 @@ const queryListadoAton = "SELECT b.nif,b.num_internacional,b.tipo,b.apariencia,b
 router.get('/api/balizas', async (req, res) => {
     const balizas = await db.query(queryListadoAton);
     for (var i = 0; i < balizas.length; i++) {
-        var archivos = await funciones.getUrlPictureAtoN(balizas[i].nif);
+        var archivos = await funciones.getFotosOrdenadas(balizas[i].nif);
         if (archivos)
             balizas[i].pictureUrl = archivos;
         else
@@ -20,7 +20,7 @@ router.get('/api/balizas', async (req, res) => {
 router.get('/api/aton/boyas', async (req, res) => {
     const balizas = await db.query(queryListadoAton + " where b.esBoya=1");
     for (var i = 0; i < balizas.length; i++) {
-        var archivos = await funciones.getUrlPictureAtoN(balizas[i].nif);
+        var archivos = await funciones.getFotosOrdenadas(balizas[i].nif);
         var fondeo = await db.query("select * from fondeos where nif=?",balizas[i].nif)
         balizas[i].fondeo=fondeo;
         if (archivos)
@@ -33,7 +33,7 @@ router.get('/api/aton/boyas', async (req, res) => {
 router.get('/api/aton/balizas', async (req, res) => {
     const balizas = await db.query(queryListadoAton + " where b.esBoya=0");
     for (var i = 0; i < balizas.length; i++) {
-        var archivos = await funciones.getUrlPictureAtoN(balizas[i].nif);
+        var archivos = await funciones.getFotosOrdenadas(balizas[i].nif);
         if (archivos)
             balizas[i].pictureUrl = archivos;
         else

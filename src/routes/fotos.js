@@ -94,7 +94,7 @@ router.post("/aton/upload/:nif", funciones.isAuthenticated, funciones.hasSanPriv
 });
 router.get("/aton/fotos/:nif", async (req, res) => {
     const nif = req.params.nif;
-    var fotos = await funciones.listadoFotos(nif);
+    var fotos = await funciones.getFotosOrdenadas(nif);
     res.render("aton/fotos", { fotos, nif });
 });
 router.get("/aton/fotos/:nif/:src/delete", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {

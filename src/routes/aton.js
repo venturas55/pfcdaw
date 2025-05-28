@@ -251,8 +251,9 @@ router.get("/plantilla/:nif", async (req, res) => {
         const mantenimiento = await db.query('SELECT * FROM mantenimiento where nif=? order by fecha DESC', [nif]);
         const tickets = await db.query(queryListadoTicketsUsers + 'where t.nif=? and solved_at is null', [nif]);
         const preventivos = await db.query(queryListadoPreventivosUsers + 'where p.nif=? ', [nif]);
-        var fotos = funciones.listadoFotos(nif);
-        console.log("Es boya??", baliza[0]);
+        var fotos = await funciones.getFotosOrdenadas(nif);
+        console.log("fotos: ",fotos);
+        //console.log("Es boya??", baliza[0]);
         if (baliza[0].esBoya)
             var [fondeo] = await db.query('select * from fondeos where nif=?', [nif]);
         res.render("aton/plantilla", { layout: 'layoutPlantilla', baliza: baliza[0], obs: observaciones, mant: mantenimiento, fotos, tickets, preventivos, fondeo });
