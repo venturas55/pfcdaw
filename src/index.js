@@ -8,12 +8,14 @@ import MySQLstore from "express-mysql-session"; // para poder guardar la sesion 
 import { config } from "./config.js";
 import passport from "passport";
 import cors from "cors";
+import "./lib/passport.js"; //para que se entere de la autentificacion que se ha creado
 import * as path from "path";
 import * as url from "url";
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
+
 //Inicializacion
 const app = express();
-import "./lib/passport.js"; //para que se entere de la autentificacion que se ha creado
+app.set("trust proxy", true); 
 
 //Configuracion
 app.set("port", config.PORT);
@@ -76,6 +78,8 @@ app.use((req, res, next) => {
   app.locals.user = req.user;
   app.locals.direccion = req.headers.host;
   req.secure?app.locals.cabecera="https://": app.locals.cabecera="http://";
+  app.locals.cabecera2 = req.protocol + "://";
+
   app.locals.puerto = app.get("port");
   next();
 });
