@@ -89,29 +89,29 @@ fetchData()?.then((balizas) => {
 
       markers.push(thismarker);
     });
-    let ruta="";
-    if (item.pictureUrl[0]!="N/A") {
-      ruta=`/img/imagenes/${item.nif.toString()}/${item.pictureUrl[0]}`;
+    let ruta = "";
+    if (item.pictureUrl.length > 0) {
+      ruta = `/img/imagenes/${item.nif.toString()}/${item.pictureUrl[0]}`;
     }
-    else{
-      ruta="/img/icon/buoyIcon.jpg";
+    else {
+      ruta = "/img/icon/buoyIcon.jpg";
     }
-      marker.bindTooltip(`<div>
+    marker.bindTooltip(`<div>
         <div>NIF:
         <p> ${item.nif.toString()}</p> Apariencia: ${item.apariencia}</div>
         <img class="avatar avatar-s" src="${ruta}" />
         </div>`, {
-        opacity: 0.7,
-        direction: 'top',
-        sticky: false,
-      })
-    
+      opacity: 0.7,
+      direction: 'top',
+      sticky: false,
+    })
+
     marker.bindPopup(
       `<div><div><p> NIF:<a href="/aton/plantilla/${item.nif.toString()}">${item.nif.toString()} </a> </p> Apariencia: ${item.apariencia}</div>
       <img class="avatar avatar-s" src="${ruta}"/>
       </div>`
     ).openPopup();
-  
+
 
     marker.addTo(map);
 

@@ -1,7 +1,7 @@
 # pfcdaw
 Desarrollo del Proyecto final de ciclo para DAW
-TODO: Gestion de Backups de BBDD
-
+TODO: Gestion de Backups de BBDD 
+gitlab interno apv
 ==================
           NUEVA INSTALACION
 Manual de nueva instalación.
@@ -167,5 +167,60 @@ Además se han añadido dos variables de entorno más EMAIL_ACCOUNT y EMAIL_PASS
 ACTUALIZACIONES:
 Se ha de añadir en la BBDD una columna nueva a la tabla localizacion. La columna es experiemntal y es de tipo POINT para almacenar las coordenadas.
 
+Se ha creado para que el admin pueda ejecutar los cambios en la bbdd desde la app. solo hay que añadir los comandos de modificacion de las tablas en database/addNewMods.sql
+
 22-5-25 Se añade fotos en los preventivos.
+
+
+
+
+
+=====
+# ACTUALIZACION ESDE VERSION ANTERIOR A ABRIL DE 2023
+=====
+#CAMBIAR TABLA USUARIOS:
+drop table cochecito:
+drop table eliminados;
+ALTER TABLE usuarios
+ADD COLUMN id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY FIRST;
+
+-- Asegurar que `usuario` y `contrasena` no acepten valores NULL
+ALTER TABLE usuarios
+MODIFY COLUMN usuario VARCHAR(50) NOT NULL,
+MODIFY COLUMN contrasena VARCHAR(250) NOT NULL;
+
+-- Agregar columnas nuevas: email, full_name, pictureURL
+ALTER TABLE usuarios
+ADD COLUMN email VARCHAR(200) DEFAULT NULL,
+ADD COLUMN full_name VARCHAR(150) DEFAULT NULL,
+ADD COLUMN pictureURL VARCHAR(100) CHARACTER SET utf16 COLLATE utf16_spanish2_ci DEFAULT NULL;
+
+-- Establecer valor por defecto 'leaflet' para la columna `prefmap`
+ALTER TABLE usuarios
+MODIFY COLUMN prefmap VARCHAR(10) DEFAULT 'leaflet';
+
+-- Cambiar el motor de almacenamiento y el cotejamiento general
+ALTER TABLE usuarios
+ENGINE = InnoDB,
+DEFAULT CHARSET = utf8mb4,
+COLLATE = utf8mb4_general_ci,
+COMMENT = 'tabla de usuarios';
+
+ALTER TABLE lampara DROP FOREIGN KEY lampara_FK;
+ALTER TABLE localizacion DROP FOREIGN KEY localizacion_FK;
+ALTER TABLE mantenimiento DROP FOREIGN KEY mantenimiento_FK;
+ALTER TABLE observaciones DROP FOREIGN KEY observaciones_FK;
+
+ALTER TABLE balizamiento CHANGE `nif` `nif` varchar(8) COLLATE 'utf8mb4_general_ci' NOT NULL FIRST;
+ALTER TABLE `lampara` CHANGE `nif` `nif` varchar(8) COLLATE 'utf8mb4_general_ci' NOT NULL FIRST;
+ALTER TABLE `localizacion` CHANGE `nif` `nif` varchar(8) COLLATE 'utf8mb4_general_ci' NOT NULL FIRST;
+ALTER TABLE `mantenimiento` CHANGE `nif` `nif` varchar(8) COLLATE 'utf8mb4_general_ci' NOT NULL FIRST;
+ALTER TABLE `observaciones` CHANGE `nif` `nif` varchar(8) COLLATE 'utf8mb4_general_ci' NOT NULL FIRST;
+
+
+ALTER TABLE lampara ADD CONSTRAINT lampara_FK FOREIGN KEY (`nif`) REFERENCES balizamiento(`nif`) ON DELETE CASCADE;
+ALTER TABLE localizacion ADD CONSTRAINT localizacion_FK FOREIGN KEY (`nif`) REFERENCES balizamiento(`nif`) ON DELETE CASCADE;
+ALTER TABLE mantenimiento ADD CONSTRAINT mantenimiento_FK FOREIGN KEY (`nif`) REFERENCES balizamiento(`nif`) ON DELETE CASCADE;
+ALTER TABLE observaciones ADD CONSTRAINT observaciones_FK FOREIGN KEY (`nif`) REFERENCES balizamiento(`nif`) ON DELETE CASCADE;
+
 
