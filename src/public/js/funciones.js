@@ -2,29 +2,27 @@
 // CARDINAL CN CS CE CO
 // ESPECIAL ME
 // FARO FA
-var direccion = document.getElementById("direccion").getAttribute("direccion");
-var puerto = document.getElementById("puerto").getAttribute("puerto");
-var cabecera = document.getElementById("cabecera").getAttribute("cabecera");
-var cabecera2 = document.getElementById("cabecera2").getAttribute("cabecera");
+//var direccion = document.getElementById("direccion").getAttribute("direccion");
+//var puerto = document.getElementById("puerto").getAttribute("puerto");
+//var cabecera = document.getElementById("cabecera").getAttribute("cabecera");
+//var cabecera2 = document.getElementById("cabecera2").getAttribute("cabecera");
 //var protocolo = document.getElementById("protocolo").getAttribute("value");
 //console.log(puerto);
 //let myurl = 'http://localhost:' + puerto;
 //let myurl = 'http://adriandeharo.es:'+puerto;
 //let myurl = 'https://san.valenciaport.com';
-console.log("Direccion: ", direccion)
-console.log("puerto: ", puerto)
-console.log("cabecera: ", cabecera)
-console.log("cabecera2: ", cabecera2)
+//console.log("Direccion: ", direccion)
+//console.log("puerto: ", puerto)
+//console.log("cabecera: ", cabecera)
+//console.log("cabecera2: ", cabecera2)
+//let myurl = cabecera2 + direccion;
 
 const protocolo = window.location.protocol;
 const host = window.location.host;  
-const myurl2 = `${protocolo}//${host}`;
-console.log("URL construida2: ", myurl2);
-
-
-
-let myurl = cabecera2 + direccion;
+const myurl = `${protocolo}//${host}`;
+console.log("URL construida2: ", myurl);
 console.log("URL: ", myurl);
+
 //console.log("PROTOCOLO: ",protocolo);
 //FUNCION PARA CERRAR MODALES
 function cierraModal() {
