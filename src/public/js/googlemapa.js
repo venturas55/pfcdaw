@@ -22,15 +22,15 @@ function initMapa(balizas) {
             icon: {
                 url: myurl + '/img/icon/' + getTipo(item) + '.png',
                 scaledSize: {
-                    width: 30,
-                    height: 60
+                    width: 15,
+                    height: 30
                 }
             },
             
         });
 
         /* PARA USAR UNA VENTANA */
-        /*       const contentString =
+  /*       const contentString =
                   '<div id="content">INFO' +
                   "<div>" +
                   '<a href="/aton/plantilla/' + item.nif.toString() + '">' + item.nif.toString() + "</a> " +
@@ -40,7 +40,7 @@ function initMapa(balizas) {
               const infowindow = new google.maps.InfoWindow({
                   content: contentString,
                   ariaLabel: "AtoN",
-              }); */
+              }); */ 
         /* FIN USAR  VENTANA */
 
         // markers can only be keyboard focusable when they have click listeners
