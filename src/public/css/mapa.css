@@ -16,3 +16,8 @@ body {
   opacity: 0.25;
   filter: grayscale(100%);
 }
+
+.bind-tooltip *{
+  padding: 0px;
+  margin: 0px;
+}
