@@ -17,7 +17,7 @@ body {
   filter: grayscale(100%);
 }
 
-.bind-tooltip *{
+.bind-tooltip p{
   padding: 0px;
   margin: 0px;
 }

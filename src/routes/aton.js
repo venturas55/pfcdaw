@@ -795,4 +795,21 @@ router.get("/apagar/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges
         res.redirect("/aton/plantilla/" + nif);
     }
 });
+
+//Para cambiar estado de una señal desde el mapa, redirecciona al mapa
+router.get("/toggleapagado/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
+    try {
+        const { nif } = req.params;
+        const baliza = (await db.query('Select * from balizamiento where nif=?', [nif]))[0];
+        baliza.apagada = !baliza.apagada;
+        await db.query("UPDATE balizamiento set ? WHERE nif = ?", [baliza, nif]);
+        req.flash("success", "AtoN " + nif + " toggle activado correctamente");
+        res.redirect("/mapa/" + nif);
+
+    } catch (error) {
+        console.error(error);
+        req.flash("error", "Hubo algun error al toggle activar AtoN NIF: " + nif);
+        res.redirect("/mapa/" + nif);
+    }
+});
 export default router;
