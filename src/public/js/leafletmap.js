@@ -3,7 +3,7 @@ let centerLatLng = centrar();
 let posicionInicial = { lat: 1, lng: 1 };
 let map;
 let pinMarkers = [];
-let secondClick=false,firstLatLng, secondLatLng;
+let secondClick = false, firstLatLng, secondLatLng;
 var popup = L.popup();
 
 fetchData()?.then((balizas) => {
@@ -13,23 +13,13 @@ fetchData()?.then((balizas) => {
     maxZoom: 17,
   }).addTo(map);
 
-  /*   var TopoLayer = L.tileLayer('../topo/{z}/{x}/{y}.jpg', { maxZoom: 17 ,minZoom: 0 });
-    map.addLayer(TopoLayer); */
-
   // show the scale bar on the lower left corner
   L.control.scale({ imperial: true, metric: true }).addTo(map);
-
-
-  /*  var marker = new L.marker([39.435, -0.29], { opacity: 0.01 }); //opacity may be set to zero 
-   marker.bindTooltip("Darsena Norte", { permanent: true, className: "my-label", offset: [0, 0] });
- });
-   marker.addTo(map); */
-
 
   // show a marker on the map
   markers = [];
   balizas.forEach(item => {
-        let customIcon = {
+    let customIcon = {
       //iconUrl: myurl + '/img/icon/portalaton/' + getFlash(item) + '.png',
       iconUrl: myurl + '/img/icon/' + getTipo(item) + '.png',
       iconSize: [15, 30],
@@ -88,7 +78,7 @@ fetchData()?.then((balizas) => {
     marker.on('click', function (e) {
       window.location.href = `/aton/plantilla/${item.nif.toString()}`;
     });
-    
+
     let ruta = "";
     if (item.pictureUrl.length > 0) {
       ruta = `/img/imagenes/${item.nif.toString()}/${item.pictureUrl[0]}`;
@@ -96,12 +86,12 @@ fetchData()?.then((balizas) => {
     else {
       ruta = "/img/icon/buoyIcon.jpg";
     }
-    
+
     marker.bindTooltip(`
         <div class="bind-tooltip">
           <p> <strong> NIF: ${item.nif.toString()} </strong></p> 
           <p> Apariencia: ${item.apariencia}</p>
-          <p class="text-center">${item.tipo}</p>
+          <p class="text-center">${marker.getLatLng()}</p>
           <img class="avatar avatar-s" src="${ruta}" />
         </div>`, {
       opacity: 0.7,
@@ -111,17 +101,22 @@ fetchData()?.then((balizas) => {
     })
 
     marker.on('contextmenu', function (e) {
-      `<div>
-        <div>
-          <p> NIF:<a href="/aton/plantilla/${item.nif.toString()}">${item.nif.toString()} </a> </p> 
+      const html = `
+        <div class="bind-tooltip">
+          <p> <strong> NIF: ${item.nif.toString()} </strong></p> 
           <p> Apariencia: ${item.apariencia}</p>
-          <img class="avatar avatar-s" src="${ruta}"/>
+          <p class="text-center">${marker.getLatLng()}</p>
+          <img class="avatar avatar-s" src="${ruta}" />
           <button class="btn btn-primary btn-sm" onclick="window.location.href='/aton/plantilla/${item.nif.toString()}'">Ver</button>
-          <button class="btn btn-success btn-sm" onclick="window.location.href='/aton/apagar/${item.nif.toString()}'">Apagar</button>
+          <button class="btn btn-success btn-sm" onclick="window.location.href='/aton/toggleapagado/${item.nif.toString()}'">Apagar/Activar</button>
           <button class="btn btn-danger btn-sm" onclick="window.location.href='/aton/pintado/${item.nif.toString()}'">Pintar</button>
         </div>
-      </div>`;
-      
+      `;
+      L.popup()
+        .setLatLng(e.latlng)
+        .setContent(html)
+        .openOn(map);
+
     });
 
 
@@ -146,6 +141,7 @@ function drawPin(latlang, title) {
     map.panTo(position);
     document.getElementById("latmarker").value = position.lat;
     document.getElementById("lngmarker").value = position.lng;
+    actualizarCoordenadaDEC2WGS();
   });
   pinMarkers.push(marker);
   marker.addTo(map);
