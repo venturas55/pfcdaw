@@ -29,7 +29,7 @@ fetchData()?.then((balizas) => {
   // show a marker on the map
   markers = [];
   balizas.forEach(item => {
-    let customIcon = {
+        let customIcon = {
       //iconUrl: myurl + '/img/icon/portalaton/' + getFlash(item) + '.png',
       iconUrl: myurl + '/img/icon/' + getTipo(item) + '.png',
       iconSize: [15, 30],
@@ -84,6 +84,11 @@ fetchData()?.then((balizas) => {
 
       markers.push(thismarker);
     });
+
+    marker.on('click', function (e) {
+      window.location.href = `/aton/plantilla/${item.nif.toString()}`;
+    });
+    
     let ruta = "";
     if (item.pictureUrl.length > 0) {
       ruta = `/img/imagenes/${item.nif.toString()}/${item.pictureUrl[0]}`;
@@ -91,21 +96,33 @@ fetchData()?.then((balizas) => {
     else {
       ruta = "/img/icon/buoyIcon.jpg";
     }
-    marker.bindTooltip(`<div>
-        <div>NIF:
-        <p> ${item.nif.toString()}</p> Apariencia: ${item.apariencia}</div>
-        <img class="avatar avatar-s" src="${ruta}" />
+    
+    marker.bindTooltip(`
+        <div class="bind-tooltip">
+          <p> <strong> NIF: ${item.nif.toString()} </strong></p> 
+          <p> Apariencia: ${item.apariencia}</p>
+          <p class="text-center">${item.tipo}</p>
+          <img class="avatar avatar-s" src="${ruta}" />
         </div>`, {
       opacity: 0.7,
       direction: 'top',
       sticky: false,
+      offset: [0, -10],
     })
 
-/*     marker.bindPopup(
-      `<div><div><p> NIF:<a href="/aton/plantilla/${item.nif.toString()}">${item.nif.toString()} </a> </p> Apariencia: ${item.apariencia}</div>
-      <img class="avatar avatar-s" src="${ruta}"/>
-      </div>`
-    ).openPopup(); */
+    marker.on('contextmenu', function (e) {
+      `<div>
+        <div>
+          <p> NIF:<a href="/aton/plantilla/${item.nif.toString()}">${item.nif.toString()} </a> </p> 
+          <p> Apariencia: ${item.apariencia}</p>
+          <img class="avatar avatar-s" src="${ruta}"/>
+          <button class="btn btn-primary btn-sm" onclick="window.location.href='/aton/plantilla/${item.nif.toString()}'">Ver</button>
+          <button class="btn btn-success btn-sm" onclick="window.location.href='/aton/apagar/${item.nif.toString()}'">Apagar</button>
+          <button class="btn btn-danger btn-sm" onclick="window.location.href='/aton/pintado/${item.nif.toString()}'">Pintar</button>
+        </div>
+      </div>`;
+      
+    });
 
 
     marker.addTo(map);
