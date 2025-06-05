@@ -103,13 +103,16 @@ fetchData()?.then((balizas) => {
     marker.on('contextmenu', function (e) {
       const html = `
         <div class="bind-tooltip">
-          <p> <strong> NIF: ${item.nif.toString()} </strong></p> 
-          <p> Apariencia: ${item.apariencia}</p>
-          <p class="text-center">${marker.getLatLng()}</p>
-          <img class="avatar avatar-s" src="${ruta}" />
-          <button class="btn btn-primary btn-sm" onclick="window.location.href='/aton/plantilla/${item.nif.toString()}'">Ver</button>
-          <button class="btn btn-success btn-sm" onclick="window.location.href='/aton/toggleapagado/${item.nif.toString()}'">Apagar/Activar</button>
-          <button class="btn btn-danger btn-sm" onclick="window.location.href='/aton/pintado/${item.nif.toString()}'">Pintar</button>
+          <div class="d-flex flex-row gap-1">
+            <p> <strong> NIF: ${item.nif.toString()} </strong></p> 
+            <img class="avatar avatar-s" src="${ruta}" />
+          </div>  
+          <div class="d-flex flex-column gap-2 mt-2">
+            <button class="btn btn-primary btn-sm" onclick="window.location.href='/aton/plantilla/${item.nif.toString()}'">Ver</button>
+            <button class="btn btn-success btn-sm" onclick="window.location.href='/aton/pintado/${item.nif.toString()}'">Pintar</button>
+            <button class="btn btn-danger btn-sm" onclick="window.location.href='/aton/toggleapagado/${item.nif.toString()}'">Apagar/Activar</button>
+            <button class="btn btn-warning btn-sm" onclick="window.location.href='/mantenimientopreventivo/add/${item.nif.toString()}'">Preventivo</button>
+          </div>  
         </div>
       `;
       L.popup()

@@ -392,3 +392,26 @@ function defineCambiosEstado() {
     console.log(destellosAcum);
     return destellosAcum;
 }
+
+//PARA ELIMINAR FOTOS EN FORMULARIO DE PREVENTIVOS
+function eliminarFoto(id, campo) {
+    if (!confirm('¿Seguro que quieres eliminar esta imagen?')) return;
+
+    fetch('/mantenimientopreventivo/eliminar-foto', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, campo })
+    })
+    .then(res => {
+        if (!res.ok) throw new Error('Error al eliminar');
+        return res.json();
+    })
+    .then(data => {
+        // Opcional: eliminar la imagen del DOM
+        location.reload(); // o manipular el DOM para quitar la imagen
+    })
+    .catch(err => {
+        console.error(err);
+        alert('Error al eliminar imagen');
+    });
+}

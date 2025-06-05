@@ -5,8 +5,6 @@ import fs from 'fs';
 import { join, extname as _extname, resolve } from 'path';
 import db from "../database.js"; //db hace referencia a la BBDD
 import multer, { diskStorage } from 'multer';
-//const { access, constants } = require('node:fs');
-import { access, constants } from 'fs';
 import funciones from "../lib/funciones.js";
 import { archiveFolder, extract } from "zip-lib";
 import * as url from "url";
@@ -182,7 +180,7 @@ router.post('/upload/:id', funciones.isAuthenticated, uploadFoto, zipSizeLimitEr
     //borramos la foto anterior del perfil
     if (usuario.pictureURL != "") {
         const filePath = resolve('src/public/img/profiles/' + usuario.pictureURL);
-        access(filePath, constants.F_OK, async (err) => {
+        fs.access(filePath, fs.constants.F_OK, async (err) => {
             if (err) {
                 req.flash("warning", "No tiene foto de perfil!");
                 console.log("No tiene foto de perfil");
@@ -206,7 +204,7 @@ router.get("/profile/borrarfoto/:id/:url", funciones.isAuthenticated, async (req
     const { id } = req.params;
     await db.query("UPDATE usuarios set pictureURL = NULL WHERE id=?", [id]);
     const filePath = resolve('src/public/img/profiles/' + url);
-    access(filePath, constants.F_OK, async (err) => {
+    fs.access(filePath, fs.constants.F_OK, async (err) => {
         if (err) {
             console.log("No tiene foto de perfil");
         } else {
