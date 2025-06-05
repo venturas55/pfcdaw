@@ -6,21 +6,35 @@ const queryListadoPreventivosUsers = 'SELECT p.preventivo_id,p.fecha,p.nif,p.est
 import moment from 'moment';
 moment().format();
 import * as url from "url";
+import fs from 'fs';
+import  fse    from 'fs-extra';
 import { join, extname as _extname, resolve } from 'path';
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 import multer, { diskStorage } from 'multer';
-import {imageSizeLimitErrorHandler} from "../lib/validaciones.js";
+import { imageSizeLimitErrorHandler } from "../lib/validaciones.js";
 
 const storage = diskStorage({
     destination: (req, file, cb) => {
-        const dir = join(__dirname, '../public/img/preventivos');
-        return cb(null, dir);
+        const nif = req.body.nif;
+        const dir = join(__dirname, '../public/img/preventivos/', nif);
+        try {
+            // Crear la carpeta si no existe (de forma sincrónica y sin callback)
+            if (!fs.existsSync(dir)) {
+                fs.mkdirSync(dir, { recursive: true });
+                console.log('📁 Carpeta creada:', dir);
+            } else {
+                console.log('📁 Carpeta ya existe:', dir);
+            }
+
+            cb(null, dir); // Devolver la ruta correctamente
+        } catch (err) {
+            console.error('❌ Error al crear carpeta:', err);
+            cb(err);
+        }
     },
     filename: (req, file, cb) => {
-        const nif = req.body.nif;
-        const fecha = req.body.fecha;
-        console.log("GRABANDO PREVENTIVO FOTOS")
-        cb(null, nif + "-" + file.fieldname + "-" + fecha + _extname(file.originalname).toLowerCase());
+        const fecha = req.body.fecha.replace(/-/g, "");
+        cb(null, fecha + "-" + file.fieldname + _extname(file.originalname).toLowerCase());
     }
 });
 
@@ -83,12 +97,31 @@ router.get('/add/:nif', funciones.isAuthenticated, async (req, res) => {
 });
 
 // Ruta para crear un nuevo preventivo (envío del formulario)
-router.post('/add', funciones.isAuthenticated, async (req, res) => {
+router.post('/add', funciones.isAuthenticated, upload.fields([
+    { name: 'foto_estructura', maxCount: 1 },
+    { name: 'foto_linterna', maxCount: 1 },
+    { name: 'foto_monitoreo', maxCount: 1 },
+    { name: 'foto_alimentacion', maxCount: 1 },
+    { name: 'foto_general', maxCount: 1 }
+]), imageSizeLimitErrorHandler, async (req, res) => {
     if (req.body.alimentacion_ah == "")
         req.body.alimentacion_ah = 0;
     if (req.body.alimentacion_vcc == "")
         req.body.alimentacion_vcc = 0;
-    req.body.created_by_id = req.user.id;
+
+    // Verificar si se subieron fotos y guardarlas en la base de datos
+    const foto_estructura = req.files && req.files.foto_estructura ? req.files.foto_estructura[0].filename : null;
+    const foto_linterna = req.files && req.files.foto_linterna ? req.files.foto_linterna[0].filename : null;
+    const foto_monitoreo = req.files && req.files.foto_monitoreo ? req.files.foto_monitoreo[0].filename : null;
+    const foto_alimentacion = req.files && req.files.foto_alimentacion ? req.files.foto_alimentacion[0].filename : null;
+    const foto_general = req.files && req.files.foto_general ? req.files.foto_general[0].filename : null;
+
+    if (foto_estructura) req.body.foto_estructura = foto_estructura;
+    if (foto_linterna) req.body.foto_linterna = foto_linterna;
+    if (foto_monitoreo) req.body.foto_monitoreo = foto_monitoreo;
+    if (foto_alimentacion) req.body.foto_alimentacion = foto_alimentacion;
+    if (foto_general) req.body.foto_general = foto_general;
+
     try {
         //TODO:    telecontrol_tipo
         const awns = await db.query("insert into preventivos set ? ", [req.body]);
@@ -129,7 +162,8 @@ router.post('/edit/:id', funciones.isAuthenticated, funciones.hasSanPrivileges, 
     { name: 'foto_monitoreo', maxCount: 1 },
     { name: 'foto_alimentacion', maxCount: 1 },
     { name: 'foto_general', maxCount: 1 }
-]), imageSizeLimitErrorHandler,async (req, res) => {
+]), imageSizeLimitErrorHandler, async (req, res) => {
+
 
     // Verificar si se subieron fotos y guardarlas en la base de datos
     const foto_estructura = req.files && req.files.foto_estructura ? req.files.foto_estructura[0].filename : null;
@@ -221,6 +255,41 @@ router.get("/delete/:id", funciones.isAuthenticated, funciones.isAdmin, async (r
         console.error(error);
         req.flash("error", "Hubo algun error al intentar borrar el preventivo" + error);
         res.redirect("/mantenimientopreventivo/list");
+    }
+});
+
+router.post('/eliminar-foto', async (req, res) => {
+    const { id, campo } = req.body; // ej: id del preventivo, campo: 'foto_general', ruta: '26046.7/foto.jpg'
+    console.log("Voy");
+    let columna = campo.split("-")[1].split(".")[0]
+    console.log("id: ", id + " foto: ", columna)
+
+    try {
+        // Quitar ruta en la base de datos
+        await db.query(`UPDATE preventivos SET ${columna} = NULL WHERE preventivo_id = ?`, [id]);
+        const [row] = await db.query(`SELECT * FROM preventivos WHERE preventivo_id = ?`, [id]);
+        console.log(row.nif)
+
+        // Borrar imagen del disco
+        const filePath = resolve('src/public/img/preventivos/' + row.nif + '/' + campo);
+        fs.access(filePath, fs.constants.F_OK, async (err) => {
+            if (err) {
+                console.log("❌ No existe foto",err);
+            } else {
+                console.log('✅ File exists. Deleting now...');
+                // No uses await aquí; esta función no es async
+                fse.unlink(filePath)
+                    .then(() => console.log("🗑 Archivo borrado correctamente"))
+                    .catch((error) => console.error("❌ Error al borrar archivo:", error));
+            }
+        });
+
+
+
+        res.json({ success: true });
+    } catch (err) {
+        console.error('❌ Error eliminando imagen:', err);
+        res.status(500).send('Error al eliminar la imagen');
     }
 });
 

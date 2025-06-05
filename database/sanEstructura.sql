@@ -1,4 +1,4 @@
-drop database if exists sanpfcdaw;
+/* drop database if exists sanpfcdaw;
 
 create database sanpfcdaw;
 
@@ -10,7 +10,7 @@ SET
 START TRANSACTION;
 
 SET
-  time_zone = "+00:00";
+  time_zone = "+00:00"; */
 
 /*INICIO informacion ATON*/
 CREATE TABLE IF NOT EXISTS `balizamiento` (

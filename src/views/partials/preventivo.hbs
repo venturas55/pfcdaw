@@ -1,4 +1,5 @@
 <div class="border border-primary rounded estructura p-2 m-2">
+
     <div class="form-group">
         <label for="titulo">Estado</label>
         <div class="form-check form-check-inline">
@@ -194,9 +195,13 @@
     </div>
     <input type="file" class="form-control-file" name="foto_estructura" id="foto_estructura">
     {{#if preventivo.foto_estructura}}
-    <div class="form-group">
-        <img class="img-fluid rounded mx-auto d-block" style="max-width: 100%; height: auto; max-height: 300px;"
-            src="/img/preventivos/{{preventivo.foto_estructura}}" alt="Estructura">
+    <div class="position-relative d-inline-block">
+        <img class="img-fluid rounded mx-auto img-thumbnail d-block"
+            style="max-width: 100%; height: auto; max-height: 300px;"
+            src="/img/preventivos/{{preventivo.nif}}/{{preventivo.foto_estructura}}" alt="foto_estructura">
+        <button type="button" class="btn btn-danger btn-sm position-absolute bottom-0 end-0 m-3" title="Eliminar"
+            onclick="eliminarFoto('{{preventivo.preventivo_id}}', '{{preventivo.foto_estructura}}')">x</button>
+
     </div>
     {{/if}}
 </div>
@@ -309,9 +314,13 @@
     </div>
     <input type="file" class="form-control-file" name="foto_linterna" id="foto_linterna">
     {{#if preventivo.foto_linterna}}
-    <div class="form-group">
-        <img class="img-fluid rounded mx-auto d-block" style="max-width: 100%; height: auto; max-height: 300px;"
-            src="/img/preventivos/{{preventivo.foto_linterna}}" alt="foto_linterna">
+    <div class="position-relative d-inline-block">
+        <img class="img-fluid rounded mx-auto img-thumbnail d-block"
+            style="max-width: 100%; height: auto; max-height: 300px;"
+            src="/img/preventivos/{{preventivo.nif}}/{{preventivo.foto_linterna}}" alt="foto_linterna">
+        <button type="button" class="btn btn-danger btn-sm position-absolute bottom-0 end-0 m-3" title="Eliminar"
+            onclick="eliminarFoto('{{preventivo.preventivo_id}}', '{{preventivo.foto_linterna}}')">x</button>
+
     </div>
     {{/if}}
 </div>
@@ -361,9 +370,13 @@
     </div>
     <input type="file" class="form-control-file" name="foto_monitoreo" id="foto_monitoreo">
     {{#if preventivo.foto_monitoreo}}
-    <div class="form-group">
-        <img class="img-fluid rounded mx-auto d-block" style="max-width: 100%; height: auto; max-height: 300px;"
-            src="/img/preventivos/{{preventivo.foto_monitoreo}}" alt="foto_monitoreo">
+    <div class="position-relative d-inline-block">
+        <img class="img-fluid rounded mx-auto img-thumbnail d-block"
+            style="max-width: 100%; height: auto; max-height: 300px;"
+            src="/img/preventivos/{{preventivo.nif}}/{{preventivo.foto_monitoreo}}" alt="foto_monitoreo">
+        <button type="button" class="btn btn-danger btn-sm position-absolute bottom-0 end-0 m-3" title="Eliminar"
+            onclick="eliminarFoto('{{preventivo.preventivo_id}}', '{{preventivo.foto_monitoreo}}')">x</button>
+
     </div>
     {{/if}}
 </div>
@@ -478,9 +491,13 @@
     </div>
     <input type="file" class="form-control-file" name="foto_alimentacion" id="foto_alimentacion">
     {{#if preventivo.foto_alimentacion}}
-    <div class="form-group">
-        <img class="img-fluid rounded mx-auto d-block" style="max-width: 100%; height: auto; max-height: 300px;"
-            src="/img/preventivos/{{preventivo.foto_alimentacion}}" alt="foto_alimentacion"> 
+    <div class="position-relative d-inline-block">
+        <img class="img-fluid rounded mx-auto img-thumbnail d-block"
+            style="max-width: 100%; height: auto; max-height: 300px;"
+            src="/img/preventivos/{{preventivo.nif}}/{{preventivo.foto_alimentacion}}" alt="foto_alimentacion">
+        <button type="button" class="btn btn-danger btn-sm position-absolute bottom-0 end-0 m-3" title="Eliminar"
+            onclick="eliminarFoto('{{preventivo.preventivo_id}}', '{{preventivo.foto_alimentacion}}')">x</button>
+
     </div>
     {{/if}}
 </div>
@@ -489,10 +506,15 @@
     <textarea class="form-control" rows="4" cols="50"
         name="observaciones_generales">{{preventivo.observaciones_generales}}</textarea>
     <input type="file" class="form-control-file" name="foto_general" id="foto_general">
-    {{#if preventivo.foto_general}}
-    <div class="form-group">
-        <img class="img-fluid rounded mx-auto d-block" style="max-width: 100%; height: auto; max-height: 300px;"
-            src="/img/preventivos/{{preventivo.foto_general}}" alt="foto_general">
+
+        {{#if preventivo.foto_general}}
+    <div class="position-relative d-inline-block">
+        <img class="img-fluid rounded mx-auto img-thumbnail d-block"
+            style="max-width: 100%; height: auto; max-height: 300px;"
+            src="/img/preventivos/{{preventivo.nif}}/{{preventivo.foto_general}}" alt="foto_general">
+        <button type="button" class="btn btn-danger btn-sm position-absolute bottom-0 end-0 m-3" title="Eliminar"
+            onclick="eliminarFoto('{{preventivo.preventivo_id}}', '{{preventivo.foto_general}}')">x</button>
+
     </div>
     {{/if}}
 </div>
