@@ -169,13 +169,13 @@ funciones.dumpearSQL = (operacion) => {
     var tables = [];
     switch (operacion) {
         case 'balizamiento':
-            tables.push("balizamiento", "localizacion", "lampara");
+            tables.push("balizamiento", "localizacion", "lampara","fondeos");
             break;
         case 'mantenimiento':
             tables.push("mantenimiento", "observaciones");
             break;
         case 'completo':
-            tables.push("balizamiento", "localizacion", "lampara", "mantenimiento", "observaciones", "tickets", "inventario", "logs", "usuarios");
+            tables.push("balizamiento", "localizacion", "lampara","fondeos", "mantenimiento", "observaciones", "tickets", "inventario", "logs", "usuarios","preventivos");
             break;
         default:
             break;

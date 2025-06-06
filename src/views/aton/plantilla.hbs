@@ -10,12 +10,8 @@
             <button onclick="document.getElementById('myModalPintado').style.display = 'block';"
                 class="btn btn-danger  float-right"> <i class="fa fa-paint-brush"></i> </button>
             {{/if}}
-
-            {{#if baliza.apagada}}
-            <a class="btn btn-outline-secondary btn-sm" href="/aton/activar/{{baliza.nif}}">APAGADA</a>
-            {{else}}
-            <a class="btn btn-outline-secondary btn-sm" href="/aton/apagar/{{baliza.nif}}">ACTIVADA</a>
-            {{/if}}
+            <a class="btn btn-outline-secondary btn-sm" href="/aton/activado/{{baliza.nif}}"> {{#if
+                baliza.apagada}}APAGADA {{else}}ACTIVADA{{/if}}</a>
         </div>
 
     </div>
@@ -115,10 +111,11 @@
                 <tr>
                     <th>Es Boya?</th>
                     <td id="esBoya"> {{#if baliza.esBoya}} SI
-                        
-                        <a class="btn btn-outline-primary btn-xs btn-block mx-auto" href="#datos_fondeo" value="Ver Datos">VER FONDEO</a>
-                            {{else}} NO
-                            
+
+                        <a class="btn btn-outline-primary btn-xs btn-block mx-auto" href="#datos_fondeo"
+                            value="Ver Datos">VER FONDEO</a>
+                        {{else}} NO
+
                         {{/if}}
                     </td>
                 </tr>
@@ -299,7 +296,7 @@
     <div class="row mx-1  mt-2" id="datos_fondeo">
         <div class="col-sm-12">
             <h1 class="text-center"> DATOS DEL FONDEO </h1>
-             {{#if fondeo}}
+            {{#if fondeo}}
             <table class="table table-dark table-hover">
                 {{!-- <tr>
                     <th>NIF</th>
@@ -325,7 +322,7 @@
                     <th>Datos Obra viva</th>
                     <td>Area water {{fondeo.area_total_viva}}m2 Cd: {{fondeo.Cw_aerodinamico}}</td>
                 </tr>
-                                <tr>
+                <tr>
                     <th>Datos Obra viva</th>
                     <td>Area draft {{fondeo.area_total_muerta}}m2 Cd: {{fondeo.Cd_aerodinamico}}</td>
                 </tr>
@@ -333,7 +330,7 @@
                     <th>Observaciones</th>
                     <td>{{ fondeo.observaciones}} </td>
                 </tr>
-                                <tr>
+                <tr>
                     <th>Ultima Actualizacion</th>
                     <td>{{formatearSp fondeo.last_modified}} </td>
                 </tr>
@@ -343,7 +340,7 @@
                     href="/aton/editFondeo/{{baliza.nif}}">ACTUALIZAR
                     FONDEO </a>
             </div>
-             {{else}}
+            {{else}}
             <div class="input-group">
                 <a class="btn btn-outline-primary btn-xs btn-block mx-auto mb-2"
                     href="/aton/editFondeo/{{baliza.nif}}">INTRODUCIR
