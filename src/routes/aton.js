@@ -490,7 +490,7 @@ router.post("/editFondeo/:nif", funciones.isAuthenticated, funciones.hasSanPrivi
         } else {
             await db.query("UPDATE fondeos set ? WHERE nif = ?", [newBaliza, nifviejo]);
         }
-        funciones.insertarLog(req.user.usuario, "UPDATE fondeos", newBaliza.nif + " " + newBaliza.puerto + " " + newBaliza.num_local + " " + newBaliza.localizacion + " " + newBaliza.latitud + " " + newBaliza.longitud);
+        funciones.insertarLog(req.user.usuario, "UPDATE fondeos", newBaliza.nif + " " + newBaliza.calado + " " + newBaliza.longitud_cadena + " " + newBaliza.diametro_cadena);
         req.flash("success", "Fondeo de la boya modificada correctamente");
         res.redirect("/aton/plantilla/" + nifviejo);
 
