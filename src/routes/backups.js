@@ -57,7 +57,7 @@ router.get("/dbbackups/del/:nombre", funciones.isAuthenticated, funciones.isAdmi
     funciones.insertarLog(req.user.usuario, "DELETE backup", nombre);
     res.redirect('/dbbackups/list');
 });
-router.get("/dbbackups/deleteAbsoluto", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
+/* router.get("/dbbackups/deleteAbsoluto", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     console.log("Borrando BBDD ...");
     try {
         await db.query("DELETE FROM mantenimiento");
@@ -72,7 +72,7 @@ router.get("/dbbackups/deleteAbsoluto", funciones.isAuthenticated, funciones.isA
         req.flash("error", "Hubo algun error al borrar la BBDD: ",error);
         res.redirect('/dbbackups/list');
     }
-});
+}); */
 router.get("/dbbackups/runSQL/:file", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     var { file } = req.params;
     //SI EL BACKUP SQL TIENE EL COMETNARIO   ==>    /*!40101 SET NAMES utf8 */;  

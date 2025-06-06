@@ -252,7 +252,7 @@ router.get("/plantilla/:nif", async (req, res) => {
         const tickets = await db.query(queryListadoTicketsUsers + 'where t.nif=? and solved_at is null', [nif]);
         const preventivos = await db.query(queryListadoPreventivosUsers + 'where p.nif=? ', [nif]);
         var fotos = await funciones.getFotosOrdenadas(nif);
-        console.log("fotos: ",fotos);
+        console.log("fotos: ", fotos);
         //console.log("Es boya??", baliza[0]);
         if (baliza[0].esBoya)
             var [fondeo] = await db.query('select * from fondeos where nif=?', [nif]);
@@ -265,8 +265,8 @@ router.get("/plantilla/:nif", async (req, res) => {
 router.get("/listfondeos", async (req, res) => {
     var numPintado = 0;
     const balizas = await db.query(queryListadoAton + " where b.esBoya IS TRUE");
-    const tickets = await db.query("select * from tickets where solved_at IS NULL");
-    const preventivos = await db.query("select * from preventivos where solved_at IS NULL");
+    const tickets = await db.query("SELECT t.* FROM tickets t LEFT JOIN balizamiento b ON t.nif = b.nif WHERE b.esBoya = TRUE;");
+    const preventivos = await db.query("SELECT p.* from preventivos p LEFT JOIN balizamiento b ON b.nif=p.nif where b.esBoya = TRUE and p.solved_at IS NULL");
     balizas.forEach((element) => {
         const hasItem = tickets.some(obj => obj.nif === element.nif);
         const hasPreventivo = preventivos.some(obj => obj.nif === element.nif);

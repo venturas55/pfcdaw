@@ -30,13 +30,13 @@
           {{/if}}
         </th>
         <th>NIF</th>
-        <th class="d-none d-sm-table-cell">Puerto</th>
-        <th>Tipo</th>
-        <th class="d-none d-sm-table-cell">Apariencia</th>
-        <th class="d-none d-xl-table-cell">Linterna</th>
+        <th class="d-none d-sm-table-cell">Tipo</th>
+        <th>Muerto y Calado</th>
+        <th class="d-none d-sm-table-cell">Cadena</th>
+        <th class="d-none d-xl-table-cell">Observaciones</th>
       </tr>
       {{#each balizas}}
-      <tr class="fila pinchable" onclick="location.href='/aton/plantilla/{{nif}}';">
+      <tr class="fila" onclick="location.href='/aton/plantilla/{{nif}}#datos_fondeo';">
         <td class="text-center" style="min-width: 40px;">
           {{#if necesita_pintado}}<i class="fa fa-paint-brush blink_me" aria-hidden="true" data-toggle="tooltip"
             data-placement="top" title="Necesita ser pintado"></i>{{/if}}
@@ -46,10 +46,10 @@
             data-placement="top" title="Tiene preventivo en curso"></i> {{/if}}
         </td>
         <td style="width: 80px;" class="  text-truncate">{{nif}}</td>
-        <td class="d-none d-sm-table-cell  text-truncate" style="max-width: 150px;">{{calado}}</td>
-        <td class="text-truncate"> {{tipo}} </td>
-        <td class="d-none d-sm-table-cell  text-truncate" style="max-width: 100px;">{{apariencia}}</td>
-        <td class="d-none d-xl-table-cell  text-truncate" style="max-width: 200px;"> {{linterna}} </td>
+        <td class="d-none d-sm-table-cell  text-truncate" style="max-width: 150px;">{{tipo}}</td>
+        <td class="text-truncate"> {{#if l_muerto}} Muerto de {{h_muerto}}x{{b_muerto}}x{{l_muerto}} a {{/if}}  {{#if calado}}  {{calado}}m profundidad{{/if}} </td>
+        <td class="d-none d-sm-table-cell  text-truncate" style="max-width: 100px;">L:{{longitud_cadena}}m de {{diametro_cadena}}mm de diametro</td>
+        <td class="d-none d-xl-table-cell  text-truncate" style="max-width: 200px;"> {{observaciones}} </td>
       </tr>
       {{/each}}
     </table>

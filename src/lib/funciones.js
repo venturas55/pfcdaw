@@ -165,7 +165,7 @@ funciones.insertarLog = async (usuario, accion, observacion) => {
 funciones.dumpearSQL = (operacion) => {
     // dump the result straight to a file
     console.log("===============================");
-    console.log(pool.config.connectionConfig);
+    console.log(db.config.connectionConfig);
     var tables = [];
     switch (operacion) {
         case 'balizamiento':
@@ -182,10 +182,10 @@ funciones.dumpearSQL = (operacion) => {
     }
     mysqldump({
         connection: {
-            host: pool.config.connectionConfig.host,
-            user: pool.config.connectionConfig.user,
-            password: pool.config.connectionConfig.password,
-            database: pool.config.connectionConfig.database,
+            host: db.config.connectionConfig.host,
+            user: db.config.connectionConfig.user,
+            password: db.config.connectionConfig.password,
+            database: db.config.connectionConfig.database,
         },
         dumpToFile: './src/public/dumpSQL/dumpSAN' + '-' + operacion + '-' + Date.now() + '.sql',
         dump: {
