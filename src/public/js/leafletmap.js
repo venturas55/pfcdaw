@@ -19,14 +19,25 @@ fetchData()?.then((balizas) => {
   // show a marker on the map
   markers = [];
   balizas.forEach(item => {
+    var icono =getTipo(item);
     let customIcon = {
       //iconUrl: myurl + '/img/icon/portalaton/' + getFlash(item) + '.png',
-      iconUrl: myurl + '/img/icon/' + getTipo(item) + '.png',
-      iconSize: [15, 30],
+      iconUrl: myurl + '/img/icon/' + icono + '.png',
+      iconSize: [16, 30],
+      iconAnchor: [8, 30], // Valor por defecto centrado abajo
     }
+    
+    if(icono=="TC"){
+      customIcon.iconSize= [20, 20];
+      customIcon.iconAnchor = [10, 50];
+      console.log("Hay un tc");
+    }
+
     if (item.apagada) {
-      customIcon.className = "apagada";
+      customIcon.className = "AtoN desactivada";
       //customIcon.iconSize=[30,60];
+    } else {
+      customIcon.className = " AtoN activada";
     }
     let myIcon = L.icon(customIcon);
     let iconOptions = {
@@ -147,6 +158,8 @@ function drawPin(latlang, title) {
     actualizarCoordenadaDEC2WGS();
   });
   pinMarkers.push(marker);
+  var position = marker.getLatLng();
+  map.panTo(position);
   marker.addTo(map);
 }
 
@@ -195,6 +208,39 @@ function onMapDistance(e) {
     //L.marker(firstLatLng).addTo(map).bindPopup('Point A<br/>' + e.latlng).openPopup();
     drawPin(firstLatLng, "Punto A");
     secondClick = true;
+  }
+}
+
+function toggleVisibilidad() {
+  var elementos = document.querySelectorAll(".AtoN");
+  var btn = document.getElementById("btn-toogle-ver");
+    var icono = btn.querySelector("i");
+/*   if (btn.innerHTML == 'Ver desactivadas <i class="fa fa-eye" aria-hidden="true"></i>')
+    btn.innerHTML = 'Ver activadas <i class="fa fa-eye" aria-hidden="true"></i>'
+  else
+    btn.innerHTML = 'Ver desactivadas <i class="fa fa-eye" aria-hidden="true"></i>' */
+  // Alternar la visibilidad entre las clases activada y desactivada
+  elementos.forEach(function (elemento) {
+    if (elemento.classList.contains("activada")) {
+      btn.innerHTML = "Ver desactivadas";
+      elemento.classList.remove("activada");
+      elemento.classList.add("desactivada");
+
+    } else {
+      btn.innerHTML = "Ver activadas";
+      elemento.classList.remove("desactivada");
+      elemento.classList.add("activada");
+    }
+  });
+  // Cambiar el texto y el ícono del botón
+  if (icono.classList.contains("fa-eye")) {
+    icono.classList.remove("fa-eye");
+    icono.classList.add("fa-eye-slash");
+    btn.innerHTML = 'Ver Activadas <i class="fa fa-eye-slash" aria-hidden="true"></i>';
+  } else {
+    icono.classList.remove("fa-eye-slash");
+    icono.classList.add("fa-eye");
+    btn.innerHTML = 'Ver Desactivadas <i class="fa fa-eye" aria-hidden="true"></i>';
   }
 }
 

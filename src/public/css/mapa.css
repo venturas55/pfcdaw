@@ -1,6 +1,7 @@
 #myMap {
   border-radius: 15px;
 }
+
 /* #puerto{
   visibility:visible; 
 } */
@@ -12,12 +13,24 @@ body {
   padding: 0;
 }
 
-.apagada{
-  opacity: 0.25;
-  filter: grayscale(100%);
+.AtoN {
+  opacity: 1; /* Elementos visibles por defecto */
+  transition: opacity 0.5s ease;
 }
 
-.bind-tooltip p{
+.desactivada {
+  opacity: 0;
+  filter: grayscale(100%);
+  
+}
+
+.activada {
+  opacity: 1;
+  filter: grayscale(0%);
+  
+}
+
+.bind-tooltip p {
   padding: 0px;
   margin: 0px;
 }

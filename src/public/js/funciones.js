@@ -222,7 +222,7 @@ function getMarkerLatLng({ lat, lng }) {
 
 //FUNCION QUE LE PASA UN OBJETO BALIZA Y LE DEVUELVE UNA LETRA QUE REPRESENTA EL COLOR/TIPO
 function getTipo(item) {
-const tipo = item.tipo.toLowerCase();
+    const tipo = item.tipo.toLowerCase();
     const caracteristica = item.caracteristica.toLowerCase().replace(/[\s.,+]/g, "");
     let apariencia = item.apariencia.toUpperCase().replace(/\s/g, "");
     let color = apariencia.slice(-1); // Último carácter
@@ -242,6 +242,9 @@ const tipo = item.tipo.toLowerCase();
     }
     if (tipo.includes(" odas ") || tipo.includes(" sado ")) {
         return "ODAS";
+    }
+    if (tipo.includes("telecontrol")) {
+        return "TC";
     }
 
     // Clasificación por color y combinación

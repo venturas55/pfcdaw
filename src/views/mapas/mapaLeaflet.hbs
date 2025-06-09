@@ -18,16 +18,19 @@
     </div>
     <div class="border border-warning rounded d-flex justify-content-start p-1 ">
         <div class="d-flex flex-column mx-4 align-self-center">
-            <button onclick="clearAll()" class="btn btn-outline-secondary btn-sm">Clear All</button>
-            <button onclick="clearLast()" class="btn btn-outline-secondary btn-sm">ClearLast</button>
+            <button onclick="clearAll()" class="btn btn-outline-secondary btn-sm">Limpiar todo</button>
+            <button onclick="clearLast()" class="btn btn-outline-secondary btn-sm">Limpiar ultimo</button>
         </div>
     </div>
+
 </div>
 
 <div class="mt-2 h-75 d-flex align-items-center justify-content-center">
     <div id="myMap" class="m-2 h-100 w-100"></div>
 </div>
-
+    <div class="d-flex justify-content-start p-1 ">
+         <button id="btn-toogle-ver" onclick="toggleVisibilidad()" class="btn btn-secondary btn-sm">Ver Desactivadas <i class="fa fa-eye" aria-hidden="true"></i></button>
+    </div>
 <input type="hidden" value="{{protocol}}" id="protocolo" />
 <input type="hidden" value="{{baliza.latitud}}" id="lat" />
 <input type="hidden" value="{{baliza.longitud}}" id="lng" />
