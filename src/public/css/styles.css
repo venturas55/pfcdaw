@@ -156,6 +156,49 @@ body {
     animation: blinker 1s linear infinite;
 }
 
+/* Contenedor del input y sugerencias */
+#nifInput {
+  width: 300px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+/* Lista de sugerencias */
+.sugerencias-lista {
+  list-style: none;
+  padding: 0;
+  margin-top: 0;
+  width: 300px;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-radius: 0 0 5px 5px;
+  box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+  position: absolute;
+  background-color: white;
+  z-index: 1000;
+}
+/* Cada elemento de la lista */
+.sugerencias-lista li {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.2s ease;
+}
+
+/* Último sin borde */
+.sugerencias-lista li:last-child {
+  border-bottom: none;
+}
+
+/* Hover o foco */
+.sugerencias-lista li:hover {
+  background-color: #f0f0f0;
+}
+
+
 @keyframes blinker {
     50% {
         opacity: 0;
