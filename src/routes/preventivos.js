@@ -132,7 +132,7 @@ router.post('/add', funciones.isAuthenticated, upload.fields([
 
     } catch (error) {
         //console.error(error);
-        req.flash("error", "Hubo algun error al insertar el preventivo: " + error);
+        req.flash("error", "Hubo algun error al insertar el preventivo: \n" + error);
         res.redirect("/mantenimientopreventivo/list");
     }
 });

@@ -8,10 +8,10 @@
 
                         <div class="form-group mb-2"><label for="calado">CALADO FONDEO (m)</label><input
                                 value="{{baliza.calado}}" class="form-control" type="number" name="calado"
-                                placeholder="calado" autofocus /> </div>
+                                placeholder="calado" step="0.01" autofocus /> </div>
                         <div class="form-group mb-2"><label for="longitud_cadena">LONGITUD CADENA (m)</label><input
                                 value="{{baliza.longitud_cadena}}" class="form-control" type="number" name="longitud_cadena"
-                                placeholder="longitud_cadena" /> </div>
+                                placeholder="longitud_cadena" step="0.01"/> </div>
                         <div class="form-group mb-2"><label for="ubicacion">UBICACION</label>
 
 
@@ -34,17 +34,17 @@
                             <input Value="{{baliza.h_muerto}}" class="form-control" type="number" name="h_muerto"
                                 placeholder="alto" />
                         </div>
-                        <div class="form-group mb-2"><label for="diametro_cadena">DIAMETRO CADENA (mm2)</label><input
+                        <div class="form-group mb-2"><label for="diametro_cadena">DIAMETRO CADENA (mm)</label><input
                                 value="{{baliza.diametro_cadena}}" class="form-control" type="text"
-                                name="diametro_cadena" placeholder="longitud" /> </div>
+                                name="diametro_cadena" placeholder="diametro" /> </div>
                         <div class="form-group mb-2"><label for="area_total_viva">AREA CASTILLETE VIENTO (m2)</label><input
-                                value="{{baliza.area_total_viva}}" class="form-control" type="number" step="0.001"
+                                value="{{baliza.area_total_viva}}" class="form-control" type="number" step="0.01"
                                 name="area_total_viva" placeholder="area_total_viva" /> </div>
                         <div class="form-group mb-2"><label for="Cw_aerodinamico">COEF AERODINAMICO VIENTO</label><input
                                 value="{{baliza.Cw_aerodinamico}}" class="form-control" type="number" step="0.001"
                                 name="Cw_aerodinamico" placeholder="Cw_aerodinamico" /> </div>
                         <div class="form-group mb-2"><label for="area_total_muerta">AREA SUMERGIDA AGUA (m2)</label><input
-                                value="{{baliza.area_total_muerta}}" class="form-control" type="number" step="0.001"
+                                value="{{baliza.area_total_muerta}}" class="form-control" type="number" step="0.01"
                                 name="area_total_muerta" placeholder="area_total_muerta" /> </div>
                         <div class="form-group mb-2"><label for="Cd_aerodinamico">COEF AERODINAMICO AGUA</label><input
                                 value="{{baliza.Cd_aerodinamico}}" class="form-control" type="number" step="0.001"

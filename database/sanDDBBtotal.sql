@@ -49,7 +49,7 @@ CREATE TABLE `mantenimiento` (
   `id_mantenimiento` int(10) UNSIGNED NOT NULL,
   `nif` varchar(8) NOT NULL,
   `fecha` date NOT NULL,
-  `mantenimiento` varchar(250) NOT NULL
+  `mantenimiento` varchar(500) NOT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = 'tabla de mantenimiento del balizamiento';
 
 CREATE TABLE `observaciones` (

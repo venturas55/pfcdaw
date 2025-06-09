@@ -66,5 +66,24 @@ router.get('/api/usuarios', async (req, res) => {
     const balizas = await db.query('SELECT full_name,usuario,email, privilegio FROM usuarios');
     res.send(balizas);
 });
+router.get('/api/autocompletar-nif', async (req, res) => {
+  const { termino } = req.query; // texto introducido por el usuario
+
+  if (!termino) {
+    return res.status(400).json({ error: 'Término de búsqueda vacío' });
+  }
+
+  try {
+    const resultados = await db.query(
+      'SELECT * FROM balizamiento WHERE nif LIKE ? LIMIT 10',
+      [`${termino}%`]
+    );
+
+    res.json(resultados);
+  } catch (error) {
+    console.error('Error en autocompletado NIF:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
 
 export default router;

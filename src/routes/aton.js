@@ -4,7 +4,7 @@ import { join } from 'path';
 import db from "../database.js"; //db hace referencia a la BBDD
 import funciones from "../lib/funciones.js";
 import { promises as fs } from 'fs';
-const queryListadoAton = "SELECT lo.coordenadas,b.nif,b.num_internacional,b.tipo,b.apariencia,b.periodo,b.caracteristica,b.telecontrol,b.necesita_pintado,b.apagada,b.esBoya,lo.puerto,lo.num_local,lo.localizacion,lo.latitud,lo.longitud,la.altura,la.elevacion,la.alcanceNom,la.linterna,la.candelasCalc,la.alcanceLum,la.candelasInst FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif";
+const queryListadoAton = "SELECT lo.coordenadas,b.nif,b.num_internacional,b.tipo,b.apariencia,b.periodo,b.caracteristica,b.telecontrol,b.necesita_pintado,b.apagada,b.esBoya,lo.puerto,lo.num_local,lo.localizacion,lo.latitud,lo.longitud,la.altura,la.elevacion,la.alcanceNom,la.linterna,la.candelasCalc,la.alcanceLum,la.candelasInst,f.calado,f.longitud_cadena,f.ubicacion,f.h_muerto,f.l_muerto,f.b_muerto,f.diametro_cadena,f.area_total_viva,f.Cw_aerodinamico,f.area_total_muerta,f.Cd_aerodinamico,f.observaciones,f.last_modified FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif LEFT JOIN fondeos f ON f.nif=b.nif";
 const queryListadoTicketsUsers = "SELECT t.ticket_id,t.nif,t.created_by_id,t.assigned_to_id,t.resolved_by_id,t.titulo,t.descripcion,t.solved_at,t.created_at,u1.usuario as created_by,u2.usuario as assigned_to,u3.usuario as resolved_by FROM tickets t LEFT JOIN usuarios u1 ON t.created_by_id=u1.id  LEFT JOIN usuarios u2 ON t.assigned_to_id=u2.id LEFT JOIN usuarios u3 ON t.resolved_by_id=u3.id ";
 const queryListadoPreventivosUsers = 'SELECT p.preventivo_id,p.nif,p.estructura_estado,p.estructura_marca_tope,p.estructura_engrase,p.estructura_golpes,p.estructura_limpieza_interior,p.estructura_limpieza_exterior,p.estructura_cuadro_interior,p.estructura_cuadro_exterior,p.estructura_observaciones,p.linterna_ldr1,p.linterna_ldr2,p.linterna_optica,p.linterna_estanqueidad_tornillos,p.linterna_estanqueidad_humedades,p.linterna_observaciones,p.telecontrol_monitoreo,p.telecontrol_gps,p.telecontrol_tipo,p.telecontrol_observaciones,p.alimentacion_panelFV,p.alimentacion_red,p.alimentacion_baterias,p.alimentacion_ah,p.alimentacion_vcc,p.alimentacion_grupo,p.alimentacion_cableado,p.alimentacion_observaciones,p.observaciones_generales,p.created_at,p.solved_at,p.created_by_id,u1.usuario as created_by FROM preventivos p LEFT JOIN usuarios u1 ON p.created_by_id=u1.id ';
 import * as url from "url";
@@ -252,7 +252,7 @@ router.get("/plantilla/:nif", async (req, res) => {
         const tickets = await db.query(queryListadoTicketsUsers + 'where t.nif=? and solved_at is null', [nif]);
         const preventivos = await db.query(queryListadoPreventivosUsers + 'where p.nif=? ', [nif]);
         var fotos = await funciones.getFotosOrdenadas(nif);
-        console.log("fotos: ",fotos);
+        console.log("fotos: ", fotos);
         //console.log("Es boya??", baliza[0]);
         if (baliza[0].esBoya)
             var [fondeo] = await db.query('select * from fondeos where nif=?', [nif]);
@@ -261,6 +261,26 @@ router.get("/plantilla/:nif", async (req, res) => {
         req.flash("warning", "La señal indicada con nif " + nif + " no existe!!");
         res.redirect("/error");
     }
+});
+router.get("/listfondeos", async (req, res) => {
+    var numPintado = 0;
+    const balizas = await db.query(queryListadoAton + " where b.esBoya IS TRUE");
+    const tickets = await db.query("SELECT t.* FROM tickets t LEFT JOIN balizamiento b ON t.nif = b.nif WHERE b.esBoya = TRUE;");
+    const preventivos = await db.query("SELECT p.* from preventivos p LEFT JOIN balizamiento b ON b.nif=p.nif where b.esBoya = TRUE and p.solved_at IS NULL");
+    balizas.forEach((element) => {
+        const hasItem = tickets.some(obj => obj.nif === element.nif);
+        const hasPreventivo = preventivos.some(obj => obj.nif === element.nif);
+        if (hasItem)
+            element.hasTicket = true;
+        if (hasPreventivo)
+            element.hasPreventivo = true;
+        if (element.necesita_pintado)
+            numPintado++;
+    });
+    const numTickets = tickets.length;
+    const numPreventivos = preventivos.length;
+    res.render("fondeos/list", { balizas, numTickets, numPintado, preventivos, numPreventivos });
+
 });
 
 //CRUD ATON update
@@ -377,11 +397,12 @@ router.post("/editCaracteristicas/:nif", funciones.isAuthenticated, funciones.ha
     } catch (error) {
         console.error(error);
         if (error.errno == -4058) {
-            //req.flash("error", "Carpeta de imagenes " + newBaliza.nif);
+            req.flash("error", "Carpeta de imagenes " + newBaliza.nif);
+            console.log("ERROR:",error);
         }
         else
-            req.flash("error", "Hubo algun error al modificar el aton " + newBaliza.nif);
-        res.redirect("/aton/plantilla/" + nifviejo);
+            req.flash("error", "Hubo algun error al modificar el aton " + newBaliza.nif + "\n" + error);
+        res.redirect("/aton/plantilla/" + newBaliza.nif);
     }
 
 
@@ -418,7 +439,7 @@ router.post("/editLocalizacion/:nif", funciones.isAuthenticated, funciones.hasSa
 
     } catch (error) {
         console.error(error);
-        req.flash("error", "Hubo algun error al modificar la localización del aton con NIF " + nifviejo);
+        req.flash("error", "Hubo algun error al modificar la localización del aton con NIF " + nifviejo," \n",error);
         res.redirect("/aton/plantilla/" + nifviejo);
     }
 
@@ -449,9 +470,49 @@ router.post("/editLocalizacionFromMap/:nif", funciones.isAuthenticated, funcione
 
     } catch (error) {
         console.error(error);
-        req.flash("error", "Hubo algun error al modificar la localización del aton con NIF " + nif);
+        req.flash("error", "Hubo algun error al modificar la localización del aton con NIF " + nif," \n",error);
         res.redirect("/mapaGeneral/valencia");
     }
+
+});
+router.post("/editLampara/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
+    const nifviejo = req.params.nif;
+    var {
+        altura,
+        elevacion,
+        alcanceNom,
+        linterna,
+        candelasCalc,
+        alcanceLum,
+        candelasInst,
+    } = req.body;
+    const newBaliza = {
+        nif: nifviejo,
+        altura,
+        elevacion,
+        alcanceNom,
+        linterna,
+        candelasCalc,
+        alcanceLum,
+        candelasInst,
+    };
+    try {
+        var baliza = await db.query("SELECT * FROM lampara WHERE nif=?", [nifviejo]);
+        if (baliza[0] == null || baliza[0] == undefined) {
+            await db.query("INSERT into lampara set ? ", [newBaliza]);
+        } else {
+            await db.query("UPDATE lampara set ? WHERE nif = ?", [newBaliza, nifviejo]);
+        }
+        funciones.insertarLog(req.user.usuario, "UPDATE lampara", newBaliza.nif + " " + newBaliza.altura + " " + newBaliza.elevacion + " " + newBaliza.alcanceNom + " " + newBaliza.linterna + " " + newBaliza.candelasCalc + " " + newBaliza.alcanceLum + " " + newBaliza.candelasInst);
+        req.flash("success", "Lampara del aton modificada correctamente");
+        res.redirect("/aton/plantilla/" + nifviejo);
+
+    } catch (error) {
+        console.error(error);
+        req.flash("error", "Hubo algun error al modificar la lampara del aton con NIF: " + nifviejo," \n",error);
+        res.redirect("/aton/plantilla/" + nifviejo);
+    }
+
 
 });
 router.post("/editFondeo/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
@@ -490,13 +551,13 @@ router.post("/editFondeo/:nif", funciones.isAuthenticated, funciones.hasSanPrivi
         } else {
             await db.query("UPDATE fondeos set ? WHERE nif = ?", [newBaliza, nifviejo]);
         }
-        funciones.insertarLog(req.user.usuario, "UPDATE fondeos", newBaliza.nif + " " + newBaliza.puerto + " " + newBaliza.num_local + " " + newBaliza.localizacion + " " + newBaliza.latitud + " " + newBaliza.longitud);
+        funciones.insertarLog(req.user.usuario, "UPDATE fondeos", newBaliza.nif + " " + newBaliza.calado + " " + newBaliza.longitud_cadena + " " + newBaliza.diametro_cadena);
         req.flash("success", "Fondeo de la boya modificada correctamente");
         res.redirect("/aton/plantilla/" + nifviejo);
 
     } catch (error) {
         console.error(error);
-        req.flash("error", "Hubo algun error al modificar el fondeo del aton con NIF " + nifviejo);
+        req.flash("error", "Hubo algun error al modificar el fondeo del aton con NIF " + nifviejo," \n",error);
         res.redirect("/aton/plantilla/" + nifviejo);
     }
 
@@ -512,49 +573,9 @@ router.get("/transform", funciones.isAuthenticated, funciones.isAdmin, async (re
         res.redirect("/");
     } catch (error) {
         console.error(error);
-        req.flash("error", "Hubo algun error al modificar la localización");
+        req.flash("error", "Hubo algun error al modificar la localización"," \n",error);
         res.redirect("/error");
     }
-});
-router.post("/editLampara/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
-    const nifviejo = req.params.nif;
-    var {
-        altura,
-        elevacion,
-        alcanceNom,
-        linterna,
-        candelasCalc,
-        alcanceLum,
-        candelasInst,
-    } = req.body;
-    const newBaliza = {
-        nif: nifviejo,
-        altura,
-        elevacion,
-        alcanceNom,
-        linterna,
-        candelasCalc,
-        alcanceLum,
-        candelasInst,
-    };
-    try {
-        var baliza = await db.query("SELECT * FROM lampara WHERE nif=?", [nifviejo]);
-        if (baliza[0] == null || baliza[0] == undefined) {
-            await db.query("INSERT into lampara set ? ", [newBaliza]);
-        } else {
-            await db.query("UPDATE lampara set ? WHERE nif = ?", [newBaliza, nifviejo]);
-        }
-        funciones.insertarLog(req.user.usuario, "UPDATE lampara", newBaliza.nif + " " + newBaliza.altura + " " + newBaliza.elevacion + " " + newBaliza.alcanceNom + " " + newBaliza.linterna + " " + newBaliza.candelasCalc + " " + newBaliza.alcanceLum + " " + newBaliza.candelasInst);
-        req.flash("success", "Lampara del aton modificada correctamente");
-        res.redirect("/aton/plantilla/" + nifviejo);
-
-    } catch (error) {
-        console.error(error);
-        req.flash("error", "Hubo algun error al modificar la lampara del aton con NIF: " + nifviejo);
-        res.redirect("/aton/plantilla/" + nifviejo);
-    }
-
-
 });
 
 //CRUD ATON delete
@@ -593,7 +614,7 @@ router.post("/observaciones/add", funciones.isAuthenticated, funciones.hasSanPri
         funciones.insertarLog(req.user.usuario, "INSERT observaciones", observa.nif + " " + observa.observaciones);
         res.redirect("/aton/plantilla/" + nif);
     } catch (error) {
-        req.flash("error", "Hubo algun error al añadir la observación");
+        req.flash("error", "Hubo algun error al añadir la observación"," \n",error);
         res.redirect("/aton/plantilla/" + nif);
     }
 
@@ -644,7 +665,7 @@ router.post("/observaciones/edit/:idObs", funciones.isAuthenticated, funciones.h
 
     } catch (error) {
         console.error(error);
-        req.flash("error", "Hubo algun error al editar la observación");
+        req.flash("error", "Hubo algun error al editar la observación"," \n",error);
         res.redirect("/aton/plantilla/" + nif);
     }
 });
@@ -669,7 +690,7 @@ router.post("/mantenimiento/add", funciones.isAuthenticated, funciones.hasSanPri
 
     } catch (error) {
         console.error(error);
-        req.flash("error", "Hubo algun error al añadir mantenimiento al NIF: " + nif);
+        req.flash("error", "Hubo algun error al añadir mantenimiento al NIF: " + nif," \n",error);
         res.redirect("/aton/plantilla/" + nif);
     }
 });
@@ -714,11 +735,13 @@ router.post("/mantenimiento/edit/:idMan", funciones.isAuthenticated, funciones.h
         res.redirect("/aton/plantilla/" + nif);
     } catch (error) {
         console.error(error);
-        req.flash("error", "Hubo algun error al modificar el mantenimiento al NIF: " + nif);
+        req.flash("error", "Hubo algun error al modificar el mantenimiento al NIF: " + nif," \n",error);
         res.redirect("/aton/plantilla/" + nif);
     }
 });
 
+// RUTAS PINTURA
+//Marca una señal que necesita ser pintada (hace toogle cambiando el estado)
 router.get("/pintura/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     try {
         const { nif } = req.params;
@@ -732,6 +755,7 @@ router.get("/pintura/:nif", funciones.isAuthenticated, funciones.hasSanPrivilege
         res.redirect("/aton/plantilla/" + nif);
     }
 });
+//Confirma que una señal se ha repintado.
 router.get("/pintado/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     try {
         const { nif } = req.params;
@@ -754,7 +778,7 @@ router.get("/pintado/:nif", funciones.isAuthenticated, funciones.hasSanPrivilege
         res.redirect("/aton/plantilla/" + nif);
     }
 });
-// Ruta vista pintados list
+//Mostrar listado de pintadas
 router.get('/pintadas/list', funciones.isAuthenticated, async (req, res) => {
     try {
         const pintados = await db.query('select * from mantenimiento where mantenimiento like "%pinta%" order by fecha desc');
@@ -765,37 +789,23 @@ router.get('/pintadas/list', funciones.isAuthenticated, async (req, res) => {
         res.redirect("/");
     }
 });
-router.get("/activar/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
+
+//RUTAS DE ACTIVADOS Y DESACTIVADOS
+//Para cambiar estado de una señal desde el mapa, redirecciona a plantilla
+router.get("/activado/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     try {
         const { nif } = req.params;
         const baliza = (await db.query('Select * from balizamiento where nif=?', [nif]))[0];
-        baliza.apagada = false;
+        baliza.apagada = !baliza.apagada;
         await db.query("UPDATE balizamiento set ? WHERE nif = ?", [baliza, nif]);
         req.flash("success", "AtoN " + nif + " activado correctamente");
         res.redirect("/aton/plantilla/" + nif);
-
     } catch (error) {
         console.error(error);
         req.flash("error", "Hubo algun error al activar AtoN NIF: " + nif);
         res.redirect("/aton/plantilla/" + nif);
     }
 });
-router.get("/apagar/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
-    try {
-        const { nif } = req.params;
-        const baliza = (await db.query('Select * from balizamiento where nif=?', [nif]))[0];
-        baliza.apagada = true;
-        await db.query("UPDATE balizamiento set ? WHERE nif = ?", [baliza, nif]);
-        req.flash("success", "AtoN " + nif + " apagado correctamente");
-        res.redirect("/aton/plantilla/" + nif);
-
-    } catch (error) {
-        console.error(error);
-        req.flash("error", "Hubo algun error al apagar AtoN NIF: " + nif);
-        res.redirect("/aton/plantilla/" + nif);
-    }
-});
-
 //Para cambiar estado de una señal desde el mapa, redirecciona al mapa
 router.get("/toggleapagado/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     try {

@@ -165,27 +165,27 @@ funciones.insertarLog = async (usuario, accion, observacion) => {
 funciones.dumpearSQL = (operacion) => {
     // dump the result straight to a file
     console.log("===============================");
-    console.log(pool.config.connectionConfig);
+    console.log(db.config.connectionConfig);
     var tables = [];
     switch (operacion) {
         case 'balizamiento':
-            tables.push("balizamiento", "localizacion", "lampara");
+            tables.push("balizamiento", "localizacion", "lampara","fondeos");
             break;
         case 'mantenimiento':
             tables.push("mantenimiento", "observaciones");
             break;
         case 'completo':
-            tables.push("balizamiento", "localizacion", "lampara", "mantenimiento", "observaciones", "tickets", "inventario", "logs", "usuarios");
+            tables.push("balizamiento", "localizacion", "lampara","fondeos", "mantenimiento", "observaciones", "tickets", "inventario", "logs", "usuarios","preventivos");
             break;
         default:
             break;
     }
     mysqldump({
         connection: {
-            host: pool.config.connectionConfig.host,
-            user: pool.config.connectionConfig.user,
-            password: pool.config.connectionConfig.password,
-            database: pool.config.connectionConfig.database,
+            host: db.config.connectionConfig.host,
+            user: db.config.connectionConfig.user,
+            password: db.config.connectionConfig.password,
+            database: db.config.connectionConfig.database,
         },
         dumpToFile: './src/public/dumpSQL/dumpSAN' + '-' + operacion + '-' + Date.now() + '.sql',
         dump: {

@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `mantenimiento` (
   `id_mantenimiento` int(10) NOT NULL AUTO_INCREMENT,
   `nif` varchar(8) NOT NULL,
   `fecha` date NOT NULL,
-  `mantenimiento` varchar(250) NOT NULL,
+  `mantenimiento` varchar(500) NOT NULL,
   PRIMARY KEY (`id_mantenimiento`),
   KEY `mantenimiento_FK` (`nif`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'tabla de mantenimiento del balizamiento';

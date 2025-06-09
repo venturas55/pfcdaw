@@ -26,9 +26,8 @@
 
                     <td class="d-none d-md-table-cell">{{ timeago this.created_at}}</td>
                     <td> <a type="submit" href="/backupsfotos/del/{{this.name}}" class="text-primary"><i
-                                class="fa-solid fa-trash"></i>Del</a>
-                        <a type="submit" href="/aton/fotos/backup/unzip/{{this.name}}" class="text-primary"><i
-                                class="fa-solid fa-boxes-packing"></i>Unzip</a>
+                                class="fa fa-trash"></i>Del</a>
+                        <a type="submit" href="/aton/fotos/backup/unzip/{{this.name}}" class="text-primary"><i class="fa fa-file-archive-o" aria-hidden="true"></i>Unzip</a>
                     </td>
                 </tr>
                 {{/each}}

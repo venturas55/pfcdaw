@@ -1,7 +1,7 @@
 <!-- CUERPO -->
 <div class="container-fluid">
     <!-- id="cuerpo" -->
-{{!--     <div class="text-center m-4"> <a class="btn btn-primary" href="/dbbackups/create">Crear dumpSQL</a></div> --}}
+    {{!-- <div class="text-center m-4"> <a class="btn btn-primary" href="/dbbackups/create">Crear dumpSQL</a></div> --}}
     <div class="dropdown text-center m-4">
         <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             Crear BACKUP
@@ -50,7 +50,7 @@
                     <td>{{ timeago this.created_at}}</td>
                     <td> <a type="submit" href="/dbbackups/del/{{this.name}}" class="text-primary"><i
                                 class="fa fa-trash"></i>Del</a>
-                                <a type="submit" href="/dbbackups/runSQL/{{this.name}}" class="text-primary"><i
+                        <a type="submit" href="/dbbackups/runSQL/{{this.name}}" class="text-primary"><i
                                 class="fa fa-file-archive-o"></i>Load</a>
                     </td>
                 </tr>
@@ -69,12 +69,12 @@
             </div>
         </div>
     </div>
-   {{!--  <div class="text-center m-4"> <a class="btn btn-primary" href="/dbbackups/runSQL">Recuperar backup</a></div> --}}
-       <div class="row mx-1 mb-5">
+
+{{!--     <div class="row mx-1 mb-5">
         <div class="col-sm-12">
             <button onclick="document.getElementById('myModalBorradoAbsoluto').style.display = 'block';"
                 class="btn btn-outline-danger">ELIMINAR TODA BBDD</button>
         </div>
     </div>
 </div>
-{{>ModalBorradoAbsoluto}}
+{{>ModalBorradoAbsoluto}} --}}
