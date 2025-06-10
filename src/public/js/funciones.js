@@ -253,12 +253,13 @@ function getTipo(item) {
     const cardinales = {
         "l025oc025": "CN",
         "[(l025oc025)x2]l025oc375": "CE",
+        "[(l025oc025)x2]l025oc35": "CE",
         "[(l03oc08)x2]l03oc25": "CE",
         "[(l025oc025)x6]l2oc5": "CS",
         "[(l025oc025)x5]l025oc375": "CO"
     };
 
-    if (color === "B" && cardinales[caracteristica]) {
+    if (tipo.includes("cardinal")  && cardinales[caracteristica]) {
         return cardinales[caracteristica];
     }
 
