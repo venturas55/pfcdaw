@@ -259,7 +259,7 @@ function getTipo(item) {
         "[(l025oc025)x5]l025oc375": "CO"
     };
 
-    if (tipo.includes("cardinal")  && cardinales[caracteristica]) {
+    if ((tipo.includes("cardinal") || color=="B") && cardinales[caracteristica]) {
         return cardinales[caracteristica];
     }
 
