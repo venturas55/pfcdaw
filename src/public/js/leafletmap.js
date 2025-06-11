@@ -19,18 +19,17 @@ fetchData()?.then((balizas) => {
   // show a marker on the map
   markers = [];
   balizas.forEach(item => {
-    var icono =getTipo(item);
+    var icono = getTipo(item);
     let customIcon = {
       //iconUrl: myurl + '/img/icon/portalaton/' + getFlash(item) + '.png',
       iconUrl: myurl + '/img/icon/' + icono + '.png',
       iconSize: [16, 30],
       iconAnchor: [8, 30], // Valor por defecto centrado abajo
     }
-    
-    if(icono=="TC"){
-      customIcon.iconSize= [20, 20];
+
+    if (icono == "TC") {
+      customIcon.iconSize = [20, 20];
       customIcon.iconAnchor = [10, 50];
-      console.log("Hay un tc");
     }
 
     if (item.apagada) {
@@ -138,7 +137,77 @@ fetchData()?.then((balizas) => {
 
   });
   map.on('click', onMapDistance);
-  map.attributionControl.setPrefix('')
+  map.attributionControl.setPrefix('');
+  var zonas = [{
+    "type": "Feature",
+    "properties": {
+      "zone": "DPP",
+    },
+    "geometry": {
+      "type": "Polygon",
+      "coordinates": [[
+        [-0.2119, 39.4666],
+        [-0.2119, 39.3827],
+        [-0.32985, 39.422433],
+        [-0.331933, 39.4255],
+        [-0.334138, 39.4376],
+        [-0.3265, 39.4476],
+        [-0.332422, 39.4600577],
+        [-0.32907, 39.462141],
+        [-0.31735, 39.46297],
+        [-0.3168, 39.4660],
+        [-0.2119, 39.4666],
+      ]]
+    }
+  }];
+  const capaZonas = L.geoJSON(zonas, {
+    style: function (feature) {
+      switch (feature.properties.zone) {
+        case 'DPP': return { color: "#9999ff" };
+        case 'otra': return { color: "#ffbbbb" };
+      }
+    }
+  });
+  let zonasVisibles = false;
+
+  const toggleZonasControl = L.control({ position: 'topright' });
+  toggleZonasControl.onAdd = function (map) {
+    const div = L.DomUtil.create('div', 'leaflet-control-custom');
+    div.innerHTML = `
+                    <button id="btn-toogle-ver" onclick="toggleVisibilidad()" class="btn btn-secondary btn-sm">Ver Desactivadas <i class="fa fa-eye" aria-hidden="true"></i></button>
+                    `;
+    //div.style.backgroundColor = 'transparent';
+
+    // Evita que el clic en el botón afecte el mapa
+    L.DomEvent.disableClickPropagation(div);
+    return div;
+  };
+  toggleZonasControl.addTo(map);
+
+  const toggleZonasControlBottom = L.control({ position: 'bottomright' });
+  toggleZonasControlBottom.onAdd = function (map) {
+    const div = L.DomUtil.create('div', 'leaflet-control-custom');
+    div.innerHTML = `
+                    <button id="toggleZonasBtn" title="Mostrar/Ocultar zonas" class="btn btn-primary btn-sm">Zona II</button>
+                    `;
+    //div.style.backgroundColor = 'transparent';
+
+    // Evita que el clic en el botón afecte el mapa
+    L.DomEvent.disableClickPropagation(div);
+    return div;
+  };
+  toggleZonasControlBottom.addTo(map);
+
+  // Lógica de visibilidad
+  document.getElementById('toggleZonasBtn').addEventListener('click', () => {
+    if (zonasVisibles) {
+      map.removeLayer(capaZonas);
+      zonasVisibles = false;
+    } else {
+      map.addLayer(capaZonas);
+      zonasVisibles = true;
+    }
+  });
 });
 
 function drawPin(latlang, title) {
@@ -214,11 +283,11 @@ function onMapDistance(e) {
 function toggleVisibilidad() {
   var elementos = document.querySelectorAll(".AtoN");
   var btn = document.getElementById("btn-toogle-ver");
-    var icono = btn.querySelector("i");
-/*   if (btn.innerHTML == 'Ver desactivadas <i class="fa fa-eye" aria-hidden="true"></i>')
-    btn.innerHTML = 'Ver activadas <i class="fa fa-eye" aria-hidden="true"></i>'
-  else
-    btn.innerHTML = 'Ver desactivadas <i class="fa fa-eye" aria-hidden="true"></i>' */
+  var icono = btn.querySelector("i");
+  /*   if (btn.innerHTML == 'Ver desactivadas <i class="fa fa-eye" aria-hidden="true"></i>')
+      btn.innerHTML = 'Ver activadas <i class="fa fa-eye" aria-hidden="true"></i>'
+    else
+      btn.innerHTML = 'Ver desactivadas <i class="fa fa-eye" aria-hidden="true"></i>' */
   // Alternar la visibilidad entre las clases activada y desactivada
   elementos.forEach(function (elemento) {
     if (elemento.classList.contains("activada")) {
@@ -267,3 +336,9 @@ function actualizarCoordenadaDEC2WGS() {
   lngWGS.value = punto.lng;
 
 }
+
+function addZones() {
+
+}
+
+addZones();
