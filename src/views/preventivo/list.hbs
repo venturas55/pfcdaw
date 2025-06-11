@@ -47,7 +47,7 @@
                             {{else}}
                             <a href="/mantenimientopreventivo/edit/{{this.preventivo_id}}" class="text-primary"><i
                                     class="fa fa-pencil"></i>Edit</a>
-                                              <a href="/mantenimientopreventivo/delete/{{this.preventivo_id}}" class="text-primary"><i
+                                    <a type="submit" onclick='abreModalPrev({{this.preventivo_id}},{{ this.nif }})' class=" text-primary"> <i
                                     class="fa fa-trash"></i>del</a>
                             {{/if}}
 
@@ -62,3 +62,5 @@
         </div>
     </div>
 </div>
+
+{{>ModalBorradoPreventivo}}

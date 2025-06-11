@@ -25,7 +25,6 @@ function abreModalObs(id) {
     var item = document.getElementById("myModalBorradoObs");
     var ref = document.getElementById("refobsdel");
     ref.href += id;
-    //console.log(ref.href);
     item.style.display = 'block';
 }
 
@@ -34,7 +33,19 @@ function abreModalMant(id) {
     var item = document.getElementById("myModalBorradoMant");
     var ref = document.getElementById("refmantdel");
     ref.href += id;
-    console.log(ref.href);
+    item.style.display = 'block';
+}
+
+function abreModalPrev(id,nif) {
+    //console.log("Mantenimiento con id" + id);
+    var item = document.getElementById("myModalBorradoPreventivo"); 
+    var ref = document.getElementById("refprevdel");
+    document.getElementById("preventivoidmodal").innerHTML=id;
+    document.getElementById("preventivonifmodal").innerHTML=nif;
+
+
+
+    ref.href += id;
     item.style.display = 'block';
 }
 

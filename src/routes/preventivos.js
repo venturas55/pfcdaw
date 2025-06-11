@@ -87,8 +87,10 @@ router.get('/add/:nif', funciones.isAuthenticated, async (req, res) => {
 
     console.log(nif);
     try {
-        //const usuarios = await db.query("select * from usuarios");
-        res.render('preventivo/add', { nif });
+        //Leer el ultimo preventivo asociado
+        const [ultimoPreventivo] = await db.query("select * from preventivos where nif=? order by fecha desc ",nif);
+        console.log(ultimoPreventivo)
+        res.render('preventivo/add', { nif, ultimoPreventivo });
     } catch (error) {
         console.error(error);
         req.flash("error", "Hubo algun error al intentar añadir el mantenimiento preventivo:" + error);
@@ -145,7 +147,7 @@ router.get('/edit/:id', funciones.isAuthenticated, funciones.hasSanPrivileges, a
     //console.log(id);
     try {
         const preventivo = await db.query(queryListadoPreventivosUsers + " where preventivo_id=?", id);
-        //console.log(preventivo[0]);
+        console.log(preventivo[0]);
         res.render('preventivo/edit', {
             preventivo: preventivo[0],
         });
@@ -210,7 +212,8 @@ router.post('/edit/:id', funciones.isAuthenticated, funciones.hasSanPrivileges, 
             delete req.body.accion;
             req.body.solved_at = moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
             req.body.solved_by_id = req.user.id;
-            console.log("completado", req.body);
+            req.body.completado=completado;
+            //console.log("completado", req.body);
             const item = await db.query("update preventivos set ? where preventivo_id=?", [req.body, req.body.preventivo_id]);
             funciones.insertarLog(req.user.usuario, "UPDATED and CLOSED preventivo cerrado por ", req.body.solved_by);
             req.flash("success", "Preventivo cerrado correctamente");
