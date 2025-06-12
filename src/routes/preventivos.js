@@ -7,7 +7,7 @@ import moment from 'moment';
 moment().format();
 import * as url from "url";
 import fs from 'fs';
-import  fse    from 'fs-extra';
+import fse from 'fs-extra';
 import { join, extname as _extname, resolve } from 'path';
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 import multer, { diskStorage } from 'multer';
@@ -57,10 +57,11 @@ const upload = multer({
 router.get('/list', async (req, res) => {
     //const preventivos = await db.query("select * from preventivos order by created_at");
     try {
-        const preventivos = await db.query(queryListadoPreventivosUsers + " order by p.created_at asc");
-        //console.log(preventivos);
+        const preventivos = await db.query(queryListadoPreventivosUsers + " order by p.created_at desc");
+        const usuarios = await db.query("select * from usuarios");
+        console.log(usuarios);
         res.render('preventivo/list', {
-            preventivos
+            preventivos,usuarios
         });
     } catch (error) {
         console.error(error);
@@ -88,7 +89,7 @@ router.get('/add/:nif', funciones.isAuthenticated, async (req, res) => {
     console.log(nif);
     try {
         //Leer el ultimo preventivo asociado
-        const [ultimoPreventivo] = await db.query("select * from preventivos where nif=? order by fecha desc ",nif);
+        const [ultimoPreventivo] = await db.query("select * from preventivos where nif=? order by fecha desc ", nif);
         console.log(ultimoPreventivo)
         res.render('preventivo/add', { nif, ultimoPreventivo });
     } catch (error) {
@@ -212,7 +213,7 @@ router.post('/edit/:id', funciones.isAuthenticated, funciones.hasSanPrivileges, 
             delete req.body.accion;
             req.body.solved_at = moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
             req.body.solved_by_id = req.user.id;
-            req.body.completado=completado;
+            req.body.completado = completado;
             //console.log("completado", req.body);
             const item = await db.query("update preventivos set ? where preventivo_id=?", [req.body, req.body.preventivo_id]);
             funciones.insertarLog(req.user.usuario, "UPDATED and CLOSED preventivo cerrado por ", req.body.solved_by);
@@ -277,7 +278,7 @@ router.post('/eliminar-foto', async (req, res) => {
         const filePath = resolve('src/public/img/preventivos/' + row.nif + '/' + campo);
         fs.access(filePath, fs.constants.F_OK, async (err) => {
             if (err) {
-                console.log("❌ No existe foto",err);
+                console.log("❌ No existe foto", err);
             } else {
                 console.log('✅ File exists. Deleting now...');
                 // No uses await aquí; esta función no es async

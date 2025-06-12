@@ -11,29 +11,29 @@ const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 const funciones = {};
 
 funciones.getFotosOrdenadas = async (nif) => {
-  const directorio = join(__dirname, "../public/img/imagenes", nif);
+    const directorio = join(__dirname, "../public/img/imagenes", nif);
 
-  try {
-    const files = await fs.readdir(directorio);
+    try {
+        const files = await fs.readdir(directorio);
 
-    const archivosConFechas = await Promise.all(
-      files.map(async (file) => {
-        const rutaCompleta = join(directorio, file);
-        const stats = await fs.stat(rutaCompleta);
-        return {
-          file,
-          time: stats.mtime,
-        };
-      })
-    );
+        const archivosConFechas = await Promise.all(
+            files.map(async (file) => {
+                const rutaCompleta = join(directorio, file);
+                const stats = await fs.stat(rutaCompleta);
+                return {
+                    file,
+                    time: stats.mtime,
+                };
+            })
+        );
 
-    archivosConFechas.sort((a, b) => b.time - a.time);
-    return archivosConFechas.map(f => f.file);
+        archivosConFechas.sort((a, b) => b.time - a.time);
+        return archivosConFechas.map(f => f.file);
 
-  } catch (err) {
-    console.error("Error al leer imágenes:", err);
-    return [];
-  }
+    } catch (err) {
+        console.error("Error al leer imágenes:", err);
+        return [];
+    }
 };
 
 
@@ -169,13 +169,13 @@ funciones.dumpearSQL = (operacion) => {
     var tables = [];
     switch (operacion) {
         case 'balizamiento':
-            tables.push("balizamiento", "localizacion", "lampara","fondeos");
+            tables.push("balizamiento", "localizacion", "lampara", "fondeos");
             break;
         case 'mantenimiento':
             tables.push("mantenimiento", "observaciones");
             break;
         case 'completo':
-            tables.push("balizamiento", "localizacion", "lampara","fondeos", "mantenimiento", "observaciones", "tickets", "inventario", "logs", "usuarios","preventivos");
+            tables.push("balizamiento", "localizacion", "lampara", "fondeos", "mantenimiento", "observaciones", "tickets", "inventario", "logs", "usuarios", "preventivos");
             break;
         default:
             break;
@@ -194,8 +194,8 @@ funciones.dumpearSQL = (operacion) => {
     });
 }
 
-funciones.runSQLrecovery =  (file) => {
-    let ruta = join(__dirname,'..','public', 'dumpSQL',  file);
+funciones.runSQLrecovery = (file) => {
+    let ruta = join(__dirname, '..', 'public', 'dumpSQL', file);
 
     var rl = createInterface({
         input: fse.createReadStream(ruta),
@@ -205,10 +205,10 @@ funciones.runSQLrecovery =  (file) => {
     rl.on('line', function (chunk) {
 
         //Para evitar ejecucion de comentarios en la query
-        if(chunk.toString('ascii').charAt(0) != '/')
+        if (chunk.toString('ascii').charAt(0) != '/')
             total += chunk.toString('ascii');
- 
-        
+
+
         if (chunk.toString('ascii').charAt(chunk.length - 1) == ';') {
             db.query(total, function (err, sets, fields) { if (err) console.log(err); });
             total = "";
@@ -249,7 +249,7 @@ funciones.consultaPrueba = async (filename) => {
     rl.on('close', function () {
         console.log("finished");
     });
-    
+
 }
 
 export default funciones;

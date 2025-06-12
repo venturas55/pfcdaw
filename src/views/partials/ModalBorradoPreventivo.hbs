@@ -9,11 +9,11 @@
     <div class="modal-body">
       <p>Esta Ud. seguro??? </p>
       <p>
-        Esto conlleva la eliminación del preventivo <span id="preventivoidmodal"></span> del AtoN con NIF: <span id="preventivonifmodal"></span>  de la BBDD, y ya no habrá marcha
+        Esto conlleva la eliminación del preventivo <span id="preventivoidmodal">{{preventivo.preventivo_id}}</span> del AtoN con NIF: <span id="preventivonifmodal">{{preventivo.nif}}</span>  de la BBDD, y ya no habrá marcha
         atras.</p>
     </div>
     <div class="modal-footer">
-      <a id="refprevdel" href="/mantenimientopreventivo/delete/" class="btn btn-danger">Borrar</a>
+      <a id="refprevdel" href="/mantenimientopreventivo/delete/{{preventivo.preventivo_id}}" class="btn btn-danger">Borrar</a>
       <a onclick="cierraModal();" class="btn btn-warning">Cancelar</a>
     </div>
   </div>
