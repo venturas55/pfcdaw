@@ -1,25 +1,38 @@
 
-//FUNCION para filtrar
-$("#myInput").on("keyup", function () {
-    var value = $(this).val().toLowerCase();
-    //console.log(value);
-    $(".listado .fila").filter(function () {
-        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-    });
-});
+  document.addEventListener('DOMContentLoaded', function () {
+    const inputBusqueda = document.getElementById("myInput");
+    const suma = document.getElementById("suma");
 
+    // Función para filtrar y contar filas
+    function filtrarYContar() {
+      const value = inputBusqueda.value.toLowerCase();
+      const filas = document.querySelectorAll(".listado .fila");
+      let visibleCount = 0;
 
+      filas.forEach(fila => {
+        // Verificamos si la fila contiene el texto buscado
+        const coincide = fila.textContent.toLowerCase().includes(value);
+        
+        // Mostrar/ocultar según el texto y si está apagada
+        fila.style.display = coincide ? "" : "none";
 
+        // Contamos las filas visibles
+        if (fila.style.display !== "none") {
+          visibleCount++;
+        }
+      });
 
-//FUNCION SOLO PARA CONTAR FILAS EN VISTA 'balizas/list.hbs'
-let inputBusqueda = document.getElementById("myInput");
-if (!isNull(inputBusqueda))
-    inputBusqueda.addEventListener("keyup", contar);
+      // Actualizamos el contador
+      if (suma) {
+        suma.textContent = visibleCount;
+      }
+    }
 
-let inicial = document.getElementsByClassName("fila");
+    // Asociar la función al evento 'keyup' del input
+    if (inputBusqueda) {
+      inputBusqueda.addEventListener("keyup", filtrarYContar);
+    }
 
-let suma = document.getElementById("suma");
-if (!isNull(suma))
-    suma.innerHTML = inicial.length;
-
-
+    // Ejecutamos la función de filtrado y conteo cuando la página cargue
+    filtrarYContar();
+  });
