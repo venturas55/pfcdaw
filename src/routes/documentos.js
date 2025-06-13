@@ -7,6 +7,8 @@ import multer, { diskStorage } from 'multer';
 import { exists, mkdir } from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 import {pdfSizeLimitErrorHandler} from "../lib/validaciones.js";
+import * as url from "url";
+const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
 const storage = diskStorage({
   destination: (req, file, cb) => {

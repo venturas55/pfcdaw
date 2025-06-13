@@ -48,7 +48,8 @@ CREATE TABLE IF NOT EXISTS `documentos` (
   `id_archivo` varchar(100) NOT NULL,
   `nombre` varchar(100) DEFAULT NULL,
   `descripcion` varchar(250) DEFAULT NULL,
-  `created_at` date NOT NULL DEFAULT current_timestamp()
+  `created_at` date NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id_archivo`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = 'tabla de documentos';
 
 CREATE TABLE IF NOT EXISTS `preventivos` (

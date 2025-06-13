@@ -250,7 +250,7 @@ router.get("/plantilla/:nif", async (req, res) => {
         const observaciones = await db.query('SELECT * FROM observaciones where nif=?', [nif]);
         const mantenimiento = await db.query('SELECT * FROM mantenimiento where nif=? order by fecha DESC', [nif]);
         const tickets = await db.query(queryListadoTicketsUsers + 'where t.nif=? and solved_at is null', [nif]);
-        const preventivos = await db.query(queryListadoPreventivosUsers + 'where p.nif=? ', [nif]);
+        const preventivos = await db.query(queryListadoPreventivosUsers + 'where p.nif=? and solved_at is null', [nif]);
         var fotos = await funciones.getFotosOrdenadas(nif);
         console.log("fotos: ", fotos);
         //console.log("Es boya??", baliza[0]);

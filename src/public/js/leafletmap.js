@@ -7,138 +7,194 @@ let secondClick = false, firstLatLng, secondLatLng;
 var popup = L.popup();
 
 fetchData()?.then((balizas) => {
-  map = L.map('myMap').setView(centerLatLng, presetZoom);
-  // add the OpenStreetMap tiles
-  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 17,
-  }).addTo(map);
-
-  // show the scale bar on the lower left corner
+  // === 1. INICIALIZACIÓN DEL MAPA ===
+  const map = L.map('myMap').setView(centerLatLng, presetZoom);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 17 }).addTo(map);
   L.control.scale({ imperial: true, metric: true }).addTo(map);
+  map.attributionControl.setPrefix('');
+  map.on('click', onMapDistance);
 
-  // show a marker on the map
-  markers = [];
-  balizas.forEach(item => {
-    var icono =getTipo(item);
-    let customIcon = {
-      //iconUrl: myurl + '/img/icon/portalaton/' + getFlash(item) + '.png',
-      iconUrl: myurl + '/img/icon/' + icono + '.png',
+  const markers = [];
+
+  // === 2. FUNCIONES AUXILIARES ===
+
+  function crearIcono(item) {
+    const icono = getTipo(item);
+    const iconConfig = {
+      iconUrl: `${myurl}/img/icon/${icono}.png`,
       iconSize: [16, 30],
-      iconAnchor: [8, 30], // Valor por defecto centrado abajo
+      iconAnchor: [8, 30],
+      className: item.apagada ? 'AtoN desactivada' : 'AtoN activada',
+    };
+    if (icono === 'TC') {
+      iconConfig.iconSize = [20, 20];
+      iconConfig.iconAnchor = [10, 50];
     }
-    
-    if(icono=="TC"){
-      customIcon.iconSize= [20, 20];
-      customIcon.iconAnchor = [10, 50];
-      console.log("Hay un tc");
-    }
+    return L.icon(iconConfig);
+  }
 
-    if (item.apagada) {
-      customIcon.className = "AtoN desactivada";
-      //customIcon.iconSize=[30,60];
-    } else {
-      customIcon.className = " AtoN activada";
-    }
-    let myIcon = L.icon(customIcon);
-    let iconOptions = {
+  function crearTooltip(item, marker) {
+    const ruta = item.pictureUrl.length > 0
+      ? `/img/imagenes/${item.nif}/${item.pictureUrl[0]}`
+      : "/img/icon/buoyIcon.jpg";
+
+    return `
+      <div class="bind-tooltip">
+        <p><strong>NIF: ${item.nif}</strong></p>
+        <p>Apariencia: ${item.apariencia}</p>
+        <p class="text-center">${marker.getLatLng()}</p>
+        <img class="avatar avatar-s" src="${ruta}" />
+      </div>`;
+  }
+
+  function crearPopupHTML(item, position, textposition) {
+    return `
+      <div class="card-body">
+        <h4>¿Desplazar señal aquí?</h4>
+        <form action="/aton/editLocalizacionFromMap/${item.nif}" method="POST">
+          <input type="hidden" name="nif" value="${item.nif}" />
+          <div class="form-group mb-2">
+            <label for="latitud">LATITUD</label>
+            <input type="text" name="latitud" value="${textposition.lat}" class="form-control" />
+          </div>
+          <div class="form-group mb-2">
+            <label for="longitud">LONGITUD</label>
+            <input type="text" name="longitud" value="${textposition.lng}" class="form-control" />
+          </div>
+          <input type="hidden" name="lat" value="${position.lat}" />
+          <input type="hidden" name="lng" value="${position.lng}" />
+          <div class="form-group mb-2 text-center">
+            <button class="btn btn-success btn-block">SI</button>
+          </div>
+        </form>
+        <div class="form-group mb-2 text-center">
+          <button onclick="document.getElementsByClassName('leaflet-popup-close-button')[0].click();thismarker.setLatLng(posicionInicial);map.setView(posicionInicial);" class="btn btn-danger btn-block">NO</button>
+        </div>
+      </div>`;
+  }
+
+  // === 3. DIBUJAR BALIZAS ===
+
+  balizas.forEach(item => {
+    const icono = crearIcono(item);
+    const marker = new L.Marker(setMarkerLatLng(item.latitud, item.longitud), {
+      icon: icono,
       title: item.tipo,
-      draggable: true,
-      icon: myIcon
-    }
-    /*     if (item.apagada){
-          iconOptions.draggable = false;
-        } */
-    let marker = new L.Marker(setMarkerLatLng(item.latitud, item.longitud), iconOptions);
-
-
-    marker.on('dragstart', function (event) {
-      posicionInicial = event.target.getLatLng();
+      draggable: true
     });
 
-    marker.on('dragend', function (event) {
-      thismarker = event.target;
-      var position = thismarker.getLatLng();
-      thismarker.setLatLng(position, { draggable: 'true' });
-      map.panTo(position);
-      var textposition = getMarkerLatLng(position);
-      popup
-        .setLatLng(position)
-        .setContent('   <div class="card-body"> <h4>Desplazar señal aqui? </h4>' +
-          ' <form action="/aton/editLocalizacionFromMap/' + item.nif + '" method="POST">' +
-          '<input value="' + item.nif + '" class="form-control" type="hidden" name="nif" />' +
-          '<div class="form-group mb-2"><label for="latitud">LATITUD</label>' +
-          '<input value="' + textposition.lat + '" class="form-control" type="text" name="latitud" /> </div>' +
-          '<div class="form-group mb-2">' +
-          '<label for="longitud">LONGITUD</label>' +
-          '<input value="' + textposition.lng + '" class="form-control" type="text" name="longitud" /> </div>' +
-          '<input value="' + position.lat + '" class="form-control" type="hidden" name="lat" /> ' +
-          '<input value="' + position.lng + '" class="form-control" type="hidden" name="lng" /> ' +
-          '<div class="form-group mb-2 text-center">' +
-          '    <button class="btn btn-success btn-block">SI</button>' +
-          ' </div>' +
-          ' </form>' +
-          '    <div class="form-group mb-2 text-center">' +
-          `       <button onclick="document.getElementsByClassName('leaflet-popup-close-button')[0].click();thismarker.setLatLng(posicionInicial);map.setView(posicionInicial);" class="btn btn-danger btn-block">NO</button>` +
-          '   </div>' +
-          '</div>')
-        .openOn(map);
+    let posicionInicial;
+    marker.on('dragstart', e => posicionInicial = e.target.getLatLng());
 
+    marker.on('dragend', e => {
+      const thismarker = e.target;
+      const newPosition = thismarker.getLatLng();
+      const textPos = getMarkerLatLng(newPosition);
+      thismarker.setLatLng(newPosition, { draggable: 'true' });
+      map.panTo(newPosition);
+      popup
+        .setLatLng(newPosition)
+        .setContent(crearPopupHTML(item, newPosition, textPos))
+        .openOn(map);
       markers.push(thismarker);
     });
 
-    marker.on('click', function (e) {
-      window.location.href = `/aton/plantilla/${item.nif.toString()}`;
+    marker.on('click', () => {
+      window.location.href = `/aton/plantilla/${item.nif}`;
     });
 
-    let ruta = "";
-    if (item.pictureUrl.length > 0) {
-      ruta = `/img/imagenes/${item.nif.toString()}/${item.pictureUrl[0]}`;
-    }
-    else {
-      ruta = "/img/icon/buoyIcon.jpg";
-    }
-
-    marker.bindTooltip(`
-        <div class="bind-tooltip">
-          <p> <strong> NIF: ${item.nif.toString()} </strong></p> 
-          <p> Apariencia: ${item.apariencia}</p>
-          <p class="text-center">${marker.getLatLng()}</p>
-          <img class="avatar avatar-s" src="${ruta}" />
-        </div>`, {
+    marker.bindTooltip(crearTooltip(item, marker), {
       opacity: 0.7,
       direction: 'top',
       sticky: false,
       offset: [0, -10],
-    })
+    });
 
-    marker.on('contextmenu', function (e) {
+    marker.on('contextmenu', e => {
+      const ruta = item.pictureUrl.length > 0
+        ? `/img/imagenes/${item.nif}/${item.pictureUrl[0]}`
+        : "/img/icon/buoyIcon.jpg";
+
       const html = `
         <div class="bind-tooltip">
           <div class="d-flex flex-row gap-1">
-            <p> <strong> NIF: ${item.nif.toString()} </strong></p> 
+            <p><strong>NIF: ${item.nif}</strong></p> 
             <img class="avatar avatar-s" src="${ruta}" />
           </div>  
           <div class="d-flex flex-column gap-2 mt-2">
-            <button class="btn btn-primary btn-sm" onclick="window.location.href='/aton/plantilla/${item.nif.toString()}'">Ver</button>
-            <button class="btn btn-success btn-sm" onclick="window.location.href='/aton/pintado/${item.nif.toString()}'">Pintar</button>
-            <button class="btn btn-danger btn-sm" onclick="window.location.href='/aton/toggleapagado/${item.nif.toString()}'">Apagar/Activar</button>
-            <button class="btn btn-warning btn-sm" onclick="window.location.href='/mantenimientopreventivo/add/${item.nif.toString()}'">Preventivo</button>
+            <button class="btn btn-primary btn-sm" onclick="window.location.href='/aton/plantilla/${item.nif}'">Ver</button>
+            <button class="btn btn-success btn-sm" onclick="window.location.href='/aton/pintado/${item.nif}'">Pintar</button>
+            <button class="btn btn-danger btn-sm" onclick="window.location.href='/aton/toggleapagado/${item.nif}'">Apagar/Activar</button>
+            <button class="btn btn-warning btn-sm" onclick="window.location.href='/mantenimientopreventivo/add/${item.nif}'">Preventivo</button>
           </div>  
-        </div>
-      `;
-      L.popup()
-        .setLatLng(e.latlng)
-        .setContent(html)
-        .openOn(map);
-
+        </div>`;
+      L.popup().setLatLng(e.latlng).setContent(html).openOn(map);
     });
 
-
     marker.addTo(map);
-
   });
-  map.on('click', onMapDistance);
-  map.attributionControl.setPrefix('')
+
+  // === 4. CAPA DE ZONAS ===
+
+  const zonas = [{
+    type: "Feature",
+    properties: { zone: "DPP" },
+    geometry: {
+      type: "Polygon",
+      coordinates: [[
+        [-0.2119, 39.4666],
+        [-0.2119, 39.3827],
+        [-0.32985, 39.422433],
+        [-0.331933, 39.4255],
+        [-0.334138, 39.4376],
+        [-0.3265, 39.4476],
+        [-0.332422, 39.4600577],
+        [-0.32907, 39.462141],
+        [-0.31735, 39.46297],
+        [-0.3168, 39.4660],
+        [-0.2119, 39.4666],
+      ]]
+    }
+  }];
+
+  const capaZonas = L.geoJSON(zonas, {
+    style: feature => ({
+      color: feature.properties.zone === 'DPP' ? '#9999ff' : '#ffbbbb'
+    })
+  });
+
+  let zonasVisibles = false;
+
+  // === 5. BOTONES DE TOGGLE ZONAS ===
+
+  const crearBotonToggle = (position, id, texto, clase, callback) => {
+    const control = L.control({ position });
+    control.onAdd = function () {
+      const div = L.DomUtil.create('div', 'leaflet-control-custom');
+      div.innerHTML = `<button id="${id}" class="${clase}">${texto}</button>`;
+      L.DomEvent.disableClickPropagation(div);
+      return div;
+    };
+    control.addTo(map);
+    return id;
+  };
+
+  crearBotonToggle('bottomright', 'toggleZonasBtn', 'Zona II', 'btn btn-primary btn-sm');
+
+  document.getElementById('toggleZonasBtn').addEventListener('click', () => {
+    if (zonasVisibles) {
+      map.removeLayer(capaZonas);
+    } else {
+      map.addLayer(capaZonas);
+    }
+    zonasVisibles = !zonasVisibles;
+  });
+
+  crearBotonToggle('topright', 'btn-toogle-ver', 'Ver Desactivadas <i class="fa fa-eye" aria-hidden="true"></i>', 'btn btn-secondary btn-sm');
+  document.getElementById('btn-toogle-ver').addEventListener('click', () => {
+    toggleVisibilidad();
+  });
+
 });
 
 function drawPin(latlang, title) {
@@ -214,11 +270,7 @@ function onMapDistance(e) {
 function toggleVisibilidad() {
   var elementos = document.querySelectorAll(".AtoN");
   var btn = document.getElementById("btn-toogle-ver");
-    var icono = btn.querySelector("i");
-/*   if (btn.innerHTML == 'Ver desactivadas <i class="fa fa-eye" aria-hidden="true"></i>')
-    btn.innerHTML = 'Ver activadas <i class="fa fa-eye" aria-hidden="true"></i>'
-  else
-    btn.innerHTML = 'Ver desactivadas <i class="fa fa-eye" aria-hidden="true"></i>' */
+  var icono = btn.querySelector("i");
   // Alternar la visibilidad entre las clases activada y desactivada
   elementos.forEach(function (elemento) {
     if (elemento.classList.contains("activada")) {

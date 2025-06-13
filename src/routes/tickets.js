@@ -181,8 +181,6 @@ router.post('/cerrar/:id', funciones.isAuthenticated, funciones.hasSanPrivileges
         let ticket = await db.query("select * from tickets where ticket_id=?", req.params.id);
         ticket = ticket[0];
         ticket.solved_at = moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
-        console.log(ticket);
-        console.log(ticket.solved_at);
         await db.query("update tickets set ? where ticket_id=?", [ticket, req.params.id]);
         funciones.insertarLog(req.user.usuario, "ticket cerrado", ticket.titulo + " el " + ticket.solved_at);
         //Insertarlo en la tabla mantenimiento
@@ -191,7 +189,6 @@ router.post('/cerrar/:id', funciones.isAuthenticated, funciones.hasSanPrivileges
             'fecha': ticket.solved_at,
             'mantenimiento': "Id: "+ticket.ticket_id+" - "+ticket.titulo + " " + ticket.descripcion,
         };
-        console.log(mant);
         await db.query("INSERT INTO mantenimiento set ?", [mant]);
         funciones.insertarLog(req.user.usuario, "INSERT mantenimiento", mant.nif + " " + mant.fecha + " " + mant.mantenimiento);
         //fin insertar en tabla mantenimiento
@@ -228,7 +225,6 @@ router.get('/cerrado/:id', funciones.isAuthenticated, funciones.hasSanPrivileges
 });
 //Ruta ºara borrar un ticket.
 router.get("/delete/:id", funciones.isAuthenticated, funciones.isAdmin, async(req, res) => {
-    //console.log(req.params.idObs);
     const {
         id
     } = req.params;

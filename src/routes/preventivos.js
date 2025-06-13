@@ -7,7 +7,7 @@ import moment from 'moment';
 moment().format();
 import * as url from "url";
 import fs from 'fs';
-import  fse    from 'fs-extra';
+import fse from 'fs-extra';
 import { join, extname as _extname, resolve } from 'path';
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 import multer, { diskStorage } from 'multer';
@@ -57,10 +57,11 @@ const upload = multer({
 router.get('/list', async (req, res) => {
     //const preventivos = await db.query("select * from preventivos order by created_at");
     try {
-        const preventivos = await db.query(queryListadoPreventivosUsers + " order by p.created_at asc");
-        //console.log(preventivos);
+        const preventivos = await db.query(queryListadoPreventivosUsers + " order by p.created_at desc");
+        const usuarios = await db.query("select * from usuarios");
+        console.log(usuarios);
         res.render('preventivo/list', {
-            preventivos
+            preventivos,usuarios
         });
     } catch (error) {
         console.error(error);
@@ -87,8 +88,10 @@ router.get('/add/:nif', funciones.isAuthenticated, async (req, res) => {
 
     console.log(nif);
     try {
-        //const usuarios = await db.query("select * from usuarios");
-        res.render('preventivo/add', { nif });
+        //Leer el ultimo preventivo asociado
+        const [ultimoPreventivo] = await db.query("select * from preventivos where nif=? order by fecha desc ", nif);
+        console.log(ultimoPreventivo)
+        res.render('preventivo/add', { nif, ultimoPreventivo });
     } catch (error) {
         console.error(error);
         req.flash("error", "Hubo algun error al intentar añadir el mantenimiento preventivo:" + error);
@@ -145,7 +148,7 @@ router.get('/edit/:id', funciones.isAuthenticated, funciones.hasSanPrivileges, a
     //console.log(id);
     try {
         const preventivo = await db.query(queryListadoPreventivosUsers + " where preventivo_id=?", id);
-        //console.log(preventivo[0]);
+        console.log(preventivo[0]);
         res.render('preventivo/edit', {
             preventivo: preventivo[0],
         });
@@ -210,7 +213,8 @@ router.post('/edit/:id', funciones.isAuthenticated, funciones.hasSanPrivileges, 
             delete req.body.accion;
             req.body.solved_at = moment(new Date()).format("YYYY-MM-DD HH:mm:ss");
             req.body.solved_by_id = req.user.id;
-            console.log("completado", req.body);
+            req.body.completado = completado;
+            //console.log("completado", req.body);
             const item = await db.query("update preventivos set ? where preventivo_id=?", [req.body, req.body.preventivo_id]);
             funciones.insertarLog(req.user.usuario, "UPDATED and CLOSED preventivo cerrado por ", req.body.solved_by);
             req.flash("success", "Preventivo cerrado correctamente");
@@ -274,7 +278,7 @@ router.post('/eliminar-foto', async (req, res) => {
         const filePath = resolve('src/public/img/preventivos/' + row.nif + '/' + campo);
         fs.access(filePath, fs.constants.F_OK, async (err) => {
             if (err) {
-                console.log("❌ No existe foto",err);
+                console.log("❌ No existe foto", err);
             } else {
                 console.log('✅ File exists. Deleting now...');
                 // No uses await aquí; esta función no es async

@@ -1,63 +1,94 @@
 <div class="container-fluid mb-5">
-    {{!-- TICKETS --}}
-    <div class="row my-2 mx-4">
-        <div class="text-center">
-            <a class="btn btn-outline-danger btn-sm" href="/tickets/add/{{baliza.nif}}">CREAR TICKET</a>
-            <a class="btn btn-outline-secondary btn-sm" href="/aton/pintura/{{baliza.nif}}">PINTADO</a>
-            <a class="btn btn-outline-secondary btn-sm" href="/mantenimientopreventivo/add/{{baliza.nif}}">INICIAR
-                PREVENTIVO</a>
+    <!-- BOTONES DE ACCIÓN -->
+    <div class="row justify-content-center my-3">
+        <div class="col-auto d-flex flex-wrap gap-2 justify-content-center">
+
+            <a class="btn btn-outline-danger btn-sm fw-semibold" href="/tickets/add/{{baliza.nif}}">
+                <i class="fa fa-plus me-1"></i>Crear Ticket
+            </a>
+
+            <a class="btn btn-outline-secondary btn-sm fw-semibold" href="/aton/pintura/{{baliza.nif}}">
+                <i class="fa fa-paint-roller me-1"></i>Pintado
+            </a>
+
+            <a class="btn btn-outline-secondary btn-sm fw-semibold" href="/mantenimientopreventivo/add/{{baliza.nif}}">
+                <i class="fa fa-cogs me-1"></i>Iniciar Preventivo
+            </a>
+
             {{#if baliza.necesita_pintado}}
             <button onclick="document.getElementById('myModalPintado').style.display = 'block';"
-                class="btn btn-danger  float-right"> <i class="fa fa-paint-brush"></i> </button>
+                class="btn btn-danger btn-sm fw-semibold" title="Requiere pintado">
+                <i class="fa fa-paint-brush"></i>
+            </button>
             {{/if}}
-            <a class="btn btn-outline-secondary btn-sm" href="/aton/activado/{{baliza.nif}}"> {{#if
-                baliza.apagada}}APAGADA {{else}}ACTIVADA{{/if}}</a>
-        </div>
 
+            <a class="btn btn-outline-secondary btn-sm fw-semibold" href="/aton/activado/{{baliza.nif}}">
+                <i class="fa fa-lightbulb me-1"></i>
+                {{#if baliza.apagada}}Apagada{{else}}Activada{{/if}}
+            </a>
+
+        </div>
     </div>
+
+    <!-- TICKETS ACTIVOS -->
     {{#if tickets}}
-    <div class="row mb-2 mx-4">
-        <div class="col-md-6 mx-auto">
-            <table class="table table-responsive-sm rounded table-danger table-sm table-striped mx-auto">
-                <tr>
-                    <th class="text-center">El AtoN {{baliza.nif}} tiene tickets activos</th>
-                </tr>
-                {{#each tickets}}
-                <tr class="text-center">
-                    <td>
-                        <span> Id:{{this.ticket_id}} - '{{this.titulo}}'</span> <span class="d-none d-sm-inline">
-                            asignado a {{this.assigned_to}} el dia {{formatearSp
-                            this.created_at}}</span> <a href="/tickets/edit/{{this.ticket_id}}" class="text-primary"><i
-                                class="fa fa-pen-to-square"></i>Edit</a></th>
-                    </td>
-                </tr>
-                {{/each}}
-            </table>
-        </div>
-    </div>
-    {{/if}}
-    {{#if preventivos}}
-    <div class="row mb-2 mx-4">
-        <div class="col-md-6 mx-auto">
-            <table class="table table-responsive-sm rounded table-warning table-sm table-striped mx-auto">
-                <tr>
-                    <th class="text-center">El AtoN {{baliza.nif}} tiene preventivos iniciados</th>
-                </tr>
-                {{#each preventivos}}
-                <tr class="text-center">
-                    <td>
-                        <span> Id:{{this.preventivo_id}} - </span> <span class="d-none d-sm-inline">
-                            Última modificacion por {{this.created_by}} el dia {{formatearSp this.created_at}}</span> <a
-                            href="/mantenimientopreventivo/edit/{{this.preventivo_id}}" class="text-primary"><i
-                                class="fa fa-pen-to-square"></i>Edit</a></th>
-                    </td>
-                </tr>
-                {{/each}}
-            </table>
+    <div class="row justify-content-center mb-3">
+        <div class="col-md-8">
+            <div class="card border-danger shadow-sm">
+                <div class="card-header bg-danger text-white text-center fw-bold">
+                    El AtoN {{baliza.nif}} tiene tickets activos
+                </div>
+                <ul class="list-group list-group-flush">
+                    {{#each tickets}}
+                    <li class="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-start">
+                        <div>
+                            <span class="fw-semibold">ID: {{this.ticket_id}}</span> - '{{this.titulo}}'
+                            <span class="d-block d-md-inline text-muted small">
+                                asignado a {{this.assigned_to}} el {{formatearSp this.created_at}}
+                            </span>
+                        </div>
+                        <div>
+                            <a href="/tickets/edit/{{this.ticket_id}}" class="btn btn-sm btn-outline-primary ms-md-3 mt-2 mt-md-0">
+                                <i class="fa fa-pen-to-square"></i> Editar
+                            </a>
+                        </div>
+                    </li>
+                    {{/each}}
+                </ul>
+            </div>
         </div>
     </div>
     {{/if}}
 
+    <!-- PREVENTIVOS ACTIVOS -->
+    {{#if preventivos}}
+    <div class="row justify-content-center mb-3">
+        <div class="col-md-8">
+            <div class="card border-warning shadow-sm">
+                <div class="card-header bg-warning text-dark text-center fw-bold">
+                    El AtoN {{baliza.nif}} tiene preventivos iniciados
+                </div>
+                <ul class="list-group list-group-flush">
+                    {{#each preventivos}}
+                    <li class="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-start">
+                        <div>
+                            <span class="fw-semibold">ID: {{this.preventivo_id}}</span>
+                            <span class="d-block d-md-inline text-muted small">
+                                modificado por {{this.created_by}} el {{formatearSp this.created_at}}
+                            </span>
+                        </div>
+                        <div>
+                            <a href="/mantenimientopreventivo/edit/{{this.preventivo_id}}" class="btn btn-sm btn-outline-primary ms-md-3 mt-2 mt-md-0">
+                                <i class="fa fa-pen-to-square"></i> Editar
+                            </a>
+                        </div>
+                    </li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+    </div>
+    {{/if}}
     <div class="row mx-1">
         {{!-- Fotos --}}
         <div class="col-lg-2 col-md-2 col-sm-6 col-xs-12">
@@ -102,11 +133,11 @@
                 </tr>
                 <tr>
                     <th>Caracteristica</th>
-                    <td id="caracteristicaID">{{baliza.caracteristica}}</td>
+                    <td>{{baliza.caracteristica}}</td>
                 </tr>
                 <tr>
                     <th>Telecontrol</th>
-                    <td id="caracteristicaID">{{baliza.telecontrol}}</td>
+                    <td>{{baliza.telecontrol}}</td>
                 </tr>
                 <tr>
                     <th>Es Boya?</th>

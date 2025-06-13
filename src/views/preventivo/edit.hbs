@@ -9,8 +9,7 @@
                 <div class="card-body pb-2">
                     {{>preventivoDisabled}}
                 </div>
-                <a class="btn btn-warning m-2"
-                    href="/mantenimientopreventivo/delete/{{preventivo.preventivo_id}}">Borrar</a>
+                <a class="btn btn-warning m-2" onclick="document.getElementById('myModalBorradoPreventivo').style.display = 'block';">Borrar</a>
                 <a class="btn btn-secondary m-2" href="/mantenimientopreventivo/list">Volver</a>
             </div>
         </div>
@@ -29,7 +28,7 @@
                         <label for="fecha">Fecha Revisión</label> <input type="date" name="fecha"
                             value="{{formatearEn preventivo.fecha}}" />
                       {{!--   <p>{{formatearEn preventivo.fecha}}</p> --}}
-                        {{>preventivo}}
+                        {{>preventivoEdit}}
                         <button class="btn btn-primary btn-block w-100" type="submit" name="accion"
                             value="Guardar">Guardar</button>
                         <div class="form-group">
@@ -44,3 +43,6 @@
     </div>
     {{/if}}
 </div>
+
+
+{{>ModalBorradoPreventivo}}
