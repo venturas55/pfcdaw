@@ -88,7 +88,7 @@ router.post("/aton/upload/:nif", funciones.isAuthenticated, funciones.hasSanPriv
 
     req.flash("success", "Nueva fotografia insertada correctamente");
     funciones.insertarLog(req.user.usuario, "INSERT fotografia", nif);
-    res.redirect("/aton/plantilla/" + nif);
+    res.redirect("/aton/fotos/" + nif);
 });
 router.get("/aton/fotos/:nif", async (req, res) => {
     const nif = req.params.nif;
