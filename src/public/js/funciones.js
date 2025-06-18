@@ -42,10 +42,16 @@ function abreModalPrev(id,nif) {
     var ref = document.getElementById("refprevdel");
     document.getElementById("preventivoidmodal").innerHTML=id;
     document.getElementById("preventivonifmodal").innerHTML=nif;
-
-
-
     ref.href += id;
+    item.style.display = 'block';
+}
+
+function abreModalFoto(nif,nombre) {
+    //console.log("observacion con id" + id);
+    var item = document.getElementById("myModalBorradoFoto");
+    var ref = document.getElementById("reffotodel"); 
+     document.getElementById("fotoidmodal").innerHTML=nombre;
+    ref.href = `/aton/fotos/${nif}/${nombre}/delete`;
     item.style.display = 'block';
 }
 

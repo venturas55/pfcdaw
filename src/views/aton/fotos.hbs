@@ -33,9 +33,8 @@
                         <a href="/aton/fotos/{{../nif}}/{{this.nombre}}" class="btn btn-primary me-2">
                             Ver Foto
                         </a>
-                        <a href="/aton/fotos/{{../nif}}/{{this.nombre}}/delete" class="btn btn-danger">
-                            Delete
-                        </a>
+                        <a type="submit" onclick="abreModalFoto('{{../nif}}','{{this.nombre}}')" class="btn btn-outline-danger"><i
+                                class="fa fa-trash"></i>Del</a>
                     </div>
                     </form>
 
@@ -45,3 +44,5 @@
         {{/each}}
     </div>
 </div>
+
+{{>ModalBorradoFoto}}

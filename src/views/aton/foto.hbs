@@ -9,7 +9,7 @@
       </div>
 
       <!-- Información y formulario -->
-      <div class="col-md-6 p-4 d-flex flex-column justify-content-center">
+      <div class="col-md-12 p-4 d-flex flex-column justify-content-center">
         <form action="/aton/fotos/{{nif}}/{{nombre}}/update" method="POST">
           {{#if foto.descripcion}}
           <h4 class=" fst-italic mb-4" id="descripcion-actual">{{foto.descripcion}}</h4>
@@ -23,23 +23,30 @@
           <!-- Campo oculto inicialmente -->
           <div id="campo-edicion" class="mb-3 d-none">
             <label for="descripcion" class="form-label fw-bold">Modificar Descripción</label>
-            <input type="text" class="form-control" id="descripcion" name="descripcion" value="{{foto.descripcion}}"
-              placeholder="Nueva descripción de la foto">
+            <div class="d-flex flex-row gap-2">
+              <input type="text" class="form-control" id="descripcion" name="descripcion" value="{{foto.descripcion}}"
+                placeholder="Nueva descripción de la foto">
+              <button type="submit" class="btn btn-success">
+                Guardar
+              </button>
+            </div>
           </div>
 
-          <div class="d-flex gap-2 flex-wrap">
-            <button type="submit" class="btn btn-success">
-              Guardar
-            </button>
+          <div class="d-flex gap-2 flex-wrap justify-content-between">
+
             <a href="/aton/fotos/{{nif}}" class="btn btn-outline-secondary">
               Volver atrás
             </a>
-                 </div>
+            <a type="submit" onclick="abreModalFoto('{{nif}}','{{nombre}}')" class="btn btn-outline-danger"><i
+                class="fa fa-trash"></i>Del</a>
+          </div>
         </form>
       </div>
     </div>
   </div>
 </div>
+
+{{>ModalBorradoFoto}}
 
 <script>
   function mostrarEdicion() {
