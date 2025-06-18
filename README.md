@@ -152,6 +152,8 @@ Ver readme ubicado en ./DOCKER
 =====
 # ACTUALIZACIONES
 =====
+
+18-6-25 Se añaden observaciones a las fotos creando una tabla fotos_balizamiento
 Se ha añadido una tabla nueva a la base de datos para implementar la recuperación de contraseña. La tabla que almacena tokens con fecha de expiracion es la siguiente.
 
 CREATE TABLE `tokens` (

@@ -1,0 +1,33 @@
+<div class="container my-5">
+  <div class="card shadow-sm border-0 p-4">
+    <div class="row g-4 align-items-center">
+      <div class="col-md-12">
+        <a href="/img/imagenes/{{nif}}/{{nombre}}" target="_blank">
+          <img src="/img/imagenes/{{nif}}/{{nombre}}" class="img-fluid rounded" alt="{{foto.descripcion}}">
+        </a>
+      </div>
+
+      <div class="col-md-12">
+        <form action="/aton/fotos/{{nif}}/{{nombre}}/update" method="POST">
+          <h5 class="mb-3">{{nombre}}</h5>
+          <h5 class="mb-3">{{foto.descripcion}}</h5>
+
+          <div class="row g-2 align-items-center mb-3">
+            <div class="col">
+              <label for="descripcion" class="form-label">Nueva Descripción</label>
+              <input type="text" class="form-control" id="descripcion" name="descripcion" value="{{foto.descripcion}}"
+                placeholder="Descripción de la foto">
+            </div>
+            <div class="col-auto">
+              <button type="submit" class="btn btn-success">Guardar</button>
+            </div>
+          </div>
+
+          <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+            <a href="/aton/fotos/{{nif}}" class="btn btn-primary btn-block"> Volver atras</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

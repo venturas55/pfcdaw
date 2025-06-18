@@ -105,3 +105,10 @@ CREATE TABLE IF NOT EXISTS `preventivos` (
   CONSTRAINT `preventivo_ibfk_3` FOREIGN KEY (`solved_by_id`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `preventivo_ibfk_2` FOREIGN KEY (`nif`) REFERENCES `balizamiento` (`nif`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'tabla de preventivos';
+
+CREATE TABLE IF NOT EXISTS `fotos_balizamiento` (
+  `nombre` varchar(100) NOT NULL,
+  `descripcion` varchar(250) DEFAULT NULL,
+  `created_at` date NOT NULL DEFAULT current_timestamp(),
+   PRIMARY KEY (`nombre`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = 'tabla de descripcion de fotos del balizamiento';
