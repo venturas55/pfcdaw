@@ -6,6 +6,7 @@
     </div>
     <div class="row my-4">
         <div class="col-md-12 mx-auto bg-white p-4 rounded">
+            <h4>Subir nueva imagen</h4>
             <form action="/aton/upload/{{nif}}" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="nif" value="{{nif}}">
                 <div class="input-group mb-3">
@@ -23,13 +24,13 @@
         {{#each fotos}}
         <div class="col">
             <div class="card h-100 shadow-sm border-0">
-                <a href="/img/imagenes/{{../nif}}/{{this.nombre}}" target="_blank">
+                <a href=/aton/fotos/{{../nif}}/{{this.nombre}}>
                     <img src="/img/imagenes/{{../nif}}/{{this.nombre}}" alt="Una imagen" class="card-img-top rounded">
                 </a>
                 <div class="card-body">
                     <p class="fw-bold mb-2 text-truncate">{{this.descripcion}}</p>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-center">
-                        <a href="/aton/fotos/{{../nif}}/{{this.nombre}}" target="_blank" class="btn btn-primary me-2">
+                        <a href="/aton/fotos/{{../nif}}/{{this.nombre}}" class="btn btn-primary me-2">
                             Ver Foto
                         </a>
                         <a href="/aton/fotos/{{../nif}}/{{this.nombre}}/delete" class="btn btn-danger">
