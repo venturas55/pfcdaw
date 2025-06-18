@@ -107,6 +107,14 @@ CREATE TABLE `documentos` (
    PRIMARY KEY (`id_archivo`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = 'tabla de documentos';
 
+/* DESCRIPCION FOTOS */
+CREATE TABLE `fotos_balizamiento` (
+  `nombre` varchar(100) NOT NULL,
+  `descripcion` varchar(250) DEFAULT NULL,
+  `created_at` date NOT NULL DEFAULT current_timestamp(),
+   PRIMARY KEY (`nombre`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = 'tabla de descripcion de fotos del balizamiento';
+
 /* USUARIOS y LOGS */
 CREATE TABLE IF NOT EXISTS `usuarios` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

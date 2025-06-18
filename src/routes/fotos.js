@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import  fse    from 'fs-extra';
+import fse from 'fs-extra';
 import fs from 'fs';
 import { join, extname as _extname, resolve } from 'path';
 import db from "../database.js"; //db hace referencia a la BBDD
@@ -8,7 +8,7 @@ import multer, { diskStorage } from 'multer';
 import funciones from "../lib/funciones.js";
 import { archiveFolder, extract } from "zip-lib";
 import * as url from "url";
-import {imageSizeLimitErrorHandler,zipSizeLimitErrorHandler} from "../lib/validaciones.js";
+import { imageSizeLimitErrorHandler, zipSizeLimitErrorHandler } from "../lib/validaciones.js";
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
 const storage = diskStorage({
@@ -82,32 +82,71 @@ const uploadFotosZip = multer({
 }).single('backup');
 
 //GESTION FOTOS DE BALIZAS
-router.post("/aton/upload/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, uploadFoto,imageSizeLimitErrorHandler, async (req, res) => {
-    console.log("Subiendo foto baliza");
+router.post("/aton/upload/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, uploadFoto, imageSizeLimitErrorHandler, async (req, res) => {
     const { nif } = req.params;
-
+    const nombre = req.file.filename;
+    const { descripcion } = req.body;
+    const newPic = { nombre, descripcion, }
+    await db.query("insert into fotos_balizamiento set ?", [newPic]);
     req.flash("success", "Nueva fotografia insertada correctamente");
     funciones.insertarLog(req.user.usuario, "INSERT fotografia", nif);
-    res.redirect("/aton/plantilla/" + nif);
+    res.redirect("/aton/fotos/" + nif);
 });
+//UPDATE
+router.post('/aton/fotos/:nif/:nombre/update', async (req, res) => {
+    const { nif, nombre } = req.params;
+    const { descripcion } = req.body;
+
+    try {
+        // Insertar o actualizar la descripción en la tabla fotos_balizamiento
+        await db.query(`
+      INSERT INTO fotos_balizamiento (nombre, descripcion)
+      VALUES (?, ?)
+      ON DUPLICATE KEY UPDATE descripcion = VALUES(descripcion)
+    `, [nombre, descripcion]);
+
+        // Opcional: redirigir a una vista individual o listado
+        res.redirect(`/aton/fotos/${nif}`);
+    } catch (error) {
+        console.error("Error actualizando descripción:", error);
+        res.status(500).send("Error actualizando descripción");
+    }
+});
+
 router.get("/aton/fotos/:nif", async (req, res) => {
     const nif = req.params.nif;
     var fotos = await funciones.getFotosOrdenadas(nif);
+    // Recorrer todas las fotos y buscar su descripción si existe
+    fotos = await Promise.all(fotos.map(async (nombreFoto) => {
+        const rows = await db.query("SELECT descripcion FROM fotos_balizamiento WHERE nombre = ?", [nombreFoto]);
+        return {
+            nombre: nombreFoto,
+            descripcion: rows.length ? rows[0].descripcion : ''
+        };
+    }));
+
     res.render("aton/fotos", { fotos, nif });
 });
-router.get("/aton/fotos/:nif/:src/delete", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
+router.get("/aton/fotos/:nif/:nombre", async (req, res) => {
     const nif = req.params.nif;
-    const src = req.params.src;
-    await fse.unlink(resolve('src/public/img/imagenes/' + nif + "/" + src));
+    const nombre = req.params.nombre;
+    const [foto] = await db.query("SELECT * FROM fotos_balizamiento WHERE nombre = ?", [nombre]);
+    res.render("aton/foto", { foto, nif, nombre });
+});
+router.get("/aton/fotos/:nif/:nombre/delete", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
+    const nif = req.params.nif;
+    const nombre = req.params.nombre;
+    await fse.unlink(resolve('src/public/img/imagenes/' + nif + "/" + nombre));
+    await db.query("delete from fotos_balizamiento where nombre = ?", [nombre]);
     req.flash("success", "Fotografia borrada correctamente");
-    funciones.insertarLog(req.user.usuario, "DELETE fotografia", nif);
+    funciones.insertarLog(req.user.usuario, "DELETE fotografia "+nif, nombre);
     res.redirect("/aton/fotos/" + nif);
 });
 
 //BACKUPS DE FOTOS DE ATONS
 router.get("/backupsfotos", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     var backups = funciones.listadoBackupsFotos();
-    console.log("FOtos: ",backups);
+    console.log("FOtos: ", backups);
     res.render("fotos/listadoBackupFotos", { backups });
 });
 router.get("/backupsfotos/del/:nombre", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
