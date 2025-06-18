@@ -398,7 +398,7 @@ router.post("/editCaracteristicas/:nif", funciones.isAuthenticated, funciones.ha
         console.error(error);
         if (error.errno == -4058) {
             req.flash("error", "Carpeta de imagenes " + newBaliza.nif);
-            console.log("ERROR:",error);
+            console.log("ERROR:", error);
         }
         else
             req.flash("error", "Hubo algun error al modificar el aton " + newBaliza.nif + "\n" + error);
@@ -439,7 +439,7 @@ router.post("/editLocalizacion/:nif", funciones.isAuthenticated, funciones.hasSa
 
     } catch (error) {
         console.error(error);
-        req.flash("error", "Hubo algun error al modificar la localización del aton con NIF " + nifviejo," \n",error);
+        req.flash("error", "Hubo algun error al modificar la localización del aton con NIF " + nifviejo, " \n", error);
         res.redirect("/aton/plantilla/" + nifviejo);
     }
 
@@ -470,7 +470,7 @@ router.post("/editLocalizacionFromMap/:nif", funciones.isAuthenticated, funcione
 
     } catch (error) {
         console.error(error);
-        req.flash("error", "Hubo algun error al modificar la localización del aton con NIF " + nif," \n",error);
+        req.flash("error", "Hubo algun error al modificar la localización del aton con NIF " + nif, " \n", error);
         res.redirect("/mapaGeneral/valencia");
     }
 
@@ -509,7 +509,7 @@ router.post("/editLampara/:nif", funciones.isAuthenticated, funciones.hasSanPriv
 
     } catch (error) {
         console.error(error);
-        req.flash("error", "Hubo algun error al modificar la lampara del aton con NIF: " + nifviejo," \n",error);
+        req.flash("error", "Hubo algun error al modificar la lampara del aton con NIF: " + nifviejo, " \n", error);
         res.redirect("/aton/plantilla/" + nifviejo);
     }
 
@@ -557,7 +557,7 @@ router.post("/editFondeo/:nif", funciones.isAuthenticated, funciones.hasSanPrivi
 
     } catch (error) {
         console.error(error);
-        req.flash("error", "Hubo algun error al modificar el fondeo del aton con NIF " + nifviejo," \n",error);
+        req.flash("error", "Hubo algun error al modificar el fondeo del aton con NIF " + nifviejo, " \n", error);
         res.redirect("/aton/plantilla/" + nifviejo);
     }
 
@@ -573,7 +573,7 @@ router.get("/transform", funciones.isAuthenticated, funciones.isAdmin, async (re
         res.redirect("/");
     } catch (error) {
         console.error(error);
-        req.flash("error", "Hubo algun error al modificar la localización"," \n",error);
+        req.flash("error", "Hubo algun error al modificar la localización", " \n", error);
         res.redirect("/error");
     }
 });
@@ -614,7 +614,7 @@ router.post("/observaciones/add", funciones.isAuthenticated, funciones.hasSanPri
         funciones.insertarLog(req.user.usuario, "INSERT observaciones", observa.nif + " " + observa.observaciones);
         res.redirect("/aton/plantilla/" + nif);
     } catch (error) {
-        req.flash("error", "Hubo algun error al añadir la observación"," \n",error);
+        req.flash("error", "Hubo algun error al añadir la observación", " \n", error);
         res.redirect("/aton/plantilla/" + nif);
     }
 
@@ -665,7 +665,7 @@ router.post("/observaciones/edit/:idObs", funciones.isAuthenticated, funciones.h
 
     } catch (error) {
         console.error(error);
-        req.flash("error", "Hubo algun error al editar la observación"," \n",error);
+        req.flash("error", "Hubo algun error al editar la observación", " \n", error);
         res.redirect("/aton/plantilla/" + nif);
     }
 });
@@ -690,7 +690,7 @@ router.post("/mantenimiento/add", funciones.isAuthenticated, funciones.hasSanPri
 
     } catch (error) {
         console.error(error);
-        req.flash("error", "Hubo algun error al añadir mantenimiento al NIF: " + nif," \n",error);
+        req.flash("error", "Hubo algun error al añadir mantenimiento al NIF: " + nif, " \n", error);
         res.redirect("/aton/plantilla/" + nif);
     }
 });
@@ -735,20 +735,27 @@ router.post("/mantenimiento/edit/:idMan", funciones.isAuthenticated, funciones.h
         res.redirect("/aton/plantilla/" + nif);
     } catch (error) {
         console.error(error);
-        req.flash("error", "Hubo algun error al modificar el mantenimiento al NIF: " + nif," \n",error);
+        req.flash("error", "Hubo algun error al modificar el mantenimiento al NIF: " + nif, " \n", error);
         res.redirect("/aton/plantilla/" + nif);
     }
 });
 
 // RUTAS PINTURA
 //Marca una señal que necesita ser pintada (hace toogle cambiando el estado)
-router.get("/pintura/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
+router.get("/pintura/:nif/:from", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     try {
         const { nif } = req.params;
+        const { from } = req.params;
+        console.log(nif);
+        console.log(from);
+
         const baliza = (await db.query('Select * from balizamiento where nif=?', [nif]))[0];
         baliza.necesita_pintado = !baliza.necesita_pintado;
         await db.query("UPDATE balizamiento set ? WHERE nif = ?", [baliza, nif]);
-        res.redirect("/aton/plantilla/" + nif);
+        if (from == "map")
+            res.redirect("/mapa/" + nif);
+        else
+            res.redirect("/aton/plantilla/" + nif);
     } catch (error) {
         console.error(error);
         req.flash("error", "Hubo algun error al anotar pintado");

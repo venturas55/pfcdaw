@@ -14,6 +14,9 @@ router.get('/api/balizas', async (req, res) => {
             balizas[i].pictureUrl = archivos;
         else
             balizas[i].pictureUrl = ["N/A"];
+
+        balizas[i].tickets = await db.query("select * from tickets where nif=? and solved_at IS NULL",balizas[i].nif);
+        console.log(balizas[i].tickets.length);
     }
     res.send(balizas);
 });
@@ -21,8 +24,8 @@ router.get('/api/aton/boyas', async (req, res) => {
     const balizas = await db.query(queryListadoAton + " where b.esBoya=1");
     for (var i = 0; i < balizas.length; i++) {
         var archivos = await funciones.getFotosOrdenadas(balizas[i].nif);
-        var fondeo = await db.query("select * from fondeos where nif=?",balizas[i].nif)
-        balizas[i].fondeo=fondeo;
+        var fondeo = await db.query("select * from fondeos where nif=?", balizas[i].nif)
+        balizas[i].fondeo = fondeo;
         if (archivos)
             balizas[i].pictureUrl = archivos;
         else
@@ -67,23 +70,23 @@ router.get('/api/usuarios', async (req, res) => {
     res.send(balizas);
 });
 router.get('/api/autocompletar-nif', async (req, res) => {
-  const { termino } = req.query; // texto introducido por el usuario
+    const { termino } = req.query; // texto introducido por el usuario
 
-  if (!termino) {
-    return res.status(400).json({ error: 'Término de búsqueda vacío' });
-  }
+    if (!termino) {
+        return res.status(400).json({ error: 'Término de búsqueda vacío' });
+    }
 
-  try {
-    const resultados = await db.query(
-      'SELECT * FROM balizamiento WHERE nif LIKE ? LIMIT 10',
-      [`${termino}%`]
-    );
+    try {
+        const resultados = await db.query(
+            'SELECT * FROM balizamiento WHERE nif LIKE ? LIMIT 10',
+            [`${termino}%`]
+        );
 
-    res.json(resultados);
-  } catch (error) {
-    console.error('Error en autocompletado NIF:', error);
-    res.status(500).json({ error: 'Error interno del servidor' });
-  }
+        res.json(resultados);
+    } catch (error) {
+        console.error('Error en autocompletado NIF:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
 });
 
 export default router;

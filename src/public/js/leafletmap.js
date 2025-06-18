@@ -26,6 +26,8 @@ fetchData()?.then((balizas) => {
       iconAnchor: [8, 30],
       className: item.apagada ? 'AtoN desactivada' : 'AtoN activada',
     };
+
+
     if (icono === 'TC') {
       iconConfig.iconSize = [20, 20];
       iconConfig.iconAnchor = [10, 50];
@@ -47,7 +49,7 @@ fetchData()?.then((balizas) => {
       </div>`;
   }
 
-  function crearPopupHTML(item, position, textposition) {
+  function crearPopupHTML(item, position, textposition, posicionInicial) {
     return `
       <div class="card-body">
         <h4>¿Desplazar señal aquí?</h4>
@@ -68,7 +70,8 @@ fetchData()?.then((balizas) => {
           </div>
         </form>
         <div class="form-group mb-2 text-center">
-          <button onclick="document.getElementsByClassName('leaflet-popup-close-button')[0].click();thismarker.setLatLng(posicionInicial);map.setView(posicionInicial);" class="btn btn-danger btn-block">NO</button>
+          <button type="button" id="cancelarMovimiento" class="btn btn-danger btn-block">NO</button>
+
         </div>
       </div>`;
   }
@@ -80,9 +83,40 @@ fetchData()?.then((balizas) => {
     const marker = new L.Marker(setMarkerLatLng(item.latitud, item.longitud), {
       icon: icono,
       title: item.tipo,
-      draggable: true
+      draggable: true,
     });
 
+    if (item.necesita_pintado) {
+      const htmlIcon = L.divIcon({
+        className: 'custom-div-icon',
+        html: '<i class="fa fa-paint-brush me-1 text-danger infoAtoN info-activada"></i>',
+        iconSize: [50, 50],
+        iconAnchor: [-10, 35],
+      });
+
+      const submarker = L.marker(setMarkerLatLng(item.latitud, item.longitud), {
+        icon: htmlIcon,
+        interactive: false // si solo lo quieres como decorativo
+      });
+      submarker.addTo(map);
+
+    }
+
+    if (item.tickets.length > 0) {
+      const htmlIcon = L.divIcon({
+        className: 'custom-div-icon',
+        html: '<i class="fa fa-exclamation-triangle me-1 blink_me text-danger infoAtoN info-activada"></i>',
+        iconSize: [50, 50],
+        iconAnchor: [20, 35],
+      });
+
+      const submarker = L.marker(setMarkerLatLng(item.latitud, item.longitud), {
+        icon: htmlIcon,
+        interactive: false // si solo lo quieres como decorativo
+      });
+      submarker.addTo(map);
+
+    }
     let posicionInicial;
     marker.on('dragstart', e => posicionInicial = e.target.getLatLng());
 
@@ -94,9 +128,21 @@ fetchData()?.then((balizas) => {
       map.panTo(newPosition);
       popup
         .setLatLng(newPosition)
-        .setContent(crearPopupHTML(item, newPosition, textPos))
+        .setContent(crearPopupHTML(item, newPosition, textPos, posicionInicial))
         .openOn(map);
       markers.push(thismarker);
+
+      // Vincular evento al botón "NO"
+      setTimeout(() => {
+        const botonCancelar = document.getElementById('cancelarMovimiento');
+        if (botonCancelar) {
+          botonCancelar.addEventListener('click', () => {
+            thismarker.setLatLng(posicionInicial);
+            map.setView(posicionInicial);
+            map.closePopup();
+          });
+        }
+      }, 0);
     });
 
     marker.on('click', () => {
@@ -123,7 +169,7 @@ fetchData()?.then((balizas) => {
           </div>  
           <div class="d-flex flex-column gap-2 mt-2">
             <button class="btn btn-primary btn-sm" onclick="window.location.href='/aton/plantilla/${item.nif}'">Ver</button>
-            <button class="btn btn-success btn-sm" onclick="window.location.href='/aton/pintado/${item.nif}'">Pintar</button>
+            <button class="btn btn-success btn-sm" onclick="window.location.href='/aton/pintura/${item.nif}/map'">Necesita Pintado</button>
             <button class="btn btn-danger btn-sm" onclick="window.location.href='/aton/toggleapagado/${item.nif}'">Apagar/Activar</button>
             <button class="btn btn-warning btn-sm" onclick="window.location.href='/mantenimientopreventivo/add/${item.nif}'">Preventivo</button>
           </div>  
@@ -180,7 +226,6 @@ fetchData()?.then((balizas) => {
   };
 
   crearBotonToggle('bottomright', 'toggleZonasBtn', 'Zona II', 'btn btn-primary btn-sm');
-
   document.getElementById('toggleZonasBtn').addEventListener('click', () => {
     if (zonasVisibles) {
       map.removeLayer(capaZonas);
@@ -193,6 +238,12 @@ fetchData()?.then((balizas) => {
   crearBotonToggle('topright', 'btn-toogle-ver', 'Ver Desactivadas <i class="fa fa-eye" aria-hidden="true"></i>', 'btn btn-secondary btn-sm');
   document.getElementById('btn-toogle-ver').addEventListener('click', () => {
     toggleVisibilidad();
+  });
+
+  
+  crearBotonToggle('topright', 'btn-toogle-ver-info', 'Ver info <i class="fa fa-eye" aria-hidden="true"></i>', 'btn btn-secondary btn-sm');
+  document.getElementById('btn-toogle-ver-info').addEventListener('click', () => {
+    toggleVisibilidadInfo();
   });
 
 });
@@ -293,6 +344,35 @@ function toggleVisibilidad() {
     icono.classList.remove("fa-eye-slash");
     icono.classList.add("fa-eye");
     btn.innerHTML = 'Ver Desactivadas <i class="fa fa-eye" aria-hidden="true"></i>';
+  }
+}
+
+function toggleVisibilidadInfo() {
+  var elementos = document.querySelectorAll(".infoAtoN");
+  var btn = document.getElementById("btn-toogle-ver-info");
+  var icono = btn.querySelector("i");
+  // Alternar la visibilidad entre las clases activada y desactivada
+  elementos.forEach(function (elemento) {
+    if (elemento.classList.contains("info-activada")) {
+      btn.innerHTML = "Ocultar info";
+      elemento.classList.remove("info-activada");
+      elemento.classList.add("info-desactivada");
+
+    } else {
+      btn.innerHTML = "Ver info";
+      elemento.classList.remove("info-desactivada");
+      elemento.classList.add("info-activada");
+    }
+  });
+  // Cambiar el texto y el ícono del botón
+  if (icono.classList.contains("fa-eye")) {
+    icono.classList.remove("fa-eye");
+    icono.classList.add("fa-eye-slash");
+    btn.innerHTML = 'Ocultar Info <i class="fa fa-eye-slash" aria-hidden="true"></i>';
+  } else {
+    icono.classList.remove("fa-eye-slash");
+    icono.classList.add("fa-eye");
+    btn.innerHTML = 'Ver Info <i class="fa fa-eye" aria-hidden="true"></i>';
   }
 }
 
