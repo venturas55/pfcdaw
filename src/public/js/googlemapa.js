@@ -59,7 +59,6 @@ function initMapa(balizas) {
           <div class="card-body">
             <h4>¿Desplazar señal aquí?</h4>
             <form action="/aton/editLocalizacionFromMap/${item.nif}" method="POST">
-                ${textPos} - ${textPosString}
               <input type="hidden" name="nif" value="${item.nif}">
               <div class="form-group mb-2"><label>LATITUD<input class="form-control" name="latitud" value="${textPos.lat}"></label></div>
               <div class="form-group mb-2"><label>LONGITUD<input class="form-control" name="longitud" value="${textPos.lng}"></label></div>

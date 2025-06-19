@@ -16,7 +16,7 @@ router.get('/api/balizas', async (req, res) => {
             balizas[i].pictureUrl = ["N/A"];
 
         balizas[i].tickets = await db.query("select * from tickets where nif=? and solved_at IS NULL",balizas[i].nif);
-        console.log(balizas[i].tickets.length);
+        //console.log(balizas[i].tickets.length);
     }
     res.send(balizas);
 });
@@ -53,14 +53,14 @@ router.get('/api/baliza/:nif', async (req, res) => {
 //Devuelve los mantenimientos de la baliza introducida 
 router.get('/api/mantenimiento/:nif', async (req, res) => {
     const { nif } = req.params;
-    console.log(nif);
+    //console.log(nif);
     const q = await db.query('SELECT * FROM mantenimiento where nif=? order by fecha DESC', [nif]);
     res.send(q);
 });
 //Devuelve las observaciones de la baliza introducida 
 router.get('/api/observaciones/:nif', async (req, res) => {
     const { nif } = req.params;
-    console.log(nif);
+    //console.log(nif);
     const q = await db.query('SELECT * FROM observaciones where nif=?', [nif]);
     res.send(q);
 });

@@ -4,7 +4,7 @@
 // FARO FA
 
 const protocolo = window.location.protocol;
-const host = window.location.host;  
+const host = window.location.host;
 const myurl = `${protocolo}//${host}`;
 
 //FUNCION PARA CERRAR MODALES
@@ -36,21 +36,21 @@ function abreModalMant(id) {
     item.style.display = 'block';
 }
 
-function abreModalPrev(id,nif) {
+function abreModalPrev(id, nif) {
     //console.log("Mantenimiento con id" + id);
-    var item = document.getElementById("myModalBorradoPreventivo"); 
+    var item = document.getElementById("myModalBorradoPreventivo");
     var ref = document.getElementById("refprevdel");
-    document.getElementById("preventivoidmodal").innerHTML=id;
-    document.getElementById("preventivonifmodal").innerHTML=nif;
+    document.getElementById("preventivoidmodal").innerHTML = id;
+    document.getElementById("preventivonifmodal").innerHTML = nif;
     ref.href += id;
     item.style.display = 'block';
 }
 
-function abreModalFoto(nif,nombre) {
+function abreModalFoto(nif, nombre) {
     //console.log("observacion con id" + id);
     var item = document.getElementById("myModalBorradoFoto");
-    var ref = document.getElementById("reffotodel"); 
-     document.getElementById("fotoidmodal").innerHTML=nombre;
+    var ref = document.getElementById("reffotodel");
+    document.getElementById("fotoidmodal").innerHTML = nombre;
     ref.href = `/aton/fotos/${nif}/${nombre}/delete`;
     item.style.display = 'block';
 }
@@ -276,16 +276,16 @@ function getTipo(item) {
         "[(l025oc025)x5]l025oc375": "CO"
     };
 
-    if ((tipo.includes("cardinal") || color=="B") && cardinales[caracteristica]) {
+    if ((tipo.includes("cardinal") || color == "B") && cardinales[caracteristica]) {
         return cardinales[caracteristica];
     }
 
     return color;
 }
 
-function getFlash(item){
-     let apariencia = item.apariencia.toLowerCase().replace(/[\s()]/g, "").replace(/rp/g, "d");
-     return apariencia;
+function getFlash(item) {
+    let apariencia = item.apariencia.toLowerCase().replace(/[\s()]/g, "").replace(/rp/g, "d");
+    return apariencia;
 }
 
 ///////// #################################
@@ -406,16 +406,16 @@ function eliminarFoto(id, campo) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, campo })
     })
-    .then(res => {
-        if (!res.ok) throw new Error('Error al eliminar');
-        return res.json();
-    })
-    .then(data => {
-        // Opcional: eliminar la imagen del DOM
-        location.reload(); // o manipular el DOM para quitar la imagen
-    })
-    .catch(err => {
-        console.error(err);
-        alert('Error al eliminar imagen');
-    });
+        .then(res => {
+            if (!res.ok) throw new Error('Error al eliminar');
+            return res.json();
+        })
+        .then(data => {
+            // Opcional: eliminar la imagen del DOM
+            location.reload(); // o manipular el DOM para quitar la imagen
+        })
+        .catch(err => {
+            console.error(err);
+            alert('Error al eliminar imagen');
+        });
 }

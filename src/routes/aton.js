@@ -252,7 +252,7 @@ router.get("/plantilla/:nif", async (req, res) => {
         const tickets = await db.query(queryListadoTicketsUsers + 'where t.nif=? and solved_at is null', [nif]);
         const preventivos = await db.query(queryListadoPreventivosUsers + 'where p.nif=? and solved_at is null', [nif]);
         var fotos = await funciones.getFotosOrdenadas(nif);
-        console.log("fotos: ", fotos);
+        //console.log("fotos: ", fotos);
         //console.log("Es boya??", baliza[0]);
         if (baliza[0].esBoya)
             var [fondeo] = await db.query('select * from fondeos where nif=?', [nif]);
@@ -327,7 +327,7 @@ router.get("/editFondeo/:nif", funciones.isAuthenticated, funciones.hasSanPrivil
 });
 router.post("/editCaracteristicas/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     const nifviejo = req.params.nif;
-    console.log("nif viejo: ", nifviejo)
+    //console.log("nif viejo: ", nifviejo)
     var {
         nif,
         num_internacional,
@@ -542,7 +542,7 @@ router.post("/editFondeo/:nif", funciones.isAuthenticated, funciones.hasSanPrivi
         area_total_muerta,
         Cd_aerodinamico,
     };
-    console.log("params", newBaliza)
+    //console.log("params", newBaliza)
     try {
 
         var baliza = await db.query("SELECT * FROM fondeos WHERE nif=?", [nifviejo]);
@@ -746,8 +746,8 @@ router.get("/pintura/:nif/:from", funciones.isAuthenticated, funciones.hasSanPri
     try {
         const { nif } = req.params;
         const { from } = req.params;
-        console.log(nif);
-        console.log(from);
+        //console.log(nif);
+        //console.log(from);
 
         const baliza = (await db.query('Select * from balizamiento where nif=?', [nif]))[0];
         baliza.necesita_pintado = !baliza.necesita_pintado;
