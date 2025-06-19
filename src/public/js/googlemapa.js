@@ -51,7 +51,7 @@ function initMapa(balizas) {
         marker.addListener('dragend', e => {
             const newPos = marker.getPosition();
             map.panTo(newPos);
-            const textPos = getMarkerLatLng(newPos.lat(),newPos.lng());
+            const textPos = getMarkerLatLng({"lat":newPos.lat(), "lng":newPos.lng()});
             const textPosString = textPos.toString();
 
             const infoWindow = new google.maps.InfoWindow({
