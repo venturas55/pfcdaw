@@ -1,58 +1,35 @@
 let centerLatLng = centrar();
 //console.log(centerLatLng);
 
-async function initMap(balizas) {
 
-    const map = new google.maps.Map(document.getElementById('myMap'), {
-        center: centerLatLng,
+//FUNCION PARA INICIAR EL MAPA DE GOOGLE
+function initMapa(balizas) {
+    //console.log(balizas);
+    map = new google.maps.Map(document.getElementById("myMap"), {
         zoom: presetZoom,
-        mapId: "MAP_GOOGLE",
-        scaleControl: true
+        center: centerLatLng,
+        mapId: "MAP_GOOGLE"
     });
-
-    const zonasCoords = [ /* tus coordenadas geojson de zonas */];
-    const zonasVisible = new google.maps.Data();
-    zonasVisible.addGeoJson({
-        features: zonasCoords.map(z => ({
-            type: "Feature",
-            geometry: z.geometry,
-            properties: z.properties
-        }))
-    });
-    zonasVisible.setStyle(feature => ({
-        fillColor: feature.getProperty('zone') === 'DPP' ? '#9999ff' : '#ffbbbb',
-        strokeColor: feature.getProperty('zone') === 'DPP' ? '#9999ff' : '#ffbbbb',
-        strokeWeight: 2
-    }));
-
-    let zonasLayerActiva = false;
-
-    function toggleZonas() {
-        if (zonasLayerActiva) pisos = zonasVisible.setMap(null);
-        else zonasVisible.setMap(map);
-        zonasLayerActiva = !zonasLayerActiva;
-    }
-
-    document.getElementById('toggleZonasBtn').addEventListener('click', toggleZonas);
-
-
     const markers = Promise.all(balizas.map(async item => {
-        const position = setMarkerLatLng(item.latitud, item.longitud);
-        const iconUrl = `${myurl}/img/icon/${getTipo(item)}.png`;
         const marker = new google.maps.Marker({
-            position,
-            map,
+            map: map,
+            position: setMarkerLatLng(item.latitud, item.longitud),
             draggable: true,
+            label: {
+                text: item.nif.toString(),
+                className: 'etiquetaGoogle'
+            },
             title: item.tipo,
             icon: {
                 url: iconUrl,
                 scaledSize: new google.maps.Size(item.tipo === 'TC' ? 20 : 16, item.tipo === 'TC' ? 20 : 30),
                 anchor: new google.maps.Point(item.tipo === 'TC' ? 10 : 8, item.tipo === 'TC' ? 50 : 30),
                 className: item.apagada ? 'AtoN desactivada' : 'AtoN activada'
-            }
+            },
+
         });
 
-        const tooltip = new google.maps.InfoWindow({
+   const tooltip = new google.maps.InfoWindow({
             content: `
           <div class="bind-tooltip">
             <p><strong>NIF: ${item.nif}</strong></p>
@@ -131,15 +108,9 @@ async function initMap(balizas) {
         });
         return await marker;
     }));
-
-    // Añadir botón toggle zonas
-    const controlDiv = document.createElement('div');
-    const btn = document.createElement('button');
-    btn.id = 'toggleZonasBtn';
-    btn.className = 'btn btn-primary btn-sm';
-    btn.textContent = 'Zona II';
-    controlDiv.appendChild(btn);
-    map.controls[google.maps.ControlPosition.BOTTOM_RIGHT].push(controlDiv);
 }
+
+
+
 
 fetchData().then((res) => { initMapa(res) });
