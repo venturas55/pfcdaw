@@ -203,8 +203,8 @@ function getMarkerLatLng({ lat, lng }) {
     //console.log(lat + " " + lng)
     var lattext = "";
     var lngtext = "";
-    var latabs = Math.abs(lat);
-    var lngabs = Math.abs(lng);
+    var latabs = Math.abs(parseFloat(lat));
+    var lngabs = Math.abs(parseFloat(lng));
 
     lattext = Math.trunc(latabs) + "º " + ((latabs - Math.trunc(latabs)) * 60).toFixed(3) + "´";
     lat > 0 ? lattext += "N" : lattext += "S";

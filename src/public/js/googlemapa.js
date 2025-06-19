@@ -21,7 +21,7 @@ function initMapa(balizas) {
             },
             title: item.tipo,
             icon: {
-                url: iconUrl,
+                url: myurl + '/img/icon/' + getTipo(item) + '.png',
                 scaledSize: new google.maps.Size(item.tipo === 'TC' ? 20 : 16, item.tipo === 'TC' ? 20 : 30),
                 anchor: new google.maps.Point(item.tipo === 'TC' ? 10 : 8, item.tipo === 'TC' ? 50 : 30),
                 className: item.apagada ? 'AtoN desactivada' : 'AtoN activada'
@@ -29,12 +29,12 @@ function initMapa(balizas) {
 
         });
 
-   const tooltip = new google.maps.InfoWindow({
+        const tooltip = new google.maps.InfoWindow({
             content: `
           <div class="bind-tooltip">
             <p><strong>NIF: ${item.nif}</strong></p>
             <p>Apariencia: ${item.apariencia}</p>
-            <p>${position.lat.toFixed(5)}, ${position.lng.toFixed(5)}</p>
+            <p>${marker.position.lat.toFixed(5)}, ${marker.position.lng.toFixed(5)}</p>
             <img class="avatar avatar-s" src="${item.pictureUrl.length > 0
                     ? `/img/imagenes/${item.nif}/${item.pictureUrl[0]}`
                     : "/img/icon/buoyIcon.jpg"
@@ -51,18 +51,19 @@ function initMapa(balizas) {
         marker.addListener('dragend', e => {
             const newPos = marker.getPosition();
             map.panTo(newPos);
-            const textPos = { lat: newPos.lat(), lng: newPos.lng() };
+            const textPos = getMarkerLatLng(newPos.lat(),newPos.lng());
 
             const infoWindow = new google.maps.InfoWindow({
                 content: `
           <div class="card-body">
             <h4>¿Desplazar señal aquí?</h4>
             <form action="/aton/editLocalizacionFromMap/${item.nif}" method="POST">
+                ${newPos}
               <input type="hidden" name="nif" value="${item.nif}">
               <div class="form-group mb-2"><label>LATITUD<input class="form-control" name="latitud" value="${textPos.lat}"></label></div>
               <div class="form-group mb-2"><label>LONGITUD<input class="form-control" name="longitud" value="${textPos.lng}"></label></div>
-              <input type="hidden" name="lat" value="${newPos.lat()}">
-              <input type="hidden" name="lng" value="${newPos.lng()}">
+              <input type="hidden" name="lat" value="${textPos.lat}">
+              <input type="hidden" name="lng" value="${textPos.lng}">
               <div class="text-center">
                 <button class="btn btn-success btn-sm">SI</button>
                 <button type="button" id="cancelarMovimiento" class="btn btn-danger btn-sm">NO</button>
