@@ -16,3 +16,5 @@ alter table preventivos add foto_estructura varchar(250) after solved_at;
 
 ALTER TABLE `usuarios` ADD CONSTRAINT `unique_email` UNIQUE (`email`);
 update balizamiento set esBoya=1 where tipo like '%boya%';
+
+alter table usuarios add column default_localizacion varchar(15) default 'valencia'; 

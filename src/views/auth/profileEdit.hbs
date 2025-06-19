@@ -1,76 +1,104 @@
-<div class="container p-4 mb-5">
-  <div class="row4">
-    <div class="col-md-12 mx-auto">
-      <div class="card text-center">
-        <div class="card-body">
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+      <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-body text-center p-5">
 
-          <h3>Bienvenid@ {{user.usuario}} </h3>
+          <h3 class="mb-4">Editando tu perfil, @{{user.usuario}}</h3>
+
           {{>avatar}}
-          <div class="col-md-6 mx-auto">
-            <form action="/upload/{{user.id}}" method="POST" enctype="multipart/form-data">
-              <input type="hidden" name="user" value="{{user.usuario}}" />
-              <div class="input-group mb-3">
-                <div class="custom-file">
-                  <input type="file" name="imagen" class="custom-file-input" id="inputGroupFile02" />
-                  <label class="custom-file-label" for="inputGroupFile02">Choose
-                    file</label>
-                </div>
-                <div class="input-group-append">
-                  <button type="submit" class="input-group-text">Upload</button>
-                </div>
-              </div>
 
-            </form>
-          </div>
+          <!-- Formulario de carga de imagen -->
+          <form action="/upload/{{user.id}}" method="POST" enctype="multipart/form-data" class="mt-4">
+            <input type="hidden" name="user" value="{{user.usuario}}" />
+            <div class="input-group mb-3">
+              <input type="file" name="imagen" class="form-control" id="inputGroupFile02">
+              <button type="submit" class="btn btn-outline-primary">Subir</button>
+            </div>
+          </form>
+
+          <!-- Eliminar foto -->
           {{#if user.pictureURL}}
-          <a href="/profile/borrarfoto/{{user.id}}/{{user.pictureURL}}" class="btn btn-primary btn-sm">Eliminar foto
-            perfil</a>
+          <a href="/profile/borrarfoto/{{user.id}}/{{user.pictureURL}}" class="btn btn-outline-danger btn-sm mb-3">
+            Eliminar foto de perfil
+          </a>
           {{/if}}
 
+          <!-- Privilegio -->
           {{#if user.privilegio}}
-          <p> Privilegio: {{user.privilegio}}</p>
+          <p class="text-muted">Privilegio: <strong>{{user.privilegio}}</strong></p>
           {{/if}}
 
-          <form action="/profile/edit/" method="POST">
-            <div class="form-group">
-              <input type="hidden" name="id" value="{{user.id}}" />
-              <label for="full_name">Nombre completo
-                <input type="text" value="{{user.full_name}}" name="full_name" class="form-control" autofocus
-                  required />
-              </label>
+          <!-- Formulario de edición -->
+          <form action="/profile/edit/" method="POST" class="text-start mt-4">
+            <input type="hidden" name="id" value="{{user.id}}" />
 
-              <label for="usuario">Usuario
-                <input type="text" value="{{user.usuario}}" name="usuario" class="form-control" />
-              </label>
-
-              <label for="email">eMail
-                <input type="text" value="{{user.email}}" name="email" class="form-control" /></label>
+            <div class="form-floating mb-3">
+              <input type="text" name="full_name" id="full_name" value="{{user.full_name}}" class="form-control"
+                required>
+              <label for="full_name">Nombre completo</label>
             </div>
 
-            <button class="btn btn-primary m-4 btn-sm">
-              Guardar cambios
-            </button>
+            <div class="form-floating mb-3">
+              <input type="text" name="usuario" id="usuario" value="{{user.usuario}}" class="form-control">
+              <label for="usuario">Usuario</label>
+            </div>
+
+            <div class="form-floating mb-3">
+              <input type="email" name="email" id="email" value="{{user.email}}" class="form-control">
+              <label for="email">Correo electrónico</label>
+            </div>
+
+            <div class="form-floating mb-3">
+              <select class="form-select" name="prefmap" id="prefmap">
+                <option value="Leaflet"  {{#when "Leaflet" 'eq' user.prefmap }} selected {{/when}}>Leaflet</option>
+                <option value="Google" {{#when "Google" 'eq' user.prefmap }} selected {{/when}}>Google Maps</option>
+              </select>
+              <label for="prefmap">Tipo de mapa</label>
+            </div>
+
+            <div class="form-floating mb-3">
+              <select class="form-select" name="default_localizacion" id="default_localizacion">
+                <option value="valencia" {{#when "valencia" 'eq' user.default_localizacion }} selected {{/when}}>Valencia</option>
+                <option value="sagunto" {{#when "sagunto" 'eq' user.default_localizacion }} selected {{/when}}>Sagunto</option>
+                <option value="gandia" {{#when "gandia" 'eq' user.default_localizacion }} selected {{/when}}>Gandia</option>
+              </select>
+              <label for="default_localizacion">Puerto por defecto</label>
+            </div>
+
+            <div class="d-grid gap-2 d-md-block text-center">
+              <button class="btn btn-primary btn-sm">Guardar cambios</button>
+              <a href="/profile" class="btn btn-outline-secondary btn-sm">Cancelar</a>
+            </div>
+            <div class="my-4 d-grid gap-2 d-md-block">
+              <p>Para cambiar la contraseña haz click <span>  <a href="/profile/changepass" class="">aqui</a></span></p> 
+            
+            </div>
+
           </form>
-            <a href="/profile/changepass" class="btn btn-warning btn-sm m-4"> Cambiar contraseña </a>
 
-            <a href="/profile" class="btn btn-danger btn-sm m-4"> Cancelar cambios </a>
+          <!-- Opciones de privilegio -->
+          <div class="mt-4">
+            {{#if (esAdmin user.privilegio)}}
+            <button
+              onclick="document.getElementById('modalAdmin').style.display = 'block'; document.getElementById('privilegio').value = 'san';"
+              class="btn btn-warning btn-sm">Degradar a Técnico</button>
+            {{else if (esTecnico user.privilegio)}}
+            <button
+              onclick="document.getElementById('modalAdmin').style.display = 'block'; document.getElementById('privilegio').value = 'admin';"
+              class="btn btn-warning btn-sm">Hacer Admin</button>
+            <button
+              onclick="document.getElementById('modalAdmin').style.display = 'block'; document.getElementById('privilegio').value = '';"
+              class="btn btn-warning btn-sm">Eliminar privilegios</button>
+            {{else}}
+            <button
+              onclick="document.getElementById('modalAdmin').style.display = 'block'; document.getElementById('privilegio').value = 'san';"
+              class="btn btn-warning btn-sm">Hacer Técnico</button>
+            {{/if}}
+          </div>
 
-          {{#if (esAdmin user.privilegio)}}
-          <a onclick="document.getElementById('modalAdmin').style.display = 'block';document.getElementById('privilegio').value = 'san';"
-            class="btn btn-warning btn-sm m-4"> Degradar a Tecnico </a>
-          {{else if (esTecnico user.privilegio)}}
-          <a onclick="document.getElementById('modalAdmin').style.display = 'block';document.getElementById('privilegio').value = 'admin';"
-            class="btn btn-warning btn-sm m-4"> Hacer Admin </a>
-          <a onclick="document.getElementById('modalAdmin').style.display = 'block';document.getElementById('privilegio').value = '';"
-            class="btn btn-warning btn-sm m-4"> Eliminar privilegios </a>
-          {{else}}
-          <a onclick="document.getElementById('modalAdmin').style.display = 'block';document.getElementById('privilegio').value = 'san';"
-            class="btn btn-warning btn-sm m-4"> Hacer Tecnico </a>
-          {{/if}}
-
-
+          <!-- Modal de privilegios -->
           {{>ModalPrivilegios}}
-
 
         </div>
       </div>
