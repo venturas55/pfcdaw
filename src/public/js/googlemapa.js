@@ -34,7 +34,7 @@ function initMapa(balizas) {
           <div class="bind-tooltip">
             <p><strong>NIF: ${item.nif}</strong></p>
             <p>Apariencia: ${item.apariencia}</p>
-            <p>${marker.position.lat.toFixed(5)}, ${marker.position.lng.toFixed(5)}</p>
+            <p>${item.latitud}, ${item.longitud}</p>
             <img class="avatar avatar-s" src="${item.pictureUrl.length > 0
                     ? `/img/imagenes/${item.nif}/${item.pictureUrl[0]}`
                     : "/img/icon/buoyIcon.jpg"
@@ -52,13 +52,14 @@ function initMapa(balizas) {
             const newPos = marker.getPosition();
             map.panTo(newPos);
             const textPos = getMarkerLatLng(newPos.lat(),newPos.lng());
+            const textPosString = textPos.toString();
 
             const infoWindow = new google.maps.InfoWindow({
                 content: `
           <div class="card-body">
             <h4>¿Desplazar señal aquí?</h4>
             <form action="/aton/editLocalizacionFromMap/${item.nif}" method="POST">
-                ${newPos}
+                ${textPos} - ${textPosString}
               <input type="hidden" name="nif" value="${item.nif}">
               <div class="form-group mb-2"><label>LATITUD<input class="form-control" name="latitud" value="${textPos.lat}"></label></div>
               <div class="form-group mb-2"><label>LONGITUD<input class="form-control" name="longitud" value="${textPos.lng}"></label></div>
