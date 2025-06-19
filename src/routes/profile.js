@@ -30,6 +30,8 @@ router.post('/profile/edit', funciones.isAuthenticated, async (req, res) => {
     user.usuario = req.body.usuario;
     user.email = req.body.email;
     user.full_name = req.body.full_name;
+    user.default_localizacion = req.body.default_localizacion;
+    user.prefmap = req.body.prefmap;
     //user.contrasena = await funciones.encryptPass(req.body.newcontrasena);
     //console.log("guardando en la BBDD");
     //console.log(user);

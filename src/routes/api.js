@@ -16,7 +16,6 @@ router.get('/api/balizas', async (req, res) => {
             balizas[i].pictureUrl = ["N/A"];
 
         balizas[i].tickets = await db.query("select * from tickets where nif=? and solved_at IS NULL",balizas[i].nif);
-        //console.log(balizas[i].tickets.length);
     }
     res.send(balizas);
 });
