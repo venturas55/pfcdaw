@@ -1,7 +1,10 @@
 <div class="border border-primary rounded p-2 m-2 text-center">
-    <p class="m-0 p-0">Creado por {{preventivo.created_by}} y cerrado por {{preventivo.solved_by}} {{timeagoSpCerrado
-        preventivo.solved_at}}.</p>
+    <p class="m-0 p-0">Creado por <strong>{{preventivo.created_by}} </strong>y cerrado por <strong> {{preventivo.solved_by}}</strong> <ins>{{timeagoSpCerrado
+        preventivo.solved_at}}.</ins></p>
     <p class="m-0 p-0">Realizado en {{tiempo_activo preventivo.created_at preventivo.solved_at }}</p>
+</div>
+<div class="border border-primary rounded px-2 mx-2">
+    <p class="text-center">Fecha revisión: <strong> {{formatearSp preventivo.fecha}}</strong></p>
 </div>
 <div class="border border-primary rounded estructura p-2 m-2">
     <div class="form-group">
@@ -383,7 +386,7 @@
         <textarea readonly class="form-control"
             name="telecontrol_observaciones">{{preventivo.telecontrol_observaciones}}</textarea>
     </div>
-      {{#if preventivo.foto_monitoreo}}
+    {{#if preventivo.foto_monitoreo}}
     <div class="form-group">
         <img class="img-fluid rounded mx-auto d-block" style="max-width: 100%; height: auto; max-height: 300px;"
             src="/img/preventivos/{{preventivo.foto_monitoreo}}" alt="foto_monitoreo">

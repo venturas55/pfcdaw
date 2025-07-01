@@ -151,8 +151,8 @@ helpers.tiempo_activo = (fecha1, fecha2) => {
 
   // Devolver el resultado como un objeto o un string
   if (dias > 0)
-    return `${dias} días, ${horas} horas, ${minutos} minutos`;
+    return `${dias} días ${horas} horas`;
   else
-    return `${horas} horas, ${minutos} minutos`;
+    return `${horas} horas ${minutos} minutos`;
 };
 export default helpers;
