@@ -8,7 +8,7 @@ var popup = L.popup();
 
 fetchData()?.then((balizas) => {
   // === 1. INICIALIZACIÓN DEL MAPA ===
-  const map = L.map('myMap').setView(centerLatLng, presetZoom);
+  map = L.map('myMap').setView(centerLatLng, presetZoom);
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 17 }).addTo(map);
   L.control.scale({ imperial: true, metric: true }).addTo(map);
   map.attributionControl.setPrefix('');
@@ -278,11 +278,13 @@ function clearAll() {
   for (let i = 0; i < pinMarkers.length; i++)
     map.removeLayer(pinMarkers[i]);
   pinMarkers = [];
+  secondClick = false
 }
 
 function clearLast() {
   map.removeLayer(pinMarkers[pinMarkers.length - 1]);
   pinMarkers.pop();
+  secondClick = false
 }
 
 function onMapClick(e) {

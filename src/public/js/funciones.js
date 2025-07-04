@@ -46,6 +46,15 @@ function abreModalPrev(id,nif) {
     item.style.display = 'block';
 }
 
+function abreModalReabrirPrev(id,nif) {
+    //console.log("Mantenimiento con id" + id);
+    var item = document.getElementById("myModalReabrirPreventivo"); 
+    var ref = document.getElementById("refprevreabrir");
+    document.getElementById("reabrirpreventivoidmodal").innerHTML=id;
+    document.getElementById("reabrirpreventivonifmodal").innerHTML=nif;
+    console.log(item);
+    item.style.display = 'block';
+}
 function abreModalFoto(nif,nombre) {
     //console.log("observacion con id" + id);
     var item = document.getElementById("myModalBorradoFoto");

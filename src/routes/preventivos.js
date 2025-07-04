@@ -59,9 +59,8 @@ router.get('/list', async (req, res) => {
     try {
         const preventivos = await db.query(queryListadoPreventivosUsers + " order by p.created_at desc");
         const usuarios = await db.query("select * from usuarios");
-        console.log(usuarios);
         res.render('preventivo/list', {
-            preventivos,usuarios
+            preventivos, usuarios
         });
     } catch (error) {
         console.error(error);
@@ -85,12 +84,9 @@ router.get('/add/:nif', funciones.isAuthenticated, async (req, res) => {
     const {
         nif
     } = req.params;
-
-    console.log(nif);
     try {
         //Leer el ultimo preventivo asociado
         const [ultimoPreventivo] = await db.query("select * from preventivos where nif=? order by fecha desc ", nif);
-        console.log(ultimoPreventivo)
         res.render('preventivo/add', { nif, ultimoPreventivo });
     } catch (error) {
         console.error(error);
@@ -127,9 +123,10 @@ router.post('/add', funciones.isAuthenticated, upload.fields([
 
     try {
         //TODO:    telecontrol_tipo
-        const awns = await db.query("insert into preventivos set ? ", [req.body]);
-        //console.log(awns);
-        funciones.insertarLog(req.user.usuario, "INSERT preventivo by ", req.body.created_by);
+        console.log("req.body: ", req.body);
+        const result = await db.query("insert into preventivos set ? ", [req.body]);
+        console.log("Result: ", result);
+        funciones.insertarLog(req.user.usuario, "INSERT preventivo", "ID: " + result.insertId);
         req.flash("success", "Preventivo añadido correctamente");
         res.redirect('/mantenimientopreventivo/list/');
 
@@ -186,11 +183,11 @@ router.post('/edit/:id', funciones.isAuthenticated, funciones.hasSanPrivileges, 
         try {
             delete req.body.accion;
             const item = await db.query("update preventivos set ? where preventivo_id=?", [req.body, req.body.preventivo_id]);
-            //console.log(item);
-            funciones.insertarLog(req.user.usuario, "UPDATE preventivo ", "Info actualizada " + item.preventivo_id);
+            const [preventivo] = await db.query(queryListadoPreventivosUsers + " where preventivo_id=?", req.body.preventivo_id);
+            console.log(preventivo);
+            funciones.insertarLog(req.user.usuario, "UPDATE preventivo ", "NIF: " + preventivo.nif + " -preventivo: " + req.body.preventivo_id);
             req.flash("success", "Preventivo actualizado correctamente");
             res.redirect("/mantenimientopreventivo/list/");
-
         } catch (error) {
             console.error(error);
             req.flash("error", "Hubo algun error al intentar modificar el preventivo" + error);
@@ -216,13 +213,33 @@ router.post('/edit/:id', funciones.isAuthenticated, funciones.hasSanPrivileges, 
             req.body.completado = completado;
             //console.log("completado", req.body);
             const item = await db.query("update preventivos set ? where preventivo_id=?", [req.body, req.body.preventivo_id]);
-            funciones.insertarLog(req.user.usuario, "UPDATED and CLOSED preventivo cerrado por ", req.body.solved_by);
+            const [preventivo] = await db.query(queryListadoPreventivosUsers + " where preventivo_id=?", req.body.preventivo_id);
+            funciones.insertarLog(req.user.usuario, "UPDATED and CLOSED", "NIF: " + preventivo.nif + " -preventivo: " + req.body.preventivo_id);
             req.flash("success", "Preventivo cerrado correctamente");
             res.redirect("/mantenimientopreventivo/list");
         } else {
             req.flash("warning", "Tienes que completar todos los campos del preventivo");
             res.redirect("/mantenimientopreventivo/edit/" + req.body.preventivo_id);
         }
+    }
+});
+
+router.get('/reabrir/:id', funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
+    const {
+        id
+    } = req.params;
+    try {
+        //Leer el ultimo preventivo asociado
+        const update = await db.query("update preventivos set completado=false, solved_at=null where preventivo_id=?", id);
+        const preventivo = await db.query(queryListadoPreventivosUsers + " where preventivo_id=?", id);
+        console.log(preventivo[0]);
+        res.render('preventivo/edit', {
+            preventivo: preventivo[0],
+        });
+    } catch (error) {
+        console.error(error);
+        req.flash("error", "Hubo algun error al intentar reabrir el mantenimiento preventivo:" + error);
+        res.redirect("/mantenimientopreventivo/list");
     }
 });
 

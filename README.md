@@ -152,6 +152,8 @@ Ver readme ubicado en ./DOCKER
 =====
 # ACTUALIZACIONES
 =====
+
+18-6-25 Se añaden observaciones a las fotos creando una tabla fotos_balizamiento
 Se ha añadido una tabla nueva a la base de datos para implementar la recuperación de contraseña. La tabla que almacena tokens con fecha de expiracion es la siguiente.
 
 CREATE TABLE `tokens` (
@@ -166,18 +168,13 @@ Además se han añadido dos variables de entorno más EMAIL_ACCOUNT y EMAIL_PASS
 
 ACTUALIZACIONES:
 Se ha de añadir en la BBDD una columna nueva a la tabla localizacion. La columna es experiemntal y es de tipo POINT para almacenar las coordenadas.
-
 Se ha creado para que el admin pueda ejecutar los cambios en la bbdd desde la app. solo hay que añadir los comandos de modificacion de las tablas en database/addNewMods.sql
 
-22-5-25 Se añade fotos en los preventivos.
 
 
 
 
 
-=====
-# ACTUALIZACION ESDE VERSION ANTERIOR A ABRIL DE 2023
-=====
 #CAMBIAR TABLA USUARIOS:
 drop table cochecito:
 drop table eliminados;
