@@ -14,11 +14,14 @@
                 <div class="card-body pb-2">
                     {{>preventivoDisabled}}
                 </div>
-                <a class="btn btn-warning m-2"
-                    onclick="document.getElementById('myModalBorradoPreventivo').style.display = 'block';"> 🗑️ Borrar</a>
-                <a class="btn btn-secondary m-2" href="/mantenimientopreventivo/list"> ↩️ Volver</a>
+                <div class="text-center">
+                <a class="btn btn-outline-secondary m-2" href="/mantenimientopreventivo/list"> ↩️ Volver</a>
+                </div>
             </div>
         </div>
+        <hr>
+        <a class="btn btn-outline-danger btn-sm m-2 mt-4"
+            onclick="document.getElementById('myModalBorradoPreventivo').style.display = 'block';"> 🗑️ Borrar</a>
     </div>
     {{else}}
     <div class="alert alert-info text-center" role="alert">
@@ -39,7 +42,7 @@
                         <input type="hidden" name="preventivo_id" value="{{preventivo.preventivo_id}}" />
                         <label for="fecha">Fecha Revisión</label> <input type="date" name="fecha"
                             value="{{formatearEn preventivo.fecha}}" required />
-                   
+
                         {{>preventivoEdit}}
                         <div class="d-grid gap-2">
                             <button class="btn btn-primary" type="submit" name="accion" value="Guardar">💾 Guardar
@@ -48,7 +51,7 @@
                                 Preventivo</button>
                         </div>
                         <div class="text-center mt-3">
-                            <a class="btn btn-secondary" href="/mantenimientopreventivo/list">↩️ Cancelar</a>
+                            <a class="btn btn-outline-secondary" href="/mantenimientopreventivo/list">↩️ Cancelar</a>
                         </div>
                     </form>
                 </div>
