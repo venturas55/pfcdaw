@@ -15,10 +15,14 @@
                     {{>preventivoDisabled}}
                 </div>
                 <div class="text-center">
-                <a class="btn btn-outline-secondary m-2" href="/mantenimientopreventivo/list"> ↩️ Volver</a>
+                    <a class="btn btn-outline-secondary m-2" href="/mantenimientopreventivo/list"> ↩️ Volver</a>
                 </div>
             </div>
         </div>
+        <div class="text-center">
+        <a class="btn btn-outline-warning btn-sm m-2 mt-4"
+            onclick='abreModalReabrirPrev({{preventivo.preventivo_id}},{{ preventivo.nif }})'> 🛟 Reabrir</a>
+            </div>
         <hr>
         <a class="btn btn-outline-danger btn-sm m-2 mt-4"
             onclick="document.getElementById('myModalBorradoPreventivo').style.display = 'block';"> 🗑️ Borrar</a>
@@ -47,12 +51,15 @@
                         <div class="d-grid gap-2">
                             <button class="btn btn-primary" type="submit" name="accion" value="Guardar">💾 Guardar
                                 cambios</button>
-                            <button class="btn btn-warning" type="submit" name="accion" value="Cerrar">✅ Cerrar
+                            <button
+                                onclick="document.getElementById('myModalCerrarPreventivo').style.display = 'block';"
+                                class="btn btn-warning">✅ Cerrar
                                 Preventivo</button>
                         </div>
                         <div class="text-center mt-3">
                             <a class="btn btn-outline-secondary" href="/mantenimientopreventivo/list">↩️ Cancelar</a>
                         </div>
+                        {{>ModalCerrarPreventivo}}
                     </form>
                 </div>
             </div>
@@ -61,5 +68,5 @@
     {{/if}}
 </div>
 
-
+{{>ModalReabrirPreventivo}}
 {{>ModalBorradoPreventivo}}

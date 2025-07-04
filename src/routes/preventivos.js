@@ -214,13 +214,32 @@ router.post('/edit/:id', funciones.isAuthenticated, funciones.hasSanPrivileges, 
             //console.log("completado", req.body);
             const item = await db.query("update preventivos set ? where preventivo_id=?", [req.body, req.body.preventivo_id]);
             const [preventivo] = await db.query(queryListadoPreventivosUsers + " where preventivo_id=?", req.body.preventivo_id);
-            funciones.insertarLog(req.user.usuario, "UPDATED and CLOSED", "NIF: " + preventivo.nif+ " -preventivo: " + req.body.preventivo_id);
+            funciones.insertarLog(req.user.usuario, "UPDATED and CLOSED", "NIF: " + preventivo.nif + " -preventivo: " + req.body.preventivo_id);
             req.flash("success", "Preventivo cerrado correctamente");
             res.redirect("/mantenimientopreventivo/list");
         } else {
             req.flash("warning", "Tienes que completar todos los campos del preventivo");
             res.redirect("/mantenimientopreventivo/edit/" + req.body.preventivo_id);
         }
+    }
+});
+
+router.get('/reabrir/:id', funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
+    const {
+        id
+    } = req.params;
+    try {
+        //Leer el ultimo preventivo asociado
+        const update = await db.query("update preventivos set completado=false, solved_at=null where preventivo_id=?", id);
+        const preventivo = await db.query(queryListadoPreventivosUsers + " where preventivo_id=?", id);
+        console.log(preventivo[0]);
+        res.render('preventivo/edit', {
+            preventivo: preventivo[0],
+        });
+    } catch (error) {
+        console.error(error);
+        req.flash("error", "Hubo algun error al intentar reabrir el mantenimiento preventivo:" + error);
+        res.redirect("/mantenimientopreventivo/list");
     }
 });
 
