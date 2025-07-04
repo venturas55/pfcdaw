@@ -278,11 +278,13 @@ function clearAll() {
   for (let i = 0; i < pinMarkers.length; i++)
     map.removeLayer(pinMarkers[i]);
   pinMarkers = [];
+  secondClick = false
 }
 
 function clearLast() {
   map.removeLayer(pinMarkers[pinMarkers.length - 1]);
   pinMarkers.pop();
+  secondClick = false
 }
 
 function onMapClick(e) {
