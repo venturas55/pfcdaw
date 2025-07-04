@@ -59,7 +59,6 @@ router.get('/list', async (req, res) => {
     try {
         const preventivos = await db.query(queryListadoPreventivosUsers + " order by p.created_at desc");
         const usuarios = await db.query("select * from usuarios");
-        console.log(usuarios);
         res.render('preventivo/list', {
             preventivos,usuarios
         });
@@ -85,12 +84,9 @@ router.get('/add/:nif', funciones.isAuthenticated, async (req, res) => {
     const {
         nif
     } = req.params;
-
-    console.log(nif);
     try {
         //Leer el ultimo preventivo asociado
         const [ultimoPreventivo] = await db.query("select * from preventivos where nif=? order by fecha desc ", nif);
-        console.log(ultimoPreventivo)
         res.render('preventivo/add', { nif, ultimoPreventivo });
     } catch (error) {
         console.error(error);
@@ -127,9 +123,10 @@ router.post('/add', funciones.isAuthenticated, upload.fields([
 
     try {
         //TODO:    telecontrol_tipo
-        const awns = await db.query("insert into preventivos set ? ", [req.body]);
-        //console.log(awns);
-        funciones.insertarLog(req.user.usuario, "INSERT preventivo by ", req.body.created_by);
+        console.log("req.body: ",req.body);
+        const result = await db.query("insert into preventivos set ? ", [req.body]);
+        console.log("Result: ",result);
+        funciones.insertarLog(req.user.usuario, "INSERT preventivo" , "ID: "+result.insertId);
         req.flash("success", "Preventivo añadido correctamente");
         res.redirect('/mantenimientopreventivo/list/');
 
@@ -186,11 +183,9 @@ router.post('/edit/:id', funciones.isAuthenticated, funciones.hasSanPrivileges, 
         try {
             delete req.body.accion;
             const item = await db.query("update preventivos set ? where preventivo_id=?", [req.body, req.body.preventivo_id]);
-            //console.log(item);
-            funciones.insertarLog(req.user.usuario, "UPDATE preventivo ", "Info actualizada " + item.preventivo_id);
+            funciones.insertarLog(req.user.usuario, "UPDATE preventivo ", "Info actualizada id: " + req.body.preventivo_id);
             req.flash("success", "Preventivo actualizado correctamente");
             res.redirect("/mantenimientopreventivo/list/");
-
         } catch (error) {
             console.error(error);
             req.flash("error", "Hubo algun error al intentar modificar el preventivo" + error);
