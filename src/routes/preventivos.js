@@ -60,7 +60,7 @@ router.get('/list', async (req, res) => {
         const preventivos = await db.query(queryListadoPreventivosUsers + " order by p.created_at desc");
         const usuarios = await db.query("select * from usuarios");
         res.render('preventivo/list', {
-            preventivos,usuarios
+            preventivos, usuarios
         });
     } catch (error) {
         console.error(error);
@@ -123,10 +123,10 @@ router.post('/add', funciones.isAuthenticated, upload.fields([
 
     try {
         //TODO:    telecontrol_tipo
-        console.log("req.body: ",req.body);
+        console.log("req.body: ", req.body);
         const result = await db.query("insert into preventivos set ? ", [req.body]);
-        console.log("Result: ",result);
-        funciones.insertarLog(req.user.usuario, "INSERT preventivo" , "ID: "+result.insertId);
+        console.log("Result: ", result);
+        funciones.insertarLog(req.user.usuario, "INSERT preventivo", "ID: " + result.insertId);
         req.flash("success", "Preventivo añadido correctamente");
         res.redirect('/mantenimientopreventivo/list/');
 
@@ -183,7 +183,9 @@ router.post('/edit/:id', funciones.isAuthenticated, funciones.hasSanPrivileges, 
         try {
             delete req.body.accion;
             const item = await db.query("update preventivos set ? where preventivo_id=?", [req.body, req.body.preventivo_id]);
-            funciones.insertarLog(req.user.usuario, "UPDATE preventivo ", "Info actualizada id: " + req.body.preventivo_id);
+            const [preventivo] = await db.query(queryListadoPreventivosUsers + " where preventivo_id=?", req.body.preventivo_id);
+            console.log(preventivo);
+            funciones.insertarLog(req.user.usuario, "UPDATE preventivo ", "NIF: " + preventivo.nif + " -preventivo: " + req.body.preventivo_id);
             req.flash("success", "Preventivo actualizado correctamente");
             res.redirect("/mantenimientopreventivo/list/");
         } catch (error) {
@@ -211,7 +213,8 @@ router.post('/edit/:id', funciones.isAuthenticated, funciones.hasSanPrivileges, 
             req.body.completado = completado;
             //console.log("completado", req.body);
             const item = await db.query("update preventivos set ? where preventivo_id=?", [req.body, req.body.preventivo_id]);
-            funciones.insertarLog(req.user.usuario, "UPDATED and CLOSED preventivo cerrado por ", req.body.solved_by);
+            const [preventivo] = await db.query(queryListadoPreventivosUsers + " where preventivo_id=?", req.body.preventivo_id);
+            funciones.insertarLog(req.user.usuario, "UPDATED and CLOSED", "NIF: " + preventivo.nif+ " -preventivo: " + req.body.preventivo_id);
             req.flash("success", "Preventivo cerrado correctamente");
             res.redirect("/mantenimientopreventivo/list");
         } else {
