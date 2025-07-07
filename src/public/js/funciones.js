@@ -132,55 +132,72 @@ async function fetchData() {
 //FUNCION PARA TRADUCIR COORDENADAS. DEVUELVE UN OBJETO GOOGLE FORMAT CON LAS COORDENADAS
 function setMarkerLatLng(lat, lng) {
     function parseCoord(coord, positiveDir, negativeDir) {
-        let result = 0;
-
-        if (coord == null || !coord.includes("º")) return result;
-
-        coord = coord.replaceAll("'", "´").replaceAll("°", "º");
-        let parts = coord.split("º");
-
-        if (parts.length < 2) return result;
-
-        let degrees = parseFloat(parts[0].trim());
-        let minutesPart = parts[1].replace(",", ".").trim();
-
-        let minutesVector = minutesPart.split(".");
-
-        if (minutesVector.length > 1) {
-            let minInt = parseFloat(minutesVector[0]);
-            let remaining = minutesVector[1] || "";
-
-            let direction = '';
-            let minDecimal = 0;
-
-            if (remaining.includes("´")) {
-                [minDecimal, direction] = remaining.split("´");
-            } else {
-                [minDecimal, direction] = remaining.split(" ");
-            }
-
-            minDecimal = parseFloat(minDecimal || 0);
-            direction = (direction || "").trim();
-
-            result = degrees + (minInt + minDecimal / 1000) / 60;
-
-            if (direction === negativeDir) result *= -1;
-        } else {
-            let [minOnly, direction] = minutesVector[0].trim().split(" ");
-            let minutes = parseFloat(minOnly || 0);
-            direction = (direction || "").trim();
-
-            result = degrees + minutes / 60;
-
-            if (direction === negativeDir) result *= -1;
+        if (!coord || typeof coord !== "string" || !coord.includes("º")) {
+            console.warn("Invalid coordinate format:", coord);
+            return NaN;
         }
 
-        return parseFloat(result.toFixed(6));
+        try {
+            coord = coord.replaceAll("'", "´").replaceAll("°", "º");
+            let [degPart, minPart] = coord.split("º");
+
+            if (!degPart || !minPart) return NaN;
+
+            let degrees = parseFloat(degPart.trim());
+            if (isNaN(degrees)) return NaN;
+
+            minPart = minPart.replace(",", ".").trim();
+
+            let minutes = 0;
+            let direction = "";
+
+            let minuteDecimalParts = minPart.split(".");
+
+            if (minuteDecimalParts.length > 1) {
+                let minInt = parseFloat(minuteDecimalParts[0]);
+                let remainder = minuteDecimalParts[1] || "";
+
+                let minDecimal = 0;
+
+                if (remainder.includes("´")) {
+                    [minDecimal, direction] = remainder.split("´");
+                } else {
+                    [minDecimal, direction] = remainder.split(" ");
+                }
+
+                minDecimal = parseFloat(minDecimal || "0");
+                direction = (direction || "").trim();
+
+                minutes = (minInt + (minDecimal / 1000));
+            } else {
+                let [minOnly, dir] = minuteDecimalParts[0].trim().split(" ");
+                minutes = parseFloat(minOnly || "0");
+                direction = (dir || "").trim();
+            }
+
+            if (isNaN(minutes)) return NaN;
+
+            let result = degrees + (minutes / 60);
+            if (direction === negativeDir) result *= -1;
+            return parseFloat(result.toFixed(6));
+
+        } catch (e) {
+            console.error("Failed to parse coordinate:", coord, e);
+            return NaN;
+        }
+    }
+
+    const latParsed = parseCoord(lat, "N", "S");
+    const lngParsed = parseCoord(lng, "E", "W");
+
+    if (isNaN(latParsed) || isNaN(lngParsed)) {
+        console.error("Invalid LatLng object: (", latParsed, ",", lngParsed, ")");
+        return null;
     }
 
     return {
-        lat: parseCoord(lat, "N", "S"),
-        lng: parseCoord(lng, "E", "W")
+        lat: latParsed,
+        lng: lngParsed
     };
 }
 
