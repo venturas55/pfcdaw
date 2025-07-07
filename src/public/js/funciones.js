@@ -363,8 +363,6 @@ function defineCambiosEstado() {
     let caracteristicaMod;
     let repeticiones;
     let caracteristica = document.getElementById("caracteristicaID").innerText;
-    if (caracteristica === null)
-        caracteristica = "L0.5 oc1.5 L0.5 oc4.5";
     caracteristica = caracteristica.toLowerCase();
     caracteristica = caracteristica.replace(/\ |\(|\[|\[|\)|\]\+/g, '').replace(/,/g, '.').replace(/oc/g, "l").replace(/o/g, "l");
     //console.log(caracteristica);
