@@ -80,7 +80,7 @@ fetchData()?.then((balizas) => {
 
   balizas.forEach(item => {
     const icono = crearIcono(item);
-    const marker = new L.Marker(setMarkerLatLng(item.latitud, item.longitud), {
+    const marker = new L.Marker({"lat":item.coordenadas.x,"lng":item.coordenadas.y}, {
       icon: icono,
       title: item.tipo,
       draggable: true,
@@ -94,7 +94,7 @@ fetchData()?.then((balizas) => {
         iconAnchor: [-10, 35],
       });
 
-      const submarker = L.marker(setMarkerLatLng(item.latitud, item.longitud), {
+      const submarker = L.marker({"lat":item.coordenadas.x,"lng":item.coordenadas.y}, {
         icon: htmlIcon,
         interactive: false // si solo lo quieres como decorativo
       });
@@ -110,7 +110,7 @@ fetchData()?.then((balizas) => {
         iconAnchor: [20, 35],
       });
 
-      const submarker = L.marker(setMarkerLatLng(item.latitud, item.longitud), {
+      const submarker = L.marker({"lat":item.coordenadas.x,"lng":item.coordenadas.y}, {
         icon: htmlIcon,
         interactive: false // si solo lo quieres como decorativo
       });
