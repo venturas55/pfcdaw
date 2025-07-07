@@ -80,7 +80,8 @@ fetchData()?.then((balizas) => {
 
   balizas.forEach(item => {
     const icono = crearIcono(item);
-    const marker = new L.Marker(setMarkerLatLng(item.latitud, item.longitud), {
+    console.log(item.coordenadas.y);
+    const marker = new L.Marker({"lat":item.coordenadas.x,"lng":item.coordenadas.y}, {
       icon: icono,
       title: item.tipo,
       draggable: true,
