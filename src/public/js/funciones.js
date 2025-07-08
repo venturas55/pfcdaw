@@ -4,7 +4,7 @@
 // FARO FA
 
 const protocolo = window.location.protocol;
-const host = window.location.host;
+const host = window.location.host;  
 const myurl = `${protocolo}//${host}`;
 
 //FUNCION PARA CERRAR MODALES
@@ -36,30 +36,30 @@ function abreModalMant(id) {
     item.style.display = 'block';
 }
 
-function abreModalPrev(id, nif) {
+function abreModalPrev(id,nif) {
     //console.log("Mantenimiento con id" + id);
-    var item = document.getElementById("myModalBorradoPreventivo");
+    var item = document.getElementById("myModalBorradoPreventivo"); 
     var ref = document.getElementById("refprevdel");
-    document.getElementById("preventivoidmodal").innerHTML = id;
-    document.getElementById("preventivonifmodal").innerHTML = nif;
+    document.getElementById("preventivoidmodal").innerHTML=id;
+    document.getElementById("preventivonifmodal").innerHTML=nif;
     ref.href += id;
     item.style.display = 'block';
 }
 
-function abreModalReabrirPrev(id, nif) {
+function abreModalReabrirPrev(id,nif) {
     //console.log("Mantenimiento con id" + id);
-    var item = document.getElementById("myModalReabrirPreventivo");
+    var item = document.getElementById("myModalReabrirPreventivo"); 
     var ref = document.getElementById("refprevreabrir");
-    document.getElementById("reabrirpreventivoidmodal").innerHTML = id;
-    document.getElementById("reabrirpreventivonifmodal").innerHTML = nif;
+    document.getElementById("reabrirpreventivoidmodal").innerHTML=id;
+    document.getElementById("reabrirpreventivonifmodal").innerHTML=nif;
     console.log(item);
     item.style.display = 'block';
 }
-function abreModalFoto(nif, nombre) {
+function abreModalFoto(nif,nombre) {
     //console.log("observacion con id" + id);
     var item = document.getElementById("myModalBorradoFoto");
-    var ref = document.getElementById("reffotodel");
-    document.getElementById("fotoidmodal").innerHTML = nombre;
+    var ref = document.getElementById("reffotodel"); 
+     document.getElementById("fotoidmodal").innerHTML=nombre;
     ref.href = `/aton/fotos/${nif}/${nombre}/delete`;
     item.style.display = 'block';
 }
@@ -132,73 +132,55 @@ async function fetchData() {
 //FUNCION PARA TRADUCIR COORDENADAS. DEVUELVE UN OBJETO GOOGLE FORMAT CON LAS COORDENADAS
 function setMarkerLatLng(lat, lng) {
     function parseCoord(coord, positiveDir, negativeDir) {
+        let result = 0;
         coord = coord.replaceAll("'", "´").replaceAll("°", "º");
 
-        if (!coord || typeof coord !== "string" || !coord.includes("º")) {
-            console.warn("Invalid coordinate format:", coord);
-            return NaN;
-        }
+        if (coord == null || !coord.includes("º")) return coord;
 
-        try {
-            let [degPart, minPart] = coord.split("º");
+        let parts = coord.split("º");
 
-            if (!degPart || !minPart) return NaN;
+        if (parts.length < 2) return result;
 
-            let degrees = parseFloat(degPart.trim());
-            if (isNaN(degrees)) return NaN;
+        let degrees = parseFloat(parts[0].trim());
+        let minutesPart = parts[1].replace(",", ".").trim();
 
-            minPart = minPart.replace(",", ".").trim();
+        let minutesVector = minutesPart.split(".");
 
-            let minutes = 0;
-            let direction = "";
+        if (minutesVector.length > 1) {
+            let minInt = parseFloat(minutesVector[0]);
+            let remaining = minutesVector[1] || "";
 
-            let minuteDecimalParts = minPart.split(".");
+            let direction = '';
+            let minDecimal = 0;
 
-            if (minuteDecimalParts.length > 1) {
-                let minInt = parseFloat(minuteDecimalParts[0]);
-                let remainder = minuteDecimalParts[1] || "";
-
-                let minDecimal = 0;
-
-                if (remainder.includes("´")) {
-                    [minDecimal, direction] = remainder.split("´");
-                } else {
-                    [minDecimal, direction] = remainder.split(" ");
-                }
-
-                minDecimal = parseFloat(minDecimal || "0");
-                direction = (direction || "").trim();
-
-                minutes = (minInt + (minDecimal / 1000));
+            if (remaining.includes("´")) {
+                [minDecimal, direction] = remaining.split("´");
             } else {
-                let [minOnly, dir] = minuteDecimalParts[0].trim().split(" ");
-                minutes = parseFloat(minOnly || "0");
-                direction = (dir || "").trim();
+                [minDecimal, direction] = remaining.split(" ");
             }
 
-            if (isNaN(minutes)) return NaN;
+            minDecimal = parseFloat(minDecimal || 0);
+            direction = (direction || "").trim();
 
-            let result = degrees + (minutes / 60);
+            result = degrees + (minInt + minDecimal / 1000) / 60;
+
             if (direction === negativeDir) result *= -1;
-            return parseFloat(result.toFixed(6));
+        } else {
+            let [minOnly, direction] = minutesVector[0].trim().split(" ");
+            let minutes = parseFloat(minOnly || 0);
+            direction = (direction || "").trim();
 
-        } catch (e) {
-            console.error("Failed to parse coordinate:", coord, e);
-            return NaN;
+            result = degrees + minutes / 60;
+
+            if (direction === negativeDir) result *= -1;
         }
-    }
 
-    const latParsed = parseCoord(lat, "N", "S");
-    const lngParsed = parseCoord(lng, "E", "W");
-
-    if (isNaN(latParsed) || isNaN(lngParsed)) {
-        console.error("Invalid LatLng object: (", latParsed, ",", lngParsed, ")");
-        return null;
+        return parseFloat(result.toFixed(6));
     }
 
     return {
-        lat: latParsed,
-        lng: lngParsed
+        lat: parseCoord(lat, "N", "S"),
+        lng: parseCoord(lng, "E", "W")
     };
 }
 
@@ -280,16 +262,16 @@ function getTipo(item) {
         "[(l025oc025)x5]l025oc375": "CO"
     };
 
-    if ((tipo.includes("cardinal") || color == "B") && cardinales[caracteristica]) {
+    if ((tipo.includes("cardinal") || color=="B") && cardinales[caracteristica]) {
         return cardinales[caracteristica];
     }
 
     return color;
 }
 
-function getFlash(item) {
-    let apariencia = item.apariencia.toLowerCase().replace(/[\s()]/g, "").replace(/rp/g, "d");
-    return apariencia;
+function getFlash(item){
+     let apariencia = item.apariencia.toLowerCase().replace(/[\s()]/g, "").replace(/rp/g, "d");
+     return apariencia;
 }
 
 ///////// #################################
@@ -408,16 +390,16 @@ function eliminarFoto(id, campo) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id, campo })
     })
-        .then(res => {
-            if (!res.ok) throw new Error('Error al eliminar');
-            return res.json();
-        })
-        .then(data => {
-            // Opcional: eliminar la imagen del DOM
-            location.reload(); // o manipular el DOM para quitar la imagen
-        })
-        .catch(err => {
-            console.error(err);
-            alert('Error al eliminar imagen');
-        });
+    .then(res => {
+        if (!res.ok) throw new Error('Error al eliminar');
+        return res.json();
+    })
+    .then(data => {
+        // Opcional: eliminar la imagen del DOM
+        location.reload(); // o manipular el DOM para quitar la imagen
+    })
+    .catch(err => {
+        console.error(err);
+        alert('Error al eliminar imagen');
+    });
 }

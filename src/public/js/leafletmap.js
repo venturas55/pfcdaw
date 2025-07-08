@@ -80,8 +80,7 @@ fetchData()?.then((balizas) => {
 
   balizas.forEach(item => {
     const icono = crearIcono(item);
-    console.log(item.coordenadas.y);
-    const marker = new L.Marker({"lat":item.coordenadas.x,"lng":item.coordenadas.y}, {
+    const marker = new L.Marker({ "lat": item.coordenadas.x, "lng": item.coordenadas.y }, {
       icon: icono,
       title: item.tipo,
       draggable: true,
@@ -95,7 +94,7 @@ fetchData()?.then((balizas) => {
         iconAnchor: [-10, 35],
       });
 
-      const submarker = L.marker(setMarkerLatLng(item.latitud, item.longitud), {
+      const submarker = L.marker({ "lat": item.coordenadas.x, "lng": item.coordenadas.y }, {
         icon: htmlIcon,
         interactive: false // si solo lo quieres como decorativo
       });
@@ -111,7 +110,7 @@ fetchData()?.then((balizas) => {
         iconAnchor: [20, 35],
       });
 
-      const submarker = L.marker(setMarkerLatLng(item.latitud, item.longitud), {
+      const submarker = L.marker({ "lat": item.coordenadas.x, "lng": item.coordenadas.y }, {
         icon: htmlIcon,
         interactive: false // si solo lo quieres como decorativo
       });
@@ -185,28 +184,64 @@ fetchData()?.then((balizas) => {
 
   const zonas = [{
     type: "Feature",
-    properties: { zone: "DPP" },
+    properties: { zone: "zonaII" },
     geometry: {
       type: "Polygon",
-      coordinates: [[
-        [-0.2119, 39.4666],
-        [-0.2119, 39.3827],
-        [-0.32985, 39.422433],
-        [-0.331933, 39.4255],
+      coordinates: [[ //HORARIO
+        [-0.2119, 39.4666], //2
+        [-0.2119, 39.3827], //7
+        [-0.32045, 39.3827], //9
+        //[-0.3300, 39.4038], //58
+         [-0.328516, 39.40395], //58
+        //[-0.332033, 39.41215], //57
+         [-0.3307, 39.41351], //57
+        [-0.32985, 39.422433], //54
+        [-0.331933, 39.4255],//55
         [-0.334138, 39.4376],
         [-0.3265, 39.4476],
         [-0.332422, 39.4600577],
         [-0.32907, 39.462141],
-        [-0.31735, 39.46297],
-        [-0.3168, 39.4660],
-        [-0.2119, 39.4666],
+        [-0.3165, 39.4629], //56
+        [-0.3166, 39.4666], //1
+        [-0.2119, 39.4666], //2
+      ]]
+    }
+  },
+  {
+    type: "Feature",
+    properties: { zone: "zonaI" },
+    geometry: {
+      type: "Polygon",
+      coordinates: [[ //ANTIHORARIO
+        [-0.331933, 39.4255], //55
+        [-0.3173, 39.42058], //cardinalsur
+        [-0.31381, 39.42273], //rotonda
+        [-0.31312, 39.42286], //rotonda
+        [-0.31245, 39.42328], //rotonda
+        [-0.3089, 39.43038], //26
+        [-0.3022, 39.4338], //25
+        [-0.302, 39.44446],//20
+        [-0.2987, 39.44446],//20 derecha
+        [-0.29775, 39.4463],//20arriba
+        [-0.2914, 39.44403],//16
+        [-0.2857, 39.4549],//10
+        [-0.2958, 39.45857],//10
+        [-0.2960, 39.4583],//10
+        [-0.30766, 39.46209],//10izq
+        [-0.30775, 39.46282],//10izq arriba
+        [-0.3165, 39.4629], //56
+        [-0.32907, 39.462141],
+        [-0.332422, 39.4600577],
+        [-0.3265, 39.4476],
+        [-0.334138, 39.4376],
       ]]
     }
   }];
 
   const capaZonas = L.geoJSON(zonas, {
     style: feature => ({
-      color: feature.properties.zone === 'DPP' ? '#9999ff' : '#ffbbbb'
+      color: feature.properties.zone === 'zonaII' ? '#9999ff' : '#9999aa',
+      color: feature.properties.zone === 'zonaI' ? '#99ff99' : '#9999ff'
     })
   });
 
@@ -241,7 +276,7 @@ fetchData()?.then((balizas) => {
     toggleVisibilidad();
   });
 
-  
+
   crearBotonToggle('topright', 'btn-toogle-ver-info', 'Ver info <i class="fa fa-eye" aria-hidden="true"></i>', 'btn btn-secondary btn-sm');
   document.getElementById('btn-toogle-ver-info').addEventListener('click', () => {
     toggleVisibilidadInfo();
