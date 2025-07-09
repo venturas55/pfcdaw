@@ -122,7 +122,7 @@ router.get("/aton/fotos/:nif", async (req, res) => {
         return {
             nombre: nombreFoto,
             descripcion: rows.length ? rows[0].descripcion : '',
-            //"created_at": created_at
+            created_at: rows.length ? rows[0].created_at : null
         };
     }));
 
