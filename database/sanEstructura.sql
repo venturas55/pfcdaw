@@ -1,17 +1,16 @@
 /* drop database if exists sanpfcdaw;
-
-create database sanpfcdaw;
-
-use sanpfcdaw;
-
-SET
-  SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-
-START TRANSACTION;
-
-SET
-  time_zone = "+00:00"; */
-
+ 
+ create database sanpfcdaw;
+ 
+ use sanpfcdaw;
+ 
+ SET
+ SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+ 
+ START TRANSACTION;
+ 
+ SET
+ time_zone = "+00:00"; */
 /*INICIO informacion ATON*/
 CREATE TABLE IF NOT EXISTS `balizamiento` (
   `nif` varchar(8) NOT NULL,
@@ -28,19 +27,20 @@ CREATE TABLE IF NOT EXISTS `balizamiento` (
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'tabla de balizas';
 
 CREATE TABLE IF NOT EXISTS `lampara` (
-  `nif` varchar(8) NOT NULL,
+  `nif` varchar(10) NOT NULL,
   `altura` decimal(5, 2) DEFAULT NULL,
   `elevacion` decimal(5, 2) DEFAULT NULL,
   `alcanceNom` decimal(5, 2) DEFAULT NULL,
   `linterna` varchar(200) DEFAULT NULL,
   `candelasCalc` float(12, 2) DEFAULT NULL,
   `alcanceLum` decimal(5, 2) DEFAULT NULL,
+  `distanciaRec` decimal(5, 2) DEFAULT NULL,
   `candelasInst` float(12, 2) DEFAULT NULL,
   PRIMARY KEY (`nif`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'tabla de detalles lampara';
 
 CREATE TABLE IF NOT EXISTS `localizacion` (
-  `nif` varchar(8) NOT NULL,
+  `nif` varchar(10) NOT NULL,
   `puerto` varchar(50) DEFAULT NULL,
   `num_local` decimal(5, 0) DEFAULT NULL,
   `localizacion` varchar(70) DEFAULT NULL,
@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `localizacion` (
 
 CREATE TABLE IF NOT EXISTS `mantenimiento` (
   `id_mantenimiento` int(10) NOT NULL AUTO_INCREMENT,
-  `nif` varchar(8) NOT NULL,
+  `nif` varchar(10) NOT NULL,
   `fecha` date NOT NULL,
   `mantenimiento` varchar(500) NOT NULL,
   PRIMARY KEY (`id_mantenimiento`),
@@ -61,14 +61,18 @@ CREATE TABLE IF NOT EXISTS `mantenimiento` (
 
 CREATE TABLE IF NOT EXISTS `observaciones` (
   `id_observacion` int(10) NOT NULL AUTO_INCREMENT,
-  `nif` varchar(8) NOT NULL,
+  `nif` varchar(10) NOT NULL,
   `observaciones` varchar(250) NOT NULL,
   PRIMARY KEY (`id_observacion`),
   KEY `observaciones_FK` (`nif`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 188 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'tabla de observaciones del balizamiento';
 
 CREATE TABLE IF NOT EXISTS `fondeos` (
-  `nif` varchar(8) NOT NULL,
+  `nif` varchar(10) NOT NULL,
+  `composicion_flotador` varchar(250) default null,
+  `diametro_flotador` smallint unsigned DEFAULT NULL,
+  `altura_flotador` smallint unsigned DEFAULT NULL,
+  `altura_focal` smallint unsigned DEFAULT NULL,
   `calado` decimal(5, 2) UNSIGNED DEFAULT NULL,
   `longitud_cadena` decimal(5, 2) UNSIGNED DEFAULT NULL,
   `ubicacion` ENUM('exterior', 'intermedio', 'interior') default 'interior',
@@ -104,7 +108,7 @@ CREATE TABLE `documentos` (
   `nombre` varchar(100) DEFAULT NULL,
   `descripcion` varchar(250) DEFAULT NULL,
   `created_at` date NOT NULL DEFAULT current_timestamp(),
-   PRIMARY KEY (`id_archivo`)
+  PRIMARY KEY (`id_archivo`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = 'tabla de documentos';
 
 /* DESCRIPCION FOTOS */
@@ -112,7 +116,7 @@ CREATE TABLE `fotos_balizamiento` (
   `nombre` varchar(100) NOT NULL,
   `descripcion` varchar(250) DEFAULT NULL,
   `created_at` date NOT NULL DEFAULT current_timestamp(),
-   PRIMARY KEY (`nombre`)
+  PRIMARY KEY (`nombre`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COMMENT = 'tabla de descripcion de fotos del balizamiento';
 
 /* USUARIOS y LOGS */
@@ -139,7 +143,7 @@ drop table if exists tickets;
 
 CREATE TABLE IF NOT EXISTS `tickets` (
   `ticket_id` int(11) NOT NULL AUTO_INCREMENT,
-  `nif` varchar(8) DEFAULT NULL,
+  `nif` varchar(10) DEFAULT NULL,
   `created_by_id` int(11) NOT NULL,
   `assigned_to_id` int(11) DEFAULT NULL,
   `resolved_by_id` int(11) DEFAULT NULL,
@@ -176,7 +180,7 @@ DROP TABLE IF EXISTS preventivos;
 
 CREATE TABLE IF NOT EXISTS `preventivos` (
   `preventivo_id` int(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  `nif` varchar(8) DEFAULT NULL,
+  `nif` varchar(10) DEFAULT NULL,
   `estructura_estado` ENUM('ok', 'ko', 'na') default null,
   `estructura_marca_tope` ENUM('ok', 'ko', 'na') default null,
   `estructura_engrase` ENUM('ok', 'ko', 'na') default null,

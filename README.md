@@ -1,6 +1,6 @@
 # pfcdaw
-Desarrollo del Proyecto final de ciclo para DAW
-TODO: Gestion de Backups de BBDD 
+Desarrollo del Proyecto de un GMAO para SAN en la APV
+Gestion de Backups de BBDD 
 gitlab interno apv
 ==================
           NUEVA INSTALACION
@@ -152,6 +152,17 @@ Ver readme ubicado en ./DOCKER
 =====
 # ACTUALIZACIONES
 =====
+29/01/23 Se añade la variable distanciaRec en lampara. Hay que modificar BBDD:
+        alter table lampara add distanciaRec decimal(5, 2) after alcanceLum;
+
+29/01/23 Se añade la variables de dimensiones de flotador em fondeos. Hay que modificar BBDD:
+        alter table fondeos add altura_focal smallint UNSIGNED DEFAULT NULL after nif;
+        alter table fondeos add altura_flotador smallint UNSIGNED DEFAULT NULL after nif;
+        alter table fondeos add diametro_flotador smallint UNSIGNED DEFAULT NULL after nif;
+        alter table fondeos add composicion_flotador varchar(100) DEFAULT NULL after nif;
+
+28/01/26 Se añade poder consultar log de errores del servidor. Hay que instalar: 
+                                                        npm i winston
 
 18-6-25 Se añaden observaciones a las fotos creando una tabla fotos_balizamiento
 Se ha añadido una tabla nueva a la base de datos para implementar la recuperación de contraseña. La tabla que almacena tokens con fecha de expiracion es la siguiente.

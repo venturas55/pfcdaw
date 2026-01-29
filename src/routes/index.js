@@ -68,4 +68,9 @@ router.post("/pruebaPost", funciones.isAdmin, async (req, res) => {
 
 });
 
+router.get('/errortest', (req, res) => {
+  throw new Error('Error de prueba');
+});
+
+
 export default router;
