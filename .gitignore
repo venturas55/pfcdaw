@@ -3,3 +3,6 @@ node_modules
 src/public/img/imagenes/*
 src/public/img/preventivos/*
 src/public/topo
+src/public/dumpFOTOS
+src/public/dumSQL
+src/public/documentos

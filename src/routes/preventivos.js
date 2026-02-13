@@ -12,6 +12,7 @@ import { join, extname as _extname, resolve } from 'path';
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 import multer, { diskStorage } from 'multer';
 import { imageSizeLimitErrorHandler } from "../lib/validaciones.js";
+import htmlTopdf from '../lib/pdfcontroller.js';
 
 const storage = diskStorage({
     destination: (req, file, cb) => {
@@ -313,5 +314,59 @@ router.post('/eliminar-foto', async (req, res) => {
         res.status(500).send('Error al eliminar la imagen');
     }
 });
+
+//PARA LA EXPORTACION DE FICHAS A PDF
+router.get(
+  '/cerrado/:id/pdf',
+  funciones.isAuthenticated,
+  funciones.hasSanPrivileges,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+
+      const preventivos = await db.query(
+        queryListadoPreventivosUsers + " where p.preventivo_id=?",
+        [id]
+      );
+
+      if (!preventivos.length) {
+        return res.status(404).send("Preventivo no encontrado");
+      }
+
+      req.app.render(
+        'preventivo/pdf',
+        {
+          layout: 'layoutPdf',
+          preventivo: preventivos[0],
+          baseURL: `${req.protocol}://${req.get('host')}`
+        },
+        async (err, html) => {
+          if (err) {
+            console.error(err);
+            return res.status(500).send("Error renderizando vista");
+          }
+
+          try {
+            const pdf = await htmlTopdf(html);
+
+            res.setHeader("Content-Type", "application/pdf");
+            res.setHeader(
+              "Content-Disposition",
+              `inline; filename=preventivo-${id}.pdf`
+            );
+
+            res.send(pdf);
+          } catch (pdfError) {
+            console.error(pdfError);
+            res.status(500).send("Error generando PDF");
+          }
+        }
+      );
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Error interno del servidor");
+    }
+  }
+);
 
 export default router;
