@@ -152,6 +152,16 @@ Ver readme ubicado en ./DOCKER
 =====
 # ACTUALIZACIONES
 =====
+19/02/26 Se añade puppeteer para impresion de las fichas de preventivos
+
+
+
+28/01/26 Se añade poder consultar log de errores del servidor. Hay que instalar: 
+                                                        npm i winston
+
+18-6-25 Se añaden observaciones a las fotos creando una tabla fotos_balizamiento
+Se ha añadido una tabla nueva a la base de datos para implementar la recuperación de contraseña. La tabla que almacena tokens con fecha de expiracion es la siguiente.
+
 29/01/23 Se añade la variable distanciaRec en lampara. Hay que modificar BBDD:
         alter table lampara add distanciaRec decimal(5, 2) after alcanceLum;
 
@@ -161,12 +171,7 @@ Ver readme ubicado en ./DOCKER
         alter table fondeos add diametro_flotador smallint UNSIGNED DEFAULT NULL after nif;
         alter table fondeos add composicion_flotador varchar(100) DEFAULT NULL after nif;
 
-28/01/26 Se añade poder consultar log de errores del servidor. Hay que instalar: 
-                                                        npm i winston
-
-18-6-25 Se añaden observaciones a las fotos creando una tabla fotos_balizamiento
-Se ha añadido una tabla nueva a la base de datos para implementar la recuperación de contraseña. La tabla que almacena tokens con fecha de expiracion es la siguiente.
-
+        
 CREATE TABLE `tokens` (
   `user_id` int(11) NOT NULL,
   `hashedtoken` varchar(200) PRIMARY KEY,
