@@ -1,14 +1,18 @@
 <div class="header">
+    <div style="font-size:25px;">MANT PREVENTIVO</div>
     <div>
-        <strong>AtoN revisado:</strong> {{preventivo.nif}}<br>
-        <strong>Técnico que inspecciona:</strong> {{preventivo.solved_by}}
-
-
+        AtoN revisado: <strong>{{preventivo.nif}}</strong><br>
+        Técnico que inspecciona: <strong>{{preventivo.solved_by}}</strong>
     </div>
-    <div class="company">
-        <strong>Fecha revisión:</strong> {{formatearSp preventivo.fecha}}<br>
-        <strong>Informe completado:</strong> {{formatearSp preventivo.solved_at}}
+    <div>
+        Fecha revisión:<strong>{{formatearSp preventivo.fecha}}</strong><br>
+        Informe completado: <strong>{{formatearSp preventivo.solved_at}}</strong>
     </div>
+    {{#if preventivo.totalSeleccionadas}}
+    <div>
+        <strong>{{preventivo.indice}} / {{preventivo.totalSeleccionadas}} </strong>
+    </div>
+    {{/if}}
 </div>
 
 <hr>
@@ -165,21 +169,28 @@
     </div>
 
 </div>
-
+<hr>
 <!-- ============================
      FOTOS 
 ============================ -->
+{{#if preventivo.tieneFotos}}
 <div class="header page-break">
+    <div style="font-size:25px;  ">MANT PREVENTIVO</div>
     <div>
-        <strong>Fotos del AtoN:</strong> {{preventivo.nif}}<br>
-        <strong>Inspeccionado por:</strong> {{preventivo.solved_by}}
+        AtoN revisado: <strong>{{preventivo.nif}}</strong><br>
+        Técnico que inspecciona: <strong>{{preventivo.solved_by}}</strong>
     </div>
-    <div class="company">
-        <strong>Fecha revisión:</strong> {{formatearSp preventivo.fecha}}<br>
-        <strong>Informe completado:</strong> {{formatearSp preventivo.solved_at}}
+    <div>
+        Fecha revisión:<strong>{{formatearSp preventivo.fecha}}</strong><br>
+        Informe completado: <strong>{{formatearSp preventivo.solved_at}}</strong>
     </div>
+    {{#if preventivo.totalSeleccionadas}}
+    <div>
+        <strong>{{preventivo.indice}} / {{preventivo.totalSeleccionadas}} </strong>
+    </div>
+    {{/if}}
 </div>
-
+<hr>
 <div class="photos-page">
     {{#if preventivo.foto_estructura}}
     <div class="image">
@@ -212,4 +223,6 @@
     </div>
     {{/if}}
 </div>
+<hr>
+{{/if}}
 {{!-- <div class="page-break"></div> --}}

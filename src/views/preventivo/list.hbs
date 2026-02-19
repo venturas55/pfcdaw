@@ -13,14 +13,14 @@
                 <div class="container-fluid my-3">
                     <div class="row align-items-end g-2">
                         <!-- Botón para mostrar solo resueltos -->
-              <div class="col-md-2">
-    <label for="filtroEstado" class="form-label fw-semibold text-light">Estado:</label>
-    <select id="filtroEstado" class="form-select form-select-sm">
-        <option value="">Todos</option>
-        <option value="pendiente">Activos</option>
-        <option value="resuelto">Cerrados</option>
-    </select>
-</div>
+                        <div class="col-md-2">
+                            <label for="filtroEstado" class="form-label fw-semibold text-light">Estado:</label>
+                            <select id="filtroEstado" class="form-select form-select-sm">
+                                <option value="">Todos</option>
+                                <option value="pendiente">Activos</option>
+                                <option value="resuelto">Cerrados</option>
+                            </select>
+                        </div>
 
 
                         <!-- Selector de usuario -->
@@ -42,7 +42,9 @@
                         </div>
                     </div>
                 </div>
-
+                <button id="btnPrintSeleccion" class="btn btn-success">
+                    Imprimir selección filtrada
+                </button>
                 <table data-search="true" id="listado" class="table table-sm table-dark rounded table-hover listado"
                     style="white-space: nowrap; overflow-x: auto;">
                     <tr class="info-color-dark">
@@ -75,8 +77,8 @@
                             {{#if this.solved_at}}
                             <a href="/mantenimientopreventivo/cerrado/{{this.preventivo_id}}" class="text-primary"><i
                                     class="fa fa-eye"></i>View</a>
-                                          <a href="/mantenimientopreventivo/cerrado/{{this.preventivo_id}}/pdf" class="text-primary"><i
-                                    class="fa fa-print"></i>Print</a>
+                            <a href="/mantenimientopreventivo/cerrado/{{this.preventivo_id}}/pdf"
+                                class="text-primary"><i class="fa fa-print"></i>Print</a>
                             {{else}}
                             <a href="/mantenimientopreventivo/edit/{{this.preventivo_id}}" class="text-primary"><i
                                     class="fa fa-pencil"></i>Edit</a>
@@ -118,8 +120,8 @@
             const cumpleCreador = !creadorSeleccionado || creador === creadorSeleccionado;
             const cumpleEstado = !estadoSeleccionado || estado === estadoSeleccionado;
 
-            fila.style.display = (cumpleTexto && cumpleCreador && cumpleEstado) 
-                ? "" 
+            fila.style.display = (cumpleTexto && cumpleCreador && cumpleEstado)
+                ? ""
                 : "none";
         });
     }
@@ -136,6 +138,27 @@
     inputBusqueda.addEventListener("keyup", debounce(aplicarFiltros));
     selectCreador.addEventListener("change", aplicarFiltros);
     selectEstado.addEventListener("change", aplicarFiltros);
+    //Para seleccionar los items a imprimir en pdf
+    document.getElementById("btnPrintSeleccion").addEventListener("click", () => {
+
+        const ids = [];
+
+        document.querySelectorAll(".fila").forEach(fila => {
+            if (fila.style.display !== "none") {
+                const id = fila.children[0].innerText.trim();
+                ids.push(id);
+            }
+        });
+
+        if (!ids.length) {
+            alert("No hay elementos seleccionados");
+            return;
+        }
+
+        // Redirige enviando los IDs
+        window.open(`/mantenimientopreventivo/print-multiple?ids=${ids.join(",")}`, "_blank");
+    });
+
 </script>
 
 

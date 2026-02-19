@@ -3,10 +3,12 @@
 ============================ */
 @page {
     size: A4;
-    margin: 20mm 15mm 20mm 15mm;
+    margin: 10mm 15mm 20mm 15mm;
 }
 
 body {
+    margin:0px;
+    padding:0px;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 12px;
     color: #222;
@@ -33,9 +35,11 @@ hr {
 ============================ */
 
 .header {
+    background-color: rgb(219, 217, 215);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding:0em 2em;
 }
 
 .company {
@@ -145,12 +149,6 @@ hr {
     page-break-before: always;
 }
 
-.SVG-black-logo {
-    filter: brightness(0) saturate(100%);
-}
-
-
-
 @media print {
 
     .photos-page {
@@ -162,7 +160,7 @@ hr {
         /* 2 columnas */
         grid-template-rows: auto;
         gap: 10px;
-        height: 95vh;
+        height: 92vh;
         /* límite alto hoja */
     }
 
@@ -177,5 +175,6 @@ hr {
         max-width: 100%;
         max-height: 100%;
         object-fit: contain;
+        border-radius: 2px;
     }
 }

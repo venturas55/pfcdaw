@@ -319,7 +319,6 @@ router.post('/eliminar-foto', async (req, res) => {
 router.get(
     '/cerrado/:id/pdf',
     funciones.isAuthenticated,
-    funciones.hasSanPrivileges,
     async (req, res) => {
         try {
             const { id } = req.params;
@@ -332,11 +331,17 @@ router.get(
             if (!preventivos.length) {
                 return res.status(404).send("Preventivo no encontrado");
             }
+            preventivos[0].tieneFotos =
+                preventivos[0].foto_estructura ||
+                preventivos[0].foto_linterna ||
+                preventivos[0].foto_monitoreo ||
+                preventivos[0].foto_alimentacion ||
+                preventivos[0].foto_general;
 
             req.app.render(
                 'preventivo/pdf',
                 {
-                    layout: 'layoutPdf',
+                    layout: 'layoutPuppeteer',
                     preventivo: preventivos[0],
                     baseURL: `${req.protocol}://${req.get('host')}`
                 },
@@ -350,8 +355,8 @@ router.get(
                         const pdf = await htmlTopdf(html);
 
                         res.setHeader("Content-Type", "application/pdf");
-                        res.setHeader("Content-Disposition",`attachment; filename=preventivo-${id}.pdf`);
-                        res.set({"Content-Type": "application/pdf","Content-Length": pdf.length,"Content-Disposition": `attachment; filename=preventivo-${id}.pdf`});
+                        res.setHeader("Content-Disposition", `attachment; filename=preventivo-${id}.pdf`);
+                        res.set({ "Content-Type": "application/pdf", "Content-Length": pdf.length, "Content-Disposition": `attachment; filename=preventivo-${id}.pdf` });
                         return res.send(pdf);
                     } catch (pdfError) {
                         console.error(pdfError);
@@ -366,6 +371,72 @@ router.get(
     }
 );
 router.get(
+    "/print-multiple",
+    funciones.isAuthenticated,
+    async (req, res) => {
+        try {
+            const ids = req.query.ids?.split(",");
+
+            if (!ids || !ids.length) {
+                return res.status(400).send("No hay IDs");
+            }
+
+            const preventivos = await db.query(
+                queryListadoPreventivosUsers + `WHERE p.preventivo_id IN (?)`,
+                [ids]
+            );
+
+            let htmlFinal = "";
+
+            for (let i = 0; i < preventivos.length; i++) {
+                preventivos[i].tieneFotos =
+                    preventivos[i].foto_estructura ||
+                    preventivos[i].foto_linterna ||
+                    preventivos[i].foto_monitoreo ||
+                    preventivos[i].foto_alimentacion ||
+                    preventivos[i].foto_general;
+                preventivos[i].indice = i+1;
+                preventivos[i].totalSeleccionadas = preventivos.length;
+                const html = await new Promise((resolve, reject) => {
+                    req.app.render(
+                        "preventivo/pdf",
+                        {
+                            layout: "layoutPuppeteer",
+                            preventivo: preventivos[i],
+                            baseURL: `${req.protocol}://${req.get("host")}`
+                        },
+                        (err, html) => {
+                            if (err) reject(err);
+                            else resolve(html);
+                        }
+                    );
+                });
+
+                htmlFinal += html;
+
+                if (i < preventivos.length - 1) {
+                    htmlFinal += `<div style="page-break-after: always;"></div>`;
+                }
+            }
+
+            const pdf = await htmlTopdf(htmlFinal);
+
+            res.set({
+                "Content-Type": "application/pdf",
+                "Content-Disposition": `attachment; filename=preventivos-multiple.pdf`,
+                "Content-Length": pdf.length
+            });
+
+            return res.send(pdf);
+
+        } catch (error) {
+            console.error(error);
+            res.status(500).send("Error generando PDF múltiple");
+        }
+    }
+);
+
+router.get(
     '/cerrado/:id/ver',
     funciones.isAuthenticated,
     funciones.hasSanPrivileges,
@@ -377,11 +448,16 @@ router.get(
                 queryListadoPreventivosUsers + " where p.preventivo_id=?",
                 [id]
             );
-
+            preventivos.tieneFotos =
+                preventivos.foto_estructura ||
+                preventivos.foto_linterna ||
+                preventivos.foto_monitoreo ||
+                preventivos.foto_alimentacion ||
+                preventivos.foto_general;
             if (!preventivos.length) {
                 return res.status(404).send("Preventivo no encontrado");
             }
-            res.render('preventivo/pdf', {  layout: 'layoutPdf', preventivo: preventivos[0]}
+            res.render('preventivo/pdf', { layout: 'layoutPuppeteer', preventivo: preventivos[0] }
             );
         } catch (error) {
             console.error(error);

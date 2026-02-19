@@ -10,19 +10,37 @@ const defaultOptions = {
   format: 'A4',
   printBackground: false,
   displayHeaderFooter: true,
+    headerTemplate: `
+    <div style="font-size:0; height:0;"></div>
+  `,
   footerTemplate: `
-    <div style="font-size:10px; width:100%; text-align:center; padding:0 5mm;">
-      Documento generado automáticamente – SISTEMAS de AYUDA a la NAVEGACIÓN <span style="float:right;">
-        Página <span class="pageNumber"></span> de <span class="totalPages"></span>
-      </span> 
+    <div style="
+      width:100%;
+      font-size:12px;
+      padding:0 15mm;
+      box-sizing:border-box;
+    ">
+      <div style="
+        width:100%;
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        gap:10px;
+      ">
+        <span>SISTEMAS de AYUDA a la NAVEGACIÓN</span>
+
+        <img src="data:image/svg+xml;base64,${logoBase64}" 
+             style="height:14px;">
+
+        <span>
+          Página <span class="pageNumber"></span> de 
+          <span class="totalPages"></span>
+        </span>
+      </div>
     </div>
   `,
-  headerTemplate: `<div style="font-size:25px; width:100%; text-align:center; padding:0 5mm;">INFORME TÉCNICO PREVENTIVO</div>
-    <div style="width:50%; heigth: 50% ; text-align:center; padding:0 5mm;"><img src="data:image/svg+xml;base64,${logoBase64}" style="height:15px;"></div>
-       
-    `,
   margin: {
-    top: '20mm',
+    top: '10mm',
     bottom: '20mm',   // IMPORTANTE
     left: '15mm',
     right: '15mm'
