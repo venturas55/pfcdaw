@@ -7,22 +7,24 @@
         </div>
     </div>
     <div class="row mb-2">
-        <div class=" col-lg-10 mx-auto">
+        <div class=" col-lg-11 mx-auto">
             <div class="table-responsive">
                 {{#if preventivos}}
                 <div class="container-fluid my-3">
                     <div class="row align-items-end g-2">
                         <!-- Botón para mostrar solo resueltos -->
-                        <div class="col-md-3">
-                            <label class="form-label fw-semibold text-light invisible">Filtro</label>
-                            <!-- invisible para alinear -->
-                            <button id="toggleResueltos" class="btn btn-outline-light btn-sm w-100">
-                                <i class="fa fa-check-circle me-1"></i>Mostrar solo cerrados
-                            </button>
+                        <div class="col-2">
+                            <label for="filtroEstado" class="form-label fw-semibold text-light">Estado:</label>
+                            <select id="filtroEstado" class="form-select form-select-sm">
+                                <option value="">Todos</option>
+                                <option value="pendiente">Activos</option>
+                                <option value="resuelto">Cerrados</option>
+                            </select>
                         </div>
 
+
                         <!-- Selector de usuario -->
-                        <div class="col-md-3">
+                        <div class="col-3">
                             <label for="filtroCreador" class="form-label fw-semibold text-light">Filtrar por
                                 usuario:</label>
                             <select id="filtroCreador" class="form-select form-select-sm">
@@ -33,12 +35,18 @@
                             </select>
                         </div>
                         <!-- Campo de búsqueda -->
-                        <div class="col-md-4">
+                        <div class="col-3">
                             <label for="myInput" class="form-label fw-semibold text-light">Buscar:</label>
                             <input class="form-control form-control-sm" id="myInput" type="text"
                                 placeholder="Filtrar por..." autofocus>
                         </div>
+                        <div class="col-3">
+                            <button id="btnPrintSeleccion" class="btn btn-success">
+                                Imprimir filtrado
+                            </button>
+                        </div>
                     </div>
+
                 </div>
 
                 <table data-search="true" id="listado" class="table table-sm table-dark rounded table-hover listado"
@@ -73,6 +81,8 @@
                             {{#if this.solved_at}}
                             <a href="/mantenimientopreventivo/cerrado/{{this.preventivo_id}}" class="text-primary"><i
                                     class="fa fa-eye"></i>View</a>
+                            <a href="/mantenimientopreventivo/cerrado/{{this.preventivo_id}}/pdf"
+                                class="text-primary"><i class="fa fa-print"></i>Print</a>
                             {{else}}
                             <a href="/mantenimientopreventivo/edit/{{this.preventivo_id}}" class="text-primary"><i
                                     class="fa fa-pencil"></i>Edit</a>
@@ -91,48 +101,122 @@
         </div>
     </div>
 </div>
+
+
+<!-- Modal Procesando PDF -->
+<div class="modal fade" id="modalProcesando" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content text-center">
+
+            <div class="modal-body py-4">
+
+                <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
+
+                <h6 class="fw-semibold">Generando PDF</h6>
+                <small class="text-muted">Por favor espere...</small>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <script>
-    let mostrarSoloResueltos = false;
-
-    const btnToggle = document.getElementById("toggleResueltos");
+    const inputBusqueda = document.getElementById("myInput");
     const selectCreador = document.getElementById("filtroCreador");
+    const selectEstado = document.getElementById("filtroEstado");
 
-    // Función única para aplicar ambos filtros a la vez
+    const filas = document.querySelectorAll(".fila");
+
     function aplicarFiltros() {
+        const texto = inputBusqueda.value.toLowerCase().trim();
         const creadorSeleccionado = selectCreador.value;
-        const filas = document.querySelectorAll(".fila");
+        const estadoSeleccionado = selectEstado.value;
 
         filas.forEach(fila => {
+            const creador = fila.dataset.creador;
             const esResuelto = fila.classList.contains("resuelto");
-            const esPendiente = fila.classList.contains("pendiente");
-            const creador = fila.getAttribute("data-creador");
+            const estado = esResuelto ? "resuelto" : "pendiente";
 
-            // Evaluar condiciones combinadas
-            const cumpleFiltroResuelto = !mostrarSoloResueltos || esPendiente;
-            const cumpleFiltroCreador = !creadorSeleccionado || creador === creadorSeleccionado;
+            const textoFila = fila.innerText.toLowerCase();
 
-            // Mostrar solo si cumple ambos filtros
-            if (cumpleFiltroResuelto && cumpleFiltroCreador) {
-                fila.style.display = "";
-            } else {
-                fila.style.display = "none";
+            const cumpleTexto = !texto || textoFila.includes(texto);
+            const cumpleCreador = !creadorSeleccionado || creador === creadorSeleccionado;
+            const cumpleEstado = !estadoSeleccionado || estado === estadoSeleccionado;
+
+            fila.style.display = (cumpleTexto && cumpleCreador && cumpleEstado)
+                ? ""
+                : "none";
+        });
+    }
+
+    // Debounce para no ejecutar en cada tecla instantáneamente
+    function debounce(func, delay = 300) {
+        let timeout;
+        return (...args) => {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), delay);
+        };
+    }
+
+    inputBusqueda.addEventListener("keyup", debounce(aplicarFiltros));
+    selectCreador.addEventListener("change", aplicarFiltros);
+    selectEstado.addEventListener("change", aplicarFiltros);
+
+    //Para seleccionar los items a imprimir en pdf
+    document.getElementById("btnPrintSeleccion").addEventListener("click", async () => {
+
+        const ids = [];
+
+        document.querySelectorAll(".fila").forEach(fila => {
+            if (fila.style.display !== "none") {
+                const id = fila.children[0].innerText.trim();
+                ids.push(id);
             }
         });
 
-        // Actualizar texto del botón
-        btnToggle.innerHTML = mostrarSoloResueltos
-            ? '<i class="fa fa-eye"></i> todos'
-            : '<i class="fa fa-eye"></i> por cerrar';
-    }
+        if (!ids.length) {
+            alert("No hay elementos seleccionados");
+            return;
+        }
 
-    // Evento del botón de toggle
-    btnToggle.addEventListener("click", function () {
-        mostrarSoloResueltos = !mostrarSoloResueltos;
-        aplicarFiltros();
+        const modalElement = document.getElementById("modalProcesando");
+        const modal = new bootstrap.Modal(modalElement);
+
+        modal.show();
+
+        try {
+
+            const response = await fetch(
+                `/mantenimientopreventivo/print-multiple?ids=${ids.join(",")}`
+            );
+
+            if (!response.ok) {
+                throw new Error("Error generando PDF");
+            }
+
+            const blob = await response.blob();
+
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "preventivos-multiple.pdf";
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(url);
+
+        } catch (error) {
+            alert("Error al generar el PDF");
+            console.error(error);
+        } finally {
+            modal.hide();
+        }
     });
 
-    // Evento del select de creador
-    selectCreador.addEventListener("change", aplicarFiltros);
 </script>
 
 

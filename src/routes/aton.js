@@ -404,7 +404,7 @@ router.post("/editCaracteristicas/:nif", funciones.isAuthenticated, funciones.ha
         }
         else
             req.flash("error", "Hubo algun error al modificar el aton " + newBaliza.nif + "\n" + error);
-        res.redirect("/aton/plantilla/" + newBaliza.nif);
+        //res.redirect("/aton/plantilla/" + newBaliza.nif);
     }
 
 
