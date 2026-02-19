@@ -382,7 +382,7 @@ router.get(
             }
 
             const preventivos = await db.query(
-                queryListadoPreventivosUsers + `WHERE p.preventivo_id IN (?)`,
+                queryListadoPreventivosUsers + ` WHERE p.preventivo_id IN (?)`,
                 [ids]
             );
 

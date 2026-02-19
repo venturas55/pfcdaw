@@ -40,10 +40,10 @@ const defaultOptions = {
     </div>
   `,
   margin: {
-    top: '10mm',
+    top: '5mm',
     bottom: '20mm',   // IMPORTANTE
-    left: '15mm',
-    right: '15mm'
+    left: '5mm',
+    right: '5mm'
   }
 };
 

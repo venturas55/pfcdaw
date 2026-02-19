@@ -7,13 +7,13 @@
         </div>
     </div>
     <div class="row mb-2">
-        <div class=" col-lg-10 mx-auto">
+        <div class=" col-lg-11 mx-auto">
             <div class="table-responsive">
                 {{#if preventivos}}
                 <div class="container-fluid my-3">
                     <div class="row align-items-end g-2">
                         <!-- Botón para mostrar solo resueltos -->
-                        <div class="col-md-2">
+                        <div class="col-2">
                             <label for="filtroEstado" class="form-label fw-semibold text-light">Estado:</label>
                             <select id="filtroEstado" class="form-select form-select-sm">
                                 <option value="">Todos</option>
@@ -24,7 +24,7 @@
 
 
                         <!-- Selector de usuario -->
-                        <div class="col-md-3">
+                        <div class="col-3">
                             <label for="filtroCreador" class="form-label fw-semibold text-light">Filtrar por
                                 usuario:</label>
                             <select id="filtroCreador" class="form-select form-select-sm">
@@ -35,16 +35,20 @@
                             </select>
                         </div>
                         <!-- Campo de búsqueda -->
-                        <div class="col-md-4">
+                        <div class="col-3">
                             <label for="myInput" class="form-label fw-semibold text-light">Buscar:</label>
                             <input class="form-control form-control-sm" id="myInput" type="text"
                                 placeholder="Filtrar por..." autofocus>
                         </div>
+                        <div class="col-3">
+                            <button id="btnPrintSeleccion" class="btn btn-success">
+                                Imprimir filtrado
+                            </button>
+                        </div>
                     </div>
+
                 </div>
-                <button id="btnPrintSeleccion" class="btn btn-success">
-                    Imprimir selección filtrada
-                </button>
+
                 <table data-search="true" id="listado" class="table table-sm table-dark rounded table-hover listado"
                     style="white-space: nowrap; overflow-x: auto;">
                     <tr class="info-color-dark">
