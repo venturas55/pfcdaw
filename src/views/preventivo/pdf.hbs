@@ -59,12 +59,6 @@
     </div>
     {{/if}}
 
-    {{#if preventivo.foto_estructura}}
-    <div class="image">
-        <img src="{{baseURL}}/img/preventivos/{{preventivo.nif}}/{{preventivo.foto_estructura}}"
-            alt="{{baseURL}}/img/preventivos/{{preventivo.nif}}/{{preventivo.foto_estructura}}">
-    </div>
-    {{/if}}
 </div>
 
 <!-- ============================
@@ -97,16 +91,7 @@
         {{preventivo.linterna_observaciones}}
     </div>
     {{/if}}
-
-    {{#if preventivo.foto_linterna}}
-    <div class="image">
-        <img src="{{baseURL}}/img/preventivos/{{preventivo.nif}}/{{preventivo.foto_linterna}}"
-            alt="{{baseURL}}/img/preventivos/{{preventivo.nif}}/{{preventivo.foto_linterna}}">
-    </div>
-    {{/if}}
 </div>
-
-<div class="page-break"></div>
 
 <!-- ============================
      TELECONTROL
@@ -130,12 +115,7 @@
     </div>
     {{/if}}
 
-    {{#if preventivo.foto_monitoreo}}
-    <div class="image">
-        <img src="{{baseURL}}/img/preventivos/{{preventivo.nif}}/{{preventivo.foto_monitoreo}}"
-            alt="{{baseURL}}/img/preventivos/{{preventivo.nif}}/{{preventivo.foto_monitoreo}}">
-    </div>
-    {{/if}}
+
 </div>
 
 <!-- ============================
@@ -150,13 +130,13 @@
             <td>{{{estadoBadge preventivo.alimentacion_panelFV}}}</td>
             <td>Red</td>
             <td>{{{estadoBadge preventivo.alimentacion_red}}}</td>
-                <td>Capacidad</td>
+            <td>Capacidad</td>
             <td>{{preventivo.alimentacion_ah}} Ah</td>
-    </tr>
+        </tr>
         <tr>
             <td>Voltaje</td>
             <td>{{preventivo.alimentacion_vcc}} V</td>
-                 <td>Baterías</td>
+            <td>Baterías</td>
             <td>{{{estadoBadge preventivo.alimentacion_baterias}}}</td>
             <td>Grupo Electrógeno</td>
             <td>{{{estadoBadge preventivo.alimentacion_grupo}}}</td>
@@ -169,14 +149,7 @@
 
     {{#if preventivo.alimentacion_observaciones}}
     <div class="observaciones">
-        <strong>Observaciones:</strong>  {{preventivo.alimentacion_observaciones}}
-    </div>
-    {{/if}}
-
-    {{#if preventivo.foto_alimentacion}}
-    <div class="image">
-        <img src="{{baseURL}}/img/preventivos/{{preventivo.nif}}/{{preventivo.foto_alimentacion}}"
-            alt="{baseURL}}/img/preventivos/{{preventivo.nif}}/{{preventivo.foto_alimentacion}}">
+        <strong>Observaciones:</strong> {{preventivo.alimentacion_observaciones}}
     </div>
     {{/if}}
 </div>
@@ -187,11 +160,51 @@
 
 <div class="section">
     <div class="section-title">5. OBSERVACIONES GENERALES</div>
-
     <div class="observaciones">
         {{preventivo.observaciones_generales}}
     </div>
 
+</div>
+
+<!-- ============================
+     FOTOS 
+============================ -->
+<div class="header page-break">
+    <div>
+        <strong>Fotos del AtoN:</strong> {{preventivo.nif}}<br>
+        <strong>Inspeccionado por:</strong> {{preventivo.solved_by}}
+    </div>
+    <div class="company">
+        <strong>Fecha revisión:</strong> {{formatearSp preventivo.fecha}}<br>
+        <strong>Informe completado:</strong> {{formatearSp preventivo.solved_at}}
+    </div>
+</div>
+
+<div class="photos-page">
+    {{#if preventivo.foto_estructura}}
+    <div class="image">
+        <img src="{{baseURL}}/img/preventivos/{{preventivo.nif}}/{{preventivo.foto_estructura}}"
+            alt="{{baseURL}}/img/preventivos/{{preventivo.nif}}/{{preventivo.foto_estructura}}">
+    </div>
+    {{/if}}
+    {{#if preventivo.foto_linterna}}
+    <div class="image">
+        <img src="{{baseURL}}/img/preventivos/{{preventivo.nif}}/{{preventivo.foto_linterna}}"
+            alt="{{baseURL}}/img/preventivos/{{preventivo.nif}}/{{preventivo.foto_linterna}}">
+    </div>
+    {{/if}}
+    {{#if preventivo.foto_monitoreo}}
+    <div class="image">
+        <img src="{{baseURL}}/img/preventivos/{{preventivo.nif}}/{{preventivo.foto_monitoreo}}"
+            alt="{{baseURL}}/img/preventivos/{{preventivo.nif}}/{{preventivo.foto_monitoreo}}">
+    </div>
+    {{/if}}
+    {{#if preventivo.foto_alimentacion}}
+    <div class="image">
+        <img src="{{baseURL}}/img/preventivos/{{preventivo.nif}}/{{preventivo.foto_alimentacion}}"
+            alt="{{baseURL}}/img/preventivos/{{preventivo.nif}}/{{preventivo.foto_alimentacion}}">
+    </div>
+    {{/if}}
     {{#if preventivo.foto_general}}
     <div class="image">
         <img src="{{baseURL}}/img/preventivos/{{preventivo.nif}}/{{preventivo.foto_general}}"
@@ -199,3 +212,4 @@
     </div>
     {{/if}}
 </div>
+{{!-- <div class="page-break"></div> --}}

@@ -317,56 +317,77 @@ router.post('/eliminar-foto', async (req, res) => {
 
 //PARA LA EXPORTACION DE FICHAS A PDF
 router.get(
-  '/cerrado/:id/pdf',
-  funciones.isAuthenticated,
-  funciones.hasSanPrivileges,
-  async (req, res) => {
-    try {
-      const { id } = req.params;
+    '/cerrado/:id/pdf',
+    funciones.isAuthenticated,
+    funciones.hasSanPrivileges,
+    async (req, res) => {
+        try {
+            const { id } = req.params;
 
-      const preventivos = await db.query(
-        queryListadoPreventivosUsers + " where p.preventivo_id=?",
-        [id]
-      );
-
-      if (!preventivos.length) {
-        return res.status(404).send("Preventivo no encontrado");
-      }
-
-      req.app.render(
-        'preventivo/pdf',
-        {
-          layout: 'layoutPdf',
-          preventivo: preventivos[0],
-          baseURL: `${req.protocol}://${req.get('host')}`
-        },
-        async (err, html) => {
-          if (err) {
-            console.error(err);
-            return res.status(500).send("Error renderizando vista");
-          }
-
-          try {
-            const pdf = await htmlTopdf(html);
-
-            res.setHeader("Content-Type", "application/pdf");
-            res.setHeader(
-              "Content-Disposition",
-              `inline; filename=preventivo-${id}.pdf`
+            const preventivos = await db.query(
+                queryListadoPreventivosUsers + " where p.preventivo_id=?",
+                [id]
             );
 
-            res.send(pdf);
-          } catch (pdfError) {
-            console.error(pdfError);
-            res.status(500).send("Error generando PDF");
-          }
+            if (!preventivos.length) {
+                return res.status(404).send("Preventivo no encontrado");
+            }
+
+            req.app.render(
+                'preventivo/pdf',
+                {
+                    layout: 'layoutPdf',
+                    preventivo: preventivos[0],
+                    baseURL: `${req.protocol}://${req.get('host')}`
+                },
+                async (err, html) => {
+                    if (err) {
+                        console.error(err);
+                        return res.status(500).send("Error renderizando vista");
+                    }
+
+                    try {
+                        const pdf = await htmlTopdf(html);
+
+                        res.setHeader("Content-Type", "application/pdf");
+                        res.setHeader("Content-Disposition",`attachment; filename=preventivo-${id}.pdf`);
+                        res.set({"Content-Type": "application/pdf","Content-Length": pdf.length,"Content-Disposition": `attachment; filename=preventivo-${id}.pdf`});
+                        return res.send(pdf);
+                    } catch (pdfError) {
+                        console.error(pdfError);
+                        res.status(500).send("Error generando PDF");
+                    }
+                }
+            );
+        } catch (error) {
+            console.error(error);
+            res.status(500).send("Error interno del servidor");
         }
-      );
-    } catch (error) {
-      console.error(error);
-      res.status(500).send("Error interno del servidor");
     }
-  }
+);
+router.get(
+    '/cerrado/:id/ver',
+    funciones.isAuthenticated,
+    funciones.hasSanPrivileges,
+    async (req, res) => {
+        try {
+            const { id } = req.params;
+
+            const preventivos = await db.query(
+                queryListadoPreventivosUsers + " where p.preventivo_id=?",
+                [id]
+            );
+
+            if (!preventivos.length) {
+                return res.status(404).send("Preventivo no encontrado");
+            }
+            res.render('preventivo/pdf', {  layout: 'layoutPdf', preventivo: preventivos[0]}
+            );
+        } catch (error) {
+            console.error(error);
+            res.status(500).send("Error interno del servidor");
+        }
+    }
 );
 
 export default router;

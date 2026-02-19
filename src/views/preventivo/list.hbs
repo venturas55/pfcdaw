@@ -13,13 +13,15 @@
                 <div class="container-fluid my-3">
                     <div class="row align-items-end g-2">
                         <!-- Botón para mostrar solo resueltos -->
-                        <div class="col-md-3">
-                            <label class="form-label fw-semibold text-light invisible">Filtro</label>
-                            <!-- invisible para alinear -->
-                            <button id="toggleResueltos" class="btn btn-outline-light btn-sm w-100">
-                                <i class="fa fa-check-circle me-1"></i>Mostrar solo cerrados
-                            </button>
-                        </div>
+              <div class="col-md-2">
+    <label for="filtroEstado" class="form-label fw-semibold text-light">Estado:</label>
+    <select id="filtroEstado" class="form-select form-select-sm">
+        <option value="">Todos</option>
+        <option value="pendiente">Activos</option>
+        <option value="resuelto">Cerrados</option>
+    </select>
+</div>
+
 
                         <!-- Selector de usuario -->
                         <div class="col-md-3">
@@ -94,47 +96,46 @@
     </div>
 </div>
 <script>
-    let mostrarSoloResueltos = false;
-
-    const btnToggle = document.getElementById("toggleResueltos");
+    const inputBusqueda = document.getElementById("myInput");
     const selectCreador = document.getElementById("filtroCreador");
+    const selectEstado = document.getElementById("filtroEstado");
 
-    // Función única para aplicar ambos filtros a la vez
+    const filas = document.querySelectorAll(".fila");
+
     function aplicarFiltros() {
+        const texto = inputBusqueda.value.toLowerCase().trim();
         const creadorSeleccionado = selectCreador.value;
-        const filas = document.querySelectorAll(".fila");
+        const estadoSeleccionado = selectEstado.value;
 
         filas.forEach(fila => {
+            const creador = fila.dataset.creador;
             const esResuelto = fila.classList.contains("resuelto");
-            const esPendiente = fila.classList.contains("pendiente");
-            const creador = fila.getAttribute("data-creador");
+            const estado = esResuelto ? "resuelto" : "pendiente";
 
-            // Evaluar condiciones combinadas
-            const cumpleFiltroResuelto = !mostrarSoloResueltos || esPendiente;
-            const cumpleFiltroCreador = !creadorSeleccionado || creador === creadorSeleccionado;
+            const textoFila = fila.innerText.toLowerCase();
 
-            // Mostrar solo si cumple ambos filtros
-            if (cumpleFiltroResuelto && cumpleFiltroCreador) {
-                fila.style.display = "";
-            } else {
-                fila.style.display = "none";
-            }
+            const cumpleTexto = !texto || textoFila.includes(texto);
+            const cumpleCreador = !creadorSeleccionado || creador === creadorSeleccionado;
+            const cumpleEstado = !estadoSeleccionado || estado === estadoSeleccionado;
+
+            fila.style.display = (cumpleTexto && cumpleCreador && cumpleEstado) 
+                ? "" 
+                : "none";
         });
-
-        // Actualizar texto del botón
-        btnToggle.innerHTML = mostrarSoloResueltos
-            ? '<i class="fa fa-eye"></i> todos'
-            : '<i class="fa fa-eye"></i> por cerrar';
     }
 
-    // Evento del botón de toggle
-    btnToggle.addEventListener("click", function () {
-        mostrarSoloResueltos = !mostrarSoloResueltos;
-        aplicarFiltros();
-    });
+    // Debounce para no ejecutar en cada tecla instantáneamente
+    function debounce(func, delay = 300) {
+        let timeout;
+        return (...args) => {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), delay);
+        };
+    }
 
-    // Evento del select de creador
+    inputBusqueda.addEventListener("keyup", debounce(aplicarFiltros));
     selectCreador.addEventListener("change", aplicarFiltros);
+    selectEstado.addEventListener("change", aplicarFiltros);
 </script>
 
 
