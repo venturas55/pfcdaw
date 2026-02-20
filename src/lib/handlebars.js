@@ -161,4 +161,5 @@ helpers.estadoBadge = (value) => {
   if (value === "ko") return '<span class="estado-ko">KO</span>';
   return '<span class="estado-na">N/A</span>';
 };
+
 export default helpers;

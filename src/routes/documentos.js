@@ -6,7 +6,7 @@ import db from "../database.js"; //db hace referencia a la BBDD
 import multer, { diskStorage } from 'multer';
 import { exists, mkdir } from 'fs';
 import { v4 as uuidv4 } from 'uuid';
-import { pdfSizeLimitErrorHandler } from "../lib/validaciones.js";
+import {pdfSizeLimitErrorHandler} from "../lib/validaciones.js";
 import * as url from "url";
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
@@ -30,22 +30,22 @@ const uploadDocument = multer({
 }).single('documento');
 
 //CRUD read
-router.get("/documentos", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
+router.get("/documentos",funciones.isAuthenticated,funciones.hasSanPrivileges, async (req, res) => {
   const docus = await db.query("select * from documentos")
   console.log(docus);
   res.render("documentos/documentos", { docus });
 });
-router.get("/documentoUpload", funciones.isAuthenticated, funciones.hasSanPrivileges, (req, res) => {
+router.get("/documentoUpload", funciones.isAuthenticated,funciones.hasSanPrivileges,(req, res) => {
   res.render("documentos/documentoUpload");
 });
-router.post("/documentos", funciones.isAuthenticated, funciones.hasSanPrivileges, uploadDocument, pdfSizeLimitErrorHandler, async (req, res) => {
+router.post("/documentos", funciones.isAuthenticated,funciones.hasSanPrivileges, uploadDocument,pdfSizeLimitErrorHandler, async (req, res) => {
   //console.log(req.body);
   //console.log(req.file);
   const { nombre, descripcion } = req.body;
   const archivo = req.file.filename;
-  const newDoc = { 'id_archivo': archivo, nombre, descripcion, }
-  await db.query("insert into documentos set ?", [newDoc]);
-  funciones.insertarLog(req.user.usuario, "INSERT documento", archivo);
+  const newDoc={'id_archivo':archivo,nombre,descripcion,}
+  await db.query("insert into documentos set ?",[newDoc]);
+  funciones.insertarLog(req.user.usuario,"INSERT documento",archivo);
   req.flash("success", "Documento subido correctamente");
   res.redirect("/documentos");
 });
@@ -53,24 +53,24 @@ router.get("/documentoDelete/:id", funciones.isAuthenticated, funciones.isAdmin,
   const id_archivo = req.params.id;
   const filePath = resolve('src/public/documentos/' + id_archivo);
   //await unlink(filePath);
-  await db.query("delete from documentos where id_archivo = ?", [id_archivo]);
-  funciones.insertarLog(req.user.usuario, "DELETE documento", id_archivo);
+  await db.query("delete from documentos where id_archivo = ?",[id_archivo]);
+  funciones.insertarLog(req.user.usuario,"DELETE documento",id_archivo);
   req.flash("success", "Documento borrado correctamente");
   const docus = await db.query("select * from documentos")
   res.render("documentos/documentos", { docus });
 });
-router.get("/documentoEdit/:id", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
+router.get("/documentoEdit/:id",funciones.isAuthenticated,funciones.hasSanPrivileges, async (req, res) => {
   const id_archivo = req.params.id;
-  const doc = await db.query("select * from documentos where id_archivo=?", [id_archivo]);
-  res.render("documentos/documentoEdit", { documento: doc[0] });
+  const doc= await db.query("select * from documentos where id_archivo=?",[id_archivo]);
+  res.render("documentos/documentoEdit",{documento: doc[0]});
 });
-router.post("/documentoEdit/:id", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
+router.post("/documentoEdit/:id", funciones.isAuthenticated,funciones.hasSanPrivileges,async (req, res) => {
   const id_archivo = req.params.id;
   const nombre = req.body.nombre;
-  const descripcion = req.body.descripcion;
-  const newDoc = { id_archivo, nombre, descripcion };
-  await db.query("update documentos set ? where id_archivo=?", [newDoc, id_archivo]);
-  funciones.insertarLog(req.user.usuario, "UPDATE documento", nombre + " " + descripcion);
+  const descripcion= req.body.descripcion;
+  const newDoc={id_archivo,nombre,descripcion};
+  await db.query("update documentos set ? where id_archivo=?",[newDoc,id_archivo]);
+  funciones.insertarLog(req.user.usuario,"UPDATE documento",nombre + " " + descripcion);
   req.flash("success", "Documento editado correctamente");
   res.redirect("/documentos");
 });
