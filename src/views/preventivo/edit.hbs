@@ -20,12 +20,14 @@
             </div>
         </div>
         <div class="text-center">
-        <a class="btn btn-outline-warning btn-sm m-2 mt-4"
-            onclick='abreModalReabrirPrev({{preventivo.preventivo_id}},{{ preventivo.nif }})'> 🛟 Reabrir</a>
-            </div>
+            <a class="btn btn-outline-warning btn-sm m-2 mt-4"
+                onclick='abreModalReabrirPrev({{preventivo.preventivo_id}},{{ preventivo.nif }})'> 🛟 Reabrir</a>
+        </div>
         <hr>
-        <a class="btn btn-outline-danger btn-sm m-2 mt-4"
-            onclick="document.getElementById('myModalBorradoPreventivo').style.display = 'block';"> 🗑️ Borrar</a>
+        <div class="text-center">
+            <a class="btn btn-outline-danger btn-sm m-2 mt-4"
+                onclick="document.getElementById('myModalBorradoPreventivo').style.display = 'block';"> 🗑️ Borrar</a>
+        </div>
     </div>
     {{else}}
     <div class="alert alert-info text-center" role="alert">

@@ -34,12 +34,14 @@
                                 {{/each}}
                             </select>
                         </div>
+
                         <!-- Campo de búsqueda -->
                         <div class="col-3">
                             <label for="myInput" class="form-label fw-semibold text-light">Buscar:</label>
                             <input class="form-control form-control-sm" id="myInput" type="text"
                                 placeholder="Filtrar por..." autofocus>
                         </div>
+                        
                         <div class="col-3">
                             <button id="btnPrintSeleccion" class="btn btn-success">
                                 Imprimir filtrado
@@ -128,7 +130,6 @@
     const inputBusqueda = document.getElementById("myInput");
     const selectCreador = document.getElementById("filtroCreador");
     const selectEstado = document.getElementById("filtroEstado");
-
     const filas = document.querySelectorAll(".fila");
 
     function aplicarFiltros() {
