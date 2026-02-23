@@ -147,7 +147,7 @@ router.get("/aton/fotos/:nif/:nombre/delete", funciones.isAuthenticated, funcion
 //BACKUPS DE FOTOS DE ATONS
 router.get("/backupsfotos", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     var backups = funciones.listadoBackupsFotos();
-    console.log("FOtos: ", backups);
+    console.log("Fotos: ", backups);
     res.render("fotos/listadoBackupFotos", { backups });
 });
 router.get("/backupsfotos/del/:nombre", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
@@ -158,7 +158,7 @@ router.get("/backupsfotos/del/:nombre", funciones.isAuthenticated, funciones.isA
     funciones.insertarLog(req.user.usuario, "DELETE backup fotos", nombre);
     res.redirect('/backupsfotos');
 });
-router.get("/aton/fotos/backup/zip", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
+router.get("/fotos/backup/zip", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     const dir = join(__dirname, '../public/img/imagenes');
     const dirbackups = join(__dirname, '../public/dumpFOTOS/');
     archiveFolder(dir, dirbackups + new Date().getTime() + ".zip").then(function () {
@@ -171,12 +171,12 @@ router.get("/aton/fotos/backup/zip", funciones.isAuthenticated, funciones.isAdmi
         res.redirect('/backupsfotos');
     });
 });
-router.post("/aton/fotos/backup/upload", funciones.isAuthenticated, funciones.isAdmin, uploadFotosZip, async (req, res) => {
+router.post("/fotos/backup/upload", funciones.isAuthenticated, funciones.isAdmin, uploadFotosZip, async (req, res) => {
     console.log("Subiendo fotos en zip");
     req.flash("success", "backup fotos subido correctamente");
     res.redirect('/backupsfotos');
 });
-router.get("/aton/fotos/backup/unzip/:nombre", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
+router.get("/fotos/backup/unzip/:nombre", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
     var { nombre } = req.params;
     const dir = join(__dirname, '../public/img/imagenes');
     const backupPath = join(__dirname, '../public/dumpFOTOS/');
@@ -192,13 +192,13 @@ router.get("/aton/fotos/backup/unzip/:nombre", funciones.isAuthenticated, funcio
     });
 });
 //Elimina todas las carpetas que tengan un nombre que no corresponda a ninguna baliza
-router.get("/aton/fotos/clean/folders", funciones.isAdmin, async function (req, res) {
+router.get("/fotos/clean/folders", funciones.isAdmin, async function (req, res) {
     let balizas = await db.query("select nif from balizamiento");
     balizas = balizas.map(function (item) { return item.nif });
     let source = join(__dirname, "../public/img/imagenes/");
     let carpetas = await funciones.listadoCarpetas();
-    //console.log(carpetas);
-    //console.log(balizas);
+    console.log(carpetas);
+    console.log(balizas);
     carpetas.forEach(item => {
         if (!balizas.includes(item)) {
             //console.log("eliminar " + source + item);

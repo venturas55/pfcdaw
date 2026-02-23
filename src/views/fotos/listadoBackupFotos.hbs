@@ -1,7 +1,10 @@
 <!-- CUERPO -->
 <div class="container-fluid">
     <!-- id="cuerpo" -->
-    <div class="text-center m-4"> <a class="btn btn-primary" href="/aton/fotos/backup/zip">Crear dump FOTOS</a></div>
+    {{!-- <div class="text-center m-4"> <a class="btn btn-primary" href="/fotos/backup/zip">Crear dump FOTOS</a></div>
+    --}}
+    <div class="text-center m-4"> <button id="btnBackupfotos" class="btn btn-outline-success"><i
+                                class="fa fa-database" aria-hidden="true"></i> Crear dump FOTOS</button></div>
     <h1 class="text-center">LISTADO FOTOS</h1>
     <div class="row my-4">
         <div class="col-11 mx-auto">
@@ -11,7 +14,7 @@
                     <th>Nombre</th>
                     <th class="d-none d-sm-table-cell">Tamaño</th>
                     <th class="d-none d-md-table-cell">Creado</th>
-                    <th>acciones</th>
+                    <th>Acciones</th>
                 </tr>
                 {{#if backups}}
                 {{#each backups}}
@@ -27,27 +30,88 @@
                     <td class="d-none d-md-table-cell">{{ timeago this.created_at}}</td>
                     <td> <a type="submit" href="/backupsfotos/del/{{this.name}}" class="text-primary"><i
                                 class="fa fa-trash"></i>Del</a>
-                        <a type="submit" href="/aton/fotos/backup/unzip/{{this.name}}" class="text-primary"><i class="fa fa-file-archive-o" aria-hidden="true"></i>Unzip</a>
+                        <a type="submit" href="/fotos/backup/unzip/{{this.name}}" class="text-primary"><i
+                                class="fa fa-file-archive-o" aria-hidden="true"></i>Unzip</a>
                     </td>
                 </tr>
                 {{/each}}
                 {{else}}
-                <tr>No hay ningún backup generado, <a href="/aton/fotos/backup/zip">crea uno</a> !! </tr>
+                <tr>No hay ningún backup generado, <a href="/fotos/backup/zip">crea uno</a> !! </tr>
                 {{/if}}
             </table>
             <div class="col-12 col-md-6  mx-auto">
-                <form action="/aton/fotos/backup/upload" method="POST" enctype="multipart/form-data">
+                <form action="/fotos/backup/upload" method="POST" enctype="multipart/form-data">
                     <div class="input-group mb-3">
                         <input type="file" class="form-control" id="inputGroupFile01" name="backup">
-                        <button type="submit" class=" btn btn-primary btn-block">SUBIR PACK FOTOS</button>
+                        <button type="submit" class=" btn btn-outline-primary btn-block">SUBIR PACK FOTOS</button>
                         <span></span>
                     </div>
                 </form>
             </div>
-            <div class="text-center m-4"> <a class="btn btn-primary" href=" /aton/fotos/clean/folders"
+            <hr>
+            <div class="text-center m-4"> <a class="btn btn-outline-danger" href="/fotos/clean/folders"
                     data-bs-toggle="tooltip" data-bs-placement="top" data-bs-html="true"
                     title="Borra todas las carpetas que no se estén utilizando">CLEAN FOTOS</a>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Modal Procesando BACKUP FOTOS -->
+<div class="modal fade" id="modalProcesando" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content text-center">
+
+            <div class="modal-body py-4">
+
+                <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;">
+                    <span class="visually-hidden">Cargando...</span>
+                </div>
+
+                <h6 class="fw-semibold">Generando BACKUP de FOTOS</h6>
+                <small class="text-muted">Por favor espere...</small>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    const botonBackup = document.getElementById("btnBackupfotos");
+
+    botonBackup.addEventListener("click", async () => {
+        const modalElement = document.getElementById("modalProcesando");
+        const modal = new bootstrap.Modal(modalElement);
+
+        // Cambiamos el contenido del modal a "Cargando..."
+        modalElement.querySelector('.modal-body h6').innerText = "Generando BACKUP de FOTOS";
+        modalElement.querySelector('.modal-body small').innerText = "Por favor espere...";
+        modal.show();
+
+        try {
+            const response = await fetch("/fotos/backup/zip", { method: "GET" });
+
+            if (!response.ok) {
+                throw new Error("Error generando BACKUP");
+            }
+
+            // Cambiamos el contenido del modal a "Éxito"
+            modalElement.querySelector('.modal-body h6').innerText = "Backup realizado con éxito ✅";
+            modalElement.querySelector('.modal-body small').innerText = "La página se actualizará automáticamente.";
+
+            // Opcional: cambiamos el spinner por un check
+            const spinner = modalElement.querySelector('.spinner-border');
+            if (spinner) spinner.classList.remove('spinner-border', 'text-primary');
+
+            // Refresca la página después de 2 segundos
+            setTimeout(() => window.location.reload(), 2000);
+
+        } catch (error) {
+            modalElement.querySelector('.modal-body h6').innerText = "Error al generar el backup ❌";
+            modalElement.querySelector('.modal-body small').innerText = "Revise la consola para más detalles.";
+            console.error(error);
+        }
+    });
+</script>
+</script>
