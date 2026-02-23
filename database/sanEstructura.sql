@@ -121,7 +121,7 @@ CREATE TABLE `logs` (
   `fecha` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `usuario` varchar(50) NOT NULL,
   `accion` varchar(100) DEFAULT NULL,
-  `observacion` varchar(250) DEFAULT NULL
+  `observacion` varchar(500) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='tabla de logs';
 
 

@@ -58,7 +58,7 @@ const upload = multer({
 router.get('/list', async (req, res) => {
     //const preventivos = await db.query("select * from preventivos order by created_at");
     try {
-        const preventivos = await db.query(queryListadoPreventivosUsers + " order by p.created_at desc");
+        const preventivos = await db.query(queryListadoPreventivosUsers + " order by p.created_at,p.nif desc");
         const usuarios = await db.query("select * from usuarios");
         res.render('preventivo/list', {
             preventivos, usuarios
@@ -395,7 +395,7 @@ router.get(
                     preventivos[i].foto_monitoreo ||
                     preventivos[i].foto_alimentacion ||
                     preventivos[i].foto_general;
-                preventivos[i].indice = i+1;
+                preventivos[i].indice = i + 1;
                 preventivos[i].totalSeleccionadas = preventivos.length;
                 const html = await new Promise((resolve, reject) => {
                     req.app.render(
