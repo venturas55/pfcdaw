@@ -6,3 +6,5 @@ src/public/topo
 src/public/dumpFOTOS
 src/public/dumSQL
 src/public/documentos
+.debug.pdf
+logs
