@@ -8,6 +8,11 @@ var popup = L.popup();
 const fechaActual = new Date();
 let fechaMenos30 = new Date(fechaActual);
 fechaMenos30.setDate(fechaMenos30.getDate() - 30);
+let modoCreacionActivo = false;
+let btnDistance = document.getElementById("botoneraDistancias");
+btnDistance.classList.toggle('desactivada');
+let btnLimpiarUltimo = document.getElementById("limpiarUltimo");
+btnLimpiarUltimo.disabled = true;
 
 fetchData()?.then((balizas) => {
   // === 1. INICIALIZACIÓN DEL MAPA ===
@@ -15,7 +20,10 @@ fetchData()?.then((balizas) => {
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 17 }).addTo(map);
   L.control.scale({ imperial: true, metric: true }).addTo(map);
   map.attributionControl.setPrefix('');
-  map.on('click', onMapDistance);
+  map.on('click', function (e) {
+    if (!modoCreacionActivo) return;  // 👈 si está desactivado no hace nada
+    onMapDistance(e);
+  });
 
   const markers = [];
 
@@ -80,9 +88,8 @@ fetchData()?.then((balizas) => {
   }
 
   // === 3. DIBUJAR BALIZAS ===
-console.log("ANTES DEL FETCH");
+
   balizas.forEach(item => {
-      console.log("FETCH OK");
     const icono = crearIcono(item);
     const marker = new L.Marker({ "lat": item.coordenadas.x, "lng": item.coordenadas.y }, {
       icon: icono,
@@ -125,7 +132,7 @@ console.log("ANTES DEL FETCH");
 
 
     // SI TIENE ALGUN MANTENIMIENTO REALIZADO EN EL ULTIMO MES
-    for (i = 0; i < item.mantenimiento.length ; i++) {
+    for (let i = 0; i < item.mantenimiento.length; i++) {
       if (new Date(item.mantenimiento[i].fecha) > fechaMenos30) {
         circle = L.circleMarker({ "lat": item.coordenadas.x, "lng": item.coordenadas.y }, {
           radius: 15,
@@ -306,7 +313,24 @@ console.log("ANTES DEL FETCH");
     toggleVisibilidadInfo();
   });
 
-});
+  crearBotonToggle('bottomright', 'btn-modo-creacion', 'Activar medicion <i class="fa fa-exchange" aria-hidden="true"></i>', 'btn btn-primary btn-sm');
+  document.getElementById('btn-modo-creacion').addEventListener('click', function () {
+    modoCreacionActivo = !modoCreacionActivo;
+    if (modoCreacionActivo) {
+      this.innerHTML = 'Desactivar medicion <i class="fa fa-exchange" aria-hidden="true"></i>';
+      map.getContainer().style.cursor = 'crosshair'; // cambia cursor
+      btnDistance.classList.toggle('desactivada');
+    } else {
+      this.innerHTML = 'Activar medicion <i class="fa fa-exchange" aria-hidden="true"></i>';
+      map.getContainer().style.cursor = '';
+      if (!modoCreacionActivo) {
+        clearAll();
+      }
+      btnDistance.classList.toggle('desactivada');
+    }
+  });
+
+}).catch(err => console.error("Error en fetchData:", err));
 
 function drawPin(latlang, title) {
   let iconOptions = {
@@ -328,6 +352,8 @@ function drawPin(latlang, title) {
   var position = marker.getLatLng();
   map.panTo(position);
   marker.addTo(map);
+  btnLimpiarUltimo.disabled = false;
+
 }
 
 function drawThisPin() {
@@ -339,12 +365,15 @@ function clearAll() {
     map.removeLayer(pinMarkers[i]);
   pinMarkers = [];
   secondClick = false
+  btnLimpiarUltimo.disabled = true;
 }
 
 function clearLast() {
   map.removeLayer(pinMarkers[pinMarkers.length - 1]);
   pinMarkers.pop();
   secondClick = false
+  if (pinMarkers.length == 0)
+    btnLimpiarUltimo.disabled = true;
 }
 
 function onMapClick(e) {
@@ -377,6 +406,7 @@ function onMapDistance(e) {
     //L.marker(firstLatLng).addTo(map).bindPopup('Point A<br/>' + e.latlng).openPopup();
     drawPin(firstLatLng, "Punto A");
     secondClick = true;
+
   }
 }
 
