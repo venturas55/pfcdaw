@@ -19,7 +19,8 @@ router.get('/api/balizas', async (req, res) => {
         else
             balizas[i].pictureUrl = ["N/A"];
 
-        balizas[i].tickets = await db.query("select * from tickets where nif=? and solved_at IS NULL",balizas[i].nif);
+        balizas[i].tickets = await db.query("select * from tickets where nif=? and solved_at IS NULL", balizas[i].nif);
+        balizas[i].mantenimiento = await db.query("select * from mantenimiento where nif=?", balizas[i].nif);
     }
     res.send(balizas);
 });
@@ -94,20 +95,20 @@ router.get('/api/autocompletar-nif', async (req, res) => {
 
 
 router.get('/api/logs/errors', (req, res) => {
-  const logPath = path.join(__dirname, '../../logs/error.log');
+    const logPath = path.join(__dirname, '../../logs/error.log');
     console.log(logPath);
-  if (!fs.existsSync(logPath)) {
-    return res.json([]);
-  }
+    if (!fs.existsSync(logPath)) {
+        return res.json([]);
+    }
 
-  const logs = fs
-    .readFileSync(logPath, 'utf8')
-    .trim()
-    .split('\n')
-    .slice(-50) // últimos 50 errores
-    .map(line => JSON.parse(line));
+    const logs = fs
+        .readFileSync(logPath, 'utf8')
+        .trim()
+        .split('\n')
+        .slice(-50) // últimos 50 errores
+        .map(line => JSON.parse(line));
 
-  res.json(logs);
+    res.json(logs);
 });
 
 

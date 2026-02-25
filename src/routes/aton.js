@@ -585,7 +585,7 @@ router.get("/transform", funciones.isAuthenticated, funciones.isAdmin, async (re
         res.redirect("/");
     } catch (error) {
         console.error(error);
-        req.flash("error", "Hubo algun error al modificar la localización", " \n", error);
+        req.flash("error", "Hubo algun error al modificar la localización de " ,baliza[i].nif, " \n", error);
         res.redirect("/error");
     }
 });
