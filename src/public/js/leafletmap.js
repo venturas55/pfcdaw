@@ -5,6 +5,9 @@ let map;
 let pinMarkers = [];
 let secondClick = false, firstLatLng, secondLatLng;
 var popup = L.popup();
+const fechaActual = new Date();
+let fechaMenos30 = new Date(fechaActual);
+fechaMenos30.setDate(fechaMenos30.getDate() - 30);
 
 fetchData()?.then((balizas) => {
   // === 1. INICIALIZACIÓN DEL MAPA ===
@@ -77,8 +80,9 @@ fetchData()?.then((balizas) => {
   }
 
   // === 3. DIBUJAR BALIZAS ===
-
+console.log("ANTES DEL FETCH");
   balizas.forEach(item => {
+      console.log("FETCH OK");
     const icono = crearIcono(item);
     const marker = new L.Marker({ "lat": item.coordenadas.x, "lng": item.coordenadas.y }, {
       icon: icono,
@@ -86,10 +90,11 @@ fetchData()?.then((balizas) => {
       draggable: true,
     });
 
+    //SI NECESITA PINTADO
     if (item.necesita_pintado) {
       const htmlIcon = L.divIcon({
         className: 'custom-div-icon',
-        html: '<i class="fa fa-paint-brush me-1 text-danger infoAtoN info-activada"></i>',
+        html: '<i class="fa fa-paint-brush me-1 text-primary infoAtoN info-activada"></i>',
         iconSize: [50, 50],
         iconAnchor: [-10, 35],
       });
@@ -101,7 +106,7 @@ fetchData()?.then((balizas) => {
       submarker.addTo(map);
 
     }
-
+    //SI TIENE ALGUN TICKET ACTIVO
     if (item.tickets.length > 0) {
       const htmlIcon = L.divIcon({
         className: 'custom-div-icon',
@@ -117,6 +122,25 @@ fetchData()?.then((balizas) => {
       submarker.addTo(map);
 
     }
+
+
+    // SI TIENE ALGUN MANTENIMIENTO REALIZADO EN EL ULTIMO MES
+    for (i = 0; i < item.mantenimiento.length ; i++) {
+      if (new Date(item.mantenimiento[i].fecha) > fechaMenos30) {
+        circle = L.circleMarker({ "lat": item.coordenadas.x, "lng": item.coordenadas.y }, {
+          radius: 15,
+          color: '#ee6371',      // rojo bootstrap
+          weight: 1,
+          fillColor: '#5d66ec',
+          fillOpacity: 0.15,
+          interactive: false
+        }).addTo(map);
+        // Opcional: mandar detrás del marker
+        circle.bringToBack();
+        break;
+      }
+    }
+
     let posicionInicial;
     marker.on('dragstart', e => posicionInicial = e.target.getLatLng());
 
@@ -192,9 +216,9 @@ fetchData()?.then((balizas) => {
         [-0.2119, 39.3827], //7
         [-0.32045, 39.3827], //9
         //[-0.3300, 39.4038], //58
-         [-0.328516, 39.40395], //58
+        [-0.328516, 39.40395], //58
         //[-0.332033, 39.41215], //57
-         [-0.3307, 39.41351], //57
+        [-0.3307, 39.41351], //57
         [-0.32985, 39.422433], //54
         [-0.331933, 39.4255],//55
         [-0.334138, 39.4376],
