@@ -140,13 +140,13 @@ router.get("/aton/fotos/:nif/:nombre/delete", funciones.isAuthenticated, funcion
     await fse.unlink(resolve('src/public/img/imagenes/' + nif + "/" + nombre));
     await db.query("delete from fotos_balizamiento where nombre = ?", [nombre]);
     req.flash("success", "Fotografia borrada correctamente");
-    funciones.insertarLog(req.user.usuario, "DELETE fotografia "+nif, nombre);
+    funciones.insertarLog(req.user.usuario, "DELETE fotografia " + nif, nombre);
     res.redirect("/aton/fotos/" + nif);
 });
 
 //BACKUPS DE FOTOS DE ATONS
 router.get("/backupsfotos", funciones.isAuthenticated, funciones.isAdmin, async (req, res) => {
-    var backups = funciones.listadoBackupsFotos();
+    var backups = await funciones.listadoBackupsFotos();
     console.log("Fotos: ", backups);
     res.render("fotos/listadoBackupFotos", { backups });
 });
@@ -191,23 +191,55 @@ router.get("/fotos/backup/unzip/:nombre", funciones.isAuthenticated, funciones.i
         res.redirect('/backupsfotos');
     });
 });
-//Elimina todas las carpetas que tengan un nombre que no corresponda a ninguna baliza
+//Elimina todas las carpetas que tengan un nombre que no corresponda a ninguna baliza y crea carpeta para las balizas que no tengan carpeta
 router.get("/fotos/clean/folders", funciones.isAdmin, async function (req, res) {
-    let balizas = await db.query("select nif from balizamiento");
-    balizas = balizas.map(function (item) { return item.nif });
-    let source = join(__dirname, "../public/img/imagenes/");
-    let carpetas = await funciones.listadoCarpetas();
-    console.log(carpetas);
-    console.log(balizas);
-    carpetas.forEach(item => {
-        if (!balizas.includes(item)) {
-            //console.log("eliminar " + source + item);
-            fs.rmSync(join(source, item), { recursive: true, force: true });
+    try {
+
+        let balizas = await db.query("select nif from balizamiento");
+        balizas = balizas.map(function (item) { return item.nif });
+
+        let source = join(__dirname, "../public/img/imagenes/");
+        let carpetas = await funciones.listadoCarpetas();
+        console.log(carpetas);
+        console.log(balizas);
+        // 3️⃣ Borrar carpetas que NO estén en balizas
+        let carpetasBorradas=0;
+        for (const carpeta of carpetas) {
+            if (!balizas.includes(carpeta)) {
+                const ruta = join(source, carpeta);
+                try {
+                    await fse.rm(ruta, { recursive: true, force: true });
+                    carpetasBorradas++;
+                    console.log("Borrada carpeta:", carpeta);
+                } catch (err) {
+                    console.error("Error borrando carpeta", carpeta, err);
+                }
+            }
         }
-    });
-    funciones.insertarLog(req.user.usuario, "Limpieza carpeta fotos AtoNs ");
-    req.flash("success", "Directorios de fotos limpiado correctamente");
-    res.redirect('/backupsfotos');
+        let carpetasCreadas=0;
+        // 4️⃣ Crear carpetas para balizas que no tengan carpeta
+        for (const nif of balizas) {
+            if (!carpetas.includes(nif)) {
+                const ruta = join(source, nif);
+                try {
+                    await fse.mkdir(ruta, { recursive: true });
+                    carpetasCreadas++;
+                    console.log("Creada carpeta:", nif);
+                } catch (err) {
+                    console.error("Error creando carpeta", nif, err);
+                }
+            }
+        }
+
+        funciones.insertarLog(req.user.usuario, "Limpieza carpeta fotos AtoNs ");
+        req.flash("success", "Directorios de fotos corregido: \n"+carpetasCreadas+" creadas\n\t - "+carpetasBorradas+" borradas");
+        res.redirect('/backupsfotos');
+
+    } catch (error) {
+        console.error("Error en limpieza de carpetas:", error);
+        req.flash("error", "Ocurrió un error al limpiar las carpetas de fotos");
+        res.redirect('/backupsfotos');
+    }
 });
 
 //GESTION  foto perfil

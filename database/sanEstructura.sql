@@ -12,6 +12,7 @@ CREATE TABLE `balizamiento` (
   `nif` varchar(10) NOT NULL,
   `num_internacional` varchar(12) DEFAULT NULL,
   `tipo` varchar(250) DEFAULT NULL,
+  `categoria` smallint(5) unsigned DEFAULT NULL,
   `telecontrol` varchar(200) DEFAULT NULL,
   `apariencia` varchar(50) DEFAULT NULL,
   `periodo` decimal(5,2) DEFAULT NULL,
@@ -93,6 +94,7 @@ CREATE TABLE `lampara` (
   `altura` decimal(5,2) DEFAULT NULL,
   `elevacion` decimal(5,2) DEFAULT NULL,
   `alcanceNom` decimal(5,2) DEFAULT NULL,
+  `divergencia` smallint UNSIGNED DEFAULT NULL,
   `linterna` varchar(200) DEFAULT NULL,
   `candelasCalc` float(12,2) DEFAULT NULL,
   `alcanceLum` decimal(5,2) DEFAULT NULL,
@@ -151,7 +153,7 @@ CREATE TABLE `observaciones` (
 DROP TABLE IF EXISTS `preventivos`;
 CREATE TABLE `preventivos` (
   `preventivo_id` int(11) NOT NULL AUTO_INCREMENT,
-  `nif` varchar(10) DEFAULT NULL,
+  `nif` varchar(10) NOT NULL,
   `estructura_estado` enum('ok','ko','na') DEFAULT NULL,
   `estructura_marca_tope` enum('ok','ko','na') DEFAULT NULL,
   `estructura_engrase` enum('ok','ko','na') DEFAULT NULL,
@@ -220,7 +222,7 @@ CREATE TABLE `sqlmapfile` (
 DROP TABLE IF EXISTS `tickets`;
 CREATE TABLE `tickets` (
   `ticket_id` int(11) NOT NULL AUTO_INCREMENT,
-  `nif` varchar(10) DEFAULT NULL,
+  `nif` varchar(10) NOT NULL,
   `created_by_id` int(11) NOT NULL,
   `assigned_to_id` int(11) DEFAULT NULL,
   `resolved_by_id` int(11) DEFAULT NULL,
@@ -261,9 +263,10 @@ CREATE TABLE `usuarios` (
   `privilegio` varchar(20) DEFAULT NULL,
   `pictureURL` varchar(100) CHARACTER SET utf16 COLLATE utf16_spanish2_ci DEFAULT NULL,
   `prefmap` varchar(10) DEFAULT 'leaflet',
+  `default_localizacion` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='tabla de usuarios';
 
 
--- 2026-01-30 11:38:26
+-- 2026-02-26 10:11:07

@@ -31,63 +31,66 @@ funciones.getFotosOrdenadas = async (nif) => {
         return archivosConFechas.map(f => f.file);
 
     } catch (err) {
+        //if (err.code === "ENOENT") return [];
         console.error("Error al leer imágenes:", err);
         return [];
     }
 };
 
 
-funciones.listadoCarpetas = async (req, res, next) => {
-    var source = join(__dirname, "../public/img/imagenes/");
-    let filesAndDirectories = await fse.readdir(source);
-    //console.log(filesAndDirectories);
-    let directories = [];
-    filesAndDirectories.forEach(element => {
-        directories.push(element);
-    })
-    return directories;
+funciones.listadoCarpetas = async () => {
+    const source = join(__dirname, "../public/img/imagenes");
 
-}
+    try {
+        return await fs.readdir(source);
+     } catch (err) {
+        //if (err.code === "ENOENT") return [];
+        console.error("Error al leer carpetas:", err);
+        return [];
+    }
+};
 
-funciones.listadoBackups = (req, res, next) => {
-    var documentos = [];
-    var directorio = join(__dirname, "../public/dumpSQL");
-    fse.readdir(directorio, (err, files) => {
-        if (files) {
-            files.forEach(file => {
-                var item = {
-                    'name': file,
-                    'created_at': (fse.statSync(directorio + "/" + file)).birthtime
-                }
-                documentos.push(item);
-            });
-        } else {
-            console.log("No hay files");
-        }
-    });
-    return documentos;
-}
+funciones.listadoBackups = async () => {
+    const directorio = join(__dirname, "../public/dumpSQL");
+    try {
+        const files = await fs.readdir(directorio);
+        const documentos = await Promise.all(
+            files.map(async (file) => {
+                const stats = await fs.stat(join(directorio, file));
+                return {
+                    name: file,
+                    created_at: stats.birthtime
+                };
+            })
+        );
+        return documentos.sort((a, b) => b.created_at - a.created_at);
+    } catch (err) {
+        if (err.code === "ENOENT") return [];
+        throw err;
+    }
+};
 
-funciones.listadoBackupsFotos = (req, res, next) => {
-    var backups = [];
-    var directorio = join(__dirname, "../public/dumpFOTOS/");
-    fse.readdir(directorio, (err, files) => {
-        if (files) {
-            files.forEach(file => {
-                var item = {
-                    'name': file,
-                    'size': (fse.statSync(join(directorio, file)).size / (1024 * 1024)).toFixed(2),
-                    'created_at': fse.statSync(join(directorio, file)).birthtime,
-                }
-                backups.push(item);
-            });
-        } else {
-            console.log("No hay files");
-        }
-    });
-    backups.sort((a, b) => a.created_at - b.created_at);
-    return backups;
-}
+funciones.listadoBackupsFotos = async () => {
+    const directorio = join(__dirname, "../public/dumpFOTOS");
+    try {
+        const files = await fs.readdir(directorio);
+        const backups = await Promise.all(
+            files.map(async (file) => {
+                const stats = await fs.stat(join(directorio, file));
+
+                return {
+                    name: file,
+                    size: (stats.size / (1024 * 1024)).toFixed(2),
+                    created_at: stats.birthtime,
+                };
+            })
+        );
+        return backups.sort((a, b) => b.created_at - a.created_at);
+    } catch (err) {
+        if (err.code === "ENOENT") return [];
+        throw err;
+    }
+};
 
 funciones.encryptPass = async (password) => {
     const sal = await bcryptjs.genSalt(10);

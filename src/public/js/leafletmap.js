@@ -8,6 +8,11 @@ var popup = L.popup();
 const fechaActual = new Date();
 let fechaMenos30 = new Date(fechaActual);
 fechaMenos30.setDate(fechaMenos30.getDate() - 30);
+let modoCreacionActivo = false;
+let btnDistance = document.getElementById("botoneraDistancias");
+btnDistance.classList.toggle('desactivada');
+let btnLimpiarUltimo = document.getElementById("limpiarUltimo");
+btnLimpiarUltimo.disabled = true;
 
 fetchData()?.then((balizas) => {
   // === 1. INICIALIZACIÓN DEL MAPA ===
@@ -15,7 +20,10 @@ fetchData()?.then((balizas) => {
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 17 }).addTo(map);
   L.control.scale({ imperial: true, metric: true }).addTo(map);
   map.attributionControl.setPrefix('');
-  map.on('click', onMapDistance);
+  map.on('click', function (e) {
+    if (!modoCreacionActivo) return;  // 👈 si está desactivado no hace nada
+    onMapDistance(e);
+  });
 
   const markers = [];
 
@@ -80,112 +88,125 @@ fetchData()?.then((balizas) => {
   }
 
   // === 3. DIBUJAR BALIZAS ===
-console.log("ANTES DEL FETCH");
+
   balizas.forEach(item => {
-      console.log("FETCH OK");
-    const icono = crearIcono(item);
-    const marker = new L.Marker({ "lat": item.coordenadas.x, "lng": item.coordenadas.y }, {
-      icon: icono,
-      title: item.tipo,
-      draggable: true,
-    });
-
-    //SI NECESITA PINTADO
-    if (item.necesita_pintado) {
-      const htmlIcon = L.divIcon({
-        className: 'custom-div-icon',
-        html: '<i class="fa fa-paint-brush me-1 text-primary infoAtoN info-activada"></i>',
-        iconSize: [50, 50],
-        iconAnchor: [-10, 35],
+    try {
+      const icono = crearIcono(item);
+      const marker = new L.Marker({ "lat": item.coordenadas.x, "lng": item.coordenadas.y }, {
+        icon: icono,
+        title: item.tipo,
+        draggable: true,
       });
 
-      const submarker = L.marker({ "lat": item.coordenadas.x, "lng": item.coordenadas.y }, {
-        icon: htmlIcon,
-        interactive: false // si solo lo quieres como decorativo
-      });
-      submarker.addTo(map);
+      //SI NECESITA PINTADO
+      if (item.necesita_pintado) {
+        const htmlIcon = L.divIcon({
+          className: 'custom-div-icon',
+          html: '<i class="fa fa-paint-brush me-1 text-primary infoAtoN info-desactivada"></i>',
+          iconSize: [50, 50],
+          iconAnchor: [-10, 35],
+        });
 
-    }
-    //SI TIENE ALGUN TICKET ACTIVO
-    if (item.tickets.length > 0) {
-      const htmlIcon = L.divIcon({
-        className: 'custom-div-icon',
-        html: '<i class="fa fa-exclamation-triangle me-1 blink_me text-danger infoAtoN info-activada"></i>',
-        iconSize: [50, 50],
-        iconAnchor: [20, 35],
-      });
+        const submarker = L.marker({ "lat": item.coordenadas.x, "lng": item.coordenadas.y }, {
+          icon: htmlIcon,
+          interactive: false // si solo lo quieres como decorativo
+        });
+        submarker.addTo(map);
 
-      const submarker = L.marker({ "lat": item.coordenadas.x, "lng": item.coordenadas.y }, {
-        icon: htmlIcon,
-        interactive: false // si solo lo quieres como decorativo
-      });
-      submarker.addTo(map);
-
-    }
-
-
-    // SI TIENE ALGUN MANTENIMIENTO REALIZADO EN EL ULTIMO MES
-    for (i = 0; i < item.mantenimiento.length ; i++) {
-      if (new Date(item.mantenimiento[i].fecha) > fechaMenos30) {
-        circle = L.circleMarker({ "lat": item.coordenadas.x, "lng": item.coordenadas.y }, {
-          radius: 15,
-          color: '#ee6371',      // rojo bootstrap
-          weight: 1,
-          fillColor: '#5d66ec',
-          fillOpacity: 0.15,
-          interactive: false
-        }).addTo(map);
-        // Opcional: mandar detrás del marker
-        circle.bringToBack();
-        break;
       }
-    }
+      //SI TIENE ALGUN TICKET ACTIVO
+      if (item.tickets.length > 0) {
+        const htmlIcon = L.divIcon({
+          className: 'custom-div-icon',
+          html: '<i class="fa fa-exclamation-triangle me-1 blink_me text-danger infoAtoN info-desactivada"></i>',
+          iconSize: [50, 50],
+          iconAnchor: [20, 35],
+        });
 
-    let posicionInicial;
-    marker.on('dragstart', e => posicionInicial = e.target.getLatLng());
+        const submarker = L.marker({ "lat": item.coordenadas.x, "lng": item.coordenadas.y }, {
+          icon: htmlIcon,
+          interactive: false // si solo lo quieres como decorativo
+        });
+        submarker.addTo(map);
 
-    marker.on('dragend', e => {
-      const thismarker = e.target;
-      const newPosition = thismarker.getLatLng();
-      const textPos = getMarkerLatLng(newPosition);
-      thismarker.setLatLng(newPosition, { draggable: 'true' });
-      map.panTo(newPosition);
-      popup
-        .setLatLng(newPosition)
-        .setContent(crearPopupHTML(item, newPosition, textPos, posicionInicial))
-        .openOn(map);
-      markers.push(thismarker);
+      }
 
-      // Vincular evento al botón "NO"
-      setTimeout(() => {
-        const botonCancelar = document.getElementById('cancelarMovimiento');
-        if (botonCancelar) {
-          botonCancelar.addEventListener('click', () => {
-            thismarker.setLatLng(posicionInicial);
-            map.setView(posicionInicial);
-            map.closePopup();
+
+      // SI TIENE ALGUN MANTENIMIENTO REALIZADO EN EL ULTIMO MES
+      for (let i = 0; i < item.mantenimiento.length; i++) {
+        if (new Date(item.mantenimiento[i].fecha).getTime() > fechaMenos30.getTime()) {
+          /*   circle = L.circleMarker({ "lat": item.coordenadas.x, "lng": item.coordenadas.y }, {
+             radius: 15,
+             color: '#ee6371',      // rojo bootstrap
+             weight: 1,
+             fillColor: '#5d66ec',
+             fillOpacity: 0.15,
+             interactive: false
+           }).addTo(map);
+           // Opcional: mandar detrás del marker
+           circle.bringToBack();
+           break;*/
+
+          const htmlIcon = L.divIcon({
+            className: 'custom-div-icon',
+            html: '<div class="circulito infoAtoN info-desactivada"></div>',
+            iconSize: [40, 40],
+            iconAnchor: [20, 35],
           });
+
+          const submarker = L.marker({ "lat": item.coordenadas.x, "lng": item.coordenadas.y }, {
+            icon: htmlIcon,
+            interactive: false // si solo lo quieres como decorativo
+          });
+          submarker.addTo(map);
+          break;
         }
-      }, 0);
-    });
+      }
+      let posicionInicial;
+      marker.on('dragstart', e => posicionInicial = e.target.getLatLng());
 
-    marker.on('click', () => {
-      window.location.href = `/aton/plantilla/${item.nif}`;
-    });
+      marker.on('dragend', e => {
+        const thismarker = e.target;
+        const newPosition = thismarker.getLatLng();
+        const textPos = getMarkerLatLng(newPosition);
+        thismarker.setLatLng(newPosition, { draggable: 'true' });
+        map.panTo(newPosition);
+        popup
+          .setLatLng(newPosition)
+          .setContent(crearPopupHTML(item, newPosition, textPos, posicionInicial))
+          .openOn(map);
+        markers.push(thismarker);
 
-    marker.bindTooltip(crearTooltip(item, marker), {
-      opacity: 0.7,
-      direction: 'top',
-      sticky: false,
-      offset: [0, -10],
-    });
+        // Vincular evento al botón "NO"
+        setTimeout(() => {
+          const botonCancelar = document.getElementById('cancelarMovimiento');
+          if (botonCancelar) {
+            botonCancelar.addEventListener('click', () => {
+              thismarker.setLatLng(posicionInicial);
+              map.setView(posicionInicial);
+              map.closePopup();
+            });
+          }
+        }, 0);
+      });
 
-    marker.on('contextmenu', e => {
-      const ruta = item.pictureUrl.length > 0
-        ? `/img/imagenes/${item.nif}/${item.pictureUrl[0]}`
-        : "/img/icon/buoyIcon.jpg";
+      marker.on('click', () => {
+        window.location.href = `/aton/plantilla/${item.nif}`;
+      });
 
-      const html = `
+      marker.bindTooltip(crearTooltip(item, marker), {
+        opacity: 0.7,
+        direction: 'top',
+        sticky: false,
+        offset: [0, -10],
+      });
+
+      marker.on('contextmenu', e => {
+        const ruta = item.pictureUrl.length > 0
+          ? `/img/imagenes/${item.nif}/${item.pictureUrl[0]}`
+          : "/img/icon/buoyIcon.jpg";
+
+        const html = `
         <div class="bind-tooltip">
           <div class="d-flex flex-row gap-1">
             <p><strong>NIF: ${item.nif}</strong></p> 
@@ -198,10 +219,15 @@ console.log("ANTES DEL FETCH");
             <button class="btn btn-warning btn-sm" onclick="window.location.href='/mantenimientopreventivo/add/${item.nif}'">Preventivo</button>
           </div>  
         </div>`;
-      L.popup().setLatLng(e.latlng).setContent(html).openOn(map);
-    });
+        L.popup().setLatLng(e.latlng).setContent(html).openOn(map);
+      });
 
-    marker.addTo(map);
+      marker.addTo(map);
+    } catch (err) {
+      // añadir info del item al error
+      err.item = item;
+      throw err; // ahora el catch final lo recibirá con el item
+    }
   });
 
   // === 4. CAPA DE ZONAS ===
@@ -285,6 +311,36 @@ console.log("ANTES DEL FETCH");
     return id;
   };
 
+  //boton de la info extra mostrada en el plano
+  crearBotonToggle('topright', 'btn-toogle-ver-info', 'Ver info <i class="fa fa-eye" aria-hidden="true"></i>', 'btn btn-secondary btn-sm');
+  document.getElementById('btn-toogle-ver-info').addEventListener('click', () => {
+    toggleVisibilidadInfo();
+  });
+
+  //boton para alternar entre balizas activas y desactivadas
+  crearBotonToggle('bottomleft', 'btn-toogle-ver', 'Ver Desactivadas <i class="fa fa-eye" aria-hidden="true"></i>', 'btn btn-secondary btn-sm');
+  document.getElementById('btn-toogle-ver').addEventListener('click', () => {
+    toggleVisibilidad();
+  });
+
+  crearBotonToggle('bottomright', 'btn-modo-creacion', 'Activar medicion <i class="fa fa-exchange" aria-hidden="true"></i>', 'btn btn-primary btn-sm');
+  document.getElementById('btn-modo-creacion').addEventListener('click', function () {
+    modoCreacionActivo = !modoCreacionActivo;
+    if (modoCreacionActivo) {
+      this.innerHTML = 'Desactivar medicion <i class="fa fa-exchange" aria-hidden="true"></i>';
+      map.getContainer().style.cursor = 'crosshair'; // cambia cursor
+      btnDistance.classList.toggle('desactivada');
+    } else {
+      this.innerHTML = 'Activar medicion <i class="fa fa-exchange" aria-hidden="true"></i>';
+      map.getContainer().style.cursor = '';
+      if (!modoCreacionActivo) {
+        clearAll();
+      }
+      btnDistance.classList.toggle('desactivada');
+    }
+  });
+
+  //Boton para ver o no las Zonas portuarias
   crearBotonToggle('bottomright', 'toggleZonasBtn', 'Zona II', 'btn btn-primary btn-sm');
   document.getElementById('toggleZonasBtn').addEventListener('click', () => {
     if (zonasVisibles) {
@@ -295,17 +351,9 @@ console.log("ANTES DEL FETCH");
     zonasVisibles = !zonasVisibles;
   });
 
-  crearBotonToggle('topright', 'btn-toogle-ver', 'Ver Desactivadas <i class="fa fa-eye" aria-hidden="true"></i>', 'btn btn-secondary btn-sm');
-  document.getElementById('btn-toogle-ver').addEventListener('click', () => {
-    toggleVisibilidad();
-  });
-
-
-  crearBotonToggle('topright', 'btn-toogle-ver-info', 'Ver info <i class="fa fa-eye" aria-hidden="true"></i>', 'btn btn-secondary btn-sm');
-  document.getElementById('btn-toogle-ver-info').addEventListener('click', () => {
-    toggleVisibilidadInfo();
-  });
-
+}).catch(err => {
+  console.error("Error en fetchData:", err);
+  if (err.item) console.error("Item que causó error:", err.item);
 });
 
 function drawPin(latlang, title) {
@@ -328,6 +376,8 @@ function drawPin(latlang, title) {
   var position = marker.getLatLng();
   map.panTo(position);
   marker.addTo(map);
+  btnLimpiarUltimo.disabled = false;
+
 }
 
 function drawThisPin() {
@@ -339,12 +389,15 @@ function clearAll() {
     map.removeLayer(pinMarkers[i]);
   pinMarkers = [];
   secondClick = false
+  btnLimpiarUltimo.disabled = true;
 }
 
 function clearLast() {
   map.removeLayer(pinMarkers[pinMarkers.length - 1]);
   pinMarkers.pop();
   secondClick = false
+  if (pinMarkers.length == 0)
+    btnLimpiarUltimo.disabled = true;
 }
 
 function onMapClick(e) {
@@ -377,6 +430,7 @@ function onMapDistance(e) {
     //L.marker(firstLatLng).addTo(map).bindPopup('Point A<br/>' + e.latlng).openPopup();
     drawPin(firstLatLng, "Punto A");
     secondClick = true;
+
   }
 }
 

@@ -21,6 +21,8 @@ update balizamiento set esBoya=1 where tipo like '%boya%' AND esBoya <> 1;
 alter table usuarios add column IF NOT EXISTS default_localizacion varchar(15) default 'valencia'; 
 
 alter table lampara add column IF NOT EXISTS distanciaRec decimal(5, 2) UNSIGNED DEFAULT NULL after alcanceLum;
+alter table balizamiento add column IF NOT EXISTS categoria smallint UNSIGNED DEFAULT NULL after tipo;
+alter table lampara add column IF NOT EXISTS divergencia smallint UNSIGNED DEFAULT NULL after categoria;
 alter table fondeos add column IF NOT EXISTS altura_focal smallint UNSIGNED DEFAULT NULL after nif;
 alter table fondeos add column IF NOT EXISTS altura_flotador smallint UNSIGNED DEFAULT NULL after nif;
 alter table fondeos add column IF NOT EXISTS diametro_flotador smallint UNSIGNED DEFAULT NULL after nif;
