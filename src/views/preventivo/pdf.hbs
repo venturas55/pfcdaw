@@ -23,7 +23,7 @@
 
 <div class="section">
     <div class="section-title">1. ESTRUCTURA</div>
-    <table class="table">
+    <table class="table" style="font-size:15px;">
         <tr>
             <td>Estado general</td>
             <td>{{{estadoBadge preventivo.estructura_estado}}}</td>
@@ -58,7 +58,7 @@
 
     {{#if preventivo.estructura_observaciones}}
     <div class="observaciones">
-        Observaciones:<strong>{{preventivo.estructura_observaciones}}</strong>
+        <strong>{{preventivo.estructura_observaciones}}</strong>
     </div>
     {{/if}}
 
@@ -71,7 +71,7 @@
 <div class="section">
     <div class="section-title">2. LINTERNA</div>
 
-    <table class="table">
+    <table class="table" style="font-size:15px;">
         <tr>
             <td>LDR1</td>
             <td>{{{estadoBadge preventivo.linterna_ldr1}}}</td>
@@ -90,7 +90,7 @@
 
     {{#if preventivo.linterna_observaciones}}
     <div class="observaciones">
-        Observaciones:<strong> {{preventivo.linterna_observaciones}}</strong>
+        <strong> {{preventivo.linterna_observaciones}}</strong>
     </div>
     {{/if}}
 </div>
@@ -101,7 +101,7 @@
 
 <div class="section">
     <div class="section-title">3. TELECONTROL</div>
-    <table class="table">
+    <table class="table" style="font-size:15px;">
         <tr>
             <td>Monitoreo</td>
             <td>{{{estadoBadge preventivo.telecontrol_monitoreo}}}</td>
@@ -112,7 +112,7 @@
 
     {{#if preventivo.telecontrol_observaciones}}
     <div class="observaciones">
-        Observaciones:<strong> {{preventivo.telecontrol_observaciones}}</strong>
+        <strong> {{preventivo.telecontrol_observaciones}}</strong>
     </div>
     {{/if}}
 
@@ -125,7 +125,7 @@
 
 <div class="section">
     <div class="section-title">4. ALIMENTACIÓN</div>
-    <table class="table">
+    <table class="table" style="font-size:15px;">
         <tr>
             <td>Panel Fotovoltaico</td>
             <td>{{{estadoBadge preventivo.alimentacion_panelFV}}}</td>
@@ -150,7 +150,7 @@
 
     {{#if preventivo.alimentacion_observaciones}}
     <div class="observaciones">
-        Observaciones: <strong>{{preventivo.alimentacion_observaciones}}</strong>
+        <strong>{{preventivo.alimentacion_observaciones}}</strong>
     </div>
     {{/if}}
 </div>
@@ -162,7 +162,7 @@
 <div class="section">
     <div class="section-title">5. OTROS COMENTARIOS</div>
     <div class="observaciones">
-        {{preventivo.observaciones_generales}}
+        <strong> {{preventivo.observaciones_generales}}</strong>
     </div>
 
 </div>

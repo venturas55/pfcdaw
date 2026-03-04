@@ -1,33 +1,42 @@
 <div class="container-fluid mb-5">
+
+    <!-- BOTONES ANTERIOR / SIGUIENTE -->
+
+
     <!-- BOTONES DE ACCIÓN -->
-    <div class="row justify-content-center my-3">
-        <div class="col-auto d-flex flex-wrap gap-2 justify-content-center">
+    <div class="d-flex justify-content-between my-2">
+        <a href="/aton/plantilla/{{prevId}}" class="btn btn-outline-primary"> ⬅️ </a>
+        <div class=" justify-content-center">
+            <div class="col-auto d-flex flex-wrap gap-2 justify-content-center">
 
-            <a class="btn btn-outline-danger btn-sm fw-semibold" href="/tickets/add/{{baliza.nif}}">
-                <i class="fa fa-plus me-1"></i>Crear Ticket
-            </a>
+                <a class="btn btn-outline-danger btn-sm fw-semibold" href="/tickets/add/{{baliza.nif}}">
+                    <i class="fa fa-plus me-1"></i>Crear Ticket
+                </a>
 
-            <a class="btn btn-outline-secondary btn-sm fw-semibold" href="/aton/pintura/{{baliza.nif}}/plantilla">
-                <i class="fa fa-paint-roller me-1"></i>Pintado
-            </a>
+                <a class="btn btn-outline-secondary btn-sm fw-semibold" href="/aton/pintura/{{baliza.nif}}/plantilla">
+                    <i class="fa fa-paint-roller me-1"></i>Pintado
+                </a>
 
-            <a class="btn btn-outline-secondary btn-sm fw-semibold" href="/mantenimientopreventivo/add/{{baliza.nif}}">
-                <i class="fa fa-cogs me-1"></i>Iniciar Preventivo
-            </a>
+                <a class="btn btn-outline-secondary btn-sm fw-semibold"
+                    href="/mantenimientopreventivo/add/{{baliza.nif}}">
+                    <i class="fa fa-cogs me-1"></i>Iniciar Preventivo
+                </a>
 
-            {{#if baliza.necesita_pintado}}
-            <button onclick="document.getElementById('myModalPintado').style.display = 'block';"
-                class="btn btn-danger btn-sm fw-semibold" title="Requiere pintado">
-                <i class="fa fa-paint-brush"></i>
-            </button>
-            {{/if}}
+                {{#if baliza.necesita_pintado}}
+                <button onclick="document.getElementById('myModalPintado').style.display = 'block';"
+                    class="btn btn-danger btn-sm fw-semibold" title="Requiere pintado">
+                    <i class="fa fa-paint-brush"></i>
+                </button>
+                {{/if}}
 
-            <a class="btn btn-outline-secondary btn-sm fw-semibold" href="/aton/activado/{{baliza.nif}}">
-                <i class="fa fa-lightbulb me-1"></i>
-                {{#if baliza.apagada}}Apagada{{else}}Activada{{/if}}
-            </a>
+                <a class="btn btn-outline-secondary btn-sm fw-semibold" href="/aton/activado/{{baliza.nif}}">
+                    <i class="fa fa-lightbulb me-1"></i>
+                    {{#if baliza.apagada}}Apagada{{else}}Activada{{/if}}
+                </a>
 
+            </div>
         </div>
+        <a href="/aton/plantilla/{{nextId}}" class="btn btn-outline-primary"> ➡️ </a>
     </div>
 
     <!-- TICKETS ACTIVOS -->
@@ -127,7 +136,7 @@
                     <th>Tipo</th>
                     <td>{{baliza.tipo}}</td>
                 </tr>
-                    <tr>
+                <tr>
                     <th>Categoria</th>
                     <td> {{baliza.categoria}}</td>
                 </tr>
@@ -224,7 +233,7 @@
                     <th>Linterna</th>
                     <td>{{baliza.linterna}}</td>
                 </tr>
-                        <tr>
+                <tr>
                     <th>Divergencia</th>
                     <td>{{baliza.divergencia}}</td>
                 </tr>
@@ -351,7 +360,8 @@
                 </tr> --}}
                 <tr>
                     <th>Flotador</th>
-                    <td>{{fondeo.composicion_flotador}} con D:{{fondeo.diametro_flotador}}cm h:{{fondeo.altura_flotador}}  Altura Focal:{{fondeo.altura_focal}}  </td>
+                    <td>{{fondeo.composicion_flotador}} con D:{{fondeo.diametro_flotador}}cm
+                        h:{{fondeo.altura_flotador}} Altura Focal:{{fondeo.altura_focal}} </td>
                 </tr>
                 <tr>
                     <th>Calado</th>

@@ -158,6 +158,16 @@ Ver readme ubicado en ./DOCKER
 18-6-25 Se añaden observaciones a las fotos creando una tabla fotos_balizamiento
 Se ha añadido una tabla nueva a la base de datos para implementar la recuperación de contraseña. La tabla que almacena tokens con fecha de expiracion es la siguiente.
 
+29/01/23 Se añade la variable distanciaRec en lampara. Hay que modificar BBDD:
+        alter table lampara add distanciaRec decimal(5, 2) after alcanceLum;
+
+29/01/23 Se añade la variables de dimensiones de flotador em fondeos. Hay que modificar BBDD:
+        alter table fondeos add altura_focal smallint UNSIGNED DEFAULT NULL after nif;
+        alter table fondeos add altura_flotador smallint UNSIGNED DEFAULT NULL after nif;
+        alter table fondeos add diametro_flotador smallint UNSIGNED DEFAULT NULL after nif;
+        alter table fondeos add composicion_flotador varchar(100) DEFAULT NULL after nif;
+
+        
 CREATE TABLE `tokens` (
   `user_id` int(11) NOT NULL,
   `hashedtoken` varchar(200) PRIMARY KEY,

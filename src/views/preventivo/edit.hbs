@@ -1,10 +1,19 @@
 <div class="container p-2 mb-4">
+
     {{#if preventivo.solved_at}}
     <div class="alert alert-success text-center" role="alert">
         <strong>Este preventivo está cerrado</strong> ({{formatearEn preventivo.solved_at}})
     </div>
+
+    <!-- BOTONES ANTERIOR / SIGUIENTE -->
+    <div class="d-flex justify-content-between">
+        <a href="/mantenimientopreventivo/cerrado/{{prevId}}" class="btn btn-outline-primary"> ⬅️ </a>
+        <a href="/mantenimientopreventivo/cerrado/{{nextId}}" class="btn btn-outline-primary"> ➡️ </a>
+    </div>
+
+    <!-- FICHA REVISION MANTENIMIENTO -->
     <div class="row">
-        <div class="col-lg-8 mx-auto py-4">
+        <div class="col-lg-10 mx-auto">
             <div class="card pb-4">
                 <div class="card-header text-center">
                     <h2> Información del Preventivo <small class="text-muted"> {{preventivo.preventivo_id}} del AtoN

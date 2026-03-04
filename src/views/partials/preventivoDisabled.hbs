@@ -207,7 +207,7 @@
     </div>
     <div class="form-group">
         <label for="item">Observaciones Sobre la estructura</label>
-        <textarea readonly class="form-control"
+        <textarea readonly class="form-control auto-resize"
             name="estructura_observaciones">{{preventivo.estructura_observaciones}}</textarea>
     </div>
     {{#if preventivo.foto_estructura}}
@@ -330,7 +330,7 @@
     </div>
     <div class="form-group">
         <label for="item">Observaciones Sobre la linterna</label>
-        <textarea readonly class="form-control"
+        <textarea readonly class="form-control auto-resize"
             name="linterna_observaciones">{{preventivo.linterna_observaciones}}</textarea>
     </div>
     {{#if preventivo.foto_linterna}}
@@ -386,7 +386,7 @@
     </div>
     <div class="form-group">
         <label for="item">Observaciones Sobre Telecontrol</label>
-        <textarea readonly class="form-control"
+        <textarea readonly class="form-control auto-resize"
             name="telecontrol_observaciones">{{preventivo.telecontrol_observaciones}}</textarea>
     </div>
     {{#if preventivo.foto_monitoreo}}
@@ -506,7 +506,7 @@
     </div>
     <div class="form-group">
         <label for="item">Observaciones Sobre Alimentacion</label>
-        <textarea readonly class="form-control"
+        <textarea readonly class="form-control auto-resize"
             name="alimentacion_observaciones">{{preventivo.alimentacion_observaciones}}</textarea>
     </div>
     {{#if preventivo.foto_alimentacion}}
@@ -520,7 +520,7 @@
      <h3>Observaciones generales</h3>
     <div class="form-group">
         <label for="item">Observaciones Generales</label>
-        <textarea readonly class="form-control" rows="4" cols="50"
+        <textarea readonly class="form-control auto-resize" rows="4" cols="50"
             name="observaciones_generales">{{preventivo.observaciones_generales}}</textarea>
     </div>
     {{#if preventivo.foto_general}}
@@ -530,3 +530,14 @@
     </div>
     {{/if}}
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const textareas = document.querySelectorAll(".auto-resize");
+
+  textareas.forEach(textarea => {
+    textarea.style.height = "auto";
+    textarea.style.height = textarea.scrollHeight+10 + "px";
+  });
+});
+</script>

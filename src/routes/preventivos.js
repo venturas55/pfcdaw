@@ -249,11 +249,18 @@ router.get('/cerrado/:id', funciones.isAuthenticated, funciones.hasSanPrivileges
     const {
         id
     } = req.params;
-    //console.log(id);
+
     try {
-        const preventivos = await db.query(queryListadoPreventivosUsers + " where p.preventivo_id=?", id);
+        const rows = await db.query("select preventivo_id from preventivos order by preventivo_id asc");
+        const listado = rows.map(r => r.preventivo_id);
+        const [preventivo] = await db.query(queryListadoPreventivosUsers + " where p.preventivo_id=?", id);
+        const currentId = parseInt(preventivo.preventivo_id);
+        const index = listado.indexOf(currentId);
+        //console.log(listado);
+        let nextId = index !== -1 && index < listado.length - 1 ? listado[index + 1] : listado[0];
+        let prevId = index > 0 ? listado[index - 1] : listado[listado.length  - 1];
         res.render('preventivo/edit', {
-            preventivo: preventivos[0],
+            preventivo, nextId, prevId
         });
 
     } catch (error) {
@@ -316,8 +323,7 @@ router.post('/eliminar-foto', async (req, res) => {
 });
 
 //PARA LA EXPORTACION DE FICHAS A PDF
-router.get(
-    '/cerrado/:id/pdf',
+router.get('/cerrado/:id/pdf',
     funciones.isAuthenticated,
     async (req, res) => {
         try {
@@ -370,8 +376,7 @@ router.get(
         }
     }
 );
-router.get(
-    "/print-multiple",
+router.get("/print-multiple",
     funciones.isAuthenticated,
     async (req, res) => {
         try {

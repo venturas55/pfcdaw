@@ -251,10 +251,15 @@ router.get("/list/:busqueda", async (req, res) => {
 });
 router.get("/plantilla/:nif", async (req, res) => {
     const { nif } = req.params;
-
+    const rows = await db.query("select nif from balizamiento order by nif asc");
+    const listado = rows.map(item => item.nif)
     //const baliza = await db.db.query('SELECT * FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif where b.nif=?', [nif]);  CON ESTA CONSULTA EL LEFT JOIN NO FUNCIONA BIEN PARA EL HIPOTETICO CASO EN EL QUE EXISTE UN ATON QUE NO ESTA EN ALGUNA DE LAS TRES TABLAS
-    const baliza = await db.query(queryListadoAton + ' where b.nif=?', [nif]);
-    if (baliza[0]) {
+    const [baliza] = await db.query(queryListadoAton + ' where b.nif=?', [nif]);
+    const currentId = (baliza.nif);
+    const index = listado.indexOf(currentId);
+    let nextId = index !== -1 && index < listado.length - 1 ? listado[index + 1] : listado[0];
+    let prevId = index > 0 ? listado[index - 1] : listado[listado.length - 1];
+    if (baliza) {
         const observaciones = await db.query('SELECT * FROM observaciones where nif=?', [nif]);
         const mantenimiento = await db.query('SELECT * FROM mantenimiento where nif=? order by fecha DESC', [nif]);
         const tickets = await db.query(queryListadoTicketsUsers + 'where t.nif=? and solved_at is null', [nif]);
@@ -262,9 +267,9 @@ router.get("/plantilla/:nif", async (req, res) => {
         var fotos = await funciones.getFotosOrdenadas(nif);
         //console.log("fotos: ", fotos);
         //console.log("Es boya??", baliza[0]);
-        if (baliza[0].esBoya)
+        if (baliza.esBoya)
             var [fondeo] = await db.query('select * from fondeos where nif=?', [nif]);
-        res.render("aton/plantilla", { layout: 'layoutPlantilla', baliza: baliza[0], obs: observaciones, mant: mantenimiento, fotos, tickets, preventivos, fondeo });
+        res.render("aton/plantilla", { layout: 'layoutPlantilla', baliza, obs: observaciones, mant: mantenimiento, fotos, tickets, preventivos, fondeo, nextId, prevId });
     } else {
         req.flash("warning", "La señal indicada con nif " + nif + " no existe!!");
         res.redirect("/error");
@@ -347,7 +352,7 @@ router.post("/editCaracteristicas/:nif", funciones.isAuthenticated, funciones.ha
 
         // 2️⃣ Si se modificó el nif, actualizar las demás tablas
         if (nifViejo !== newBaliza.nif) {
-            const tablas = ["localizacion","lampara","observaciones","mantenimiento","tickets","preventivos"];
+            const tablas = ["localizacion", "lampara", "observaciones", "mantenimiento", "tickets", "preventivos"];
             for (const tabla of tablas) {
                 await db.query(`UPDATE ${tabla} SET nif = ? WHERE nif = ?`, [newBaliza.nif, nifViejo]);
             }
@@ -470,11 +475,11 @@ router.post("/editLampara/:nif", funciones.isAuthenticated, funciones.hasSanPriv
 });
 router.post("/editFondeo/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     const nifviejo = req.params.nif;
-     const newBaliza = {
+    const newBaliza = {
         nif: nifviejo,
         ...req.body
     };
-    
+
     try {
 
         var baliza = await db.query("SELECT * FROM fondeos WHERE nif=?", [nifviejo]);

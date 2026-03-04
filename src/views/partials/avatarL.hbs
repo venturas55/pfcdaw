@@ -1,8 +1,9 @@
-<a href="/profile" class="text-decoration-none">
+<div class="ratio ratio-1x1 my-4">
+<a href="/img/profiles/{{#if user.pictureURL}}{{user.pictureURL}}{{else}}default.jpg{{/if}}" target="_blank" class="text-decoration-none">
     <img 
         src="/img/profiles/{{#if user.pictureURL}}{{user.pictureURL}}{{else}}default.jpg{{/if}}" 
-        class="avatar avatar m-2 w-100"
+        class="avatar avatar img-thumbnail w-100 h-100 object-fit-cover object-position-center"
         alt="avatar"
         onerror="this.onerror=null; this.src='/img/profiles/default.jpg';"
     />
-</a>
+</a></div>
