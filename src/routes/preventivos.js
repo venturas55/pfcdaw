@@ -2,7 +2,9 @@ import express from 'express';
 const router = express.Router();
 import db from "../database.js";
 import funciones from "../lib/funciones.js";
-const queryListadoPreventivosUsers = 'SELECT p.preventivo_id,p.fecha,p.nif,p.estructura_estado,p.estructura_marca_tope,p.estructura_engrase,p.estructura_golpes,p.estructura_limpieza_interior,p.estructura_limpieza_exterior,p.estructura_cuadro_interior,p.estructura_cuadro_exterior,p.estructura_observaciones,p.linterna_ldr1,p.linterna_ldr2,p.linterna_optica,p.linterna_estanqueidad_tornillos,p.linterna_estanqueidad_humedades,p.linterna_observaciones,p.telecontrol_monitoreo,p.telecontrol_gps,p.telecontrol_tipo,p.telecontrol_observaciones,p.alimentacion_panelFV,p.alimentacion_red,p.alimentacion_baterias,p.alimentacion_ah,p.alimentacion_vcc,p.alimentacion_grupo,p.alimentacion_cableado,p.alimentacion_observaciones,p.observaciones_generales,p.created_at,p.solved_at,p.created_by_id,p.solved_by_id,p.foto_estructura,p.foto_linterna, p.foto_monitoreo, p.foto_alimentacion, p.foto_general, u1.usuario as created_by,u2.usuario as solved_by FROM preventivos p LEFT JOIN usuarios u1 ON p.created_by_id=u1.id LEFT JOIN usuarios u2 ON p.solved_by_id=u2.id';
+import {
+  queryListadoPreventivosUsers,
+} from "../lib/queries.js";
 import moment from 'moment';
 moment().format();
 import * as url from "url";
@@ -325,7 +327,7 @@ router.post('/eliminar-foto', async (req, res) => {
 //PARA LA EXPORTACION DE FICHAS A PDF
 router.get('/cerrado/:id/pdf',
     funciones.isAuthenticated,
-    async (req, res) => {
+    async (req, res, next) => {
         try {
             const { id } = req.params;
 
@@ -337,6 +339,7 @@ router.get('/cerrado/:id/pdf',
             if (!preventivos.length) {
                 return res.status(404).send("Preventivo no encontrado");
             }
+
             preventivos[0].tieneFotos =
                 preventivos[0].foto_estructura ||
                 preventivos[0].foto_linterna ||
@@ -358,27 +361,34 @@ router.get('/cerrado/:id/pdf',
                     }
 
                     try {
+                        console.log("Render OK, generando PDF...");
                         const pdf = await htmlTopdf(html);
+                        console.log("PDF generado");
 
-                        res.setHeader("Content-Type", "application/pdf");
-                        res.setHeader("Content-Disposition", `attachment; filename=preventivo-${id}.pdf`);
-                        res.set({ "Content-Type": "application/pdf", "Content-Length": pdf.length, "Content-Disposition": `attachment; filename=preventivo-${id}.pdf` });
+                        res.set({
+                            "Content-Type": "application/pdf",
+                            "Content-Length": pdf.length,
+                            "Content-Disposition": `attachment; filename=preventivo-${id}.pdf`
+                        });
+
                         return res.send(pdf);
+
                     } catch (pdfError) {
                         console.error(pdfError);
-                        res.status(500).send("Error generando PDF");
+                        return res.status(500).send("Error generando PDF");
                     }
                 }
             );
+
         } catch (error) {
             console.error(error);
-            res.status(500).send("Error interno del servidor");
+            return res.status(500).send("Error interno del servidor");
         }
     }
 );
 router.get("/print-multiple",
     funciones.isAuthenticated,
-    async (req, res) => {
+    async (req, res, next) => {
         try {
             const ids = req.query.ids?.split(",");
 
@@ -423,8 +433,10 @@ router.get("/print-multiple",
                     htmlFinal += `<div style="page-break-after: always;"></div>`;
                 }
             }
-
-            const pdf = await htmlTopdf(htmlFinal);
+            console.log("Render OK, generando PDF...");
+            //const pdf = await htmlTopdf(htmlFinal);
+            const pdf = await htmlTopdf(htmlFinal, { timeout: 60000 });
+            console.log("PDF generado");
 
             res.set({
                 "Content-Type": "application/pdf",
@@ -436,7 +448,9 @@ router.get("/print-multiple",
 
         } catch (error) {
             console.error(error);
-            res.status(500).send("Error generando PDF múltiple");
+            //next(error);
+            return res.status(500).send("Error generando PDF múltiple");
+            //res.status(500).send("Error generando PDF múltiple");
         }
     }
 );

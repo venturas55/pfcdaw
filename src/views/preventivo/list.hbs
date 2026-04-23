@@ -84,8 +84,9 @@
                             {{#if this.solved_at}}
                             <a href="/mantenimientopreventivo/cerrado/{{this.preventivo_id}}" class="text-info"><i
                                     class="fa fa-eye"></i>View</a>
-                            <a href="/mantenimientopreventivo/cerrado/{{this.preventivo_id}}/pdf"
-                                class="text-success"><i class="fa fa-print"></i>Print</a>
+                            <a href="#" class="text-success btn-print-single" data-id="{{this.preventivo_id}}">
+                                <i class="fa fa-print"></i>Print
+                            </a>
                             {{else}}
                             <a href="/mantenimientopreventivo/edit/{{this.preventivo_id}}" class="text-warning"><i
                                     class="fa fa-pencil"></i>Edit</a>
@@ -184,11 +185,45 @@
         };
     }
 
+    async function descargarPDF(url, nombreArchivo) {
+        const modalElement = document.getElementById("modalProcesando");
+        const modal = new bootstrap.Modal(modalElement);
+
+        modal.show();
+
+        try {
+            const response = await fetch(url);
+
+            if (!response.ok) {
+                throw new Error("Error generando PDF");
+            }
+
+            const blob = await response.blob();
+
+            const fileURL = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = fileURL;
+            a.download = nombreArchivo;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(fileURL);
+
+        } catch (error) {
+            alert("Error al generar el PDF");
+            console.error(error);
+        } finally {
+            modal.hide();
+        }
+    }
+
+
+
     inputBusqueda.addEventListener("keyup", debounce(aplicarFiltros));
     selectCreador.addEventListener("change", aplicarFiltros);
     selectEstado.addEventListener("change", aplicarFiltros);
 
-    //Para seleccionar los items a imprimir en pdf
+    //BOTON PARA IMPRESION MULTIPLE
     botonImprimir.addEventListener("click", async () => {
 
         const ids = [];
@@ -205,40 +240,26 @@
             return;
         }
 
-        const modalElement = document.getElementById("modalProcesando");
-        const modal = new bootstrap.Modal(modalElement);
-
-        modal.show();
-
-        try {
-
-            const response = await fetch(
-                `/mantenimientopreventivo/print-multiple?ids=${ids.join(",")}`
-            );
-
-            if (!response.ok) {
-                throw new Error("Error generando PDF");
-            }
-
-            const blob = await response.blob();
-
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = "preventivos-multiple.pdf";
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-            window.URL.revokeObjectURL(url);
-
-        } catch (error) {
-            alert("Error al generar el PDF");
-            console.error(error);
-        } finally {
-            modal.hide();
-        }
+        descargarPDF(
+            `/mantenimientopreventivo/print-multiple?ids=${ids.join(",")}`,
+            "preventivos-multiple.pdf"
+        );
     });
 
+
+    //BOTONES PARA IMPRESION INDIVIDUAL
+    document.querySelectorAll(".btn-print-single").forEach(btn => {
+        btn.addEventListener("click", async (e) => {
+            e.preventDefault();
+
+            const id = btn.dataset.id;
+
+            descargarPDF(
+                `/mantenimientopreventivo/cerrado/${id}/pdf`,
+                `preventivo-${id}.pdf`
+            );
+        });
+    });
 </script>
 
 

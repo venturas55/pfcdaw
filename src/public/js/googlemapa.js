@@ -3,14 +3,15 @@ let centerLatLng = centrar();
 
 
 //FUNCION PARA INICIAR EL MAPA DE GOOGLE
-function initMapa(balizas) {
+async function initMap() {
+    const balizas = await fetchData();
     //console.log(balizas);
     map = new google.maps.Map(document.getElementById("myMap"), {
         zoom: presetZoom,
         center: centerLatLng,
         mapId: "MAP_GOOGLE"
     });
-    const markers = Promise.all(balizas.map(async item => {
+    balizas.forEach(item => {
         const marker = new google.maps.Marker({
             map: map,
             position: setMarkerLatLng(item.latitud, item.longitud),
@@ -107,11 +108,5 @@ function initMapa(balizas) {
             ctxInfo.setPosition(e.latLng);
             ctxInfo.open(map);
         });
-        return await marker;
-    }));
+    });
 }
-
-
-
-
-fetchData().then((res) => { initMapa(res) });

@@ -1,7 +1,9 @@
 import express from 'express';
 const router = express.Router();
 import funciones from "../lib/funciones.js";
-const queryListadoAton = "SELECT b.nif,b.num_internacional,b.tipo,b.apariencia,b.periodo,b.caracteristica,b.telecontrol,b.necesita_pintado,b.apagada,b.esBoya,lo.puerto,lo.num_local,lo.localizacion,lo.latitud,lo.longitud,la.altura,la.elevacion,la.alcanceNom,la.linterna,la.candelasCalc,la.alcanceLum,la.candelasInst FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif";
+import {
+  queryListadoAton,
+} from "../lib/queries.js";
 import db from "../database.js"; //db hace referencia a la BBDD
 var tipoMapa="Leaflet";
 //GESTION MAPAS

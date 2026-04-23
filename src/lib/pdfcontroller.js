@@ -61,34 +61,67 @@ async function getBrowser() {
   }
   return browser;
 }
-
-async function htmlTopdf(html) {
+async function htmlTopdf(html, options = {}) {
   const browser = await getBrowser();
-  const page = await browser.newPage();
+  let page;
 
-  //console.log("en html2pdf:" + html);
+  const timeoutMs = options.timeout || 30000; // 30s por defecto
+
+  // helper timeout
+  const withTimeout = (promise, ms) => {
+    return Promise.race([
+      promise,
+      new Promise((_, reject) =>
+        setTimeout(() => reject(new Error(`Timeout PDF (${ms}ms)`)), ms)
+      )
+    ]);
+  };
+
   try {
-    await page.setContent(html, {
-      waitUntil: 'networkidle0'
-    });
+    page = await browser.newPage();
 
-    // await page.waitForSelector('body');
+    console.log("➡️ Cargando HTML en Puppeteer...");
 
-    // pequeño delay para asegurar render completo
+    await withTimeout(
+      page.setContent(html, {
+        waitUntil: 'domcontentloaded', // 🔥 clave
+        timeout: 15000
+      }),
+      timeoutMs
+    );
+
+    // pequeño delay para asegurar render
     await new Promise(resolve => setTimeout(resolve, 500));
 
-    const pdfData = await page.pdf({ ...defaultOptions, printBackground: true });
+    console.log("🖨️ Generando PDF...");
+
+    const pdfData = await withTimeout(
+      page.pdf({
+        ...defaultOptions,
+        printBackground: true,
+        timeout: 15000
+      }),
+      timeoutMs
+    );
+
     const pdf = Buffer.from(pdfData);
 
-    console.log("PDF type:", typeof pdf);
-    console.log("Is buffer:", Buffer.isBuffer(pdf));
-    console.log("PDF size:", pdf.length);
-    fs.writeFileSync("debug.pdf", pdf);
+    console.log("✅ PDF generado:", pdf.length, "bytes");
+
     return pdf;
 
+  } catch (error) {
+    console.error("❌ Error en htmlTopdf:", error);
+    throw error;
+
   } finally {
-    await page.close();
+    if (page && !page.isClosed()) {
+      try {
+        await page.close();
+      } catch (e) {
+        console.warn("⚠️ Error cerrando página:", e.message);
+      }
+    }
   }
 }
-
 export default htmlTopdf;

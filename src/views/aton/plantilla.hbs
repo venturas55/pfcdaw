@@ -126,7 +126,7 @@
             <table class="table table-dark rounded table-hover">
                 <tr>
                     <th>NIF</th>
-                    <td>{{baliza.nif}}</td>
+                    <td id="nif">{{baliza.nif}}</td>
                 </tr>
                 <tr>
                     <th># Int</th>
@@ -394,6 +394,10 @@
                 <tr>
                     <th>Ultima Actualizacion</th>
                     <td>{{formatearSp fondeo.last_modified}} </td>
+                </tr>
+                <tr>
+                    <th>Calculos</th>
+                    <td id="calculos"></td>
                 </tr>
             </table>
             <div class="input-group">

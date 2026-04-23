@@ -134,7 +134,7 @@ app.use((err, req, res, next) => {
   });
 
   res.status(500).json({
-    error: 'Error interno del servidor'
+    error: 'Error interno del servidor. Error registrado en logs/error.log'
   });
 });
 
