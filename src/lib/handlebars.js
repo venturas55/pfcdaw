@@ -138,6 +138,19 @@ helpers.when = (operand_1, operator, operand_2, options) => {
   else return options.inverse(this);
 };
 
+helpers.hasDimensions = (l, b, h, options) => {
+  if (Number(l) > 0 && Number(b) > 0 && Number(h) > 0) {
+    return options.fn(this);
+  }
+  return options.inverse(this);
+};
+
+helpers.hasAnyDimension = (l, b, h, options) => {
+  if (Number(l) > 0 || Number(b) > 0 || Number(h) > 0) {
+    return options.fn(this);
+  }
+  return options.inverse(this);
+};
 helpers.tiempo_activo = (fecha1, fecha2) => {
   let timestamp1 = new Date(fecha1);
   let timestamp2 = new Date(fecha2)
@@ -162,4 +175,28 @@ helpers.estadoBadge = (value) => {
   return '<span class="estado-na">N/A</span>';
 };
 
+const tablaAlcance = {
+  1: 1,
+  3: 2.3,
+  5: 3.8,
+  7: 5.4,
+  10: 7.5
+};
+const tablaDistanciaRec = {
+  1: 1,
+  3: 2.3,
+  5: 3.8,
+  7: 5.4,
+  10: 7.5
+};
+
+helpers.alcanceLuminoso = (alcanceNom) => {
+  return tablaAlcance[Number(alcanceNom)] ?? 'Null';
+};
+
+helpers.distanciaReconocimiento = (alcanceNom) => {
+  if (Number(alcanceNom) == 1) return 0.5;
+  if (Number(alcanceNom) <= 5) return 1;
+  return 1.5;
+};
 export default helpers;

@@ -118,6 +118,8 @@ app.use('/js', express.static(path.join(__dirname, '../node_modules/jquery/dist'
 app.use("/js", express.static(path.join(__dirname, "../node_modules/bootstrap/dist/js")));
 app.use("/fonts", express.static(path.join(__dirname, "../node_modules/font-awesome/fonts")));
 app.use("/css", express.static(path.join(__dirname, "../node_modules/font-awesome/css")));
+app.use("/js", express.static(path.join(__dirname, "../node_modules/embla-carousel")));
+app.use("/js", express.static(path.join(__dirname, "../node_modules/embla-carousel-autoplay")));
 
 //Leaflet
 app.use("/leaflet", express.static(path.join(__dirname, "../node_modules", "leaflet", "dist")));

@@ -3,7 +3,7 @@ const router = express.Router();
 import db from "../database.js";
 import funciones from "../lib/funciones.js";
 import {
-  queryListadoPreventivosUsers,
+    queryListadoPreventivosUsers,
 } from "../lib/queries.js";
 import moment from 'moment';
 moment().format();
@@ -60,10 +60,27 @@ const upload = multer({
 router.get('/list', async (req, res) => {
     //const preventivos = await db.query("select * from preventivos order by created_at");
     try {
-        const preventivos = await db.query(queryListadoPreventivosUsers + " order by p.created_at,p.nif desc");
+        const preventivos = await db.query(queryListadoPreventivosUsers + " order by p.created_at desc, p.nif asc");
         const usuarios = await db.query("select * from usuarios");
         res.render('preventivo/list', {
             preventivos, usuarios
+        });
+    } catch (error) {
+        console.error(error);
+        req.flash("error", "Hubo algun error al intentar mostrar los preventivos: " + error);
+        res.redirect("/");
+    }
+});
+
+router.get('/list/:nif', async (req, res) => {
+    const {
+        nif
+    } = req.params;
+    try {
+        const preventivos = await db.query(queryListadoPreventivosUsers + " where p.nif=? order by p.created_at desc, p.nif asc",nif);
+        const usuarios = await db.query("select * from usuarios");
+        res.render('preventivo/list', {
+            preventivos, usuarios,nif
         });
     } catch (error) {
         console.error(error);
@@ -260,7 +277,7 @@ router.get('/cerrado/:id', funciones.isAuthenticated, funciones.hasSanPrivileges
         const index = listado.indexOf(currentId);
         //console.log(listado);
         let nextId = index !== -1 && index < listado.length - 1 ? listado[index + 1] : listado[0];
-        let prevId = index > 0 ? listado[index - 1] : listado[listado.length  - 1];
+        let prevId = index > 0 ? listado[index - 1] : listado[listado.length - 1];
         res.render('preventivo/edit', {
             preventivo, nextId, prevId
         });

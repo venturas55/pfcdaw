@@ -27,6 +27,19 @@ body {
 
 }
 
+.luzCard2 {
+    background: var(--border-color);
+    float: right;
+    width: 40px;
+    height: 40px;
+    padding: 2px;
+    border-radius: 50%;
+    margin-top: 5px;
+    position: relative;
+
+}
+
+
 #luz {
     background: transparent;
     display: flex;
@@ -141,7 +154,7 @@ body {
     transform: rotate(180deg);
 }
 
-.SVG-white-logo{
+.SVG-white-logo {
     filter: invert(100%) sepia(40%) saturate(55%) hue-rotate(151deg) brightness(115%) contrast(87%);
 }
 
@@ -158,46 +171,110 @@ body {
 
 /* Contenedor del input y sugerencias */
 #nifInput {
-  width: 300px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
+    width: 300px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
 }
+
 /* Lista de sugerencias */
 .sugerencias-lista {
-  list-style: none;
-  padding: 0;
-  margin-top: 0;
-  width: 300px;
-  max-height: 200px;
-  overflow-y: auto;
-  border: 1px solid #ccc;
-  border-top: none;
-  border-radius: 0 0 5px 5px;
-  box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
-  position: absolute;
-  background-color: white;
-  z-index: 1000;
+    list-style: none;
+    padding: 0;
+    margin-top: 0;
+    width: 300px;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    background-color: white;
+    z-index: 1000;
 }
+
 /* Cada elemento de la lista */
 .sugerencias-lista li {
-  padding: 10px;
-  cursor: pointer;
-  border-bottom: 1px solid #eee;
-  transition: background-color 0.2s ease;
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.2s ease;
 }
 
 /* Último sin borde */
 .sugerencias-lista li:last-child {
-  border-bottom: none;
+    border-bottom: none;
 }
 
 /* Hover o foco */
 .sugerencias-lista li:hover {
-  background-color: #f0f0f0;
+    background-color: #f0f0f0;
 }
 
+textarea {
+    /* white-space: pre-wrap;  */
+    white-space: pre-line;
+    font-family: sans-serif;
+}
+
+.embla {
+    position: relative;
+}
+
+
+.embla__viewport {
+    overflow: hidden;
+    height: 400px;
+}
+
+.embla__container {
+    display: flex;
+    height: 100%;
+}
+
+.embla__prev,
+.embla__next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+}
+
+.embla__prev {
+    left: 10px;
+}
+
+.embla__next {
+    right: 10px;
+}
+
+.embla__slide {
+    flex: 0 0 100%;
+    min-width: 0;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 20px;
+}
+
+.embla__slide a {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.embla__slide img {
+    width: 90%;
+    height: 90%;
+    object-fit: cover;
+    object-position: center center;
+    display: block;
+}
 
 @keyframes blinker {
     50% {

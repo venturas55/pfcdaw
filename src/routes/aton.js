@@ -5,14 +5,15 @@ import db from "../database.js"; //db hace referencia a la BBDD
 import funciones from "../lib/funciones.js";
 import { promises as fs } from 'fs';
 import {
-  queryListadoAton,
-  queryListadoTicketsUsers,
-  queryListadoPreventivosUsers
+    queryListadoAton,
+    queryListadoTicketsUsers,
+    queryListadoPreventivosUsers
 } from "../lib/queries.js";
 import * as url from "url";
 const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
 import moment from 'moment'; // require
 moment().format();
+import htmlTopdf from '../lib/pdfcontroller.js';
 
 const getPointfromLatLng = (lat, lng) => {
     var lat2 = 0;
@@ -102,6 +103,7 @@ router.post("/add", funciones.isAuthenticated, funciones.hasSanPrivileges, async
         nif,
         num_internacional,
         tipo,
+        categoria,
         telecontrol,
         apariencia,
         periodo,
@@ -266,7 +268,7 @@ router.get("/plantilla/:nif", async (req, res) => {
         const mantenimiento = await db.query('SELECT * FROM mantenimiento where nif=? order by fecha DESC', [nif]);
         const tickets = await db.query(queryListadoTicketsUsers + ' where t.nif=? and t.solved_at is null', [nif]);
         const preventivos = await db.query(queryListadoPreventivosUsers + ' where p.nif=? and p.solved_at is null', [nif]);
-        console.log("!>>!",preventivos)
+        //console.log("!>>!",preventivos)
         var fotos = await funciones.getFotosOrdenadas(nif);
         //console.log("fotos: ", fotos);
         //console.log("Es boya??", baliza[0]);
@@ -769,4 +771,64 @@ router.get("/toggleapagado/:nif", funciones.isAuthenticated, funciones.hasSanPri
         res.redirect("/mapa/" + nif);
     }
 });
+
+//PARA LA EXPORTACION DE FICHAS A PDF
+router.get('/plantillapdf/:nif',async (req, res, next) => {
+        try {
+            const { nif } = req.params;
+            const rows = await db.query("select nif from balizamiento order by nif asc");
+            const listado = rows.map(item => item.nif)
+            //const baliza = await db.db.query('SELECT * FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif where b.nif=?', [nif]);  CON ESTA CONSULTA EL LEFT JOIN NO FUNCIONA BIEN PARA EL HIPOTETICO CASO EN EL QUE EXISTE UN ATON QUE NO ESTA EN ALGUNA DE LAS TRES TABLAS
+            const [baliza] = await db.query(queryListadoAton + ' where b.nif=?', [nif]);
+            if (baliza) {
+                const observaciones = await db.query('SELECT * FROM observaciones where nif=?', [nif]);
+                const mantenimiento = await db.query('SELECT * FROM mantenimiento where nif=? order by fecha DESC', [nif]);
+                const tickets = await db.query(queryListadoTicketsUsers + ' where t.nif=? and t.solved_at is null', [nif]);
+                const preventivos = await db.query(queryListadoPreventivosUsers + ' where p.nif=? and p.solved_at is null', [nif]);
+                var fotos = await funciones.getFotosOrdenadas(nif);
+                console.log(fotos);
+                if (baliza.esBoya)
+                    var [fondeo] = await db.query('select * from fondeos where nif=?', [nif]);
+
+                req.app.render(
+                    'aton/plantillaPDF',
+                    {
+                        layout: 'layoutPuppeteerPlantilla',
+                        preventivo: preventivos[0],
+                        baseURL: `${req.protocol}://${req.get('host')}`,
+                        baliza, obs: observaciones, mant: mantenimiento, foto:fotos[0], tickets, preventivos, fondeo
+                    },
+                    async (err, html) => {
+                        if (err) {
+                            console.error(err);
+                            return res.status(500).send("Error renderizando vista");
+                        }
+
+                        try {
+                            console.log("Render OK, generando PDF...");
+                            const pdf = await htmlTopdf(html);
+                            console.log("PDF generado");
+
+                            res.set({
+                                "Content-Type": "application/pdf",
+                                "Content-Length": pdf.length,
+                                "Content-Disposition": `attachment; filename=plantilla-${nif}.pdf`
+                            });
+
+                            return res.send(pdf);
+
+                        } catch (pdfError) {
+                            console.error(pdfError);
+                            return res.status(500).send("Error generando PDF");
+                        }
+                    }
+                );
+
+            }
+        } catch (error) {
+            console.error(error);
+            return res.status(500).send("Error interno del servidor");
+        }
+    }
+);
 export default router;

@@ -2,10 +2,11 @@
     <!-- id="cuerpo" -->
     <div class="row text-center my-2">
         <div class="col-lg-10 mx-auto">
-            <h1>MANTENIMIENTOS PREVENTIVOS <i class="fa fa-file-text" aria-hidden="true"></i></span></h1>
-            <div> <a class="btn btn-primary" href="/mantenimientopreventivo/add">+ Nuevo Preventivo</a></div>
+            <h1>MANTENIMIENTOS PREVENTIVOS {{#if nif}} <span> {{nif}} </span> {{/if}} <i class="fa fa-file-text" aria-hidden="true"></i></h1>
+            <div> <a class="btn btn-primary" href="/mantenimientopreventivo/add{{#if nif}}/{{nif}}{{/if}}">+ Nuevo Preventivo</a></div>
         </div>
     </div>
+
     <div class="row mb-2">
         <div class=" col-lg-11 mx-auto">
             <div class="table-responsive">

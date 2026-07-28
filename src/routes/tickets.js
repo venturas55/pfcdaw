@@ -24,6 +24,24 @@ router.get('/list', async(req, res) => {
         res.redirect("/");
     }
 });
+
+router.get('/list/:nif', async(req, res) => {
+        const {
+        nif
+    } = req.params;
+    try {
+        const tickets = await db.query(queryListadoTicketsUsers + " where t.nif=? order by t.solved_at asc,t.created_at desc",nif);
+        const usuarios = await db.query("select * from usuarios");
+        res.render('tickets/list', {
+            tickets,usuarios,nif
+        });
+    } catch (error) {
+        console.error(error);
+        req.flash("error", "Hubo algun error al intentar mostrar los tickets: " + error);
+        res.redirect("/");
+    }
+});
+
 //ruta para obtener tickets asignados al usuario con ID
 router.get('/list/:accion/:id', async(req, res) => {
     const {

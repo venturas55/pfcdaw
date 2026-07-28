@@ -1,0 +1,327 @@
+<header class="report-header">
+
+    <div class="header-left">
+
+        <div class="report-title">
+            INFORME TÉCNICO
+        </div>
+
+        <div class="report-subtitle">
+            AtoN {{baliza.nif}}
+        </div>
+
+    </div>
+
+    <div class="header-right">
+
+        {{#if baliza.esBoya}}
+        <span class="status tipo">BOYA</span>
+        {{else}}
+        <span class="status tipo">BALIZA</span>
+        {{/if}}
+
+        {{#if baliza.apagada}}
+        <span class="status alarma">APAGADA</span>
+        {{else}}
+        <span class="status ok">OPERATIVA</span>
+        {{/if}}
+
+    </div>
+
+</header>
+
+<div class="page-grid">
+
+    <!-- ================== IZQUIERDA ================== -->
+    <section class="panel">
+
+        <h2 class="section-title">Imágenes</h2>
+
+        <div class="photo-box">
+            <img src="{{baseURL}}/img/imagenes/{{baliza.nif}}/{{foto}}">
+        </div>
+
+        <h2 class="section-title">Características</h2>
+
+        <table class="info-table">
+            <tr>
+                <th>NIF</th>
+                <td>{{baliza.nif}}</td>
+            </tr>
+            <tr>
+                <th>Tipo</th>
+                <td>{{baliza.tipo}}</td>
+            </tr>
+            <tr>
+                <th>Categoría</th>
+                <td>{{baliza.categoria}}</td>
+            </tr>
+            <tr>
+                <th>Apariencia</th>
+                <td>{{baliza.apariencia}}</td>
+            </tr>
+            <tr>
+                <th>Periodo</th>
+                <td>{{baliza.periodo}} s</td>
+            </tr>
+            <tr>
+                <th>Telecontrol</th>
+                <td>{{baliza.telecontrol}}</td>
+            </tr>
+            <tr>
+                <th>Es boya</th>
+                <td>{{#if baliza.esBoya}}Sí{{else}}No{{/if}}</td>
+            </tr>
+        </table>
+
+    </section>
+
+
+
+    <!-- ================== DERECHA ================== -->
+
+    <section class="panel">
+
+        <h2 class="section-title">Localización</h2>
+
+        <table class="info-table">
+            <tr>
+                <th>Puerto</th>
+                <td>{{baliza.puerto}}</td>
+            </tr>
+            <tr>
+                <th>Nº Local</th>
+                <td>{{baliza.num_local}}</td>
+            </tr>
+            <tr>
+                <th>Ubicación</th>
+                <td>{{baliza.localizacion}}</td>
+            </tr>
+            <tr>
+                <th>Coordenadas</th>
+                <td>
+                    {{getLatIALAformat baliza.coordenadas.x}}
+                    <br>
+                    {{getLngIALAformat baliza.coordenadas.y}}
+                </td>
+            </tr>
+        </table>
+
+        <h2 class="section-title">Lámpara</h2>
+
+        <table class="info-table">
+            <tr>
+                <th>Altura</th>
+                <td>{{baliza.altura}} m</td>
+            </tr>
+            <tr>
+                <th>Elevación</th>
+                <td>{{baliza.elevacion}} m</td>
+            </tr>
+            <tr>
+                <th>Linterna</th>
+                <td>{{baliza.linterna}}</td>
+            </tr>
+            <tr>
+                <th>Divergencia</th>
+                <td>{{baliza.divergencia}}</td>
+            </tr>
+            <tr>
+                <th>Alcance nominal</th>
+                <td>{{baliza.alcanceNom}} MN</td>
+            </tr>
+            <tr>
+                <th>Alcance luminoso</th>
+                <td>{{alcanceLuminoso baliza.alcanceNom}} MN</td>
+            </tr>
+            <tr>
+                <th>Reconocimiento</th>
+                <td>{{distanciaReconocimiento baliza.alcanceNom}} MN</td>
+            </tr>
+            <tr>
+                <th>Intensidad estacionaria</th>
+                <td>{{baliza.candelasCalc}} Cd</td>
+            </tr>
+            <tr>
+                <th>Intensidad instalada</th>
+                <td>{{baliza.candelasInst}} Cd</td>
+            </tr>
+        </table>
+
+    </section>
+
+</div>
+<!-- ================== OBSERVACIONES ================== -->
+
+<section class="full-panel">
+
+    <h2 class="section-title">Observaciones</h2>
+
+    <table class="info-table full-width">
+
+        {{#each obs}}
+        <tr>
+            <td class="observation">
+                {{this.observaciones}}
+            </td>
+        </tr>
+        {{/each}}
+
+    </table>
+
+</section>
+
+<!-- ================== MANTENIMIENTO ================== -->
+<section class="full-panel">
+    <h2 class="section-title">Historial de mantenimiento</h2>
+    <table class="maintenance-table">
+        <thead>
+            <tr>
+                <th class="date-col">Fecha</th>
+                <th>Actuación realizada</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each mant}}
+            <tr>
+                <td class="date-col">
+                    {{formatearSp fecha}}
+                </td>
+                <td>
+                    {{mantenimiento}}
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</section>
+{{#if baliza.esBoya}}
+
+<section class="full-panel">
+
+    <h2 class="section-title">
+        Datos de boya y fondeo
+    </h2>
+
+    {{#if fondeo}}
+
+    <div class="grid2">
+        <section class="panel">
+            <h3 class="subsection-title">Flotador</h3>
+            <table class="info-table">
+                <tr>
+                    <th>Modelo</th>
+                    <td>{{fondeo.composicion_flotador}}</td>
+                </tr>
+                <tr>
+                    <th>Diámetro</th>
+                    <td>{{fondeo.diametro_flotador}} cm</td>
+                </tr>
+                <tr>
+                    <th>Altura</th>
+                    <td>{{fondeo.altura_flotador}} cm</td>
+                </tr>
+            </table>
+
+            <h3 class="subsection-title">
+                Fondeo
+            </h3>
+
+            <table class="info-table">
+                <tr>
+                    <th>Calado</th>
+                    <td>{{fondeo.calado}} m</td>
+                </tr>
+                <tr>
+                    <th>Cadena</th>
+                    <td>{{fondeo.longitud_cadena}} m</td>
+                </tr>
+                <tr>
+                    <th>Diámetro cadena</th>
+                    <td>{{fondeo.diametro_cadena}} mm</td>
+                </tr>
+                <tr>
+                    <th>Ubicación</th>
+                    <td>{{fondeo.ubicacion}}</td>
+                </tr>
+                <tr>
+                    <th>Muerto</th>
+                    <td>
+                        {{fondeo.l_muerto}} ×
+                        {{fondeo.b_muerto}} ×
+                        {{fondeo.h_muerto}} cm
+                    </td>
+                </tr>
+            </table>
+
+        </section>
+
+        <section class="panel">
+
+            <h3 class="subsection-title">
+                Castillete
+            </h3>
+
+            <table class="info-table">
+                <tr>
+                    <th>Composición</th>
+                    <td>{{fondeo.composicion_castillete}}</td>
+                </tr>
+                <tr>
+                    <th>Ancho</th>
+                    <td>{{fondeo.ancho_castillete}} cm</td>
+                </tr>
+                <tr>
+                    <th>Altura</th>
+                    <td>{{fondeo.altura_castillete}} cm</td>
+                </tr>
+                <tr>
+                    <th>Altura focal</th>
+                    <td>{{fondeo.altura_focal}} cm</td>
+                </tr>
+            </table>
+
+            <h3 class="subsection-title">
+                Obra viva
+            </h3>
+
+            <table class="info-table">
+                <tr>
+                    <th>Área</th>
+                    <td>{{fondeo.area_total_viva}} m²</td>
+                </tr>
+                <tr>
+                    <th>Coeficiente Cd</th>
+                    <td>{{fondeo.Cd_aerodinamico}}</td>
+                </tr>
+            </table>
+            <h3 class="subsection-title">
+                Obra muerta
+            </h3>
+
+            <table class="info-table">
+                <tr>
+                    <th>Área</th>
+                    <td>{{fondeo.area_total_muerta}} m²</td>
+                </tr>
+                <tr>
+                    <th>Coeficiente Cw</th>
+                    <td>{{fondeo.Cw_aerodinamico}}</td>
+                </tr>
+            </table>
+        </section>
+        <div class="update-date">
+            Última actualización fondeo:
+            {{formatearSp fondeo.last_modified}}
+        </div>
+    </div>
+    <section class="full-panel">
+        <h3 class="subsection-title">
+            Cálculos
+        </h3>
+        <div id="calculos"></div>
+    </section>
+
+    {{/if}}
+</section>
+{{/if}}

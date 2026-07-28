@@ -182,15 +182,6 @@ CREATE TABLE `tokens` (
 Además se han añadido dos variables de entorno más EMAIL_ACCOUNT y EMAIL_PASS para configurar la cuenta desde la que se enviarán los correos para recuperar la contraseña.
 
 
-ACTUALIZACIONES:
-Se ha de añadir en la BBDD una columna nueva a la tabla localizacion. La columna es experiemntal y es de tipo POINT para almacenar las coordenadas.
-Se ha creado para que el admin pueda ejecutar los cambios en la bbdd desde la app. solo hay que añadir los comandos de modificacion de las tablas en database/addNewMods.sql
-
-
-
-
-
-
 #CAMBIAR TABLA USUARIOS:
 drop table cochecito:
 drop table eliminados;
@@ -235,5 +226,14 @@ ALTER TABLE lampara ADD CONSTRAINT lampara_FK FOREIGN KEY (`nif`) REFERENCES bal
 ALTER TABLE localizacion ADD CONSTRAINT localizacion_FK FOREIGN KEY (`nif`) REFERENCES balizamiento(`nif`) ON DELETE CASCADE;
 ALTER TABLE mantenimiento ADD CONSTRAINT mantenimiento_FK FOREIGN KEY (`nif`) REFERENCES balizamiento(`nif`) ON DELETE CASCADE;
 ALTER TABLE observaciones ADD CONSTRAINT observaciones_FK FOREIGN KEY (`nif`) REFERENCES balizamiento(`nif`) ON DELETE CASCADE;
+
+ACTUALIZACIONES:
+Se ha de añadir en la BBDD una columna nueva a la tabla localizacion. La columna es experiemntal y es de tipo POINT para almacenar las coordenadas.
+Se ha creado para que el admin pueda ejecutar los cambios en la bbdd desde la app. solo hay que añadir los comandos de modificacion de las tablas en database/addNewMods.sql
+
+
+22/07/2026 Se quita slick y se reeamplaza el carrusel por un:
+        npm install embla-carousel
+        npm install embla-carousel-autoplay
 
 

@@ -3,12 +3,12 @@
     <div class="row text-center my-2">
         <div class="col-md-11 mx-auto">
             <h1>SISTEMA DE TICKETS <i class="fa fa-ticket" aria-hidden="true"></i></h1>
-            <div> <a class="btn btn-primary" href="/tickets/add">Abrir Nuevo Ticket</a></div>
+            <div> <a class="btn btn-primary" href="/tickets/add{{#if nif}}/{{nif}}{{/if}}">Abrir Nuevo Ticket</a></div>
         </div>
     </div>
     <div class="row mb-2">
         <div class="col-md-11 col-xl-11 mx-auto">
-            <h3>TICKETS {{#if ticketsAbiertos}} ABIERTOS {{/if}} {{#if ticketsCerrados}} CERRADOS {{/if}} </h3>
+            <h3>{{#if nif}} HISTORICO DE {{/if}} TICKETS {{#if ticketsAbiertos}} ABIERTOS {{/if}} {{#if ticketsCerrados}} CERRADOS {{/if}} {{#if nif}} DEL AtoN {{nif}}{{/if}}</h3>
             <div class="table-responsive">
                 <div class="container-fluid my-3">
                     <div class="row align-items-end g-2">

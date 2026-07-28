@@ -1,0 +1,1354 @@
+<div class="container-fluid px-4 mb-5">
+
+    <!-- CABECERA PRINCIPAL -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <div class="row align-items-center">
+                <!-- IDENTIFICACION -->
+                <div class="col-lg-5">
+                    <h1 class="display-6 fw-bold mb-1">
+                        <i class="fa fa-anchor text-primary"></i>
+                        AtoN {{baliza.nif}}
+                    </h1>
+
+                    <div class="text-muted">
+                        {{baliza.tipo}}
+                        <span class="mx-2">•</span>
+                        {{baliza.categoria}}
+                        {{#if baliza.esBoya}}
+                        <span class="badge bg-info ms-2">
+                            Boya
+                        </span>
+                        {{/if}}
+                    </div>
+                </div>
+                <!-- ESTADO -->
+                <div class="col-lg-3 text-lg-center mt-3 mt-lg-0">
+                    {{#if baliza.apagada}}
+                   <span class="badge bg-danger fs-6 px-3 py-2">
+                        <i class="fa fa-lightbulb"></i>
+                        Apagada
+                    </span>
+                    {{else}}
+                    <span class="badge bg-success fs-6 px-3 py-2">
+                        <i class="fa fa-lightbulb"></i>
+                        Operativa
+                    </span>
+                    {{/if}}
+                </div>
+                <!-- NAVEGACION -->
+                <div class="col-lg-4">
+                    <div class="d-flex justify-content-lg-end gap-2 mt-3 mt-lg-0">
+                        <a href="/aton/plantilla/{{prevId}}" class="btn btn-outline-primary">
+                            <i class="fa fa-chevron-left"></i>
+                        </a>
+                        <a href="/aton/plantilla/{{nextId}}" class="btn btn-outline-primary">
+                            <i class="fa fa-chevron-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ACCIONES -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <div class="d-flex flex-wrap gap-2 justify-content-center">
+                <a class="btn btn-outline-danger" href="/tickets/add/{{baliza.nif}}">
+                    <i class="fa fa-plus"></i>
+                    Ticket
+                </a>
+                <a class="btn btn-outline-secondary" href="/aton/pintura/{{baliza.nif}}/plantilla">
+                    <i class="fa fa-paint-roller"></i>
+                    Pintado
+               </a>
+                <a class="btn btn-outline-secondary" href="/mantenimientopreventivo/add/{{baliza.nif}}">
+                    <i class="fa fa-cogs"></i>
+                    Preventivo
+                </a>
+                {{#if baliza.necesita_pintado}}
+
+                <button class="btn btn-danger"
+                    onclick="document.getElementById('myModalPintado').style.display='block'">
+                    <i class="fa fa-paint-brush"></i>
+                    Requiere pintura
+                </button>
+                {{/if}}
+                <a class="btn btn-outline-secondary" href="/aton/activado/{{baliza.nif}}">
+                    <i class="fa fa-lightbulb"></i>
+                    {{#if baliza.apagada}}
+                    Encender
+                    {{else}}
+                    Apagar
+                    {{/if}}
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- TICKETS -->
+    {{#if tickets}}
+    <div class="card border-danger shadow-sm mb-4">
+        <div class="card-header bg-danger text-white fw-bold">
+            <i class="fa fa-ticket"></i>
+            Tickets activos
+        </div>
+
+        <div class="list-group list-group-flush">
+
+            {{#each tickets}}
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <strong>
+                        #{{this.ticket_id}}
+                    </strong>
+                    {{this.titulo}}
+                    <small class="text-muted d-block">
+                        Asignado a {{this.assigned_to}}
+                        -
+                        {{formatearSp this.created_at}}
+                    </small>
+                </div>
+                <a href="/tickets/edit/{{this.ticket_id}}" class="btn btn-sm btn-outline-primary">
+                    <i class="fa fa-edit"></i>
+                </a>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+    {{/if}}
+    <!-- PREVENTIVOS -->
+    {{#if preventivos}}
+    <div class="card border-warning shadow-sm mb-4">
+        <div class="card-header bg-warning fw-bold">
+            <i class="fa fa-cogs"></i>
+            Preventivos activos
+        </div>
+        <div class="list-group list-group-flush">
+            {{#each preventivos}}
+            <div class="list-group-item d-flex justify-content-between">
+                <div>
+                    Preventivo #{{this.preventivo_id}}
+                    <small class="text-muted d-block">
+                        {{this.created_by}}
+                        -
+                        {{formatearSp this.created_at}}
+                    </small>
+                </div>
+                <a href="/mantenimientopreventivo/edit/{{this.preventivo_id}}" class="btn btn-sm btn-outline-primary">
+                    Editar
+                </a>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+    {{/if}}
+    <!-- ===================================================== -->
+    <!-- FICHA TECNICA PRINCIPAL -->
+    <!-- ===================================================== -->
+
+    <div class="row g-4 mb-4">
+        <!-- ================= FOTOS ================= -->
+        <div class="col-xl-3 col-lg-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-dark text-white">
+                    <i class="fa fa-camera"></i>
+                    Fotografías
+                </div>
+                <div class="card-body">
+                    <div class="ratio ratio-4x3 mb-3 rounded overflow-hidden bg-light">
+                        {{#if fotos}}
+                        <img src="/img/imagenes/{{baliza.nif}}/{{fotos.[0]}}" class="object-fit-cover"
+                            alt="Imagen AtoN">
+                        {{else}}
+                        <div class="d-flex justify-content-center align-items-center text-muted">
+                            Sin imágenes
+                        </div>
+                       {{/if}}
+                    </div>
+                    <a href="/aton/fotos/{{baliza.nif}}" class="btn btn-primary w-100">
+                        <i class="fa fa-images"></i>
+                        Galería
+                    </a>
+
+               </div>
+
+           </div>
+        </div>
+
+
+        <!-- ================= CARACTERISTICAS ================= -->
+        <div class="col-xl-4 col-lg-8">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-header bg-primary text-white">
+                    <i class="fa fa-info-circle"></i>
+                    Características
+                </div>
+
+                <div class="list-group list-group-flush">
+                    <div class="list-group-item d-flex justify-content-between">
+                        <strong>NIF</strong>
+                        <span>
+                            {{baliza.nif}}
+                        </span>
+                    </div>
+
+                    <div class="list-group-item d-flex justify-content-between">
+                        <strong>Nº Internacional</strong>
+                        <span>
+                            {{baliza.num_internacional}}
+                        </span>
+                    </div>
+
+                    <div class="list-group-item d-flex justify-content-between">
+                        <strong>Tipo</strong>
+                        <span>
+                            {{baliza.tipo}}
+                        </span>
+                    </div>
+
+                    <div class="list-group-item d-flex justify-content-between">
+                        <strong>Categoría</strong>
+                        <span>
+                            {{baliza.categoria}}
+                        </span>
+                    </div>
+
+                    <div class="list-group-item d-flex justify-content-between">
+                        <strong>Apariencia</strong>
+                        <span>
+                            {{baliza.apariencia}}
+                        </span>
+                    </div>
+                    <div class="list-group-item d-flex justify-content-between">
+                        <strong>Periodo</strong>
+                        <span>
+                            {{baliza.periodo}} s
+                        </span>
+                    </div>
+                    <div class="list-group-item d-flex justify-content-between">
+                        <strong>Característica</strong>
+                        <span>
+                            {{baliza.caracteristica}}
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="list-group-item d-flex justify-content-between">
+
+                        <strong>Telecontrol</strong>
+
+                        <span>
+                            {{baliza.telecontrol}}
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+
+
+                        <strong>Boya</strong>
+
+
+                        {{#if baliza.esBoya}}
+
+                        <span class="badge bg-info">
+                            SI
+                        </span>
+
+                        {{else}}
+
+                        <span class="badge bg-secondary">
+                            NO
+                        </span>
+
+                        {{/if}}
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <div class="card-footer bg-transparent">
+
+
+                    <a href="/aton/editCaracteristicas/{{baliza.nif}}" class="btn btn-outline-primary w-100">
+
+                        <i class="fa fa-edit"></i>
+
+                        Actualizar características
+
+                    </a>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+
+
+
+        <!-- ================= LOCALIZACION ================= -->
+
+
+        <div class="col-xl-5">
+
+
+            <div class="card shadow-sm border-0 mb-4">
+
+
+                <div class="card-header bg-success text-white">
+
+
+                    <i class="fa fa-map-marker"></i>
+
+                    Localización
+
+
+                </div>
+
+
+
+                <div class="list-group list-group-flush">
+
+
+                    <div class="list-group-item d-flex justify-content-between">
+
+                        <strong>Puerto</strong>
+
+                        <span>
+                            {{baliza.puerto}}
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="list-group-item d-flex justify-content-between">
+
+                        <strong>Nº Local</strong>
+
+                        <span>
+                            {{baliza.num_local}}
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="list-group-item">
+
+                        <strong class="d-block mb-1">
+                            Ubicación
+                        </strong>
+
+                        {{baliza.localizacion}}
+
+
+                    </div>
+
+
+
+                    <div class="list-group-item">
+
+                        <strong class="d-block mb-1">
+                            Coordenadas
+                        </strong>
+
+
+                        <code>
+
+                            {{getLatIALAformat baliza.coordenadas.x}}
+
+                            /
+
+                            {{getLngIALAformat baliza.coordenadas.y}}
+
+                        </code>
+
+
+                    </div>
+
+
+
+                </div>
+
+
+
+                <div class="card-footer bg-transparent">
+
+
+                    <div class="d-flex gap-2">
+
+
+                        <a href="/aton/editLocalizacion/{{baliza.nif}}" class="btn btn-outline-success flex-fill">
+
+                            <i class="fa fa-edit"></i>
+
+                            Editar
+
+                        </a>
+
+
+
+                        <a href="/mapa/{{baliza.nif}}" class="btn btn-success flex-fill">
+
+                            <i class="fa fa-map"></i>
+
+                            Mapa
+
+                        </a>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+
+
+            <!-- ================= LAMPARA ================= -->
+
+
+            <div class="card shadow-sm border-0">
+
+
+                <div class="card-header bg-warning">
+
+
+                    <i class="fa fa-lightbulb"></i>
+
+                    Sistema luminoso
+
+
+                </div>
+
+
+
+                <div class="list-group list-group-flush">
+
+
+                    <div class="list-group-item d-flex justify-content-between">
+
+                        <strong>Altura</strong>
+
+                        <span>
+                            {{baliza.altura}} m
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="list-group-item d-flex justify-content-between">
+
+                        <strong>Elevación</strong>
+
+                        <span>
+                            {{baliza.elevacion}} m
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="list-group-item d-flex justify-content-between">
+
+                        <strong>Linterna</strong>
+
+                        <span>
+                            {{baliza.linterna}}
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="list-group-item d-flex justify-content-between">
+
+                        <strong>Divergencia vertical</strong>
+
+                        <span>
+                            {{baliza.divergencia}}
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="list-group-item">
+
+
+                        <strong class="d-block mb-2">
+                            Alcances
+                        </strong>
+
+
+                        <div class="row text-center">
+
+
+                            <div class="col">
+
+                                <small class="text-muted">
+                                    Nominal
+                                </small>
+
+                                <div class="fw-bold">
+
+                                    {{baliza.alcanceNom}}
+
+                                    MN
+
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="col">
+
+                                <small class="text-muted">
+                                    Luminoso
+                                </small>
+
+                                <div class="fw-bold">
+
+                                    {{alcanceLuminoso baliza.alcanceNom}}
+
+                                    MN
+
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="col">
+
+                                <small class="text-muted">
+                                    Reconocimiento
+                                </small>
+
+                                <div class="fw-bold">
+
+                                    {{distanciaReconocimiento baliza.alcanceNom}}
+
+                                    MN
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+
+                    <div class="list-group-item d-flex justify-content-between">
+
+                        <strong>Intensidad calculada</strong>
+
+                        <span>
+                            {{baliza.candelasCalc}} Cd
+                        </span>
+
+                    </div>
+
+
+
+
+                    <div class="list-group-item d-flex justify-content-between">
+
+                        <strong>Intensidad instalada</strong>
+
+                        <span>
+                            {{baliza.candelasInst}} Cd
+                        </span>
+
+                    </div>
+
+
+
+                </div>
+
+
+
+                <div class="card-footer bg-transparent">
+
+
+                    <a href="/aton/editLampara/{{baliza.nif}}" class="btn btn-outline-warning w-100">
+
+                        <i class="fa fa-edit"></i>
+
+                        Actualizar lámpara
+
+                    </a>
+
+
+                </div>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+    </div>
+
+    <!-- ===================================================== -->
+    <!-- OBSERVACIONES -->
+    <!-- ===================================================== -->
+
+
+    <div class="card shadow-sm border-0 mb-4">
+
+
+        <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+
+            <span>
+                <i class="fa fa-comment"></i>
+                Observaciones
+            </span>
+
+
+        </div>
+
+
+
+        <div class="card-body">
+
+
+            {{#if obs}}
+
+
+            <div class="list-group mb-3">
+
+
+                {{#each obs}}
+
+
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+
+
+                    <div class="flex-grow-1">
+
+                        {{this.observaciones}}
+
+
+                    </div>
+
+
+                    <div class="ms-3 d-flex gap-2">
+
+
+                        <a href="/aton/observaciones/edit/{{this.id_observacion}}"
+                            class="btn btn-sm btn-outline-primary">
+
+                            <i class="fa fa-edit"></i>
+
+                        </a>
+
+
+                        <button onclick="abreModalObs({{this.id_observacion}})" class="btn btn-sm btn-outline-danger">
+
+                            <i class="fa fa-trash"></i>
+
+                        </button>
+
+
+                    </div>
+
+
+                </div>
+
+
+                {{/each}}
+
+
+            </div>
+
+
+            {{else}}
+
+            <div class="text-muted text-center mb-3">
+
+                No hay observaciones registradas
+
+            </div>
+
+
+            {{/if}}
+
+
+
+            <!-- NUEVA OBSERVACION -->
+
+
+            <form action="/aton/observaciones/add" method="POST">
+
+
+                <input type="hidden" name="nif" value="{{baliza.nif}}">
+
+
+                <div class="input-group">
+
+
+                    <input type="text" class="form-control" name="observaciones" placeholder="Nueva observación..."
+                        required>
+
+
+                    <button class="btn btn-primary">
+
+                        <i class="fa fa-plus"></i>
+
+                        Añadir
+
+                    </button>
+
+
+                </div>
+
+
+            </form>
+
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+
+    <!-- ===================================================== -->
+    <!-- MANTENIMIENTO -->
+    <!-- ===================================================== -->
+
+
+    <div class="card shadow-sm border-0 mb-4">
+
+
+        <div class="card-header bg-dark text-white">
+
+
+            <i class="fa fa-wrench"></i>
+
+            Historial de mantenimiento
+
+
+        </div>
+
+
+
+
+        <div class="card-body">
+
+
+            {{#if mant}}
+
+
+            <div class="accordion mb-3" id="accordionMant">
+
+
+                {{#each mant}}
+
+
+                <div class="accordion-item">
+
+
+                    <h2 class="accordion-header">
+
+
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#mant{{this.id_mantenimiento}}">
+
+
+                            <strong>
+                                {{formatearSp fecha}}
+                            </strong>
+
+                            <span class="ms-3 text-muted">
+
+                                {{this.mantenimiento}}
+
+                            </span>
+
+
+                        </button>
+
+
+                    </h2>
+
+
+
+                    <div id="mant{{this.id_mantenimiento}}" class="accordion-collapse collapse">
+
+
+                        <div class="accordion-body">
+
+
+                            <p>
+                                {{this.mantenimiento}}
+                            </p>
+
+
+                            <div class="d-flex gap-2">
+
+
+                                <a href="/aton/mantenimiento/edit/{{this.id_mantenimiento}}"
+                                    class="btn btn-outline-primary btn-sm">
+
+                                    <i class="fa fa-edit"></i>
+
+                                    Editar
+
+                                </a>
+
+
+
+                                <button onclick="abreModalMant({{this.id_mantenimiento}})"
+                                    class="btn btn-outline-danger btn-sm">
+
+                                    <i class="fa fa-trash"></i>
+
+                                    Eliminar
+
+                                </button>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                {{/each}}
+
+
+            </div>
+
+
+            {{/if}}
+
+
+
+
+
+            <!-- NUEVO MANTENIMIENTO -->
+
+
+            <form action="/aton/mantenimiento/add" method="POST">
+
+
+                <input type="hidden" name="nif" value="{{baliza.nif}}">
+
+
+
+                <div class="row g-2">
+
+
+                    <div class="col-md-3">
+
+
+                        <input type="date" class="form-control" name="fecha" required>
+
+
+                    </div>
+
+
+
+                    <div class="col-md-7">
+
+
+                        <input type="text" class="form-control" name="mantenimiento"
+                            placeholder="Descripción del mantenimiento" required>
+
+
+                    </div>
+
+
+
+                    <div class="col-md-2">
+
+
+                        <button class="btn btn-primary w-100">
+
+                            <i class="fa fa-plus"></i>
+
+                            Añadir
+
+                        </button>
+
+
+                    </div>
+
+
+
+                </div>
+
+
+            </form>
+
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+
+
+    <!-- ===================================================== -->
+    <!-- DATOS DE BOYA -->
+    <!-- ===================================================== -->
+
+
+    {{#if baliza.esBoya}}
+
+
+
+    <div class="card shadow-sm border-0 mb-4" id="datos_fondeo">
+
+
+        <div class="card-header bg-info text-white">
+
+
+            <i class="fa fa-anchor"></i>
+
+            Datos de boya y fondeo
+
+
+        </div>
+
+
+
+        <div class="card-body">
+
+
+            {{#if fondeo}}
+
+
+
+            <div class="row g-4">
+
+
+
+                <!-- FLOTADOR -->
+
+
+                <div class="col-lg-6">
+
+
+                    <div class="card border-primary h-100">
+
+
+                        <div class="card-header bg-primary text-white">
+
+                            🛟 Flotador
+
+                        </div>
+
+
+                        <div class="card-body">
+
+
+                            <p>
+                                <strong>Modelo:</strong>
+                                {{fondeo.composicion_flotador}}
+                            </p>
+
+
+                            <p>
+                                <strong>Diámetro:</strong>
+                                {{fondeo.diametro_flotador}} cm
+                            </p>
+
+
+                            <p>
+                                <strong>Altura:</strong>
+                                {{fondeo.altura_flotador}} cm
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+                <!-- CASTILLETE -->
+
+
+                <div class="col-lg-6">
+
+
+                    <div class="card border-primary h-100">
+
+
+                        <div class="card-header bg-primary text-white">
+
+                            🏗 Castillete
+
+                        </div>
+
+
+                        <div class="card-body">
+
+
+                            <p>
+                                <strong>Composición:</strong>
+                                {{fondeo.composicion_castillete}}
+                            </p>
+
+
+                            <p>
+                                <strong>Ancho:</strong>
+                                {{fondeo.ancho_castillete}} cm
+                            </p>
+
+
+                            <p>
+                                <strong>Altura:</strong>
+                                {{fondeo.altura_castillete}} cm
+                            </p>
+
+
+                            <p>
+                                <strong>Altura focal:</strong>
+                                {{fondeo.altura_focal}} cm
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+
+                <!-- FONDEO -->
+
+
+                <div class="col-lg-6">
+
+
+                    <div class="card border-success h-100">
+
+
+                        <div class="card-header bg-success text-white">
+
+                            ⚓ Fondeo
+
+                        </div>
+
+
+                        <div class="card-body">
+
+
+                            <p>
+                                <strong>Calado:</strong>
+                                {{fondeo.calado}} m
+                            </p>
+
+
+                            <p>
+                                <strong>Cadena:</strong>
+                                {{fondeo.longitud_cadena}} m
+                                Ø {{fondeo.diametro_cadena}} mm
+                            </p>
+
+
+                            <p>
+                                <strong>Ubicación:</strong>
+                                {{fondeo.ubicacion}}
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+
+
+                <!-- MUERTO -->
+
+
+                <div class="col-lg-6">
+
+
+                    <div class="card border-warning h-100">
+
+
+                        <div class="card-header bg-warning">
+
+                            ⚓ Muerto
+
+                        </div>
+
+
+                        <div class="card-body">
+
+
+                            <p>
+
+                                {{fondeo.l_muerto}}
+                                x
+                                {{fondeo.b_muerto}}
+                                x
+                                {{fondeo.h_muerto}}
+
+                                cm
+
+                            </p>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+
+                <!-- AREAS Y COEFICIENTES -->
+
+
+                <div class="col-12">
+
+
+                    <div class="card border-dark">
+
+
+                        <div class="card-header bg-dark text-white">
+
+
+                            📐 Áreas y coeficientes
+
+
+                        </div>
+
+
+
+                        <div class="card-body">
+
+
+                            <div class="row g-3">
+
+
+                                <div class="col-md-6">
+
+
+                                    <div class="card border-info">
+
+
+                                        <div class="card-header bg-info text-white">
+
+                                            Obra viva
+
+                                        </div>
+
+
+                                        <div class="card-body">
+
+
+                                            Área:
+                                            {{fondeo.area_total_muerta}} m²
+
+                                            <br>
+
+                                            Cd:
+                                            {{fondeo.Cd_aerodinamico}}
+
+
+                                        </div>
+
+
+                                    </div>
+
+
+                                </div>
+
+
+
+
+
+                                <div class="col-md-6">
+
+
+                                    <div class="card border-warning">
+
+
+                                        <div class="card-header bg-warning">
+
+                                            Obra muerta
+
+                                        </div>
+
+
+                                        <div class="card-body">
+
+
+                                            Área:
+                                            {{fondeo.area_total_viva}} m²
+
+                                            <br>
+
+                                            Cw:
+                                            {{fondeo.Cw_aerodinamico}}
+
+
+                                        </div>
+
+
+                                    </div>
+
+
+                                </div>
+
+
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+
+            <hr>
+
+
+            <div class="text-muted">
+
+                Última actualización:
+
+                {{formatearSp fondeo.last_modified}}
+
+            </div>
+
+
+
+            <div id="calculos" class="mt-3"></div>
+
+
+
+            {{/if}}
+
+
+
+
+
+            <div class="mt-4">
+
+
+                <a href="/aton/editFondeo/{{baliza.nif}}" class="btn btn-outline-primary w-100">
+
+
+                    <i class="fa fa-edit"></i>
+
+                    {{#if fondeo}}
+                    Actualizar datos boya
+                    {{else}}
+                    Introducir datos boya
+                    {{/if}}
+
+
+                </a>
+
+
+            </div>
+        </div>
+    </div>
+    {{/if}}
+
+    <!-- ===================================================== -->
+    <!-- ZONA PELIGRO -->
+    <!-- ===================================================== -->
+
+
+    <div class="card border-danger mb-5">
+        <div class="card-body">
+            <button onclick="document.getElementById('myModalBorrado').style.display='block'"
+                class="btn btn-outline-danger">
+                <i class="fa fa-trash"></i>
+                Eliminar AtoN
+            </button>
+        </div>
+    </div>
+</div>

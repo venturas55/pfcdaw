@@ -151,6 +151,13 @@ hr {
     page-break-before: always;
 }
 
+.observaciones {
+    /* white-space: pre-wrap;  */
+    white-space: pre-line;
+    font-family: sans-serif;
+}
+
+
 @media print {
 
     .photos-page {

@@ -6,7 +6,7 @@ b.periodo,b.caracteristica,b.telecontrol,b.necesita_pintado,b.apagada,b.esBoya,
 lo.puerto,lo.num_local,lo.localizacion,lo.latitud,lo.longitud,lo.coordenadas,
 la.altura,la.elevacion,la.alcanceNom,la.linterna,la.divergencia,
 la.candelasCalc,la.alcanceLum,la.distanciaRec,la.candelasInst,
-f.composicion_flotador,f.diametro_flotador,f.altura_flotador,f.altura_focal,
+f.composicion_flotador,f.diametro_flotador,f.altura_flotador,f.composicion_castillete,f.ancho_castillete,f.altura_castillete,f.seccion_castillete,f.altura_focal,
 f.calado,f.longitud_cadena,f.ubicacion,f.h_muerto,f.l_muerto,f.b_muerto,
 f.diametro_cadena,f.area_total_viva,f.Cw_aerodinamico,f.area_total_muerta,
 f.Cd_aerodinamico,f.observaciones,f.last_modified 

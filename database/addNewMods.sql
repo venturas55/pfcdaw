@@ -27,3 +27,7 @@ alter table fondeos add column IF NOT EXISTS altura_focal smallint UNSIGNED DEFA
 alter table fondeos add column IF NOT EXISTS altura_flotador smallint UNSIGNED DEFAULT NULL after nif;
 alter table fondeos add column IF NOT EXISTS diametro_flotador smallint UNSIGNED DEFAULT NULL after nif;
 alter table fondeos add column IF NOT EXISTS composicion_flotador varchar(100) DEFAULT NULL after nif;
+alter table fondeos add column IF NOT EXISTS composicion_castillete varchar(100) DEFAULT NULL after nif;
+alter table fondeos add column IF NOT EXISTS ancho_castillete smallint DEFAULT NULL after nif;
+alter table fondeos add column IF NOT EXISTS altura_castillete smallint DEFAULT NULL after nif;
+alter table fondeos add column IF NOT EXISTS seccion_castillete smallint DEFAULT NULL after nif;
