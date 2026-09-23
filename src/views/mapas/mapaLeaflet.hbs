@@ -1,32 +1,55 @@
-<div class="mt-2 mx-4 d-flex justify-content-start">
-    <div class="border border-primary rounded d-flex justify-content-start p-1 mx-4">
-        <div class="d-flex flex-column align-self-center">
-            <div>Lat: </div>
-            <div>Lng: </div>
-        </div>
-        <div class="d-flex flex-column align-self-center">
-            <input type="text" id="latmarkerWGS" onkeyup="actualizarCoordenadaWGS2DEC()" value="39º 26.651´N"> <input
-                type="text" id="lngmarkerWGS" value="00º 17.500´ W" onkeyup="actualizarCoordenadaWGS2DEC()">
-        </div>
-        <div class="d-flex flex-column align-self-center mx-1">
-            <input type="text" id="latmarker" value="39.442097" onkeyup="actualizarCoordenadaDEC2WGS()"> <input
-                type="text" id="lngmarker" value="-0.28204" onkeyup="actualizarCoordenadaDEC2WGS()">
-        </div>
-        <div class="d-flex flex-column align-self-center">
-            <button onclick="drawThisPin()" class="btn btn-secondary btn-sm">Draw New Pin</button>
-        </div>
-    </div>
-    <div id="botoneraDistancias" class="border border-warning rounded d-flex justify-content-start p-1 ">
-        <div class="d-flex flex-column mx-4 align-self-center">
-            <button onclick="clearAll()" class="btn btn-outline-secondary btn-sm">Limpiar todo</button>
-            <button id="limpiarUltimo" onclick="clearLast()" class="btn btn-outline-secondary btn-sm">Limpiar ultimo</button>
+<div class="container-fluid px-2 px-md-3 mt-2">
+
+    <!-- Panel de coordenadas -->
+    <div class="card border-primary mb-2">
+        <div class="card-body p-2 p-md-3">
+            <div class="row g-2">
+
+                <!-- Grupo WGS -->
+                <div class="col-12 col-md-6">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text">WGS</span>
+                        <input type="text" class="form-control" id="latmarkerWGS" value="39º 26.651´N" inputmode="text"
+                            aria-label="Latitud WGS" onkeyup="actualizarCoordenadaWGS2DEC()">
+                        <input type="text" class="form-control" id="lngmarkerWGS" value="00º 17.500´ W" inputmode="text"
+                            aria-label="Longitud WGS" onkeyup="actualizarCoordenadaWGS2DEC()">
+                    </div>
+                </div>
+
+                <!-- Grupo DEC -->
+                <div class="col-12 col-md-6">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text">DEC</span>
+                        <input type="text" class="form-control" id="latmarker" value="39.442097" inputmode="decimal"
+                            aria-label="Latitud decimal" onkeyup="actualizarCoordenadaDEC2WGS()">
+                        <input type="text" class="form-control" id="lngmarker" value="-0.28204" inputmode="decimal"
+                            aria-label="Longitud decimal" onkeyup="actualizarCoordenadaDEC2WGS()">
+                    </div>
+                </div>
+
+                <!-- Botones acción coordenadas -->
+                <div class="col-12 d-grid d-md-flex gap-2">
+                    <button onclick="drawThisPin()" class="btn btn-secondary btn-sm flex-md-grow-1">
+                        📍 Dibujar Pin
+                    </button>
+
+                    <div id="botoneraDistancias" class="d-contents">
+                        <button id="limpiarUltimo" onclick="clearLast()"
+                            class="btn btn-outline-secondary btn-sm flex-md-grow-1">
+                            Deshacer último
+                        </button>
+                        <button onclick="clearAll()" class="btn btn-outline-danger btn-sm flex-md-grow-1">
+                            Limpiar todo
+                        </button>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
 
-</div>
-
-<div class="mt-2 h-75 d-flex align-items-center justify-content-center">
-    <div id="myMap" class="m-2 h-100 w-100"></div>
+    <!-- Mapa -->
+    <div id="myMap" class="rounded border" style="height: 60vh; min-height: 300px; width: 100%;"></div>
 </div>
 <input type="hidden" value="{{protocol}}" id="protocolo" />
 <input type="hidden" value="{{baliza.latitud}}" id="lat" />

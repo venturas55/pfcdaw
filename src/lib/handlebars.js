@@ -182,16 +182,13 @@ const tablaAlcance = {
   7: 5.4,
   10: 7.5
 };
-const tablaDistanciaRec = {
-  1: 1,
-  3: 2.3,
-  5: 3.8,
-  7: 5.4,
-  10: 7.5
-};
 
 helpers.alcanceLuminoso = (alcanceNom) => {
-  return tablaAlcance[Number(alcanceNom)] ?? 'Null';
+  const alcance = Number(alcanceNom);
+
+  const clave = Object.keys(tablaAlcance)
+    .find(key => Number(key) >= alcance);
+  return clave !== undefined ? tablaAlcance[clave] : 'Null';
 };
 
 helpers.distanciaReconocimiento = (alcanceNom) => {

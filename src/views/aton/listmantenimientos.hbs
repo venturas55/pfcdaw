@@ -1,0 +1,95 @@
+<div class="container-fluid mb-5">
+    <!-- id="cuerpo" -->
+    <div class="row text-center my-2">
+        <div class="col-lg-10 mx-auto">
+            <h1>MANTENIMIENTOS <i class="fa fa-file-text" aria-hidden="true"></i></h1>
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <div class=" col-lg-11 mx-auto">
+            <div class="table-responsive">
+                {{#if balizas}}
+                <div class="card p-3 shadow-sm bg-dark mb-1 text-center">
+                    <div class="row align-items-end g-2">
+                        <!-- Campo de búsqueda -->
+                        <div class="col-3">
+                            <label for="myInput" class="form-label fw-semibold text-light">Buscar:</label>
+                            <input class="form-control form-control-sm" id="myInput" type="text"
+                                placeholder="Filtrar por..." autofocus>
+                        </div>
+                    </div>
+                </div>
+                <table data-search="true" id="listado"
+                    class="table table-sm table-dark rounded table-hover shadow-sm listado"
+                    style="white-space: nowrap; overflow-x: auto;">
+                    <tr class="info-color-dark">
+                        <th>#</th>
+                        <th>NIF</th>
+                        <th>Fecha</th>
+                        <th class="d-none d-md-table-cell">Mantenimiento</th>
+
+                        <th>Accion</th>
+                    </tr>
+
+                    {{#each balizas}}
+                    {{#each mantenimiento}}
+                    <tr class="fila" data-creador="{{this.created_by}}">
+                        <td>{{id_mantenimiento}}</td>
+                        <td> <a href="/aton/plantilla/{{ this.nif }} ">{{ ../nif }}</a> </td>
+                        <td>{{formatearSp fecha}}</td>
+                        <td>{{mantenimiento }} </td>
+                    </tr>
+                    {{/each}}
+                    {{/each}}
+
+                </table>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    const inputBusqueda = document.getElementById("myInput");
+    const filas = document.querySelectorAll(".fila");
+
+    function aplicarFiltros() {
+        const texto = inputBusqueda.value.toLowerCase().trim();
+
+        filas.forEach(fila => {
+            const textoFila = fila.innerText.toLowerCase();
+
+            const cumpleTexto = !texto || textoFila.includes(texto);
+
+            fila.style.display = cumpleTexto ? "" : "none";
+        });
+
+        actualizarContador();
+    }
+
+    // CONTADOR DE FILAS
+    function actualizarContador() {
+        let visibles = 0;
+
+        filas.forEach(fila => {
+            if (fila.style.display !== "none") {
+                visibles++;
+            }
+        });
+
+        const contador = document.getElementById("contadorFilas");
+
+        if (contador) {
+            contador.innerText = visibles;
+        }
+    }
+
+    // BUSCADOR
+    inputBusqueda.addEventListener("input", aplicarFiltros);
+
+    // Contador inicial
+    actualizarContador();
+</script>
+

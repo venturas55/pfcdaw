@@ -301,6 +301,26 @@ router.get("/listfondeos", async (req, res) => {
 
 });
 
+//ver MANTENIMIENTOS TODOS para buscar alguno en particular
+router.get("/mantenimientos", async (req, res) => {
+    const rows = await db.query("select nif from balizamiento order by nif asc");
+    const listado = rows.map(item => item.nif)
+    //const baliza = await db.db.query('SELECT * FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif where b.nif=?', [nif]);  CON ESTA CONSULTA EL LEFT JOIN NO FUNCIONA BIEN PARA EL HIPOTETICO CASO EN EL QUE EXISTE UN ATON QUE NO ESTA EN ALGUNA DE LAS TRES TABLAS
+    const balizas = await db.query(queryListadoAton);
+    for (var i = 0; i < balizas.length; i++) {
+        var archivos = await funciones.getFotosOrdenadas(balizas[i].nif);
+        var fondeo = await db.query("select * from fondeos where nif=?", balizas[i].nif)
+        balizas[i].fondeo = fondeo;
+        balizas[i].mantenimiento = await db.query("select * from mantenimiento where nif=?", balizas[i].nif);
+    }
+    if (balizas) {
+        res.render("aton/listmantenimientos", { layout: 'layoutPlantilla', balizas });
+    } else {
+        req.flash("warning", "Ha habido algún error!!");
+        res.redirect("/error");
+    }
+});
+
 //CRUD ATON update
 router.get("/editCaracteristicas/:nif", funciones.isAuthenticated, funciones.hasSanPrivileges, async (req, res) => {
     const { nif } = req.params;
@@ -773,62 +793,62 @@ router.get("/toggleapagado/:nif", funciones.isAuthenticated, funciones.hasSanPri
 });
 
 //PARA LA EXPORTACION DE FICHAS A PDF
-router.get('/plantillapdf/:nif',async (req, res, next) => {
-        try {
-            const { nif } = req.params;
-            const rows = await db.query("select nif from balizamiento order by nif asc");
-            const listado = rows.map(item => item.nif)
-            //const baliza = await db.db.query('SELECT * FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif where b.nif=?', [nif]);  CON ESTA CONSULTA EL LEFT JOIN NO FUNCIONA BIEN PARA EL HIPOTETICO CASO EN EL QUE EXISTE UN ATON QUE NO ESTA EN ALGUNA DE LAS TRES TABLAS
-            const [baliza] = await db.query(queryListadoAton + ' where b.nif=?', [nif]);
-            if (baliza) {
-                const observaciones = await db.query('SELECT * FROM observaciones where nif=?', [nif]);
-                const mantenimiento = await db.query('SELECT * FROM mantenimiento where nif=? order by fecha DESC', [nif]);
-                const tickets = await db.query(queryListadoTicketsUsers + ' where t.nif=? and t.solved_at is null', [nif]);
-                const preventivos = await db.query(queryListadoPreventivosUsers + ' where p.nif=? and p.solved_at is null', [nif]);
-                var fotos = await funciones.getFotosOrdenadas(nif);
-                console.log(fotos);
-                if (baliza.esBoya)
-                    var [fondeo] = await db.query('select * from fondeos where nif=?', [nif]);
+router.get('/plantillapdf/:nif', async (req, res, next) => {
+    try {
+        const { nif } = req.params;
+        const rows = await db.query("select nif from balizamiento order by nif asc");
+        const listado = rows.map(item => item.nif)
+        //const baliza = await db.db.query('SELECT * FROM balizamiento b  LEFT JOIN localizacion lo ON lo.nif=b.nif  LEFT JOIN lampara la ON la.nif=b.nif where b.nif=?', [nif]);  CON ESTA CONSULTA EL LEFT JOIN NO FUNCIONA BIEN PARA EL HIPOTETICO CASO EN EL QUE EXISTE UN ATON QUE NO ESTA EN ALGUNA DE LAS TRES TABLAS
+        const [baliza] = await db.query(queryListadoAton + ' where b.nif=?', [nif]);
+        if (baliza) {
+            const observaciones = await db.query('SELECT * FROM observaciones where nif=?', [nif]);
+            const mantenimiento = await db.query('SELECT * FROM mantenimiento where nif=? order by fecha DESC', [nif]);
+            const tickets = await db.query(queryListadoTicketsUsers + ' where t.nif=? and t.solved_at is null', [nif]);
+            const preventivos = await db.query(queryListadoPreventivosUsers + ' where p.nif=? and p.solved_at is null', [nif]);
+            var fotos = await funciones.getFotosOrdenadas(nif);
+            console.log(fotos);
+            if (baliza.esBoya)
+                var [fondeo] = await db.query('select * from fondeos where nif=?', [nif]);
 
-                req.app.render(
-                    'aton/plantillaPDF',
-                    {
-                        layout: 'layoutPuppeteerPlantilla',
-                        preventivo: preventivos[0],
-                        baseURL: `${req.protocol}://${req.get('host')}`,
-                        baliza, obs: observaciones, mant: mantenimiento, foto:fotos[0], tickets, preventivos, fondeo
-                    },
-                    async (err, html) => {
-                        if (err) {
-                            console.error(err);
-                            return res.status(500).send("Error renderizando vista");
-                        }
-
-                        try {
-                            console.log("Render OK, generando PDF...");
-                            const pdf = await htmlTopdf(html);
-                            console.log("PDF generado");
-
-                            res.set({
-                                "Content-Type": "application/pdf",
-                                "Content-Length": pdf.length,
-                                "Content-Disposition": `attachment; filename=plantilla-${nif}.pdf`
-                            });
-
-                            return res.send(pdf);
-
-                        } catch (pdfError) {
-                            console.error(pdfError);
-                            return res.status(500).send("Error generando PDF");
-                        }
+            req.app.render(
+                'aton/plantillaPDF',
+                {
+                    layout: 'layoutPuppeteerPlantilla',
+                    preventivo: preventivos[0],
+                    baseURL: `${req.protocol}://${req.get('host')}`,
+                    baliza, obs: observaciones, mant: mantenimiento, foto: fotos[0], tickets, preventivos, fondeo
+                },
+                async (err, html) => {
+                    if (err) {
+                        console.error(err);
+                        return res.status(500).send("Error renderizando vista");
                     }
-                );
 
-            }
-        } catch (error) {
-            console.error(error);
-            return res.status(500).send("Error interno del servidor");
+                    try {
+                        console.log("Render OK, generando PDF...");
+                        const pdf = await htmlTopdf(html);
+                        console.log("PDF generado");
+
+                        res.set({
+                            "Content-Type": "application/pdf",
+                            "Content-Length": pdf.length,
+                            "Content-Disposition": `attachment; filename=plantilla-${nif}.pdf`
+                        });
+
+                        return res.send(pdf);
+
+                    } catch (pdfError) {
+                        console.error(pdfError);
+                        return res.status(500).send("Error generando PDF");
+                    }
+                }
+            );
+
         }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).send("Error interno del servidor");
     }
+}
 );
 export default router;
